@@ -1,0 +1,26 @@
+{
+	"network": "mainnet",
+	"rpc": "https://rpc.tzbeta.net",
+	"bcd": {
+		"api": "https://api.better-call.dev",
+		"gui": "https://better-call.dev"
+	},
+	"tzkt": {
+		"api": "https://api.mainnet.tzkt.io"
+	},
+	"admin": {
+		"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG",
+		"secret": "edskRfC9fEn17PocCho6vD56BjqytdvPeeqQ7xR3da2Yv6VTFZio7mDdocwvd8tTzqreaF5NpNgRFz1fH2PhveUq7R1gzz22mC"
+	},
+	"ipfsApi": "https://minter-api.tqhosted.com",
+	"ipfsGateway": "https://tqtezos.mypinata.cloud",
+	"contractOpts": {
+		"marketplace": {
+			"adminOnly": false,
+			"fee": {
+				"percent": 1,
+				"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
+			}
+		}
+	}
+}
