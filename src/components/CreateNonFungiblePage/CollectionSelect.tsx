@@ -40,7 +40,8 @@ export default function CollectionSelect() {
       <Flex pb={8} flexDir="column">
         <Flex pb={4} align="center" justify="space-between">
           <Heading size="md">Select 'Minter' as Collection</Heading>
-          {/* <CreateCollectionButton sync={true} /> */}
+          {/* <CreateCollectionButton sync={true} /> 
+          commented for hidden new collection button*/}
         </Flex>
         <Menu>
           <MenuButton
