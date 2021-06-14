@@ -52,7 +52,12 @@ export default function ArtistProfile(props) {
 
   return (
     <Container>
-      {hasError}
+      {/* {
+        document.write(result)
+      } */}
+
+      {document.write(result.length)}
+      <br />
       {
         hasError
           ? <div>hasError true erroe occured. id is not present in firebase</div>
@@ -194,3 +199,11 @@ export default function ArtistProfile(props) {
 
 
 
+
+// avatar,https://reqres.in/img/faces/12-image.jpg,
+// banner,https://via.placeholder.com/1500x500.png?text=ByteBlock- Banner,
+// email,rachel.howell@reqres.in,
+// id,12,
+// links,[object Object],
+// name,Rachel Howell,
+// walletAddress,howell111

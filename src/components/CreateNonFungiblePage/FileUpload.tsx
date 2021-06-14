@@ -121,12 +121,12 @@ export default function FileUpload() {
     <Flex
       align="center"
       flexDir="column"
-      width="100%"
-      flex="1"
-      pt={{
-        base: 2,
-        md: 12
-      }}
+    // width="100%"
+    // flex="1"
+    // pt={{
+    //   base: 2,
+    //   md: 12
+    // }}
     >
       <Heading size="lg" paddingBottom={8} textAlign="center">
         Upload Your NFT
@@ -145,9 +145,10 @@ export default function FileUpload() {
         borderWidth="2px"
         borderColor="brand.lightBlue"
         borderRadius="3px"
-        width="100%"
+        // width="100%"
         justify="center"
         align="center"
+
         {...getRootProps()}
       >
         <Box as="input" {...getInputProps()} />
@@ -169,7 +170,10 @@ export default function FileUpload() {
             borderWidth="1px"
             flexDir="column"
             align="center"
-            py={24}
+            // py={24}
+            marginBottom="4"
+            paddingX={24}
+            paddingY={8}
             bg="brand.brightGray"
             flex="1"
           >
@@ -213,9 +217,13 @@ export function CsvFileUpload() {
     <Flex flexDir="column" align="center">
       <Flex
         bg="brand.brightGray"
-        border="1px solid"
+        // border="1px solid"
+        // borderColor="brand.lightBlue"
+        // borderRadius="5px"
+        borderStyle="dashed"
+        borderWidth="2px"
         borderColor="brand.lightBlue"
-        borderRadius="5px"
+        borderRadius="3px"
         display="inline-flex"
         marginBottom="4"
         paddingX={16}

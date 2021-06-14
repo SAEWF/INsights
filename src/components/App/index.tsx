@@ -15,8 +15,8 @@ import Creator from '../Creator';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from '../common/Footer';
 import AlertBar from '../common/AlertBar';
-// import ArtistProfile from '../Artist/ArtistProfile';
 // import ArtistList from '../Artist/ArtistList';
+import ArtistProfile from '../Artist/ArtistProfile';
 
 
 export default function App() {
@@ -90,12 +90,12 @@ export default function App() {
           </Route>
           {/* <Route path="/artists">
             <ArtistList />
-          </Route>
+          </Route>*/}
           <Route path="/artistprofile/:walletAddress">
             {({ walletAddress }) => (
               <ArtistProfile address={walletAddress} />
             )}
-          </Route> */}
+          </Route>
         </Switch>
         <Notifications />
       </Flex>
