@@ -53,9 +53,9 @@ export default function Form() {
       </FormControl>
       <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
-          A Good Description
+          A Very Good Description
           <Text marginLeft={2} color="brand.lightGray">
-            (Optional)
+            (Must Give)
           </Text>
         </FormLabel>
         <Textarea
