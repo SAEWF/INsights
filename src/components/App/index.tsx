@@ -15,8 +15,8 @@ import Creator from '../Creator';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from '../common/Footer';
 import AlertBar from '../common/AlertBar';
-import ArtistProfile from '../Artist/ArtistProfile';
-import ArtistList from '../Artist/ArtistList';
+// import ArtistProfile from '../Artist/ArtistProfile';
+// import ArtistList from '../Artist/ArtistList';
 
 
 export default function App() {

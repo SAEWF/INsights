@@ -10,7 +10,7 @@ import {
   MenuOptionGroup,
   MenuItemOption
 } from '@chakra-ui/react';
-import { CreateCollectionButton } from '../common/modals/CreateCollection';
+// import { CreateCollectionButton } from '../common/modals/CreateCollection';
 import { useSelector, useDispatch } from '../../reducer';
 import { selectCollection } from '../../reducer/slices/createNft';
 import { getWalletAssetContractsQuery } from '../../reducer/async/queries';
@@ -39,8 +39,8 @@ export default function CollectionSelect() {
       <CreateBaseCollection />
       <Flex pb={8} flexDir="column">
         <Flex pb={4} align="center" justify="space-between">
-          <Heading size="md">Select Collection (Default is 'Minter')x</Heading>
-          <CreateCollectionButton sync={true} />
+          <Heading size="md">Select Collection (Default is 'Minter')</Heading>
+          {/* <CreateCollectionButton sync={true} /> */}
         </Flex>
         <Menu>
           <MenuButton

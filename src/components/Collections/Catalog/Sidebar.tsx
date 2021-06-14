@@ -1,6 +1,6 @@
 import React from 'react';
-import { Flex, Heading } from '@chakra-ui/react';
-import { CreateCollectionButton } from '../../common/modals/CreateCollection';
+import { Heading } from '@chakra-ui/react';
+// import { CreateCollectionButton } from '../../common/modals/CreateCollection';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
   selectCollection
@@ -57,9 +57,9 @@ export default function Sidebar() {
             {...state.collections[address]}
           />
         ))}
-      <Flex px={2} pt={4} justify="center" pb={8}>
+      {/* <Flex px={2} pt={4} justify="center" pb={8}>
         <CreateCollectionButton />
-      </Flex>
+      </Flex> */}
     </>
   );
 }
