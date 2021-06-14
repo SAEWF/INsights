@@ -221,6 +221,9 @@ function NavItems() {
                     {/* <MobileHeaderLink to="/marketplace" onClick={onClose}>
                       Marketplace
                     </MobileHeaderLink> */}
+                    {/* <MobileHeaderLink to="/artists" onClick={onClose}>
+                      Artists
+                    </MobileHeaderLink> */}
                     <MobileHeaderLink to="/collections" onClick={onClose}>
                       Collections
                     </MobileHeaderLink>
@@ -280,6 +283,9 @@ function NavItems() {
             <RiStore2Line size={16} />
           </Box>
           <Text ml={2} >Marketplace</Text>
+        </DesktopHeaderLink> */}
+        {/* <DesktopHeaderLink to="/artists">
+          <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>Artists</Text>
         </DesktopHeaderLink> */}
         {system.status === 'WalletConnected' ? (
           <>
