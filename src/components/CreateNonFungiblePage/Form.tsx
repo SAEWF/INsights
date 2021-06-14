@@ -24,7 +24,7 @@ import {
 import CollectionSelect from './CollectionSelect';
 
 const DESCRIPTION_PLACEHOLDER =
-  'e.g. “This is an exclusive japanese comic illustration. Once you purchase it you will be able to get the t-shirt”';
+  'Tell a story behing your NFT, a good description always preferred';
 
 export default function Form() {
   const state = useSelector(s => s.createNft);
@@ -34,10 +34,10 @@ export default function Form() {
     <>
       <CollectionSelect />
       <Heading size="md" paddingBottom={6}>
-        What properties would you like to give your asset?
+        Describe your NFT
       </Heading>
       <FormControl paddingBottom={6}>
-        <FormLabel fontFamily="mono">Asset Name</FormLabel>
+        <FormLabel fontFamily="mono">NFT Name</FormLabel>
         <Input
           autoFocus={true}
           placeholder="Input your asset name"
@@ -49,7 +49,7 @@ export default function Form() {
       </FormControl>
       <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
-          Description
+          A Good Description
           <Text marginLeft={2} color="brand.lightGray">
             (Optional)
           </Text>
@@ -68,13 +68,13 @@ export default function Form() {
       </FormControl>
       <Divider borderColor="brand.lightBlue" opacity="1" marginY={10} />
       <Heading size="md" paddingBottom={6}>
-        Add attributes to your asset
+        Additional Information(s)
       </Heading>
       {state.attributes.map(({ name, value }, key) => {
         return (
           <Flex key={key} align="center" justify="stretch">
             <FormControl paddingBottom={6} paddingRight={2} flex="1">
-              <FormLabel fontFamily="mono">Name</FormLabel>
+              <FormLabel fontFamily="mono">Key</FormLabel>
               <Input
                 placeholder="e.g. Country"
                 value={name || ''}

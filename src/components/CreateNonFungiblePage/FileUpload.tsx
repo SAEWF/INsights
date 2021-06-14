@@ -129,7 +129,7 @@ export default function FileUpload() {
       }}
     >
       <Heading size="lg" paddingBottom={8} textAlign="center">
-        Upload your file
+        Upload Your NFT
       </Heading>
       <Text
         fontSize="xs"
@@ -138,7 +138,7 @@ export default function FileUpload() {
         textAlign="center"
         pb={4}
       >
-        JPG, PNG, GIF, WEBP, SVG, MP4, WebM, Ogg, Gltf, Glb. Max size 30mb
+        Max size 30mb
       </Text>
       <Flex
         borderStyle="dashed"
@@ -174,10 +174,10 @@ export default function FileUpload() {
             flex="1"
           >
             <Text fontSize={20} textAlign="center" paddingX={4}>
-              Click or drag file to this area to upload
+              Click or Drag the NFT
             </Text>
             <Text fontSize={18} color="brand.gray">
-              Support for single file
+              Single file at a time
             </Text>
           </Flex>
         )}

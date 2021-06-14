@@ -21,7 +21,7 @@ export function initStorageNftFaucet() {
   const metadata = new MichelsonMap<string, string>();
   const contents = {
     name: 'Minter',
-    description: 'An OpenMinter base collection contract.',
+    description: 'ByteBlockNFT contracts.',
     interfaces: ['TZIP-012', 'TZIP-016', 'TZIP-020'],
     tokenCategory: 'collectibles'
   };

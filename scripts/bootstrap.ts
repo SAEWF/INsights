@@ -29,14 +29,14 @@ const init = () => {
   clear();
   console.log(
     "\n" +
-    chalk.green(figlet.textSync('>OpenMinter', { font: 'ANSI Shadow' })) +
+    chalk.green(figlet.textSync('ByteBlockNFT', { font: 'ANSI Shadow' })) +
     "\n\n" +
-    chalk.cyan("Welcome to OpenMinter!") +
+    chalk.cyan("Welcome to ByteBlockNFT!") +
     "\n\n" +
     "The following questions will help configure and bootstrap a custom\n" +
-    "installation of OpenMinter. " +
+    "installation of ByteBlockNFT. " +
     chalk.yellow("Please have your wallet private key on hand.") + "\n" +
-    "You will be asked for it in order to originate the OpenMinter contracts.\n" +
+    "You will be asked for it in order to originate the ByteBlockNFT contracts.\n" +
     "\n"
   );
 };
@@ -44,15 +44,15 @@ const init = () => {
 const finish = () => {
   console.log(
     "\n" +
-    chalk.bold("Your customized OpenMinter is bootstrapped and ready to go!") + "\n" +
+    chalk.bold("Your customized ByteBlockNFT is bootstrapped and ready to go!") + "\n" +
     "\n" +
     "Your customized config is located at " + chalk.yellow("config/custom-bootstrapped.json") + "\n" +
     "We " + chalk.bold("strongly") + " recommend that you create a backup copy" +
     "of this configuration file.\n" +
     "\n\n" +
-    "You can now start your customized OpenMinter by running: " + chalk.yellow("yarn start:custom") + "\n" +
+    "You can now start your customized ByteBlockNFT by running: " + chalk.yellow("yarn start:custom") + "\n" +
     "\n" +
-    "‎️‍🔥🔥🔥 The OpenMinter Team 🔥🔥🔥\n"
+    "‎️‍connect@byteblock.io\n"
   );
 };
 
@@ -62,7 +62,7 @@ const askConfigQuestions = (): Promise<ConfigInput> => {
       name: 'network',
       type: 'list',
       choices: ['Mainnet', 'Florencenet'],
-      message: 'Select the network to deploy OpenMinter contracts to:',
+      message: 'Select the network to deploy ByteBlockNFT contracts to:',
       filter: function (val: string) {
         return val.toLowerCase();
       },
@@ -213,23 +213,23 @@ const bootstrapContracts = async (): Promise<void> => {
   );
 
   shelljs.rm('-f', path.join(
-   __dirname,
-   `../config/custom-bootstrapped.json`
+    __dirname,
+    `../config/custom-bootstrapped.json`
   ));
 
   return new Promise((resolve, reject) => {
-    const spinner = new Spinner('Bootstrapping contracts...', ['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']);
+    const spinner = new Spinner('Bootstrapping contracts...', ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷']);
     const child = shelljs.exec('yarn bootstrap:custom', { async: true, silent: true });
     spinner.start();
 
     let longest = 0;
-    child.stdout?.on('data', function(data) {
+    child.stdout?.on('data', function (data) {
       const msg = stripAnsi(data).trim();
       longest = Math.max(longest, msg.length);
       spinner.message(msg.padEnd(longest, ' '));
     });
 
-    child.stderr?.on('data', function(data) {
+    child.stderr?.on('data', function (data) {
       spinner.stop();
       console.log(
         "Encountered error:" + "\n" +

@@ -9,7 +9,8 @@
 		"api": "https://api.mainnet.tzkt.io"
 	},
 	"admin": {
-		"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
+		"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG",
+		"secret": "edskRfC9fEn17PocCho6vD56BjqytdvPeeqQ7xR3da2Yv6VTFZio7mDdocwvd8tTzqreaF5NpNgRFz1fH2PhveUq7R1gzz22mC"
 	},
 	"ipfsApi": "https://minter-api.tqhosted.com",
 	"ipfsGateway": "https://tqtezos.mypinata.cloud",
@@ -19,14 +20,6 @@
 			"fee": {
 				"percent": 1,
 				"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
-			}
-		}
-	},
-	"contracts": {
-		"nftFaucet": "KT1MxGrhSmLPe4W842AutygvuoxUejLJDuWq",
-		"marketplace": {
-			"fixedPrice": {
-				"tez": "KT1NNpYRX8bAL5JTbGWtWRrSqG2iWdUdiXF5"
 			}
 		}
 	}

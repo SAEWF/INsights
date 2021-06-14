@@ -99,6 +99,6 @@ export default function App() {
         </Switch>
         <Notifications />
       </Flex>
-    </Flex>
+    </Flex >
   );
 }
