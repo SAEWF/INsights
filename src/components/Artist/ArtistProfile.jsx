@@ -55,8 +55,9 @@ export default function ArtistProfile(props) {
       {/* {
         document.write(result)
       } */}
+      {/* {document.write(result.length)} */}
 
-      {document.write(result.length)}
+      <div>{result.length}</div>
       <br />
       {
         hasError

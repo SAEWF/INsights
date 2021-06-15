@@ -19,7 +19,7 @@ interface FeaturedTokenProps extends Token {
 export default function FeaturedToken(props: FeaturedTokenProps) {
   const [, setLocation] = useLocation();
   return (
-    <Flex flexDir="row" flexWrap="wrap" mb={8} width="100%" justifyContent="center">
+    <Flex flexDir="row" flexWrap="wrap" mb={8} width="100%" h="70vh" justifyContent="center"> {/* edit 70 vh for vertical height */}
       <Flex maxHeight={['45vh', '65vh']} marginRight={[0, 8]} justifyContent="center" width={['85vw', '65vw', '45vw']}>
         <TokenMedia
           maxW="100%"
@@ -28,8 +28,8 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
         />
       </Flex>
       <Box marginLeft="0 !important">
-        <Flex flexDir="column" h="100%" w={['100%', '35vw']} justifyContent="center" alignItems="center">
-          <Heading size="md" mt={4} fontSize="2.5rem">
+        <Flex flexDir="column" w={['100%', '35vw']} justifyContent="center" alignItems="center" >
+          <Heading size="md" mt={6} fontSize="2.5rem">
             {props.title}
           </Heading>
           <br />
@@ -58,7 +58,7 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
           <MinterButton
             size="md"
             variant="primaryAction"
-            w="150px" mt={1}
+            w="150px" mt={2}
             onClick={e => {
               e.preventDefault();
               setLocation(`/collection/${props.address}/token/${props.id}`, {

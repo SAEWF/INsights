@@ -4,11 +4,11 @@ import {
   Heading,
   Text,
   Flex,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionIcon,
-  AccordionPanel
+  // Accordion,
+  // AccordionItem,
+  // AccordionButton,
+  // AccordionIcon,
+  // AccordionPanel
 } from '@chakra-ui/react';
 import { useSelector } from '../../reducer';
 import { FilePreview } from './FileUpload';
@@ -48,7 +48,17 @@ export default function Confirmation() {
       <Text fontSize="md" mb={[2, 4]}>
         {fields.description || 'No description provided'}
       </Text>
-      <Accordion allowToggle>
+
+      {attributes?.map(({ name, value }) => (
+        <>
+          <Label>{name}</Label>
+          <Text fontSize="md" mb={[2, 4]}>
+            {value || 'No name provided'}
+          </Text>
+        </>
+      ))}
+
+      {/* <Accordion allowToggle>
         <AccordionItem border="none">
           <AccordionButton mt={[4, 8]} p={0}>
             <Text color="brand.neutralGray">Metadata</Text>
@@ -65,7 +75,7 @@ export default function Confirmation() {
             ))}
           </AccordionPanel>
         </AccordionItem>
-      </Accordion>
+      </Accordion> */}
     </Box>
   );
 }

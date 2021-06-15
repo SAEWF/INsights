@@ -78,12 +78,11 @@ export default function CollectionSelect() {
                     selected={address === state.collectionAddress}
                     onClick={() => dispatch(selectCollection(address))}
                   >
-
                     {collections[address].metadata.name}
                   </MenuItemOption>))
                 :
                 <MenuItemOption disabled>
-                  <Spinner animation="border" size="sm" className="mr-2" /> Wait while we fetch your collection data
+                  <Spinner animation="border" size="sm" className="mr-2" /> Wait while we fetch your collection(s)
               </MenuItemOption>
               }
             </MenuOptionGroup>
