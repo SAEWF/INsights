@@ -14,7 +14,7 @@ export default function Sidebar() {
   return (
     <>
       <Heading px={4} pt={6} pb={4} size="md" color="brand.darkGray">
-        Collections
+        ByteBlock Collections
       </Heading>
       <Heading
         fontFamily="mono"
@@ -23,7 +23,7 @@ export default function Sidebar() {
         fontSize="sm"
         color="brand.darkGray"
       >
-        Featured
+        Recent Collection
       </Heading>
       {state.collections[state.globalCollection] ? (
         <CollectionTab
@@ -41,22 +41,9 @@ export default function Sidebar() {
         fontSize="sm"
         color="brand.darkGray"
       >
-        Your Collections
+        .
       </Heading>
-      {Object.keys(state.collections)
-        .filter(
-          address =>
-            address !== state.globalCollection &&
-            state.collections[address]?.creator?.address === tzPublicKey
-        ).reverse()
-        .map((address, idx) => (
-          <CollectionTab
-            key={address + idx}
-            selected={address === state.selectedCollection}
-            onSelect={address => dispatch(selectCollection(address))}
-            {...state.collections[address]}
-          />
-        ))}
+
       {/* <Flex px={2} pt={4} justify="center" pb={8}>
         <CreateCollectionButton />
       </Flex> */}
