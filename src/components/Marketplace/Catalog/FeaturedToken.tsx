@@ -3,7 +3,7 @@ import { Token } from '../../../reducer/slices/collections';
 import { useLocation } from 'wouter';
 import { IpfsGatewayConfig } from '../../../lib/util/ipfs';
 import {
-  Flex,
+  // Flex,
   Text,
   Heading,
 } from '@chakra-ui/react';
@@ -18,21 +18,23 @@ interface FeaturedTokenProps extends Token {
 
 export default function FeaturedToken(props: FeaturedTokenProps) {
   const [, setLocation] = useLocation();
-  // var metadataTotal: number;
-  // if (props.metadata?.attributes?.length == undefined) {
-  //   metadataTotal = 0;
-  // } else {
-  //   metadataTotal = props.metadata?.attributes?.length;
-  // }
   return (
     <>
       <Container fluid className="mb-5">
         <Row >
           {/* Column 1 */}
-          <Col xs={12} md={12} lg={9} xl={9} className="text-center mb-5" >
-            <Flex maxHeight={['45vh', '85vh']} marginRight={[0, 8]} justifyContent="center"
-            // width={['85vw', '65vw', '45vw']}
+          <Col xs={12} md={12} lg={9} xl={9} className="text-center" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+            <div className="my-auto"
+            //  style={{ maxHeight: "85vh" }}
             >
+              {/* <Flex maxHeight={['45vh', '85vh']} marginRight={[0, 8]} justifyContent="center"
+              width={['85vw', '65vw', '45vw']}
+             >  */}
               <TokenMedia
                 objectFit="contain"
                 maxW="100%"
@@ -40,7 +42,8 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
                 class="featured"
                 {...props}
               />
-            </Flex>
+              {/* </Flex> */}
+            </div>
           </Col>
           {/* Column 1 */}
 
@@ -51,8 +54,8 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
             justifyContent: 'center',
             alignItems: 'flex-start',
           }}>
-            <div className="my-auto" >
-              <div className="">
+            <div className="my-auto mx-auto" >
+              <div className="mt-2">
                 <Heading size="md" fontSize="2.5rem">
                   {props.title}
                 </Heading>
