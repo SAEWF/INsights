@@ -3,14 +3,14 @@ import { Token } from '../../../reducer/slices/collections';
 import { useLocation } from 'wouter';
 import { IpfsGatewayConfig } from '../../../lib/util/ipfs';
 import {
-  Box,
   Flex,
   Text,
-  Heading
+  Heading,
 } from '@chakra-ui/react';
 import { MinterButton } from '../../common';
 import { TokenMedia } from '../../common/TokenMedia';
 import tz from '../../common/assets/tezos-sym.svg';
+import { Container, Row, Col } from 'react-bootstrap';
 
 interface FeaturedTokenProps extends Token {
   config: IpfsGatewayConfig;
@@ -18,58 +18,98 @@ interface FeaturedTokenProps extends Token {
 
 export default function FeaturedToken(props: FeaturedTokenProps) {
   const [, setLocation] = useLocation();
+  // var metadataTotal: number;
+  // if (props.metadata?.attributes?.length == undefined) {
+  //   metadataTotal = 0;
+  // } else {
+  //   metadataTotal = props.metadata?.attributes?.length;
+  // }
   return (
-    <Flex flexDir="row" flexWrap="wrap" mb={8} width="100%" h="70vh" justifyContent="center"> {/* edit 70 vh for vertical height */}
-      <Flex maxHeight={['45vh', '65vh']} marginRight={[0, 8]} justifyContent="center" width={['85vw', '65vw', '45vw']}>
-        <TokenMedia
-          maxW="100%"
-          class="featured"
-          {...props}
-        />
-      </Flex>
-      <Box marginLeft="0 !important">
-        <Flex flexDir="column" w={['100%', '35vw']} justifyContent="center" alignItems="center" >
-          <Heading size="md" mt={6} fontSize="2.5rem">
-            {props.title}
-          </Heading>
-          <br />
-          {/* artist name */}
-          <p className="mt-2"><i className="fas fa-user mr-2" style={{
-            display: "inline-block",
-            borderRadius: "60px",
-            boxShadow: "0px 0px 2px #888",
-            padding: "0.5em 0.6em",
-          }}></i>
-            {(props.metadata?.attributes?.length === 0)
-              ? <>Anonymous</>
-              : props.metadata?.attributes?.map(({ name, value }) => (
-                <>{value}</>
-              ))}
-          </p>
-          {/* artist name */}
+    <>
+      <Container fluid className="mb-5">
+        <Row >
+          {/* Column 1 */}
+          <Col xs={12} md={12} lg={9} xl={9} className="text-center mb-5" >
+            <Flex maxHeight={['45vh', '85vh']} marginRight={[0, 8]} justifyContent="center"
+            // width={['85vw', '65vw', '45vw']}
+            >
+              <TokenMedia
+                objectFit="contain"
+                maxW="100%"
+                maxH="70vh"
+                class="featured"
+                {...props}
+              />
+            </Flex>
+          </Col>
+          {/* Column 1 */}
 
-          <Text fontSize="lg" mt={1}>
-            Price:{' '}
-            <Text as="span" fontWeight="600">
-              {props.sale?.price} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
-            </Text>
-          </Text>
-          <br />
-          <MinterButton
-            size="md"
-            variant="primaryAction"
-            w="150px" mt={2}
-            onClick={e => {
-              e.preventDefault();
-              setLocation(`/collection/${props.address}/token/${props.id}`, {
-                replace: false
-              });
-            }}
-          >
-            <Text>View</Text>
-          </MinterButton>
-        </Flex>
-      </Box>
-    </Flex>
+          {/* Column 2 */}
+          <Col xs={12} md={12} lg={3} xl={3} style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }}>
+            <div className="my-auto" >
+              <div className="">
+                <Heading size="md" fontSize="2.5rem">
+                  {props.title}
+                </Heading>
+              </div>
+              <div className="mt-2">
+                <p><i className="fas fa-user mr-2" style={{
+                  display: "inline-block",
+                  borderRadius: "60px",
+                  boxShadow: "0px 0px 2px #888",
+                  padding: "0.5em 0.6em",
+                }}></i>
+                  {(props.metadata?.attributes?.length === 0)
+                    ? <>Anonymous</>
+                    // eslint-disable-next-line
+                    : props.metadata?.attributes?.map(({ name, value }, idx) => {
+                      if (name === "Artist" && value !== '') {
+                        return (
+                          <>{value}</>
+                        )
+                      }
+                      else if (idx === 0) {
+                        return (
+                          <>Anonymous</>
+                        )
+                      }
+                    })}
+                </p>
+              </div>
+              <div className="mt-2">
+                <Text fontSize="lg" >
+                  Price:{' '}
+                  <Text as="span" fontWeight="600">
+                    {props.sale?.price} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
+                  </Text>
+                </Text>
+              </div>
+              <div className="mt-2">
+                <MinterButton
+                  size="md"
+                  variant="primaryAction"
+                  w="150px" mt={3}
+                  onClick={e => {
+                    e.preventDefault();
+                    setLocation(`/collection/${props.address}/token/${props.id}`, {
+                      replace: false
+                    });
+                  }}
+                >
+                  <Text>View</Text>
+                </MinterButton>
+              </div>
+            </div>
+          </Col>
+          {/* Column 2 */}
+        </Row>
+      </Container>
+    </>
+
   );
 }

@@ -8,7 +8,7 @@ import {
 import CollectionTab from './CollectionTab';
 
 export default function Sidebar() {
-  const tzPublicKey = useSelector(s => s.system.tzPublicKey);
+  // const tzPublicKey = useSelector(s => s.system.tzPublicKey);
   const state = useSelector(s => s.collections);
   const dispatch = useDispatch();
   return (

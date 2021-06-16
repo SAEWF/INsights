@@ -44,7 +44,6 @@ export default function ArtistProfile(props) {
     })
   })
 
-
   console.log("result");
   console.log(result);
 
@@ -65,24 +64,28 @@ export default function ArtistProfile(props) {
           : <div>hasError false ok</div>
       }
 
-      <div className="user-profile-block">
-        <div className="user-profile-banner">
-          <div className="user-profile-banner-wrapper">
-            <Image
-              alt="Banner"
-              className="user-profile-banner-img"
-              src={defaultBanner}
-            />
-          </div>
-          <div className="user-profile-avatar-wrapper">
-            <Image
-              alt="Avatar"
-              className="user-profile-img"
-              src={defaultAvatar}
-              thumbnail
-            />
-          </div>
-          {/* <button
+      {result.length > 7
+        ? <>
+          <div className="user-profile-block">
+            <div className="user-profile-banner">
+              <div className="user-profile-banner-wrapper">
+                <Image
+                  alt="Banner"
+                  className="user-profile-banner-img"
+                  src={result[1]}
+                // {defaultBanner}
+                />
+              </div>
+              <div className="user-profile-avatar-wrapper">
+                <Image
+                  alt="Avatar"
+                  className="user-profile-img"
+                  src={result[0]}
+                  // {defaultAvatar}
+                  thumbnail
+                />
+              </div>
+              {/* <button
             className="button button-small user-profile-edit"
             // onClick={() => props.history.push(ACCOUNT_EDIT)}
             type="button"
@@ -90,61 +93,67 @@ export default function ArtistProfile(props) {
             Edit Account
           </button> */}
 
-          <Container>
-            <Row>
-              {/* sidebar */}
-              <Col sm={12} md={3}>
-                <div className="user-profile-details">
-                  <h2 className="user-profile-name font-weight-bold mb-2 pl-1">Jon Snow</h2>
+              <Container>
+                <Row>
+                  {/* sidebar */}
+                  <Col sm={12} md={3}>
+                    <div className="user-profile-details">
+                      <h2 className="user-profile-name font-weight-bold mb-2 pl-1">Jon Snow</h2>
 
-                  <Card border="light" className="text-left" >
-                    <Card.Header className="font-weight-bold"><i className="far fa-envelope"></i> E-mail </Card.Header>
-                    <Card.Body>
-                      <Card.Text>
-                        email@gm.com
+                      <Card border="light" className="text-left" >
+                        <Card.Header className="font-weight-bold"><i className="far fa-envelope"></i> E-mail </Card.Header>
+                        <Card.Body>
+                          <Card.Text>
+                            email@gm.com
                   </Card.Text>
-                    </Card.Body>
-                  </Card>
+                        </Card.Body>
+                      </Card>
 
-                  <Card border="light" className="text-left" >
-                    <Card.Header className="font-weight-bold"><i className="far fa-compass"></i> Wallet Address </Card.Header>
-                    <Card.Body>
-                      {/* <Card.Title>Light Card Title</Card.Title> */}
-                      <Card.Text>
-                        tz1LjLHwTghS3DU567igtZfqQCaiM7fxxxx
+                      <Card border="light" className="text-left" >
+                        <Card.Header className="font-weight-bold"><i className="far fa-compass"></i> Wallet Address </Card.Header>
+                        <Card.Body>
+                          {/* <Card.Title>Light Card Title</Card.Title> */}
+                          <Card.Text>
+                            tz1LjLHwTghS3DU567igtZfqQCaiM7fxxxx
                   </Card.Text>
-                    </Card.Body>
-                  </Card>
+                        </Card.Body>
+                      </Card>
 
-                  <Card border="light" className="text-left" >
-                    <Card.Header className="font-weight-bold"><i className="fas fa-link"></i> Links </Card.Header>
-                    <Card.Body>
-                      {/* <Card.Title>Light Card Title</Card.Title> */}
-                      {/* <Card.Text>
+                      <Card border="light" className="text-left" >
+                        <Card.Header className="font-weight-bold"><i className="fas fa-link"></i> Links </Card.Header>
+                        <Card.Body>
+                          {/* <Card.Title>Light Card Title</Card.Title> */}
+                          {/* <Card.Text>
                         tz1LjLHwTthS3DU542igtZfqQCaiM7fz9C2C
                   </Card.Text> */}
-                      <ul className="list-sm">
-                        <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook mr-2"></i>Facebook</a></li>
-                        <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter mr-2"></i>Twitter</a></li>
-                        <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram mr-2"></i>Instagram</a></li>
-                        <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube mr-2"></i>Youtube</a></li>
-                      </ul>
-                    </Card.Body>
-                  </Card>
-                </div>
-              </Col>
-              {/* sidebar */}
+                          <ul className="list-sm">
+                            <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook mr-2"></i>Facebook</a></li>
+                            <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter mr-2"></i>Twitter</a></li>
+                            <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram mr-2"></i>Instagram</a></li>
+                            <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube mr-2"></i>Youtube</a></li>
+                          </ul>
+                        </Card.Body>
+                      </Card>
+                    </div>
+                  </Col>
+                  {/* sidebar */}
 
-              {/* column 2 start */}
-              <Col sm={12} md={9}>
-              </Col>
-              {/* column 2 end */}
+                  {/* column 2 start */}
+                  <Col sm={12} md={9}>
+                  </Col>
+                  {/* column 2 end */}
 
-            </Row>
-          </ Container>
+                </Row>
+              </ Container>
 
-        </div>
-      </div>
+            </div>
+          </div>
+
+        </>
+        : <div>User not found</div>}
+
+
+
     </Container >
 
   );

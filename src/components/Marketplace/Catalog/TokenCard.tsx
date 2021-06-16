@@ -70,11 +70,32 @@ export default function TokenCard(props: TokenCardProps) {
           borderRadius: "60px",
           boxShadow: "0px 0px 2px #888",
           padding: "0.5em 0.6em",
-        }}></i> {(props.metadata?.attributes?.length === 0)
-          ? <>Anonymous</>
-          : props.metadata?.attributes?.map(({ name, value }) => (
-            <>{value}</>
-          ))}
+        }}></i>
+          {/* {(props.metadata?.attributes?.length === 0)
+            ? <>Anonymous</>
+            // eslint-disable-next-line
+            : props.metadata?.attributes?.map(({ name, value }) => {
+              if (name === "Artist") {
+                return (
+                  <>{value || 'Anonymous'}</>
+                )
+              }
+            })} */}
+          {(props.metadata?.attributes?.length === 0)
+            ? <>Anonymous</>
+            // eslint-disable-next-line
+            : props.metadata?.attributes?.map(({ name, value }, idx) => {
+              if ((name === "Artist" || name === "3D - CGI") && value !== '') {
+                return (
+                  <>{value}</>
+                )
+              }
+              else if (idx === 0) {
+                return (
+                  <>Anonymous</>
+                )
+              }
+            })}
         </p>
       </Card.Body>
 
