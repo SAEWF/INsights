@@ -17,7 +17,7 @@
 		"marketplace": {
 			"adminOnly": false,
 			"fee": {
-				"percent": 0,
+				"percent": 4,
 				"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
 			}
 		}
