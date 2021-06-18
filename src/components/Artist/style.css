@@ -78,10 +78,7 @@
   bottom: -12%;
 } */
 
-.user-profile-details {
-  padding: 9.5rem 1.6rem 3.2rem;
 
-}
 
  .user-profile-details > div {
     margin-bottom:1.2rem;
@@ -119,8 +116,9 @@ border-bottom: 1px solid #ddd;
    width: 100%;
    color: #ffffff;
    text-align: center;
-   height:368px;
+   height:300px;
    border:none;
+   cursor: pointer;
  }
  .profile-card-1 .background {
    width:100%;
@@ -136,14 +134,14 @@ border-bottom: 1px solid #ddd;
    padding: 15px 25px;
    position: absolute;
    left: 0;
-   top: 50%;
+   top: 60%;
  }
  .profile-card-1 .profile {
    border-radius: 50%;
    position: absolute;
-   bottom: 50%;
+   bottom: 40%;
    left: 50%;
-   max-width: 100px;
+   max-width: 300px;
    opacity: 1;
    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5);
    border: 2px solid rgba(255, 255, 255, 1);

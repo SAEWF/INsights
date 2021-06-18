@@ -1,6 +1,5 @@
 const jsonData =
 {
-  "data_length": 7,
   "data": [
     {
       "id": 0,
@@ -57,6 +56,16 @@ const jsonData =
       "redirectUrl": "/collection/KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy/token/48",
       "price": "20",
       "artist": "Anonymous",
+    },
+
+    {
+      "id": 7,
+      "imgUrl": "https://tqtezos.mypinata.cloud/ipfs/QmPYh4YP67Nfi4bx8KVRkBijduzPb5Vh8SviW7DSU37Dzb",
+      "name": "Sapphire Storm",
+      "redirectUrl": "/collection/KT1JyrqrxxtKMMR4axrUoNq4e5f1fg4Bmdh1/token/0",
+      "price": "175",
+      "artist": "FutureSurfer",
+      "description": "Emoji Renaissance Collection showcasing the power of human and machine interaction in a creative format. Focused on human-machine interaction and unique techniques of creating artwork using multiple media formats, technologies with the collaboration of Artificial Intelligence and Machine Learning. The Emoji Renaissance Collection is a unique set of art pieces, each made by hand, using 10,000's of emojis only in order to create an enchanting finished piece. Each individual artwork in the collection tells its own story, and together they convey a series of emotions that showcase the power of human and robot collaboration. From far away the incredible artwork transmits a certain expression, which is often the polar opposite of the feeling up-close. Moving towards each painting will tell its own unique story expressing the color palette and carefully aligned arrangement of emoji icons. The Emoji Renaissance Collection are unique NFT Artwork that you should display on HD in Full Resolution and be able to walk up to and enlighten you from all perspectives. https://linktr.ee/futuresurfer ",
     }
   ]
 }

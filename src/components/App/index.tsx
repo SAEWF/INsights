@@ -90,7 +90,11 @@ export default function App() {
           </Route>
           {/* <Route path="/artists">
             <ArtistList />
-          </Route>*/}
+          </Route>
+          <Route path="/arttemp">
+            <ArtistProfile />
+          </Route> */}
+
           {/* <Route path="/artistprofile/:walletAddress">
             {({ walletAddress }) => (
               <ArtistProfile address={walletAddress} />

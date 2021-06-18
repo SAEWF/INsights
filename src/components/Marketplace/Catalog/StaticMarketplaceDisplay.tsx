@@ -14,7 +14,7 @@ export default function StaticMarketplaceDisplay() {
       {/* {console.log(staticMarketplaceData.data[idx])}
       {console.log(staticMarketplaceData.data[idx].name)} */}
 
-      { Array.from({ length: 7 }).map((_, idx) => (
+      { staticMarketplaceData.data.reverse().map((_, idx) => (
         <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
           <Flex
             position="relative"

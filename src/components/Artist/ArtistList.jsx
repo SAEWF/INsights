@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, } from 'react-bootstrap';
 import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { useLocation } from 'wouter';
@@ -16,6 +16,8 @@ const useItems = () => {
       snapshot.forEach(childSnapshot => {
         const key = childSnapshot.key;
         const data = childSnapshot.val();
+        console.log("key");
+        console.log(key + "  " + data);
         fetchedTasks.push({ id: key, ...data });
       });
       setTasks(fetchedTasks);
@@ -34,9 +36,9 @@ export default function ArtistList() {
 
   return (
     <Container>
-      {listItem.map(item => (
+      {/* {listItem.map(item => (
         <p className="tg-ycr8">{item.name}</p>
-      ))}
+      ))} */}
 
       <div className="text-center font-weight-bold p-5" style={{
         fontSize: "36px",
@@ -48,17 +50,21 @@ export default function ArtistList() {
       <Row xs={1} md={2} lg={3} xl={3} >
         {listItem.map(item => (
           <Col>
-            <div className="card profile-card-1 mb-5" >
+            <div className="card profile-card-1 mb-5"
+              onClick={() => setLocation(`/artistprofile/${item.id}`)}
+            >
               <img src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" alt="profile-sample1" className="background" />
               <img src={item.avatar} alt="profile-image" className="profile" />
               <div className="card-content">
-                <h2>{item.name}<small>Artist</small></h2>
+                <h2>{item.name}
+                  {/* <small>Artist</small> */}
+                </h2>
 
-                <div className="pt-2">
+                {/* <div className="pt-2">
                   <Button variant="outline-light" onClick={() =>
-                    setLocation(`/artistprofile/${item.id}`)
-                  }>View Profile</Button>
-                </div>
+                    setLocation(`/artistprofile/${item.id}`)}>
+                  View Profile</Button>
+                </div> */}
               </div>
             </div>
           </Col>
