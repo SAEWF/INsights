@@ -5,14 +5,14 @@ import firebase from '../../lib/firebase/firebase';
 import { useLocation } from 'wouter';
 
 const useItems = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     const ref = firebase
       .database()
       .ref("data");
     const listener = ref.on('value', snapshot => {
-      const fetchedTasks = [];
+      const fetchedTasks: any[] = [];
       snapshot.forEach(childSnapshot => {
         const key = childSnapshot.key;
         const data = childSnapshot.val();
@@ -51,10 +51,12 @@ export default function ArtistList() {
         {listItem.map(item => (
           <Col>
             <div className="card profile-card-1 mb-5"
-              onClick={() => setLocation(`/artistprofile/${item.id}`)}
+              onClick={
+                () => setLocation(`/artistprofile/${item.id}`)
+              }
             >
-              <img src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" alt="profile-sample1" className="background" />
-              <img src={item.avatar} alt="profile-image" className="profile" />
+              <img src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
+              <img src={item.avatar} className="profile" />
               <div className="card-content">
                 <h2>{item.name}
                   {/* <small>Artist</small> */}
@@ -77,3 +79,6 @@ export default function ArtistList() {
 
 }
 
+interface Task {
+  [index: string]: string
+};

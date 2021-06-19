@@ -5,11 +5,11 @@ import { Container, Row, Col, Image, Card, } from 'react-bootstrap';
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg';
 // import defaultBanner from '../common/assets/defaultBanner.jpg';
 
-const useItems = () => {
-  const [tasks, setTasks] = useState([]);
-  const idForQuery = "12";
-
-  // console.log(props.address);
+const useItems = (idForQuery: string) => {
+  const [tasks, setTasks] = useState<TasksType[]>([]);
+  // const idForQuery = "12";
+  // console.log("searchId");
+  // console.log(searchId);
 
   useEffect(() => {
     const ref = firebase
@@ -19,7 +19,7 @@ const useItems = () => {
       .orderByChild("id")
       .equalTo(idForQuery)
       .on('value', snapshot => {
-        const fetchedTasks = [];
+        const fetchedTasks: any[] = [];
         // if (snapshot.val() === null) {
         //   console.log('id is not present in firebase');
         // } else {
@@ -38,9 +38,11 @@ const useItems = () => {
 }
 
 
-export default function ArtistProfile() {
-  const userData = useItems();
-  // console.log("userData");
+export default function ArtistProfile(props: PropType) {
+  var idFromUrl: string = props.profileId
+  const userData = useItems(idFromUrl);
+
+  // console.log("userData")
   // console.log(userData);
 
   return (
@@ -130,11 +132,11 @@ export default function ArtistProfile() {
   );
 
 }
-// interface WalletAddress {
-//   address: string
-// }
-// const UserNotFoundInOurDb = () => {
-//   return (
-//     <h1>UserNotFoundInOurDb</h1>
-//   );
-// }
+
+interface PropType {
+  profileId: string
+}
+
+interface TasksType {
+  [index: string]: string
+};
