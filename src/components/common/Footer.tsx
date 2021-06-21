@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './styles/style.css'
 import { Container, Row, Col } from 'react-bootstrap';
-
+import mediumLogo from './assets/medium-white.png';
 export default class Footer extends Component {
   render() {
     return (
@@ -28,7 +28,8 @@ export default class Footer extends Component {
                 <li><a className="youtube" href="https://www.youtube.com/channel/UCUH-7UlKvbRK4oF_-oiH18w" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-youtube"></i></a></li>
                 {/* <li><a className="Google Group" href="https://groups.google.com/g/byteblock-nft" target="_blank" rel="noopener noreferrer"><i className="fab fa-google"></i></a></li> */}
-                <li><a className="medium" href="https://byteblock-nft.medium.com/" target="_blank" rel="noopener noreferrer"><i className="fab fa-medium"></i></a></li>
+                {/* <li><a className="medium" href="https://byteblock-nft.medium.com/" target="_blank" rel="noopener noreferrer"><i className="fab fa-medium"></i></a></li> */}
+                <li><a className="medium" href="https://byteblock-nft.medium.com/" target="_blank" rel="noopener noreferrer"><img className="fab fa-discord" src={mediumLogo} alt=""></img></a></li>
                 <li><a className="discord" href="https://discord.gg/sVPjEyWyGQ" target="_blank" rel="noopener noreferrer"><i className="fab fa-discord"></i></a></li>
 
               </ul>
