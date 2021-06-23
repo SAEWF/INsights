@@ -4,11 +4,12 @@ import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
   getMarketplaceNftsQuery,
+  loadMoreMarketplaceNftsQuery
 
-} from '../../../reducer/async/queries'; //loadMoreMarketplaceNftsQuery
+} from '../../../reducer/async/queries'; //
 import TokenCard from './TokenCard';
 import FeaturedToken from './FeaturedToken';
-// import { VisibilityTrigger } from '../../common/VisibilityTrigger';
+import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
 
 export default function Catalog() {
@@ -19,9 +20,9 @@ export default function Catalog() {
     dispatch(getMarketplaceNftsQuery(state.marketplace.address));
   }, [state.marketplace.address, dispatch]);
 
-  // const loadMore = () => {
-  //   dispatch(loadMoreMarketplaceNftsQuery({}));
-  // };
+  const loadMore = () => {
+    dispatch(loadMoreMarketplaceNftsQuery({}));
+  };
 
   let tokens =
     state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
@@ -98,11 +99,11 @@ export default function Catalog() {
                       </Box>
                     );
                   })}
-                  {/* <VisibilityTrigger
+                  <VisibilityTrigger
                   key={state.marketplace.tokens?.length + ':' + tokens.length}
                   onVisible={loadMore}
                   allowedDistanceToViewport={600}
-                /> */}
+                />
                 </>
                 {/* <StaticMarketplaceDisplay /> */}
 
