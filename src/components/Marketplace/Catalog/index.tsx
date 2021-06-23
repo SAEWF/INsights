@@ -9,7 +9,7 @@ import {
 import TokenCard from './TokenCard';
 import FeaturedToken from './FeaturedToken';
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
-import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
+// import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
 
 export default function Catalog() {
   const { system, marketplace: state } = useSelector(s => s);
@@ -104,7 +104,7 @@ export default function Catalog() {
                   allowedDistanceToViewport={600}
                 /> */}
                 </>
-                <StaticMarketplaceDisplay />
+                {/* <StaticMarketplaceDisplay /> */}
 
               </SimpleGrid>
             </>

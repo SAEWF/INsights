@@ -3,6 +3,7 @@ import { Container, Row, Col, } from 'react-bootstrap';
 import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { useLocation } from 'wouter';
+import {Flex} from '@chakra-ui/react';
 
 const useItems = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -35,12 +36,22 @@ export default function ArtistList() {
   console.log(listItem);
 
   return (
+    <Flex
+        w="100vw"
+        h="100%"
+        bg="brand.brightGray"
+        px={10}
+        pt={6}
+        overflowY="scroll"
+        justify="start"
+        flexDir="row"
+      >
     <Container>
       {/* {listItem.map(item => (
         <p className="tg-ycr8">{item.name}</p>
       ))} */}
 
-      <div className="text-center font-weight-bold p-5" style={{
+      <div className="text-center font-weight-bold pb-5" style={{
         fontSize: "36px",
         lineHeight: "40px",
       }}>
@@ -52,7 +63,7 @@ export default function ArtistList() {
           <Col>
             <div className="card profile-card-1 mb-5"
               onClick={
-                () => setLocation(`/artistprofile/${item.id}`)
+                () => setLocation(`/artistprofile/${item.username}`)
               }
             >
               <img src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
@@ -75,6 +86,7 @@ export default function ArtistList() {
 
       </Row >
     </Container >
+    </Flex>
   );
 
 }

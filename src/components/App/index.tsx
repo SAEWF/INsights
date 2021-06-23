@@ -90,9 +90,9 @@ export default function App() {
           {/* <Route path="/artists">
             <ArtistList />
           </Route>
-          <Route path="/artistprofile/:profileId">
-            {({ profileId }) => (
-              <ArtistProfile profileId={profileId} />
+          <Route path="/artistprofile/:username">
+            {({ username }) => (
+              <ArtistProfile username={username} />
             )}
           </Route> */}
         </Switch>

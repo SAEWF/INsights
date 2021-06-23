@@ -4,8 +4,10 @@ import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card, } from 'react-bootstrap';
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg';
 // import defaultBanner from '../common/assets/defaultBanner.jpg';
+import {SimpleGrid,Box} from '@chakra-ui/react';
+import TokenCard from '../Marketplace/Catalog/TokenCard';
 
-const useItems = (idForQuery: string) => {
+const useItems = (usernameFromUrl: string) => {
   const [tasks, setTasks] = useState<TasksType[]>([]);
   // const idForQuery = "12";
   // console.log("searchId");
@@ -16,8 +18,8 @@ const useItems = (idForQuery: string) => {
       .database()
       .ref("data");
     const listener = ref
-      .orderByChild("id")
-      .equalTo(idForQuery)
+      .orderByChild("username")
+      .equalTo(usernameFromUrl)
       .on('value', snapshot => {
         const fetchedTasks: any[] = [];
         // if (snapshot.val() === null) {
@@ -39,8 +41,8 @@ const useItems = (idForQuery: string) => {
 
 
 export default function ArtistProfile(props: PropType) {
-  var idFromUrl: string = props.profileId
-  const userData = useItems(idFromUrl);
+  var usernameFromUrl: string = props.username
+  const userData = useItems(usernameFromUrl);
 
   // console.log("userData")
   // console.log(userData);
@@ -79,6 +81,15 @@ export default function ArtistProfile(props: PropType) {
                       <h2 className="user-profile-name font-weight-bold mb-2 pl-1">{item.name}</h2>
 
                       <Card border="light" className="text-left" >
+                        <Card.Header className="font-weight-bold"><i className="far fa-user"></i> Username</Card.Header>
+                        <Card.Body>
+                          <Card.Text>
+                            {item.username}
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+
+                      <Card border="light" className="text-left" >
                         <Card.Header className="font-weight-bold"><i className="far fa-envelope"></i> E-mail </Card.Header>
                         <Card.Body>
                           <Card.Text>
@@ -92,7 +103,7 @@ export default function ArtistProfile(props: PropType) {
                         <Card.Body>
                           {/* <Card.Title>Light Card Title</Card.Title> */}
                           <Card.Text>
-                            {item.walletAddress}
+                            {item.walletAddress!=="" ?<>{item.walletAddress}</> :"No wallet address provided"}
                           </Card.Text>
                         </Card.Body>
                       </Card>
@@ -105,10 +116,12 @@ export default function ArtistProfile(props: PropType) {
                       tz1LjLHwTthS3DU542igtZfqQCaiM7fz9C2C
                 </Card.Text> */}
                           <ul className="list-sm">
-                            <li><a href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook mr-2"></i>Facebook</a></li>
-                            <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter mr-2"></i>Twitter</a></li>
-                            <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram mr-2"></i>Instagram</a></li>
-                            <li><a href='google.com' target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube mr-2"></i>Youtube</a></li>
+
+                            {(item.fb) !==""? <li><a href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook mr-2"></i>Facebook</a></li>:""}
+                            {(item.twt) !==""? <li><a href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter mr-2"></i>Twitter</a></li>:""}
+                            {(item.ig) !==""?<li><a href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram mr-2"></i>Instagram</a></li>:""}
+                            {(item.yt) !==""? <li><a href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube mr-2"></i>Youtube</a></li>:""}
+                                                        
                           </ul>
                         </Card.Body>
                       </Card>
@@ -118,6 +131,29 @@ export default function ArtistProfile(props: PropType) {
 
                   {/* column 2 start */}
                   <Col sm={12} md={9}>
+
+                  <SimpleGrid
+                columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+                gap={2}
+                pb={8}
+              >
+
+                  {/* {tokens.slice(1).map(token => {
+                    return (
+                      <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
+                        <TokenCard
+                          key={`${token.address}-${token.id}`}
+                          config={system.config}
+                          {...token}
+                        />
+                      </Box>
+                    );
+                  })} */}
+
+              </SimpleGrid>
+
+
+
                   </Col>
                   {/* column 2 end */}
 
@@ -134,7 +170,7 @@ export default function ArtistProfile(props: PropType) {
 }
 
 interface PropType {
-  profileId: string
+  username: string
 }
 
 interface TasksType {
