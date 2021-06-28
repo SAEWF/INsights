@@ -341,11 +341,12 @@ export function Header() {
             className="d-inline-block "
             style={{ verticalAlign: "middle" }}
           />{' '}
-          <h2 className=" d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>ByteBlock NFT</h2>
+          {/* <h2 className="d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>ByteBlock NFT </h2> */}
 
-          {/* <div className="d-inline-block  ml-2">
-          <p className="mt-1 align-text-bottom align-bottom" style={{ color: "#9c9fa3", fontSize: "12.5px" }}>Changing lives through technology</p>
-        </div> */}
+        <div className="d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>
+          <h2>ByteBlock NFT </h2>
+          <p className=" mx-auto" style={{ color: "#9c9fa3", fontSize: "10.5px" }}>Beta Version</p>
+        </div>
         </Navbar.Brand>
 
         {/* <Image

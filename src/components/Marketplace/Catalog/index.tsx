@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from '../../../reducer';
 import {
   getMarketplaceNftsQuery,
   loadMoreMarketplaceNftsQuery
-
 } from '../../../reducer/async/queries'; //
 import TokenCard from './TokenCard';
 import FeaturedToken from './FeaturedToken';
@@ -24,16 +23,12 @@ export default function Catalog() {
     dispatch(loadMoreMarketplaceNftsQuery({}));
   };
 
-  let tokens =
-    state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
-
-  return (
-
+let tokens = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
+    return (
     <>
       <Flex
         w="100vw"
         h="100%"
-        bg="brand.brightGray"
         px={10}
         pt={6}
         overflowY="scroll"

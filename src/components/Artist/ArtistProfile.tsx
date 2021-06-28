@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import firebase from '../../lib/firebase/firebase';
-import { Container, Row, Col, Image, Card, } from 'react-bootstrap';
+import { Container, Row, Col, Image, Card} from 'react-bootstrap';
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg';
 // import defaultBanner from '../common/assets/defaultBanner.jpg';
-import {SimpleGrid,Box} from '@chakra-ui/react';
-import TokenCard from '../Marketplace/Catalog/TokenCard';
+import ArtistProfileCard from './ArtistProfileCard'
 
 const useItems = (usernameFromUrl: string) => {
   const [tasks, setTasks] = useState<TasksType[]>([]);
-  // const idForQuery = "12";
-  // console.log("searchId");
-  // console.log(searchId);
-
+  
   useEffect(() => {
     const ref = firebase
       .database()
@@ -39,11 +35,9 @@ const useItems = (usernameFromUrl: string) => {
   return tasks;
 }
 
-
 export default function ArtistProfile(props: PropType) {
   var usernameFromUrl: string = props.username
   const userData = useItems(usernameFromUrl);
-
   // console.log("userData")
   // console.log(userData);
 
@@ -51,18 +45,18 @@ export default function ArtistProfile(props: PropType) {
     <Container style={{ width: "100vw", height: "100%", display: "flex", justifyContent: "start" }}>
 
       {(userData.length === 0)
-        ? <div className="text-center"><h1 className="mx-auto my-auto font-weight-bold">User Not Found</h1> </div>
+        ? <div className="text-center"><h2 className="mx-auto my-auto font-weight-bold">User Not Found</h2> </div>
         : userData.map(item => (
           <>
+          {/* {console.log("item")} */}
             <div className="user-profile-block">
               <div className="user-profile-banner">
                 <div className="user-profile-banner-wrapper">
-                  <Image
-                    // alt="Banner"
-                    className="user-profile-banner-img"
-                    src={item.banner}
-                  // {defaultBanner}
-                  />
+                {/* https://via.placeholder.com/1500x500.png?text=ByteBlock-Banner */}
+                {item.banner!=="" 
+                ?<Image className="user-profile-banner-img" src={item.banner}/> 
+                :<Image className="user-profile-banner-img" src="https://via.placeholder.com/1500x500.png?text=ByteBlock- Banner"/>
+                }
                 </div>
                 <div className="user-profile-avatar-wrapper">
                   <Image
@@ -93,7 +87,7 @@ export default function ArtistProfile(props: PropType) {
                         <Card.Header className="font-weight-bold"><i className="far fa-envelope"></i> E-mail </Card.Header>
                         <Card.Body>
                           <Card.Text>
-                            {item.email}
+                          {item.email!=="" ?<>{item.email}</> :"No e-mail provided"}
                           </Card.Text>
                         </Card.Body>
                       </Card>
@@ -113,8 +107,8 @@ export default function ArtistProfile(props: PropType) {
                         <Card.Body>
                           {/* <Card.Title>Light Card Title</Card.Title> */}
                           {/* <Card.Text>
-                      tz1LjLHwTthS3DU542igtZfqQCaiM7fz9C2C
-                </Card.Text> */}
+                             tz1LjLHwTthS3DU542igtZfqQCaiM7fz9C2C
+                          </Card.Text> */}
                           <ul className="list-sm">
 
                             {(item.fb) !==""? <li><a href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook mr-2"></i>Facebook</a></li>:""}
@@ -131,29 +125,13 @@ export default function ArtistProfile(props: PropType) {
 
                   {/* column 2 start */}
                   <Col sm={12} md={9}>
-
-                  <SimpleGrid
-                columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
-                gap={2}
-                pb={8}
-              >
-
-                  {/* {tokens.slice(1).map(token => {
-                    return (
-                      <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
-                        <TokenCard
-                          key={`${token.address}-${token.id}`}
-                          config={system.config}
-                          {...token}
-                        />
-                      </Box>
-                    );
-                  })} */}
-
-              </SimpleGrid>
-
-
-
+                    {/* <h1 className="font-weight-bold" style={{ backgroundColor: "red" }}>Created</h1> */}
+                    <div className="three mb-3">
+                      <h1>Created</h1>
+                    </div>
+                    {(item.artTokens !== undefined)
+                    ? <ArtistProfileCard artTokens={item.artTokens}/>
+                    :<h2>No NFT to display by this artist</h2>}
                   </Col>
                   {/* column 2 end */}
 

@@ -53,7 +53,7 @@ export default function Confirmation() {
         <>
           <Label>{name}</Label>
           <Text fontSize="md" mb={[2, 4]}>
-            {value || 'No name provided'}
+            {value || 'No value provided'}
           </Text>
         </>
       ))}

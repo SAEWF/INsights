@@ -16,7 +16,9 @@ import {
   getNftAssetContractQuery
 } from '../../../reducer/async/queries';
 import CollectionsDropdown from './CollectionsDropdown';
-import TokenCard from '../../common/TokenCard';
+// import TokenCard from '../../common/TokenCard';
+import TokenCard from '../../Marketplace/Catalog/TokenCard';
+
 
 interface CollectionDisplayProps {
   address: string | null;
@@ -77,7 +79,7 @@ export default function CollectionDisplay({
         <Flex
           px={20}
           py={10}
-          bg="gray.200"
+          // bg="gray.200"
           textAlign="center"
           align="center"
           borderRadius="5px"
@@ -103,7 +105,7 @@ export default function CollectionDisplay({
       h="100%"
       w="100%"
       flex="1"
-      bg="brand.brightGray"
+      // bg="brand.brightGray"
       borderLeftWidth="1px"
       borderLeftColor="brand.lightBlue"
       overflowY="scroll"

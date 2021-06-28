@@ -19,7 +19,7 @@ export default function TokenCard(props: TokenCardProps) {
       flexDir="column"
       ratio={1}
       w="100%"
-      bg="white"
+      // bg="white"
       border="1px solid"
       borderColor="#eee"
       borderRadius="10px"
@@ -59,8 +59,8 @@ export default function TokenCard(props: TokenCardProps) {
           {props.sale?.price} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
         </Flex>
       </Flex> */}
-      <Card.Body>
-        <Card.Title style={{ color: '#000' }}>{props.title}</Card.Title>
+      <Card.Body className="ml-2">
+        <Card.Title className="ml-1" >{props.title}</Card.Title>
         {/* <Card.Text>
                 This is a wider card with supporting text below as a natural lead-in to
                 additional content. This content is a little bit longer.

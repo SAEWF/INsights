@@ -174,7 +174,6 @@ export default function FileUpload() {
             marginBottom="4"
             paddingX={24}
             paddingY={8}
-            bg="brand.brightGray"
             flex="1"
           >
             <Text fontSize={20} textAlign="center" paddingX={4}>
@@ -216,7 +215,7 @@ export function CsvFileUpload() {
   return (
     <Flex flexDir="column" align="center">
       <Flex
-        bg="brand.brightGray"
+        // bg="brand.brightGray"
         // border="1px solid"
         // borderColor="brand.lightBlue"
         // borderRadius="5px"

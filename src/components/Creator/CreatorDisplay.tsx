@@ -100,7 +100,6 @@ export default function CreatorDisplay({
       h="100%"
       w="100%"
       flex="1"
-      bg="brand.brightGray"
       borderLeftWidth="1px"
       borderLeftColor="brand.lightBlue"
       overflowY="scroll"

@@ -13,7 +13,9 @@ export default function Sidebar() {
   const dispatch = useDispatch();
   return (
     <>
-      <Heading px={4} pt={6} pb={4} size="md" color="brand.darkGray">
+      <Heading px={4} pt={6} pb={4} size="md" 
+      // color="brand.darkGray"
+      >
         ByteBlock Collections
       </Heading>
       <Heading
@@ -21,7 +23,7 @@ export default function Sidebar() {
         px={4}
         pb={2}
         fontSize="sm"
-        color="brand.darkGray"
+        // color="brand.darkGray"
       >
         Recent Collection
       </Heading>

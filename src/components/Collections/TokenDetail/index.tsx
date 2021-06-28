@@ -31,7 +31,7 @@ import {
 } from '../../../reducer/async/queries';
 import { TokenMedia } from '../../common/TokenMedia';
 // import lk from '../../common/assets/link-icon.svg'
-import tz from '../../common/assets/tezos-sym.svg'
+import tz from '../../common/assets/tezos-sym-white.svg'
 import { Maximize2 } from 'react-feather';
 
 function NotFound() {
@@ -99,7 +99,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       system.tzPublicKey === token.sale?.seller);
 
   return (
-    <Flex flexDir="column" bg="brand.brightGray" flexGrow={1}>
+    <Flex flexDir="column"  flexGrow={1}>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -189,7 +189,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
           <Maximize2 size={16} strokeWidth="3" />
         </Button>
       </Flex>
-      <Flex width={['100%']} bg="white" flexDir="column" flexGrow={1}>
+      <Flex width={['100%']} 
+      // bg="white"
+       flexDir="column" flexGrow={1}>
         <Flex align="center" justify="space-evenly" width={['100']} mt="4">
         </Flex>
         <Flex
@@ -202,12 +204,14 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
           <Flex
             flexDir="column"
             w="100%"
-            bg="white"
+            // bg="white"
             py={6}
             mb={10}
             pos="relative"
           >
-            <Heading textAlign="left" color="brand.black" width={["100%", "100%", "80%"]} fontSize={["10vw", "3vw"]} display="inline-block">
+            <Heading textAlign="left" 
+            // color="brand.black"
+             width={["100%", "100%", "80%"]} fontSize={["10vw", "3vw"]} display="inline-block">
               {token.title}
             </Heading>
             <Text
@@ -284,7 +288,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     </>
                   ) : (
                     <>
-                      <Text color="black" fontSize={['md', 'md', 'lg']} mr={1} fontWeight="700" marginRight={8}>
+                      <Text 
+                      // color="black"
+                       fontSize={['md', 'md', 'lg']} mr={1} fontWeight="700" marginRight={8}>
                         {token.sale.price.toFixed(2)} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
                       </Text>
                       <Box>

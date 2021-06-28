@@ -39,7 +39,6 @@ export default function ArtistList() {
     <Flex
         w="100vw"
         h="100%"
-        bg="brand.brightGray"
         px={10}
         pt={6}
         overflowY="scroll"
@@ -47,16 +46,10 @@ export default function ArtistList() {
         flexDir="row"
       >
     <Container>
-      {/* {listItem.map(item => (
-        <p className="tg-ycr8">{item.name}</p>
-      ))} */}
-
-      <div className="text-center font-weight-bold pb-5" style={{
-        fontSize: "36px",
-        lineHeight: "40px",
-      }}>
-        <h1>Our Artists</h1>
-      </div>
+    
+<div className="one mt-4 mb-3">
+  <h1>Our Artists</h1>
+</div>
 
       <Row xs={1} md={2} lg={3} xl={3} >
         {listItem.map(item => (

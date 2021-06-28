@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme,ColorModeScript } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
 import { store } from './reducer';
 
@@ -176,9 +176,15 @@ const theme = extendTheme({
   styles: {
     global: {
       'html, body': {
-        height: '100%'
+        height: '100%',
+        bg: "#000",
+        color: "white",
       }
     }
+  },
+  config:{
+    initialColorMode: "dark",
+    useSystemColorMode: false,
   },
   colors: {
     brand: {
@@ -188,7 +194,7 @@ const theme = extendTheme({
       neutralGray: '#556677',
       gray: '#AEBBC9',
       lightGray: '#ABBBCB',
-      brightGray: '#ffffff', //#f2f4f7
+      brightGray: '#000000', //#f2f4f7 chakra-ui-dark #181D28
       blue: '#005DFF',
       lightBlue: '#D3DEF5',
       turquoise: '#00FFBE',
@@ -252,10 +258,16 @@ const theme = extendTheme({
   }
 });
 
+// const config : ThemeConfig = {
+//   initialColorMode: "dark",
+//   useSystemColorMode: false,
+// }
+
 function Root() {
   return (
     <Provider store={store}>
       <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <App />
       </ChakraProvider>
     </Provider>

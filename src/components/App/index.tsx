@@ -17,7 +17,7 @@ import Footer from '../common/Footer';
 import AlertBar from '../common/AlertBar';
 // import ArtistList from '../Artist/ArtistList';
 // import ArtistProfile from '../Artist/ArtistProfile';
-
+// import Temp from '../Artist/Temp';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -94,6 +94,9 @@ export default function App() {
             {({ username }) => (
               <ArtistProfile username={username} />
             )}
+          </Route>
+          <Route path="/temp">
+            <Temp />
           </Route> */}
         </Switch>
         <Notifications />

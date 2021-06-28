@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { MinterButton } from '../../common';
 import { TokenMedia } from '../../common/TokenMedia';
-import tz from '../../common/assets/tezos-sym.svg';
+import tz from '../../common/assets/tezos-sym-white.svg';
 import { Container, Row, Col } from 'react-bootstrap';
 
 interface FeaturedTokenProps extends Token {
