@@ -3,7 +3,7 @@ import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card} from 'react-bootstrap';
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg';
-// import defaultBanner from '../common/assets/defaultBanner.jpg';
+import defaultBanner from '../common/assets/defaultBanner.jpg';
 import ArtistProfileCard from './ArtistProfileCard'
 
 const useItems = (usernameFromUrl: string) => {
@@ -48,24 +48,21 @@ export default function ArtistProfile(props: PropType) {
         ? <div className="text-center"><h2 className="mx-auto my-auto font-weight-bold">User Not Found</h2> </div>
         : userData.map(item => (
           <>
-          {/* {console.log("item")} */}
+          {/* {console.log("item.artTokens")}
+          {console.log(item.artTokens)} */}
+
             <div className="user-profile-block">
               <div className="user-profile-banner">
                 <div className="user-profile-banner-wrapper">
                 {/* https://via.placeholder.com/1500x500.png?text=ByteBlock-Banner */}
                 {item.banner!=="" 
-                ?<Image className="user-profile-banner-img" src={item.banner}/> 
-                :<Image className="user-profile-banner-img" src="https://via.placeholder.com/1500x500.png?text=ByteBlock- Banner"/>
+                ?<Image alt="banner" className="user-profile-banner-img" src={item.banner}/> 
+                :<Image alt="banner" className="user-profile-banner-img" src={defaultBanner}/>
                 }
                 </div>
+
                 <div className="user-profile-avatar-wrapper">
-                  <Image
-                    // alt="Avatar"
-                    className="user-profile-img"
-                    src={item.avatar}
-                    // {defaultAvatar}
-                    thumbnail
-                  />
+                  <Image alt="Avatar" className="user-profile-img"  src={item.avatar}   thumbnail  />
                 </div>
 
                 <Row>
@@ -74,7 +71,7 @@ export default function ArtistProfile(props: PropType) {
                     <div className="user-profile-details">
                       <h2 className="user-profile-name font-weight-bold mb-2 pl-1">{item.name}</h2>
 
-                      <Card border="light" className="text-left" >
+                      <Card border="light" className="text-left p-2" >
                         <Card.Header className="font-weight-bold"><i className="far fa-user"></i> Username</Card.Header>
                         <Card.Body>
                           <Card.Text>
@@ -83,7 +80,7 @@ export default function ArtistProfile(props: PropType) {
                         </Card.Body>
                       </Card>
 
-                      <Card border="light" className="text-left" >
+                      <Card border="light" className="text-left p-2" >
                         <Card.Header className="font-weight-bold"><i className="far fa-envelope"></i> E-mail </Card.Header>
                         <Card.Body>
                           <Card.Text>
@@ -92,7 +89,7 @@ export default function ArtistProfile(props: PropType) {
                         </Card.Body>
                       </Card>
 
-                      <Card border="light" className="text-left" >
+                      <Card border="light" className="text-left p-2" >
                         <Card.Header className="font-weight-bold"><i className="far fa-compass"></i> Wallet Address </Card.Header>
                         <Card.Body>
                           {/* <Card.Title>Light Card Title</Card.Title> */}
@@ -102,7 +99,7 @@ export default function ArtistProfile(props: PropType) {
                         </Card.Body>
                       </Card>
 
-                      <Card border="light" className="text-left" >
+                      <Card border="light" className="text-left p-2" >
                         <Card.Header className="font-weight-bold"><i className="fas fa-link"></i> Links </Card.Header>
                         <Card.Body>
                           {/* <Card.Title>Light Card Title</Card.Title> */}

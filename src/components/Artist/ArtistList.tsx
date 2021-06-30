@@ -17,8 +17,6 @@ const useItems = () => {
       snapshot.forEach(childSnapshot => {
         const key = childSnapshot.key;
         const data = childSnapshot.val();
-        console.log("key");
-        console.log(key + "  " + data);
         fetchedTasks.push({ id: key, ...data });
       });
       setTasks(fetchedTasks);
@@ -32,8 +30,8 @@ export default function ArtistList() {
   const listItem = useItems();
   const [, setLocation] = useLocation();
 
-  console.log("listItem");
-  console.log(listItem);
+  // console.log("listItem");
+  // console.log(listItem);
 
   return (
     <Flex
@@ -59,8 +57,8 @@ export default function ArtistList() {
                 () => setLocation(`/artistprofile/${item.username}`)
               }
             >
-              <img src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
-              <img src={item.avatar} className="profile" />
+              <img  alt="background" src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
+              <img alt="avatar" src={item.avatar} className="profile" />
               <div className="card-content">
                 <h2>{item.name}
                   {/* <small>Artist</small> */}

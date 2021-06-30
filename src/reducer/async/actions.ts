@@ -26,6 +26,8 @@ import { SystemWithToolkit, SystemWithWallet } from '../../lib/system';
 import { notifyPending, notifyFulfilled } from '../slices/notificationsActions';
 import parse from 'csv-parse/lib/sync';
 import * as t from 'io-ts';
+import UpdateArtTokenInFirebase from '../../components/Artist/UpdateArtTokenInFirebase';
+ 
 
 type Options = {
   state: State;
@@ -427,6 +429,11 @@ export const listTokenAction = createAsyncThunk<
     const fulfilledMessage = `Token listed for sale for ${
       salePrice / 1000000
     }ꜩ`;
+
+    // console.log(system.tzPublicKey);
+    // console.log(tokenId);
+    UpdateArtTokenInFirebase(system.tzPublicKey,tokenId)
+
     dispatch(notifyFulfilled(requestId, fulfilledMessage));
     dispatch(getContractNftsQuery(contract));
     return args;

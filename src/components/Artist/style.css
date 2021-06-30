@@ -30,7 +30,7 @@ h1 span {
   bottom: 0;
   height: 5px;
   width: 14%;
-  background-color: #111;
+  background-color: #ffffff;
 }
 .three h1:after {
   content: "";
@@ -41,7 +41,7 @@ h1 span {
   width: 99%;
   max-width: 99%;
   /* 225px */
-  background-color: #333;
+  background-color: #ffffff;
 }
 
 .user-profile {
@@ -128,10 +128,15 @@ h1 span {
 }
 .list-sm li {
   padding: 8px 16px;
-border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.card{
+  background-color: #000;
 }
 .card-header{
   padding: .75rem 0.4rem;
+  border-bottom: 1px solid #fff;
+  /* background-color: #121212;*/
 
 }
 .card-body{
@@ -146,7 +151,7 @@ border-bottom: 1px solid #ddd;
    float: left;
    overflow: hidden;
    width: 100%;
-   color: #ffffff;
+   /* color: #ffffff; */
    text-align: center;
    height:300px;
    border:none;
@@ -237,7 +242,7 @@ border-bottom: 1px solid #ddd;
   bottom: 3px;
   left: 50%;
   margin-left: -14px;
-  background-color: #000;
+  background-color: #fff;
 }
 .one h1:after {
   width: 100px;
@@ -248,5 +253,5 @@ border-bottom: 1px solid #ddd;
   margin-top: 25px;
   left: 50%;
   margin-left: -50px;
-  background-color: #000;
+  background-color: #fff;
 }

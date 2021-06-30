@@ -22,44 +22,49 @@ export default function ArtistProfileCard(props:PropsType) {
 
   let tokens =
     state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
-    // console.log(tokens)
-    // console.log("tokens inside")
+    // console.log("tokens")
     // console.log(tokens)
     // console.log("props")
     // console.log(props.artTokens)
 
-    var artistTokens: string;
+    var artistTokens: any;
     artistTokens = props.artTokens;
+    
+    // console.log("props ArtistProfileCard")
+    // console.log(props.artTokens)
     // console.log("artistTokens")
     // console.log(artistTokens)
-    // console.log(artistTokens.length)
+    const keys = Object.keys(artistTokens);
+    // console.log(keys);
+    var allTokensList:any[]=[];
+    keys.forEach((key, index) => {
+      allTokensList.push(artistTokens[key])
+      // console.log(`${key}: ${artistTokens[key]}`);
+    });
+    // console.log("allTokensList")
+    // console.log(allTokensList)
 
   return (
     <>
-    {/* if else condition below */}
-    {artistTokens.length===0?
-
-    <p>No Arts Found</p>
-
-    :<SimpleGrid
+    <SimpleGrid
         columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
         gap={2}
         pb={8}>
         <>
          {tokens.map(token => {
-        for(var i = 0;i<artistTokens.length;i++){
-            if(token.id===(+artistTokens[i])){
+            for(var i = 0;i<allTokensList.length;i++){
+              if(token.id===(allTokensList[i])){
                 return (
-                    <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
-                      <TokenCard
-                        key={`${token.address}-${token.id}`}
-                        config={system.config}
-                        {...token}
-                      />
-                    </Box>
-                  );
-            }
-        }
+                  <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
+                  <TokenCard
+                    key={`${token.address}-${token.id}`}
+                    config={system.config}
+                    {...token}
+                  />
+                </Box>
+                );
+                }
+              };
          })}
             <VisibilityTrigger
             key={state.marketplace.tokens?.length + ':' + tokens.length}
@@ -68,7 +73,7 @@ export default function ArtistProfileCard(props:PropsType) {
             />
             </>
         </SimpleGrid>
-    }
+
     </>
   );
 }

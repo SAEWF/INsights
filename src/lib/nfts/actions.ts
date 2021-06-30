@@ -90,8 +90,6 @@ export async function mintToken(
   });
   token_info.set('', toHexString(resp.data.ipfsUri));
 
-  console.log("tuser user was here");
-
   return contract.methods
     .mint([
       {
@@ -139,7 +137,6 @@ export async function mintTokens(
       }
     });
   }
-
   return contract.methods.mint(mints).send();
 }
 
