@@ -51,7 +51,8 @@ export default function ArtistProfileCard(props:PropsType) {
         gap={2}
         pb={8}>
         <>
-         {tokens.map(token => {
+         {// eslint-disable-next-line 
+         tokens.map(token => {
             for(var i = 0;i<allTokensList.length;i++){
               if(token.id===(allTokensList[i])){
                 return (

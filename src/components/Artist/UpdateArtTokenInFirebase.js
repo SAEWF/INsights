@@ -14,7 +14,7 @@ const UpdateArtTokenInFirebase = async (wallAdd,token_id)=>{
   const ref = firebase.database().ref("data");
   var getKey=""
 
-
+// eslint-disable-next-line 
   const listener = ref
         .orderByChild("walletAddress")
         .equalTo(wallAdd)
@@ -32,9 +32,10 @@ const UpdateArtTokenInFirebase = async (wallAdd,token_id)=>{
                     // console.log("key")
                     // console.log(key);
                     getKey= key!==null?key:""
-                    const data = childSnapshot.val();
+                    // const data = childSnapshot.val();
                 })
              var dbQuery = ref.child(getKey+"/artTokens");
+             // eslint-disable-next-line 
              var pushQuery = dbQuery.push(newTokenId);
             }
         });

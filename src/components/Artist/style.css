@@ -68,7 +68,7 @@ h1 span {
 
 .user-profile-banner {
   width: 100%;
-  height: 200px;
+  height: 250px;
   position: relative;
 
 }
@@ -84,16 +84,16 @@ h1 span {
 }
 
 .user-profile-avatar-wrapper {
-  width: 150px;
-  height: 150px;
+  width: 175px;
+  height: 175px;
   border-radius: 50%;
   border: 3px solid #ffffff;
   position: absolute;
-  left: 1.6rem;
-  bottom: 30%;
+  /* left: 1.6rem; */
+  bottom: 40%;
   position: relative;
   background: #e1e1e1;
-  overflow: hidden;
+  overflow: visible;
   /*  display: flex;
    justify-content: center;
    align-items: center; */
@@ -112,12 +112,13 @@ h1 span {
   bottom: -12%;
 } */
 
- .user-profile-details > div {
-    margin-bottom:1.2rem;
-  }
-
+.user-profile-name-div {
+  width: 200px;
+  margin-top: -80px;
+}
 .user-profile-name {
   text-transform: capitalize;
+  font-size: 22px;
 }
 
 .list-sm{
@@ -141,7 +142,28 @@ h1 span {
 }
 .card-body{
   padding: 0.4rem;
+}
+.social-icons a{
+  background-color: #121212 !important;
+  font-size: 27px !important;
+}
 
+.social-icons a:hover{
+  transform: scale(1.15);
+}
+@media (max-width:767px)
+{
+  .three{
+    margin-top: 1.5rem;
+  }
+  .user-profile-avatar-wrapper{
+    margin-right: auto;
+    margin-left: auto;
+    left: unset !important;
+  }
+  .user-profile-name-div{
+    width: 100%;
+  }
 }
 /* ================================================================================================================== */
 /* ArtistList.tsx style */
