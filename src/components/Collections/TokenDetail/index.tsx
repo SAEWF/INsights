@@ -21,6 +21,8 @@ import {
 import { ChevronLeft, HelpCircle, MoreHorizontal } from 'react-feather';
 import { MinterButton, MinterMenuButton, MinterMenuItem } from '../../common';
 import { TransferTokenModal } from '../../common/modals/TransferToken';
+import { BurnTokenButton } from '../../common/modals/BurnToken';
+
 import { SellTokenButton } from '../../common/modals/SellToken';
 import { CancelTokenSaleButton } from '../../common/modals/CancelTokenSale';
 import { BuyTokenButton } from '../../common/modals/BuyToken';
@@ -216,7 +218,8 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             </Heading>
             <Text
               fontSize="md"
-              color="brand.neutralGray"
+              color="white"
+              // brand.neutralGray
               fontWeight="bold"
               mt={[2, 4]}
               width={['100%', '100%', '60%']}
@@ -226,8 +229,8 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
             {token?.metadata?.attributes?.map(({ name, value }) => (
               <Flex key={name + value} mt={[4, 8]}>
-                <Text color="brand.neutralGray">{name}:</Text>
-                <Text display="block" color="brand.darkGray" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                <Text color="secColDarkTheme">{name}:</Text>
+                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                   {value}
                 </Text>
               </Flex>
@@ -299,9 +302,14 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     </>
                   )
                 ) : isOwner ? (
-                  <Box marginRight={8}>
+                  <>
+                  <Box marginRight={2}>
                     <SellTokenButton contract={contractAddress} tokenId={tokenId} />
                   </Box>
+                  <Box marginRight={2}>
+                  <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />
+                  </Box>
+                  </>
                 ) : (
                   <></>
                 )}

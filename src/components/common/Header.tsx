@@ -345,7 +345,8 @@ export function Header() {
 
         <div className="d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>
           <h2>ByteBlock NFT </h2>
-          <p className=" mx-auto" style={{ color: "#9c9fa3", fontSize: "10.5px" }}>Beta Version</p>
+          <p className="mx-auto" style={{ color: "#bfbfbf", fontSize: "10.5px" }}>Beta Version</p>
+          {/* #9c9fa3 */}
         </div>
         </Navbar.Brand>
 

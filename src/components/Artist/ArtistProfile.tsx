@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card} from 'react-bootstrap';
+import {Flex, Heading, Spinner } from '@chakra-ui/react'; //
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg';
 import defaultBanner from '../common/assets/defaultBanner.jpg';
 import ArtistProfileCard from './ArtistProfileCard'
@@ -42,10 +43,15 @@ export default function ArtistProfile(props: PropType) {
   // console.log(userData);
 
   return (
-    <Container style={{ width: "100vw", height: "100%", display: "flex", justifyContent: "start",maxWidth:"90vw" }}>
+    <Container className="main-container">
 
       {(userData.length === 0)
-        ? <div className="text-center"><h2 className="mx-auto my-auto font-weight-bold">Loading...</h2> </div>
+        ?<Flex flexDir="column" align="center" flex="1" pt={20}>
+          <Spinner size="xl" mb={6} color="gray.300" />
+          <Heading size="lg" textAlign="center" color="gray.500">
+            Loading...
+          </Heading>
+        </Flex>
         : userData.map(item => (
           <>
           {/* {console.log("item.artTokens")}
@@ -68,11 +74,11 @@ export default function ArtistProfile(props: PropType) {
                   </div>
                   <div className="text-center m-2 mx-auto">
                     {item.description!=="" 
-                      ?<p className="text-muted">{item.description}</p>
+                      ?<p className="para-text-mute">{item.description}</p>
                       :""}
                   </div>
 
-                <Row className="mt-5">
+                <Row className="my-5">
                   {/* sidebar */}
                   <Col sm={12} md={3}>
                       {/* <h2 className="user-profile-name font-weight-bold mb-2 pl-1">{item.name}</h2> */}
@@ -128,7 +134,7 @@ export default function ArtistProfile(props: PropType) {
                   {/* column 2 start */}
                   <Col sm={12} md={9}>
                     <div className="three mb-3">
-                      <h1>Created</h1>
+                      <h1>Originally Created</h1>
                     </div>
                     {(item.artTokens !== undefined)
                     ? <ArtistProfileCard artTokens={item.artTokens}/>

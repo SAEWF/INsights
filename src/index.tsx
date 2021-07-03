@@ -198,7 +198,8 @@ const theme = extendTheme({
       blue: '#005DFF',
       lightBlue: '#D3DEF5',
       turquoise: '#00FFBE',
-      red: '#FF4161'
+      red: '#FF4161',
+      secColDarkTheme:'#bfbfbf'
     }
   },
   components: {

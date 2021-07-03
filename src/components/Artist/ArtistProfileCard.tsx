@@ -24,8 +24,6 @@ export default function ArtistProfileCard(props:PropsType) {
     state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
     // console.log("tokens")
     // console.log(tokens)
-    // console.log("props")
-    // console.log(props.artTokens)
 
     var artistTokens: any;
     artistTokens = props.artTokens;
