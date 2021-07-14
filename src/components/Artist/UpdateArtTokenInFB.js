@@ -21,7 +21,6 @@ const UpdateArtTokenInFirebase = async (wallAdd,token_id)=>{
         .once('value', snapshot => {
             if (snapshot.val() === null) {
             console.log('id is not present in firebase');
-
             } 
             else {
           // console.log(snapshot.val());
@@ -46,4 +45,3 @@ const UpdateArtTokenInFirebase = async (wallAdd,token_id)=>{
 };
 
 export default UpdateArtTokenInFirebase;
-

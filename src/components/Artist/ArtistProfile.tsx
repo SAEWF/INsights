@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card} from 'react-bootstrap';
-import {Flex, Heading, Spinner } from '@chakra-ui/react'; //
+import {Flex, Heading, Spinner, 
+  // Tabs, TabList, TabPanels, Tab, TabPanel 
+} from '@chakra-ui/react'; //
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg';
 import defaultBanner from '../common/assets/defaultBanner.jpg';
 import ArtistProfileCard from './ArtistProfileCard'
@@ -124,7 +126,7 @@ export default function ArtistProfile(props: PropType) {
                             {(item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
                             {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}
                             {(item.yt) !==""? <li><a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube " ></i></a></li>:""}
-                          
+                            {(item.linktr) !==""? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
                           </ul>
                         </Card.Body>
                       </Card>
@@ -139,6 +141,32 @@ export default function ArtistProfile(props: PropType) {
                     {(item.artTokens !== undefined)
                     ? <ArtistProfileCard artTokens={item.artTokens}/>
                     :<h2>No NFT to display by this artist</h2>}
+
+                {/* <Tabs size="lg" variant="line">
+                  <TabList>
+                    <Tab defaultIndex={1}>NFTs</Tab>
+                    <Tab >Sold NFTs</Tab>
+                    <Tab >Collected NFTs</Tab>
+                  </TabList>
+                  <TabPanels>
+                    <TabPanel>
+                    {(item.artTokens !== undefined)
+                    ? <ArtistProfileCard artTokens={item.artTokens}/>
+                    :<h2>No NFT to display by this artist</h2>}
+                    </TabPanel>
+                    <TabPanel>
+                    {(item.soldTokens !== undefined)
+                    ? <ArtistProfileCard artTokens={item.soldTokens}/>
+                    :<h2>No Sold NFT to display by this artist</h2>}
+                    </TabPanel>
+                    <TabPanel>
+                    {(item.collectedTokens !== undefined)
+                    ? <ArtistProfileCard artTokens={item.collectedTokens}/>
+                    :<h2>No Collected NFT to display by this artist</h2>}
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs> */}
+
                   </Col>
                   {/* column 2 end */}
 

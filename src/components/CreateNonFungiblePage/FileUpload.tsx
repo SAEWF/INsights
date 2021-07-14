@@ -106,7 +106,7 @@ export default function FileUpload() {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     maxFiles: 1,
-    maxSize: 30 * 1024 * 1024,
+    maxSize: 100 * 1024 * 1024,
     accept: [
       'image/*',
       'video/*',

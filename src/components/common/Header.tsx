@@ -336,10 +336,8 @@ export function Header() {
           <img
             alt="ByteBlock"
             src={logo_trans}
-            width="45"
-            height="45"
             className="d-inline-block "
-            style={{ verticalAlign: "middle" }}
+            style={{ verticalAlign: "middle", height: "46px" }}
           />{' '}
           {/* <h2 className="d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>ByteBlock NFT </h2> */}
 

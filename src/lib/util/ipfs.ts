@@ -19,15 +19,33 @@ export async function uploadIPFSJSON(api: string, data: any) {
 export async function uploadIPFSFile(api: string, file: File) {
   const formData = new FormData();
   formData.append('file', file);
-  return axios.post<IpfsResponse>(`${api}/ipfs-file-upload`, formData);
+  console.log("file");
+        console.log(file);
+   const headers = { 
+          'maxContentLength': 'Infinity',
+          'maxBodyLength': 'Infinity',
+          headers: {
+          "Content-Type": 'multipart/form-data',
+            "path": "somename"
+        }
+      };
+  return axios.post<IpfsResponse>(`${api}/ipfs-file-upload`, formData,{ headers })
 }
 
 export async function uploadIPFSImageWithThumbnail(api: string, file: File) {
   const formData = new FormData();
   formData.append('file', file);
+  const headers = { 
+    'maxContentLength': -1,
+    'maxBodyLength': 'Infinity',
+    headers: {
+    "Content-Type": 'multipart/form-data',
+      "path": "somename"
+      }
+    };
   return axios.post<IpfsResponse>(
     `${api}/ipfs-image-with-thumbnail-upload`,
-    formData
+    formData,{ headers }
   );
 }
 

@@ -26,7 +26,7 @@ import { SystemWithToolkit, SystemWithWallet } from '../../lib/system';
 import { notifyPending, notifyFulfilled } from '../slices/notificationsActions';
 import parse from 'csv-parse/lib/sync';
 import * as t from 'io-ts';
-import UpdateArtTokenInFirebase from '../../components/Artist/UpdateArtTokenInFirebase';
+import UpdateArtTokenInFirebase from '../../components/Artist/UpdateArtTokenInFB';
  
 
 type Options = {
@@ -215,11 +215,18 @@ export const mintTokenAction = createAsyncThunk<
             message: 'Could not mint token: video display file not found'
           });
         }
+        // console.log("system.config.ipfsApi");
+        // console.log(system.config.ipfsApi);
+        // console.log("file");
+        // console.log(file);
+
         const fileResponse = await uploadIPFSFile(system.config.ipfsApi, file);
         const imageResponse = await uploadIPFSImageWithThumbnail(
           system.config.ipfsApi,
           displayFile
         );
+        // console.log("fileResponse");
+        // console.log(fileResponse);
         ipfsMetadata.artifactUri = fileResponse.data.ipfsUri;
         ipfsMetadata.displayUri = imageResponse.data.ipfsUri;
         ipfsMetadata.thumbnailUri = imageResponse.data.thumbnail.ipfsUri;
@@ -538,9 +545,16 @@ export const buyTokenAction = createAsyncThunk<
     dispatch(notifyPending(requestId, pendingMessage));
     await op.confirmation(2);
 
+    console.log("system.tzPublicKey");
+    console.log(system.tzPublicKey);
+    console.log("tokenSeller");
+    console.log(tokenSeller);
+    console.log(tokenId);
+
     const fulfilledMessage = `Bought token from ${tokenSeller} for ${salePrice}`;
     dispatch(notifyFulfilled(requestId, fulfilledMessage));
     dispatch(getContractNftsQuery(contract));
+
     return { contract: contract, tokenId: tokenId, saleId: saleId, saleType: saleType };
   } catch (e) {
     return rejectWithValue({

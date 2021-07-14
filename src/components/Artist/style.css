@@ -148,6 +148,10 @@ h1 span {
 .card-body{
   padding: 0.4rem;
 }
+.social-icons {
+  display: flex;
+  justify-content: flex-start;
+}
 .social-icons a{
   background-color: #121212 !important;
   font-size: 27px !important;
