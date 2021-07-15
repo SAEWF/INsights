@@ -3,7 +3,7 @@ import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card} from 'react-bootstrap';
 import {Flex, Heading, Spinner, 
-  // Tabs, TabList, TabPanels, Tab, TabPanel 
+  Tabs, TabList, TabPanels, Tab, TabPanel 
 } from '@chakra-ui/react'; //
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg';
 import defaultBanner from '../common/assets/defaultBanner.jpg';
@@ -135,14 +135,14 @@ export default function ArtistProfile(props: PropType) {
 
                   {/* column 2 start */}
                   <Col sm={12} md={9}>
-                    <div className="three mb-3">
+                    {/* <div className="three mb-3">
                       <h1>Originally Created</h1>
                     </div>
                     {(item.artTokens !== undefined)
                     ? <ArtistProfileCard artTokens={item.artTokens}/>
-                    :<h2>No NFT to display by this artist</h2>}
+                    :<h2>No NFT to display by this artist</h2>} */}
 
-                {/* <Tabs size="lg" variant="line">
+                <Tabs size="lg" variant="line">
                   <TabList>
                     <Tab defaultIndex={1}>NFTs</Tab>
                     <Tab >Sold NFTs</Tab>
@@ -165,7 +165,7 @@ export default function ArtistProfile(props: PropType) {
                     :<h2>No Collected NFT to display by this artist</h2>}
                     </TabPanel>
                   </TabPanels>
-                </Tabs> */}
+                </Tabs>
 
                   </Col>
                   {/* column 2 end */}

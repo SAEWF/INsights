@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 export default firebase;
 
 // bb original
-// apiKey: "AIzaSyATsxG96uJHsMnxhudY8Gpnq51oCA_v9Y8",
+//   apiKey: "AIzaSyATsxG96uJHsMnxhudY8Gpnq51oCA_v9Y8",
 //   authDomain: "byteblock-33ff6.firebaseapp.com",
 //   databaseURL: "https://byteblock-33ff6-default-rtdb.firebaseio.com",
 //   projectId: "byteblock-33ff6",
