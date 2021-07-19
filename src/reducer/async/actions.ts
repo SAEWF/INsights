@@ -402,6 +402,8 @@ export const listTokenAction = createAsyncThunk<
   { contract: string; tokenId: number; salePrice: number },
   Options
 >('action/listToken', async (args, api) => {
+    // console.log("hello");
+    // UpdateArtTokenInFirebase();
   const { getState, rejectWithValue, dispatch, requestId } = api;
   const { contract, tokenId, salePrice } = args;
   const { system } = getState();

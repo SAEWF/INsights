@@ -1,5 +1,5 @@
 {
-  "data" : [ {
+  "data" : [  {
     "id": "0",
     "email": "michael.lawson@reqres.in",
     "name": "Test User",
@@ -15,6 +15,12 @@
     "yt": "https://www.facebook.com/",
     "collectedTokens":[12,24],
     "soldTokens":[25,50],
+    "artTokensWithAddr": [
+      ["collect_address1",7],
+      ["KT1DzPX2SHnviWURFUfD5NQ9FcHQVmYFuPYu",76432399781],
+      ["",9]
+
+    ],
     "artTokens": [
       7643239971,
       7643239974

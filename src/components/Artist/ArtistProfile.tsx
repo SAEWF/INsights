@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card} from 'react-bootstrap';
-import {Flex, Heading, Spinner, 
-  Tabs, TabList, TabPanels, Tab, TabPanel 
+import {Flex, Heading, Spinner, Tabs, TabList, TabPanels, Tab, TabPanel 
 } from '@chakra-ui/react'; //
-// import defaultAvatar from '../common/assets/defaultAvatar.jpg';
+// import defaultAvatar from '../common/assets/defaultAvatar.jpg' ;
 import defaultBanner from '../common/assets/defaultBanner.jpg';
-import ArtistProfileCard from './ArtistProfileCard'
+import ArtistProfileCard from './ArtistProfileCard';
+import ArtistNftProfileCard from './ArtistNftProfileCard';
 
 const useItems = (usernameFromUrl: string) => {
   const [tasks, setTasks] = useState<TasksType[]>([]);
@@ -21,7 +21,7 @@ const useItems = (usernameFromUrl: string) => {
       .equalTo(usernameFromUrl)
       .on('value', snapshot => {
         const fetchedTasks: any[] = [];
-        // if (snapshot.val() === null) {
+        // if (snapshot.val() === null) { 
         //   console.log('id is not present in firebase');
         // } else {
         //   console.log('id is present in firebase');
@@ -58,7 +58,7 @@ export default function ArtistProfile(props: PropType) {
           <>
           {/* {console.log("item.artTokens")}
               {console.log(item.artTokens)} */}
-
+              
             <div className="user-profile-block">
               <div className="user-profile-banner">
                 <div className="user-profile-banner-wrapper">
@@ -126,7 +126,7 @@ export default function ArtistProfile(props: PropType) {
                             {(item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
                             {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}
                             {(item.yt) !==""? <li><a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube " ></i></a></li>:""}
-                            {(item.linktr) !==""? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
+                            {(item.linktr) !==""? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
                           </ul>
                         </Card.Body>
                       </Card>
@@ -149,21 +149,42 @@ export default function ArtistProfile(props: PropType) {
                     <Tab >Collected NFTs</Tab>
                   </TabList>
                   <TabPanels>
+                    {/* 3 TabPanel */}
                     <TabPanel>
-                    {(item.artTokens !== undefined)
-                    ? <ArtistProfileCard artTokens={item.artTokens}/>
+                    {(item.artTokens !== undefined || item.artTokensWithAddr !== undefined)
+                    ? <>
+                     <Container>
+                        <Row xs={1} md={2} lg={3} xl={3}>
+                            <ArtistProfileCard artTokens={item.artTokens}/>
+                            <ArtistNftProfileCard artTokensWithAddr={item.artTokensWithAddr}/>
+                        </Row>
+                      </Container>
+                    </>
                     :<h2>No NFT to display by this artist</h2>}
                     </TabPanel>
                     <TabPanel>
                     {(item.soldTokens !== undefined)
-                    ? <ArtistProfileCard artTokens={item.soldTokens}/>
+                    ? <>
+                        <Container>
+                          <Row xs={1} md={2} lg={3} xl={3}>
+                            <ArtistProfileCard artTokens={item.soldTokens}/>
+                          </Row>
+                        </Container>
+                      </>
                     :<h2>No Sold NFT to display by this artist</h2>}
                     </TabPanel>
                     <TabPanel>
                     {(item.collectedTokens !== undefined)
-                    ? <ArtistProfileCard artTokens={item.collectedTokens}/>
+                    ? <>
+                        <Container>
+                          <Row xs={1} md={2} lg={3} xl={3}>
+                              <ArtistProfileCard artTokens={item.collectedTokens}/>
+                          </Row>
+                        </Container>
+                      </>
                     :<h2>No Collected NFT to display by this artist</h2>}
                     </TabPanel>
+                   
                   </TabPanels>
                 </Tabs>
 
