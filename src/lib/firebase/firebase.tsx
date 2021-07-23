@@ -8,7 +8,17 @@ const config = {
   appId: "1:783888831157:web:45f51184ac13b592da24fc",
   measurementId: "G-CR969BKP3H"
 };
-firebase.initializeApp(config);
+var firebaseConfig = {
+  apiKey: "AIzaSyDdY7bw7Xo8uSoD6IAQc8hqnp10HTf9tlY",
+  authDomain: "test-b03c1.firebaseapp.com",
+  databaseURL: "https://test-b03c1-default-rtdb.firebaseio.com",
+  projectId: "test-b03c1",
+  storageBucket: "test-b03c1.appspot.com",
+  messagingSenderId: "320969152137",
+  appId: "1:320969152137:web:30ee1434ace3b42de29858",
+  measurementId: "G-DC7MGMPPYV"
+};
+firebase.initializeApp(firebaseConfig);
 export default firebase;
 
 // bb original
