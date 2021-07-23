@@ -1,13 +1,13 @@
 import firebase from 'firebase';
-const config = {
-  apiKey: "AIzaSyCv2ga27ryJ5XT6ZSQTigi3pBCsluV-1Ds",
-  authDomain: "byteblock-demo.firebaseapp.com",
-  projectId: "byteblock-demo",
-  storageBucket: "byteblock-demo.appspot.com",
-  messagingSenderId: "783888831157",
-  appId: "1:783888831157:web:45f51184ac13b592da24fc",
-  measurementId: "G-CR969BKP3H"
-};
+// const config = {
+//   apiKey: "AIzaSyCv2ga27ryJ5XT6ZSQTigi3pBCsluV-1Ds",
+//   authDomain: "byteblock-demo.firebaseapp.com",
+//   projectId: "byteblock-demo",
+//   storageBucket: "byteblock-demo.appspot.com",
+//   messagingSenderId: "783888831157",
+//   appId: "1:783888831157:web:45f51184ac13b592da24fc",
+//   measurementId: "G-CR969BKP3H"
+// };
 var firebaseConfig = {
   apiKey: "AIzaSyDdY7bw7Xo8uSoD6IAQc8hqnp10HTf9tlY",
   authDomain: "test-b03c1.firebaseapp.com",
