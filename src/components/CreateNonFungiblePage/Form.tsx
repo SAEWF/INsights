@@ -8,7 +8,12 @@ import {
   Heading,
   Input,
   Text,
-  Textarea
+  Textarea,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 // import { Plus, X } from 'react-feather';
 // import { MinterButton } from '../common';
@@ -32,7 +37,9 @@ export default function Form() {
   const { name, description } = state.fields;
   const [artistName, setartistName] = useState("");
   const [tags, setTags] = useState("");
+  const [, setEdition] = useState("1");
 
+  
   useEffect(() => {
     dispatch(addMetadataRow());
     dispatch(updateMetadataRowName({ key: 0, name: 'Artist' }));
@@ -46,8 +53,15 @@ export default function Form() {
     return;
     // eslint-disable-next-line
   }, []);
-  // console.log("state")
-  // console.log(state)
+  useEffect(() => {
+    dispatch(addMetadataRow());
+    dispatch(updateMetadataRowName({ key: 2, name: 'Edition' }));
+    dispatch(updateMetadataRowValue({ key: 2, value: '1' }))
+    return;
+    // eslint-disable-next-line
+  }, []);
+  console.log("state")
+  console.log(state)
 
   return (
     <>
@@ -119,6 +133,45 @@ export default function Form() {
           }
         />
       </FormControl>
+       {/* Editions */}
+       {/* <FormControl paddingBottom={6}>
+        <FormLabel fontFamily="mono" display="flex">
+          Editions
+        </FormLabel>
+        <Input
+          placeholder="Input edition of your nft"
+          value={edition || ''}
+          // used before dispatch update Metadata Row Name by useEffect
+          onChange={e => {
+            setEdition(e.target.value)
+            dispatch(updateMetadataRowValue({ key: 2, value: e.target.value }))
+          }
+          }
+        />
+      </FormControl> */}
+       <FormControl paddingBottom={6}>
+        <FormLabel fontFamily="mono" display="flex">
+          Editions
+        </FormLabel>
+        <NumberInput 
+          placeholder="Input editions of your nft, 1-20"
+          step={1} 
+          defaultValue={1} 
+          min={1}
+          max={20}
+          onChange={(valueString) =>{
+            setEdition(valueString)
+            dispatch(updateMetadataRowValue({ key: 2, value: valueString }))
+          }}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+      </NumberInput>
+      </FormControl>
+     
 
       {/* <Divider borderColor="brand.lightBlue" opacity="1" marginY={10} />
       <Heading size="md" paddingBottom={6}>

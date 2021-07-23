@@ -155,8 +155,8 @@ export default function ArtistProfile(props: PropType) {
                     ? <>
                      <Container>
                         <Row xs={1} md={2} lg={3} xl={3}>
-                            <ArtistProfileCard artTokens={item.artTokens}/>
-                            <ArtistNftProfileCard artTokensWithAddr={item.artTokensWithAddr}/>
+                          {(item.artTokens !== undefined) ? <ArtistProfileCard artTokens={item.artTokens}/>:""}
+                          {(item.artTokensWithAddr !== undefined)? <ArtistNftProfileCard artTokensWithAddr={item.artTokensWithAddr}/> :""}
                         </Row>
                       </Container>
                     </>
