@@ -22,15 +22,13 @@ export default class CustomIpfsHttpHandler implements Handler {
     { location }: Tzip16Uri,
     _context: Context
   ): Promise<string> {
-
-    // console.log(${location.substring(2)});
-    var loc = location.substring(2);
+    var temp = location.substring(2);
     var alertedLoc = "";
 
-    for (var i = 0; i < loc.length; i++) {
-      if(loc[i] !== '"')
+    for (var i = 0; i < temp.length; i++) {
+      if(temp[i] !== '"')
       {
-        alertedLoc = alertedLoc + loc[i]
+        alertedLoc = alertedLoc + temp[i]
       }
     }
     // console.log(alertedLoc);

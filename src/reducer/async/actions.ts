@@ -248,42 +248,17 @@ export const mintTokenAction = createAsyncThunk<
 
     const address = state.collectionAddress as string;
     const metadata = appendStateMetadata(state, ipfsMetadata, system);
-    // generateMetadataArray(system, address, metadata)
-
-    var editionNo = getEditionNo(metadata); 
-    console.log("editionNo in mintToken");
-    console.log(editionNo);
-      
-    var metadataArray =  generateMetadataArray(metadata,editionNo)
 
     try {
-      if(editionNo>=2){
-        console.log("metadataArray in mintToken");
-        console.log(metadataArray);
-        const op = await mintTokens(system, address, metadataArray);
-        const pendingMessage = `Minting new tokens from multiple editions`;
-        dispatch(notifyPending(requestId, pendingMessage));
-        await op.confirmation(2);
+      const op = await mintToken(system, address, metadata);
+      const pendingMessage = `Minting new token: ${metadata.name}`;
+      dispatch(notifyPending(requestId, pendingMessage));
+      await op.confirmation(2);
 
-        const fulfilledMessage = `Created new tokens from multiple editions in ${address}`;
-        dispatch(notifyFulfilled(requestId, fulfilledMessage));
-      
-      }
-      else{
-        console.log("metadata in mintToken");
-        console.log(metadata);
-        const op = await mintToken(system, address, metadata);
-        const pendingMessage = `Minting new token: ${metadata.name}`;
-        dispatch(notifyPending(requestId, pendingMessage));
-        await op.confirmation(2);
-
-        const fulfilledMessage = `Created new token: ${metadata.name} in ${address}`;
-        dispatch(notifyFulfilled(requestId, fulfilledMessage));
-
-      }
-
-        dispatch(getContractNftsQuery(address));
-        return { contract: address, metadata };
+      const fulfilledMessage = `Created new token: ${metadata.name} in ${address}`;
+      dispatch(notifyFulfilled(requestId, fulfilledMessage));
+      dispatch(getContractNftsQuery(address));
+      return { contract: address, metadata };
     } catch (e) {
       return rejectWithValue({
         kind: ErrorKind.MintTokenFailed,
@@ -292,52 +267,6 @@ export const mintTokenAction = createAsyncThunk<
     }
   }
 );
-
-function getEditionNo(  metadata: NftMetadata) {
-  var editionNo = 0;
-  // eslint-disable-next-line
-  metadata?.attributes?.map(({ name, value }) => 
-  {
-    if(name === "Edition"){
-     // console.log(value);
-      editionNo = parseInt(value)
-      return editionNo;
-    }}
-   )
-   return editionNo;
-}
-
-function generateMetadataArray(  metadata: NftMetadata,  editionNo: number) {
-
-    console.log("generateMetadataArray log");
-    console.log(metadata);
-    console.log(editionNo);
-
-    const metArr = [];
-    var obj: NftMetadata = {};
-
-    obj.name=metadata.name;
-    obj.minter=metadata.minter;
-    obj.description=metadata.description;
-    obj.artifactUri=metadata.artifactUri;
-    obj.displayUri=metadata.displayUri;
-    obj.attributes=metadata.attributes;
-    
-    // console.log(obj);
-    
-    for(var i=0;i<editionNo;i++){
-        console.log(i);
-       
-      // obj.name = tempName + " " + i;
-      metArr.push(obj)
-     
-    }
-
-  return metArr;
-}
-
-
-
 
 interface NonEmptyArrayBrand {
   readonly NonEmptyArray: unique symbol;
@@ -420,12 +349,6 @@ export const mintCsvTokensAction = createAsyncThunk<null, undefined, Options>(
     try {
       const address = parsed[0].collection;
       const op = await mintTokens(system, address, metadataArray);
-      console.log("system parsed--");
-      console.log(system);
-      console.log(address);
-      console.log(metadataArray);
-
-
       const pendingMessage = `Minting new tokens from CSV`;
       dispatch(notifyPending(requestId, pendingMessage));
       await op.confirmation(2);
@@ -479,8 +402,6 @@ export const listTokenAction = createAsyncThunk<
   { contract: string; tokenId: number; salePrice: number },
   Options
 >('action/listToken', async (args, api) => {
-    // console.log("hello");
-    // UpdateArtTokenInFirebase();
   const { getState, rejectWithValue, dispatch, requestId } = api;
   const { contract, tokenId, salePrice } = args;
   const { system } = getState();
