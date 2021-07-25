@@ -80,13 +80,13 @@ export default function Catalog() {
           justifyContent="space-between"
         >
           <Text fontSize="xs">
-            ByteBlockNFT Version v{process.env.REACT_APP_VERSION}
+            ByteBlockNFT BETA
           </Text>
           <Flex>
             <Link
               fontSize="xs"
               textDecor="underline"
-              href="https://github.com/tqtezos/minter"
+              href="https://github.com/byteblock-labs"
             >
               GitHub
             </Link>

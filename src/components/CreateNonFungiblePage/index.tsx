@@ -3,7 +3,9 @@ import { useLocation } from 'wouter';
 import { Box, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import { MinterButton } from '../common';
 import Form from './Form';
-import FileUpload, { CsvFileUpload } from './FileUpload';
+import FileUpload
+//  { CsvFileUpload }
+ from './FileUpload';
 import CollectionSelect from './CollectionSelect';
 // import Preview from './Preview';
 import Confirmation from './Confirmation';
@@ -62,7 +64,7 @@ function LeftContent() {
       return (
         <Box w="100%" maxWidth="1200px">
           <FileUpload />
-          <Flex align="center" marginY={12}>
+          {/* <Flex align="center" marginY={12}>
             <Box
               flex="1"
               borderBottom="1px solid"
@@ -76,8 +78,8 @@ function LeftContent() {
               borderBottom="1px solid"
               borderColor="brand.lightGray"
             />
-          </Flex>
-          <CsvFileUpload />
+          </Flex> */}
+          {/* <CsvFileUpload /> */}
         </Box>
       );
     case 'asset_details':
