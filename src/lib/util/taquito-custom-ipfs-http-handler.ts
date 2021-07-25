@@ -22,10 +22,23 @@ export default class CustomIpfsHttpHandler implements Handler {
     { location }: Tzip16Uri,
     _context: Context
   ): Promise<string> {
+
+    // console.log(${location.substring(2)});
+    var loc = location.substring(2);
+    var alertedLoc = "";
+
+    for (var i = 0; i < loc.length; i++) {
+      if(loc[i] !== '"')
+      {
+        alertedLoc = alertedLoc + loc[i]
+      }
+    }
+    // console.log(alertedLoc);
+
     return this._httpBackend.createRequest<string>({
       url: `${this._gatewayProtocol}://${
         this._ipfsGateway
-      }/ipfs/${location.substring(2)}/`,
+      }/ipfs/${alertedLoc}/`,
       method: 'GET',
       headers: { 'Content-Type': 'text/plain' },
       mimeType: 'text; charset=utf-8',

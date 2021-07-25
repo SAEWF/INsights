@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { Box, } from '@chakra-ui/react'; 
-import { Col,} from 'react-bootstrap';
-
+import {  Box, } from '@chakra-ui/react';
+import {  Col,} from 'react-bootstrap';
 import { useSelector, useDispatch } from '../../reducer';
 import {
   getMarketplaceNftsQuery,
@@ -10,7 +9,7 @@ import {
 import TokenCard from '../Marketplace/Catalog/TokenCard';
 import { VisibilityTrigger } from '../common/VisibilityTrigger';
 
-export default function ArtistProfileCard(props:PropsType) {
+export default function ArtistNftProfileCard(props:PropsType) {
   const { system, marketplace: state } = useSelector(s => s);
   const dispatch = useDispatch();
 
@@ -28,14 +27,15 @@ export default function ArtistProfileCard(props:PropsType) {
     // console.log(tokens)
 
     var artistTokens: any;
-    artistTokens = props.artTokens;
+    artistTokens = props.artTokensWithAddr;
     
-    // console.log("props ArtistProfileCard")
-    // console.log(props.artTokens)
+    // console.log("props ArtistNftProfileCard")
+    // console.log(props.artTokensWithAddr)
     // console.log("artistTokens")
     // console.log(artistTokens)
     const keys = Object.keys(artistTokens);
     // console.log(keys);
+
     var allTokensList:any[]=[];
     keys.forEach((key, index) => {
       allTokensList.push(artistTokens[key])
@@ -43,15 +43,15 @@ export default function ArtistProfileCard(props:PropsType) {
     });
     // console.log("allTokensList")
     // console.log(allTokensList)
-
-  return (
+    return (
     <>
          {// eslint-disable-next-line 
          tokens.map(token => {
             for(var i = 0;i<allTokensList.length;i++){
-              if(token.id===(allTokensList[i])){
-                return (
+                if( token.id===(allTokensList[i][1]) && token.address===(allTokensList[i][0])){
+                  return (
                   <Col >
+
                     <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
                     <TokenCard
                       key={`${token.address}-${token.id}`}
@@ -59,26 +59,23 @@ export default function ArtistProfileCard(props:PropsType) {
                       {...token}
                     />
                   </Box>
-                </Col>
+                  </Col >
 
-                );
+                  );
                 }
               };
          })}
-
-          <div style={{ display: "none" }}>
             <VisibilityTrigger
             key={state.marketplace.tokens?.length + ':' + tokens.length}
             onVisible={loadMore}
             allowedDistanceToViewport={600}
             />
-        </div>
-
     </>
   );
 }
 
 
 interface PropsType {
-    artTokens: string
-  };
+    artTokensWithAddr: string
+};
+
