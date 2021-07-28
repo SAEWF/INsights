@@ -106,7 +106,7 @@ export default function FileUpload() {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     maxFiles: 1,
-    maxSize: 100 * 1024 * 1024,
+    maxSize: 30 * 1024 * 1024,
     accept: [
       'image/*',
       'video/*',
@@ -148,7 +148,7 @@ export default function FileUpload() {
         // width="100%"
         justify="center"
         align="center"
-
+        marginTop={3}
         {...getRootProps()}
       >
         <Box as="input" {...getInputProps()} />
