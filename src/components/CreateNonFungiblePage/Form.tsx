@@ -60,8 +60,8 @@ export default function Form() {
     return;
     // eslint-disable-next-line
   }, []);
-  console.log("state")
-  console.log(state)
+  // console.log("state")
+  // console.log(state)
 
   return (
     <>

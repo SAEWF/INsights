@@ -90,6 +90,23 @@ export async function mintToken(
   });
   token_info.set('', toHexString(resp.data.ipfsUri));
 
+  console.log("src lib nfts actions.ts");
+  console.log(system.tzPublicKey);
+  console.log(metadata);
+  console.log(contract);
+  console.log(storage);
+  console.log(token_id);
+  console.log(token_info);
+  // {
+  //   "s": 1,
+  //   "e": 17,
+  //   "c": [
+  //     7643,
+  //     23997852433226
+  //   ]
+  // } 76432 3997852432
+  
+
   return contract.methods
     .mint([
       {

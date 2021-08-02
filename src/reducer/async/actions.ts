@@ -28,6 +28,7 @@ import parse from 'csv-parse/lib/sync';
 import * as t from 'io-ts';
 import UpdateArtTokenInFirebase from '../../components/Artist/UpdateArtTokenInFB';
 import UpdateSoldnCollectedTokenInFB from '../../components/Artist/UpdateSoldnCollectedTokenInFB';
+import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
 type Options = {
   state: State;
@@ -166,7 +167,7 @@ export const mintTokenAction = createAsyncThunk<
         message: 'Could not mint token: form validation failed'
       });
     }
-
+    // UploadNftToFireStore();
     let file: File;
     try {
       const { objectUrl, name, type } = state.selectedFile;
@@ -248,16 +249,12 @@ export const mintTokenAction = createAsyncThunk<
 
     const address = state.collectionAddress as string;
     const metadata = appendStateMetadata(state, ipfsMetadata, system);
-
     var editionNo = getEditionNo(metadata); 
-    console.log("editionNo in mintToken");
-    console.log(editionNo);
+    // console.log("editionNo in mintToken");
+    // console.log(editionNo);
       
     var metadataArray = generateMetadataArray(metadata,editionNo)
-    // console.log("metadata");
-    // console.log(metadata);
-    // console.log("metadataArray");
-    // console.log(metadataArray);
+   
     try {
       if(editionNo>=2){
         console.log("metadataArray in mintToken");
@@ -268,6 +265,7 @@ export const mintTokenAction = createAsyncThunk<
         await op.confirmation(2);
 
         const fulfilledMessage = `Created new tokens from multiple editions in ${address}`;
+        UploadNftToFireStore(system.tzPublicKey,address,metadata);
         dispatch(notifyFulfilled(requestId, fulfilledMessage));
         dispatch(getContractNftsQuery(address));
         return { contract: address, metadata };
@@ -275,12 +273,14 @@ export const mintTokenAction = createAsyncThunk<
       else{
         console.log("metadata in mintToken");
         console.log(metadata);
+        
         const op = await mintToken(system, address, metadata);
         const pendingMessage = `Minting new token: ${metadata.name}`;
         dispatch(notifyPending(requestId, pendingMessage));
         await op.confirmation(2);
 
         const fulfilledMessage = `Created new token: ${metadata.name} in ${address}`;
+        UploadNftToFireStore(system.tzPublicKey,address,metadata);
         dispatch(notifyFulfilled(requestId, fulfilledMessage));
         dispatch(getContractNftsQuery(address));
         return { contract: address, metadata };
