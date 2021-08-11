@@ -20,11 +20,11 @@ export default function CollectionTab({
             align="center"
             py={2}
             px={4}
-            bg={selected ? '#26272b' : 'white'}
-            // color={selected ? 'black' : 'gray.600'}
+            bg={selected ? 'gray.100' : 'white'}
+            color={selected ? 'black' : 'gray.600'}
             _hover={{
                 cursor: 'pointer',
-                color: selected ? 'white' : 'gray.800'
+                color: selected ? 'black' : 'gray.800'
             }}
             onClick={() => onSelect(address)}
             role="group"

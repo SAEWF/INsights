@@ -54,7 +54,9 @@ export default function CollectionsDropdown() {
             >
               {state.collections[state.globalCollection].metadata.name}
             </MenuItemOption>
-
+            <Text ml={4} my={2} fontWeight="600">
+              ByteBlock Collections
+            </Text>
             {Object.keys(state.collections)
               .filter(address => address !== state.globalCollection)
               .map((address, idx) => (

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Heading } from '@chakra-ui/react';
-// import { CreateCollectionButton } from '../../common/modals/CreateCollection';
+import { Flex, Heading } from '@chakra-ui/react';
+import { CreateCollectionButton } from '../../common/modals/CreateCollection';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
   selectCollection
@@ -8,24 +8,22 @@ import {
 import CollectionTab from './CollectionTab';
 
 export default function Sidebar() {
-  // const tzPublicKey = useSelector(s => s.system.tzPublicKey);
+  const tzPublicKey = useSelector(s => s.system.tzPublicKey);
   const state = useSelector(s => s.collections);
   const dispatch = useDispatch();
   return (
     <>
-      <Heading px={4} pt={6} pb={4} size="md" 
-      // color="brand.darkGray"
-      >
-        ByteBlock Collections
+      <Heading px={4} pt={6} pb={4} size="md" color="brand.darkGray">
+        Collections
       </Heading>
       <Heading
         fontFamily="mono"
         px={4}
         pb={2}
         fontSize="sm"
-        // color="brand.darkGray"
+        color="brand.darkGray"
       >
-        Recent Collection
+        ByteBlock Default Collection
       </Heading>
       {state.collections[state.globalCollection] ? (
         <CollectionTab
@@ -43,12 +41,25 @@ export default function Sidebar() {
         fontSize="sm"
         color="brand.darkGray"
       >
-        .
+        Other Collections
       </Heading>
-
-      {/* <Flex px={2} pt={4} justify="center" pb={8}>
+      {Object.keys(state.collections)
+        .filter(
+          address =>
+            address !== state.globalCollection &&
+            state.collections[address]?.creator?.address === tzPublicKey
+        ).reverse()
+        .map((address, idx) => (
+          <CollectionTab
+            key={address + idx}
+            selected={address === state.selectedCollection}
+            onSelect={address => dispatch(selectCollection(address))}
+            {...state.collections[address]}
+          />
+        ))}
+      <Flex px={2} pt={4} justify="center" pb={8}>
         <CreateCollectionButton />
-      </Flex> */}
+      </Flex>
     </>
   );
 }
