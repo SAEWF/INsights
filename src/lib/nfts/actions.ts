@@ -149,7 +149,7 @@ export async function mintTokens(
     mints.push({
       owner: system.tzPublicKey,
       token_metadata: {
-        token_id: token_id + index,
+        token_id: Number(token_id) + Number(index),
         token_info
       }
     });
