@@ -5,7 +5,7 @@ import firebase from '../../../lib/firebase/firebase';
 const UploadNftToFireStore = async (walletAddress,collection,metadata,file)=>{
     const db = firebase.firestore().collection('nfts');
     // var storageRef = firebase.storage().ref();
-    var url = "";
+    // var url = "";
 
     // console.log("IN FUNCTION",file);
 
@@ -77,11 +77,10 @@ const UploadNftToFireStore = async (walletAddress,collection,metadata,file)=>{
                 "walletAddress": walletAddress,
                 "collection": collection,
                 "metadata": metadata,
-                "url": url,
                 "fileName": file.name,
                 "fileType": file.type
             };
-            await db.doc(walletAddress).collection(collection).add(nft).then(function(docRef) {
+            await db.doc(walletAddress).collection('NFTcollection').add(nft).then(function(docRef) {
                 console.log('Document uploaded to Firestore')//, docRef.id);
             });
     //     });
