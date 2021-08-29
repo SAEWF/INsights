@@ -38,12 +38,53 @@ const useItems = (usernameFromUrl: string) => {
   return tasks;
 }
 
+const getNfts = async (walletID: string) =>{
+  console.log('walletID', walletID);
+  const db = firebase.firestore();
+  let nfts: any[] = [];
+  var docRef = db.collection('nfts').doc(walletID).collection('NFTcollection');
+  await docRef.get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      nfts.push(doc.data());
+    });
+  });
+
+  return nfts;
+
+  // if(nfts){
+  //   console.log('nfts', nfts);
+  // }
+}
+  
+  // const listener = ref.child(walletID).on('value', snapshot => {
+  //   const fetchedTasks: any[] = [];
+  //   snapshot.forEach(childSnapshot => {
+  //     const key = childSnapshot.key;
+  //     const data = childSnapshot.val();
+  //     fetchedTasks.push({ id: key, ...data });
+  //   });
+  //   return fetchedTasks;
+  // });
+  // return listener;
+// }
+
+
 export default function ArtistProfile(props: PropType) {
   var usernameFromUrl: string = props.username
   const userData = useItems(usernameFromUrl);
   // console.log("userData")
-  // console.log(userData);
+  // const [walletID, setWalletID] = useState<string>("");
+  // console.log("USERDATA",userData);
 
+  if(userData.length !== 0){
+    // setWalletID(userData[0].walletAddress);
+    console.log('userData', userData);
+    const nft = getNfts(userData[0].walletAddress);
+    console.log("nft", nft);
+  }
+
+  // console.log("nfts", nfts);
   return (
     <Container className="main-container">
 

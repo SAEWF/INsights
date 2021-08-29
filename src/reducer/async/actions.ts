@@ -265,7 +265,7 @@ export const mintTokenAction = createAsyncThunk<
         await op.confirmation(2);
 
         const fulfilledMessage = `Created new tokens from multiple editions in ${address}`;
-        UploadNftToFireStore(system.tzPublicKey,address,metadata);
+        UploadNftToFireStore(system.tzPublicKey,address,metadata, file);
         dispatch(notifyFulfilled(requestId, fulfilledMessage));
         dispatch(getContractNftsQuery(address));
         return { contract: address, metadata };
@@ -280,7 +280,7 @@ export const mintTokenAction = createAsyncThunk<
         await op.confirmation(2);
 
         const fulfilledMessage = `Created new token: ${metadata.name} in ${address}`;
-        UploadNftToFireStore(system.tzPublicKey,address,metadata);
+        UploadNftToFireStore(system.tzPublicKey,address,metadata, file);
         dispatch(notifyFulfilled(requestId, fulfilledMessage));
         dispatch(getContractNftsQuery(address));
         return { contract: address, metadata };
