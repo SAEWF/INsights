@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
+import { Box, } from '@chakra-ui/react'; 
 import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card} from 'react-bootstrap';
 import {Flex, Heading, Spinner, Tabs, TabList, TabPanels, Tab, TabPanel 
@@ -7,7 +8,8 @@ import {Flex, Heading, Spinner, Tabs, TabList, TabPanels, Tab, TabPanel
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg' ;
 import defaultBanner from '../common/assets/defaultBanner.jpg';
 import ArtistProfileCard from './ArtistProfileCard';
-import ArtistNftProfileCard from './ArtistNftProfileCard';
+import TokenCard from '../Marketplace/Catalog/TokenCard';
+// import ArtistNftProfileCard from './ArtistNftProfileCard';
 
 const useItems = (usernameFromUrl: string) => {
   const [tasks, setTasks] = useState<TasksType[]>([]);
@@ -35,39 +37,59 @@ const useItems = (usernameFromUrl: string) => {
       });
     return () => ref.off('value', listener);
   }, [usernameFromUrl]);
+  // console.log('tasks', tasks);
   return tasks;
 }
 
-const getNfts = async (walletID: string) =>{
-  console.log('walletID', walletID);
-  const db = firebase.firestore();
-  let nfts: any[] = [];
-  var docRef = db.collection('nfts').doc(walletID).collection('NFTcollection');
-  await docRef.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      nfts.push(doc.data());
-    });
-  });
-
-  return nfts;
-
-  // if(nfts){
-  //   console.log('nfts', nfts);
-  // }
-}
+const GetNfts = (userdata: TasksType[]) =>{
   
-  // const listener = ref.child(walletID).on('value', snapshot => {
-  //   const fetchedTasks: any[] = [];
-  //   snapshot.forEach(childSnapshot => {
-  //     const key = childSnapshot.key;
-  //     const data = childSnapshot.val();
-  //     fetchedTasks.push({ id: key, ...data });
-  //   });
-  //   return fetchedTasks;
-  // });
-  // return listener;
-// }
+  const [nft, setNft] = useState<any[]>([]);
+
+  // if(userdata.length === 0){
+  //   return [];
+  // }
+
+  // if(walletID === undefined || walletID === ''){
+  //   return [];
+  // }
+
+  // console.log('walletID', walletID);
+
+  useEffect(() => {
+    async function fetchData(userdata: TasksType[]) {
+      if(userdata.length === 0){
+        return;
+      }
+      const walletID = userdata[0].walletAddress;
+      if(walletID === undefined || walletID === ''){
+        return;
+      }
+      const db = firebase.firestore();
+      let nfts: any[] = [];
+      var docRef = db.collection('nfts').doc('tz1ciDCib1EzdMJi2CVnd1XCfvSxqRXW3ffE').collection('KT1DzPX2SHnviWURFUfD5NQ9FcHQVmYFuPYu');
+      await docRef.get().then(async (querySnapshot) => {
+        await querySnapshot.forEach((doc) => {
+          // console.log(doc.id, " => ", doc.data());
+          nfts.push(doc.data());
+        });
+      }, (error) => {
+        console.log("Error getting documents: ", error);
+      });
+      setNft(nfts);
+      // console.log("RETURNING", nfts);
+      return () => {
+        // db.waitForPendingWrites();
+        // console.log('nft', nft);
+      }
+    }
+    fetchData(userdata);
+  }, [userdata, nft, setNft]);
+
+  if(nft.length === 0){
+    return [];
+  }
+  return nft;
+}
 
 
 export default function ArtistProfile(props: PropType) {
@@ -76,13 +98,11 @@ export default function ArtistProfile(props: PropType) {
   // console.log("userData")
   // const [walletID, setWalletID] = useState<string>("");
   // console.log("USERDATA",userData);
+  // var nft = getNfts(userData[0].walletAddress);
 
-  if(userData.length !== 0){
-    // setWalletID(userData[0].walletAddress);
-    console.log('userData', userData);
-    const nft = getNfts(userData[0].walletAddress);
-    console.log("nft", nft);
-  }
+  const nfts = GetNfts(userData);
+  console.log("nft", nfts);
+
 
   // console.log("nfts", nfts);
   return (
@@ -97,8 +117,8 @@ export default function ArtistProfile(props: PropType) {
         </Flex>
         : userData.map(item => (
           <>
-          {/* {console.log("item.artTokens")}
-              {console.log(item.artTokens)} */}
+          {/* {console.log("item")}
+              {console.log(item)} */}
               
             <div className="user-profile-block">
               <div className="user-profile-banner">
@@ -185,23 +205,43 @@ export default function ArtistProfile(props: PropType) {
 
                 <Tabs size="lg" variant="line">
                   <TabList>
-                    <Tab defaultIndex={1}>NFTs</Tab>
-                    <Tab >Sold NFTs</Tab>
+                    <Tab defaultIndex={1}>Created NFTs</Tab>
                     <Tab >Collected NFTs</Tab>
+                    {/* <Tab >Sold NFTs</Tab> */}
                   </TabList>
                   <TabPanels>
                     {/* 3 TabPanel */}
                     <TabPanel>
-                    {(item.artTokens !== undefined || item.artTokensWithAddr !== undefined)
-                    ? <>
-                     <Container>
-                        <Row xs={1} md={2} lg={3} xl={3}>
-                          {(item.artTokens !== undefined) ? <ArtistProfileCard artTokens={item.artTokens}/>:""}
-                          {(item.artTokensWithAddr !== undefined)? <ArtistNftProfileCard artTokensWithAddr={item.artTokensWithAddr}/> :""}
-                        </Row>
-                      </Container>
-                    </>
-                    :<h2>No NFT to display by this artist</h2>}
+                    {
+                      (item.artTokens !== undefined || item.artTokensWithAddr !== undefined || nfts.length>0)
+                      ? <>
+                      {/* {console.log("ENTERED", nfts.length)} */}
+                      <Container>
+                          <Row xs={1} md={2} lg={3} xl={3}>
+                            {
+                              nfts.map((token)=>{
+                                return (
+                                  <Col >
+                                    <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
+                                    <TokenCard
+                                      key={`${token.address}-${token.id}`}
+                                      {...token}
+                                    />
+                                  </Box>
+                                </Col>
+                                );
+                              })
+                            }
+
+                            {/* {(item.artTokens !== undefined) ? <ArtistProfileCard artTokens={item.artTokens}/>:""}
+                            {(item.artTokensWithAddr !== undefined)? <ArtistNftProfileCard artTokensWithAddr={item.artTokensWithAddr}/> :""} */}
+                          </Row>
+                        </Container>
+                      </>
+                      :
+                      <h2>No Created NFT to display by this artist</h2>
+                    }
+                    
                     </TabPanel>
                     <TabPanel>
                     {(item.soldTokens !== undefined)
@@ -212,9 +252,9 @@ export default function ArtistProfile(props: PropType) {
                           </Row>
                         </Container>
                       </>
-                    :<h2>No Sold NFT to display by this artist</h2>}
+                    :<h2>No Collected NFT to display by this artist</h2>}
                     </TabPanel>
-                    <TabPanel>
+                    {/* <TabPanel>
                     {(item.collectedTokens !== undefined)
                     ? <>
                         <Container>
@@ -224,7 +264,7 @@ export default function ArtistProfile(props: PropType) {
                         </Container>
                       </>
                     :<h2>No Collected NFT to display by this artist</h2>}
-                    </TabPanel>
+                    </TabPanel> */}
                    
                   </TabPanels>
                 </Tabs>
