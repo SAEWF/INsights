@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
+import { Box, } from '@chakra-ui/react'; 
 import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card} from 'react-bootstrap';
 import {Flex, Heading, Spinner, Tabs, TabList, TabPanels, Tab, TabPanel 
 } from '@chakra-ui/react'; //
+import { useSelector } from '../../reducer';
 // import defaultAvatar from '../common/assets/defaultAvatar.jpg' ;
 import defaultBanner from '../common/assets/defaultBanner.jpg';
-import ArtistProfileCard from './ArtistProfileCard';
-import ArtistNftProfileCard from './ArtistNftProfileCard';
+// import ArtistProfileCard from './ArtistProfileCard';
+import TokenCard from '../Marketplace/Catalog/TokenCard';
 
 const useItems = (usernameFromUrl: string) => {
   const [tasks, setTasks] = useState<TasksType[]>([]);
@@ -21,11 +23,6 @@ const useItems = (usernameFromUrl: string) => {
       .equalTo(usernameFromUrl)
       .on('value', snapshot => {
         const fetchedTasks: any[] = [];
-        // if (snapshot.val() === null) { 
-        //   console.log('id is not present in firebase');
-        // } else {
-        //   console.log('id is present in firebase');
-        // }
         snapshot.forEach(childSnapshot => {
           const key = childSnapshot.key;
           const data = childSnapshot.val();
@@ -38,51 +35,92 @@ const useItems = (usernameFromUrl: string) => {
   return tasks;
 }
 
-const getNfts = async (walletID: string) =>{
-  console.log('walletID', walletID);
-  const db = firebase.firestore();
-  let nfts: any[] = [];
-  var docRef = db.collection('nfts').doc(walletID).collection('NFTcollection');
-  await docRef.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      nfts.push(doc.data());
-    });
-  });
-
-  return nfts;
-
-  // if(nfts){
-  //   console.log('nfts', nfts);
-  // }
-}
+const GetNfts = (userdata: TasksType[]) =>{
   
-  // const listener = ref.child(walletID).on('value', snapshot => {
-  //   const fetchedTasks: any[] = [];
-  //   snapshot.forEach(childSnapshot => {
-  //     const key = childSnapshot.key;
-  //     const data = childSnapshot.val();
-  //     fetchedTasks.push({ id: key, ...data });
-  //   });
-  //   return fetchedTasks;
-  // });
-  // return listener;
-// }
+  const [nft, setNft] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fetchData(userdata: TasksType[]) {
+      if(userdata.length === 0){
+        return;
+      }
+      const walletID = userdata[0].walletAddress;
+      if(walletID === undefined || walletID === ''){
+        return;
+      }
+      const db = firebase.firestore();
+      let nfts: any[] = [];
+      var docRef = db.collection('nfts').doc(walletID).collection('Creations');
+      await docRef.get().then(async (querySnapshot) => {
+        await querySnapshot.forEach((doc) => {
+          // console.log(doc.id, " => ", doc.data());
+          nfts.push(doc.data());
+        });
+      }, (error) => {
+        console.log("Error getting documents: ", error);
+      });
+      setNft(nfts);
+      return () => {
+        // console.log('unmount');
+      }
+    }
+    fetchData(userdata);
+  }, [userdata, nft, setNft]);
+
+  if(nft.length === 0){
+    return [];
+  }
+  return nft;
+}
+
+const GetCollectedNfts = (userdata: TasksType[]) =>{
+  
+  const [nft, setNft] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fetchData(userdata: TasksType[]) {
+      if(userdata.length === 0){
+        return;
+      }
+      const walletID = userdata[0].walletAddress;
+      if(walletID === undefined || walletID === ''){
+        return;
+      }
+      const db = firebase.firestore();
+      let nfts: any[] = [];
+      var docRef = db.collection('nfts').doc(walletID).collection('Collections');
+      await docRef.get().then(async (querySnapshot) => {
+        await querySnapshot.forEach((doc) => {
+          // console.log(doc.id, " => ", doc.data());
+          nfts.push(doc.data());
+        });
+      }, (error) => {
+        console.log("Error getting documents: ", error);
+      });
+      setNft(nfts);
+      return () => {
+        // console.log('unmount');
+      }
+    }
+    fetchData(userdata);
+  }, [userdata, nft, setNft]);
+
+  if(nft.length === 0){
+    return [];
+  }
+  return nft;
+}
+
 
 
 export default function ArtistProfile(props: PropType) {
+
+  const { system, marketplace: state } = useSelector(s => s);
+
   var usernameFromUrl: string = props.username
   const userData = useItems(usernameFromUrl);
-  // console.log("userData")
-  // const [walletID, setWalletID] = useState<string>("");
-  // console.log("USERDATA",userData);
-
-  if(userData.length !== 0){
-    // setWalletID(userData[0].walletAddress);
-    console.log('userData', userData);
-    const nft = getNfts(userData[0].walletAddress);
-    console.log("nft", nft);
-  }
+  const CreatedNFTs = GetNfts(userData);
+  const CollectedNFTs = GetCollectedNfts(userData);
 
   // console.log("nfts", nfts);
   return (
@@ -97,8 +135,8 @@ export default function ArtistProfile(props: PropType) {
         </Flex>
         : userData.map(item => (
           <>
-          {/* {console.log("item.artTokens")}
-              {console.log(item.artTokens)} */}
+          {/* {console.log("item")}
+              {console.log(item)} */}
               
             <div className="user-profile-block">
               <div className="user-profile-banner">
@@ -124,25 +162,6 @@ export default function ArtistProfile(props: PropType) {
                 <Row className="my-5">
                   {/* sidebar */}
                   <Col sm={12} md={3}>
-                      {/* <h2 className="user-profile-name font-weight-bold mb-2 pl-1">{item.name}</h2> */}
-
-                      {/* <Card border="light" className="text-left p-2" >
-                        <Card.Header className="font-weight-bold"><i className="far fa-user"></i> Username</Card.Header>
-                        <Card.Body>
-                          <Card.Text>
-                            {item.username}
-                          </Card.Text>
-                        </Card.Body>
-                      </Card> */}
-
-                      {/* <Card border="light" className="text-left p-2" >
-                        <Card.Header className="font-weight-bold"><i className="far fa-envelope"></i> E-mail </Card.Header>
-                        <Card.Body>
-                          <Card.Text>
-                                {item.email!=="" ?<>{item.email}</> :"No e-mail provided"}
-                          </Card.Text>
-                        </Card.Body>
-                      </Card> */}
 
                       <Card border="light" className="text-left p-2 mt-2 mb-4" >
                         <Card.Header className="font-weight-bold"><i className="far fa-compass"></i> Wallet Address </Card.Header>
@@ -157,10 +176,6 @@ export default function ArtistProfile(props: PropType) {
                       <Card border="light" className="text-left p-2 " >
                         <Card.Header className="font-weight-bold"><i className="fas fa-link"></i> Social Media</Card.Header>
                         <Card.Body>
-                          {/* <Card.Title>Light Card Title</Card.Title> */}
-                          {/* <Card.Text>
-                             tz1LjLHwTthS3DU542igtZfqQCaiM7fz9C2C
-                          </Card.Text> text-center*/}
 
                         <ul className="social-icons mt-2">
                             {(item.twt) !==""? <li><a className="twitter" href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
@@ -176,50 +191,63 @@ export default function ArtistProfile(props: PropType) {
 
                   {/* column 2 start */}
                   <Col sm={12} md={9}>
-                    {/* <div className="three mb-3">
-                      <h1>Originally Created</h1>
-                    </div>
-                    {(item.artTokens !== undefined)
-                    ? <ArtistProfileCard artTokens={item.artTokens}/>
-                    :<h2>No NFT to display by this artist</h2>} */}
 
                 <Tabs size="lg" variant="line">
                   <TabList>
-                    <Tab defaultIndex={1}>NFTs</Tab>
-                    <Tab >Sold NFTs</Tab>
-                    <Tab >Collected NFTs</Tab>
+                    <Tab defaultIndex={1}>Creations</Tab>
+                    <Tab >Collections</Tab>
                   </TabList>
                   <TabPanels>
                     {/* 3 TabPanel */}
                     <TabPanel>
-                    {(item.artTokens !== undefined || item.artTokensWithAddr !== undefined)
-                    ? <>
-                     <Container>
-                        <Row xs={1} md={2} lg={3} xl={3}>
-                          {(item.artTokens !== undefined) ? <ArtistProfileCard artTokens={item.artTokens}/>:""}
-                          {(item.artTokensWithAddr !== undefined)? <ArtistNftProfileCard artTokensWithAddr={item.artTokensWithAddr}/> :""}
-                        </Row>
-                      </Container>
-                    </>
-                    :<h2>No NFT to display by this artist</h2>}
-                    </TabPanel>
-                    <TabPanel>
-                    {(item.soldTokens !== undefined)
-                    ? <>
-                        <Container>
+                    {
+                      (CreatedNFTs.length>0)
+                      ? <>
+                      <Container>
                           <Row xs={1} md={2} lg={3} xl={3}>
-                            <ArtistProfileCard artTokens={item.soldTokens}/>
+                            {
+                              CreatedNFTs.map((token)=>{
+                                return (
+                                  <Col >
+                                    <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
+                                    <TokenCard
+                                      key={`${token.address}-${token.id}`}
+                                      config={system.config}
+                                      {...token}
+                                    />
+                                  </Box>
+                                </Col>
+                                );
+                              })
+                            }
                           </Row>
                         </Container>
                       </>
-                    :<h2>No Sold NFT to display by this artist</h2>}
+                      :
+                      <h2>No Created NFT to display by this artist</h2>
+                    }
+                    
                     </TabPanel>
                     <TabPanel>
-                    {(item.collectedTokens !== undefined)
+                    {(CollectedNFTs.length>0)
                     ? <>
                         <Container>
                           <Row xs={1} md={2} lg={3} xl={3}>
-                              <ArtistProfileCard artTokens={item.collectedTokens}/>
+                            {
+                              CollectedNFTs.map((token)=>{
+                                return (
+                                  <Col >
+                                    <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
+                                    <TokenCard
+                                      key={`${token.address}-${token.id}`}
+                                      config={system.config}
+                                      {...token}
+                                    />
+                                  </Box>
+                                </Col>
+                                );
+                              })
+                            }
                           </Row>
                         </Container>
                       </>
