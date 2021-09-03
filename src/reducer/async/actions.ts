@@ -28,7 +28,7 @@ import parse from 'csv-parse/lib/sync';
 import * as t from 'io-ts';
 import UpdateArtTokenInFirebase from '../../components/Artist/UpdateArtTokenInFB';
 import UpdateSoldnCollectedTokenInFB from '../../components/Artist/UpdateSoldnCollectedTokenInFB';
-import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
+// import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
 type Options = {
   state: State;
@@ -259,13 +259,13 @@ export const mintTokenAction = createAsyncThunk<
       if(editionNo>=2){
         console.log("metadataArray in mintToken");
         console.log(metadataArray);
-        const op = await mintTokens(system, address, metadataArray);
+        const op = await mintTokens(system, address, metadataArray); // minting multiple tokens
         const pendingMessage = `Minting new tokens from multiple editions`;
         dispatch(notifyPending(requestId, pendingMessage));
         await op.confirmation(2);
 
         const fulfilledMessage = `Created new tokens from multiple editions in ${address}`;
-        UploadNftToFireStore(system.tzPublicKey,address,metadata, file);
+        // UploadNftToFireStore(system.tzPublicKey,address,metadata); changed location to mintTokens function
         dispatch(notifyFulfilled(requestId, fulfilledMessage));
         dispatch(getContractNftsQuery(address));
         return { contract: address, metadata };
@@ -280,7 +280,7 @@ export const mintTokenAction = createAsyncThunk<
         await op.confirmation(2);
 
         const fulfilledMessage = `Created new token: ${metadata.name} in ${address}`;
-        UploadNftToFireStore(system.tzPublicKey,address,metadata, file);
+        // UploadNftToFireStore(system.tzPublicKey,address,metadata); changed to mint token function
         dispatch(notifyFulfilled(requestId, fulfilledMessage));
         dispatch(getContractNftsQuery(address));
         return { contract: address, metadata };

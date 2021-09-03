@@ -4,6 +4,7 @@ import {
   Fa2MultiNftFaucetCode
 } from '@tqtezos/minter-contracts';
 import { Buffer } from 'buffer';
+import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore';
 import { SystemWithWallet } from '../system';
 import { uploadIPFSJSON } from '../util/ipfs';
 import { NftMetadata } from './decoders';
@@ -88,24 +89,18 @@ export async function mintToken(
     decimals: 0,
     booleanAmount: true
   });
+  // console.log("TOKEN INFO", token_id.c[0]);
   token_info.set('', toHexString(resp.data.ipfsUri));
 
-  console.log("src lib nfts actions.ts");
+  console.log("src lib nfts actions.ts single edition");
   console.log(system.tzPublicKey);
   console.log(metadata);
   console.log(contract);
   console.log(storage);
   console.log(token_id);
   console.log(token_info);
-  // {
-  //   "s": 1,
-  //   "e": 17,
-  //   "c": [
-  //     7643,
-  //     23997852433226
-  //   ]
-  // } 76432 3997852432
   
+  UploadNftToFireStore(system.tzPublicKey, address, metadata, token_id.c[0]);
 
   return contract.methods
     .mint([
@@ -137,6 +132,7 @@ export async function mintTokens(
   const storage = await contract.storage<any>();
 
   const token_id = storage.assets.next_token_id;
+  
   const mints: MintData[] = [];
   for (const [index, meta] of metadata.entries()) {
     const token_info = new MichelsonMap<string, string>();
@@ -153,6 +149,8 @@ export async function mintTokens(
         token_info
       }
     });
+    /// ask 
+    UploadNftToFireStore(system.tzPublicKey, address, meta, (Number(token_id) + Number(index)));
   }
   return contract.methods.mint(mints).send();
 }
