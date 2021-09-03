@@ -2,120 +2,65 @@
 import firebase from '../../lib/firebase/firebase';
 
 const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)=>{
-  //  var buyerWallAdd = "tz1LjLHwTthS3DU542igtZfqQCaiM7fz9C2C";
-  //  var sellerWallAdd = "tz1PVw6WbK9pKjzLTxaWdHzXBskMiZLTaKuS";
-  //  var tokenId = 133;
+    // testing
+    // console.log(buyerWallAdd);
+    // console.log(sellerWallAdd);
+    // console.log(tokenId);
 
-  //  console.log("UpdateSoldnCollectedTokenInFB")
+    const docID = await getDocIDFromFB(sellerWallAdd, tokenId);
 
-    const ref = firebase.database().ref("data");
-    var getKey=""
-    // eslint-disable-next-line 
-    const listener = ref
-      .orderByChild("walletAddress")
-      .equalTo(buyerWallAdd)
-      .once('value', snapshot => {
-          if (snapshot.val() === null) {
-          console.log('id is not present in firebase buyerWallAdd');
-          } 
-          else {
-        // console.log(snapshot.val());
 
-              console.log('id is present in firebase buyerWallAdd');
-              snapshot.forEach(childSnapshot => {
-                  const key = childSnapshot.key;
-                  console.log("key")
-                  console.log(key);
-                  getKey= key!==null?key:""
-                  // const data = childSnapshot.val();
-              })
-           var dbQuery = ref.child(getKey+"/collectedTokens");
-           // eslint-disable-next-line 
-           var pushQuery = dbQuery.push(tokenId);
-          removOneArtTokensValue(buyerWallAdd,tokenId)
+    if(docID==="") return;
 
-          }
-      });
+    const db = firebase.firestore();
+    var document  = db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID);
+    var nft = await document.get().then((doc) => {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+        const data = doc.data();
+        return data;
+      }
+      else {
+        console.log("No such document!");
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
 
-    // eslint-disable-next-line 
-        const listener1 = ref
-      .orderByChild("walletAddress")
-      .equalTo(sellerWallAdd)
-      .once('value', snapshot => {
-          if (snapshot.val() === null) {
-          console.log('id is not present in firebase sellerWallAdd');
-          } 
-          else {
-        // console.log(snapshot.val());
+    if(nft===undefined){
+      console.log("No such document!");
+      return;
+    }
 
-              console.log('id is present in firebase sellerWallAdd');
-              snapshot.forEach(childSnapshot => {
-                  const key = childSnapshot.key;
-                  console.log("key")
-                  console.log(key);
-                  getKey= key!==null?key:""
-                  // const data = childSnapshot.val();
-              })
-           var dbQuery = ref.child(getKey+"/soldTokens");
-           // eslint-disable-next-line 
-           var pushQuery = dbQuery.push(tokenId);
-          removOneArtTokensValue(sellerWallAdd,tokenId)
+    await db.collection('nfts').doc(buyerWallAdd).collection('Collections').add(nft).then(function(docRef) {
+      console.log('Document uploaded to Firestore', docRef.id);
+    });
 
-          }
-      });
+    await db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID).delete().then(function() {
+      console.log("Document successfully deleted!");
+    }).catch(function(error) {
+      console.error("Error removing document: ", error);
+    });
 
     return null;
 };
 
-const removOneArtTokensValue = async (walletAddress,tokenId)=>{
-
-      var artTokensFromDb
-      var keyOfFoundToken =""
-
-      const ref = firebase.database().ref("data");
-      var getKey=""
-      // eslint-disable-next-line 
-      const listener = ref
-        .orderByChild("walletAddress")
-        .equalTo(walletAddress)
-        .once('value', snapshot => {
-            if (snapshot.val() === null) {
-            console.log('id is not present in firebase removOneArtTokensValue');
-            } 
-            else {
-                console.log('id is present in firebase removOneArtTokensValue');
-                snapshot.forEach(childSnapshot => {
-                    const key = childSnapshot.key;
-                    const data = childSnapshot.val();
-            // get key logic
-                    console.log("key")
-                    console.log(key);
-                    getKey= key!==null?key:""
-            // get data logic
-                    console.log("artTokensFromDb")
-                    artTokensFromDb = data.artTokens
-                    console.log(artTokensFromDb);
-  
-                    const keys = Object.keys(artTokensFromDb);
-                     keys.forEach((key, index) => {
-                       if(artTokensFromDb[key]===tokenId ){
-                          console.log('artTokensFromDb is not present in firebase');
-                          keyOfFoundToken = key;
-                       }
-                       else{
-                        console.log('artTokensFromDb is not present in firebase');
-                      }
-                        // console.log(`${key}: ${artTokensFromDb[key]}`);
-                    });
-                   
-                })
-                if(keyOfFoundToken!==""){
-                  var dbQuery = ref.child(getKey+"/artTokens/"+keyOfFoundToken);
-                  // eslint-disable-next-line 
-                  var pushQuery = dbQuery.remove();
-                }
-            }
-        });
+const getDocIDFromFB = async (walletID, tokenId)=>{
+  const db = firebase.firestore();
+  var docID ="";
+  var docRef = db.collection('nfts').doc(walletID).collection('Creations');
+  await docRef.get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      if(doc.data().id === tokenId){
+        console.log(doc.id);
+        docID = doc.id;
+        return doc.id;
+      }
+    });
+  }, (error) => {
+    console.log("Error getting documents: ", error);
+  });
+  return docID;
 }
 
 export default UpdateSoldnCollectedTokenInFB;
