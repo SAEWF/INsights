@@ -7,11 +7,13 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
     // console.log(sellerWallAdd);
     // console.log(tokenId);
 
+    // getting the ID of NFT token to be transacted
     const docID = await getDocIDFromFB(sellerWallAdd, tokenId);
 
 
     if(docID==="") return;
 
+    // getting the NFT data  from firebase
     const db = firebase.firestore();
     var document  = db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID);
     var nft = await document.get().then((doc) => {
@@ -32,12 +34,19 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
       return;
     }
 
+
+    // Creating token in buyer database
     await db.collection('nfts').doc(buyerWallAdd).collection('Collections').add(nft).then(function(docRef) {
       console.log('Document uploaded to Firestore', docRef.id);
     });
 
-    await db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID).delete().then(function() {
-      console.log("Document successfully deleted!");
+    // Updating token from seller database
+    await db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID)
+    .update({
+      "title": "SOLD",
+    })
+    .then(function() {
+      console.log("Document successfully Updated!");
     }).catch(function(error) {
       console.error("Error removing document: ", error);
     });
