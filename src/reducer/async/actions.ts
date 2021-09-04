@@ -576,10 +576,11 @@ export const buyTokenAction = createAsyncThunk<
   { contract: string; tokenId: number; tokenSeller: string; salePrice: number; saleId: number; saleType: string },
   Options
 >('action/buyToken', async (args, api) => {
-  // UpdateSoldnCollectedTokenInFB(); testing
   const { getState, rejectWithValue, dispatch, requestId } = api;
   const { contract, tokenId, tokenSeller, salePrice, saleId, saleType } = args;
   let { system } = getState();
+  // UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId); //testing
+
   const marketplaceContract =
     system.config.contracts.marketplace.fixedPrice.tez;
   if (system.status !== 'WalletConnected') {
@@ -619,6 +620,7 @@ export const buyTokenAction = createAsyncThunk<
     dispatch(notifyFulfilled(requestId, fulfilledMessage));
     dispatch(getContractNftsQuery(contract));
     
+    // upload sold result to firebase
     UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
 
     return { contract: contract, tokenId: tokenId, saleId: saleId, saleType: saleType };

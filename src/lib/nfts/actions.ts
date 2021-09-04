@@ -92,13 +92,13 @@ export async function mintToken(
   // console.log("TOKEN INFO", token_id.c[0]);
   token_info.set('', toHexString(resp.data.ipfsUri));
 
-  console.log("src lib nfts actions.ts single edition");
-  console.log(system.tzPublicKey);
-  console.log(metadata);
-  console.log(contract);
-  console.log(storage);
-  console.log(token_id);
-  console.log(token_info);
+  // console.log("src lib nfts actions.ts");
+  // console.log(system.tzPublicKey);
+  // console.log(metadata);
+  // console.log(contract);
+  // console.log(storage);
+  // console.log(token_id);
+  // console.log(token_info);
   
   UploadNftToFireStore(system.tzPublicKey, address, metadata, token_id.c[0]);
 
@@ -149,7 +149,7 @@ export async function mintTokens(
         token_info
       }
     });
-    /// ask 
+    /// upload data to firestore
     UploadNftToFireStore(system.tzPublicKey, address, meta, (Number(token_id) + Number(index)));
   }
   return contract.methods.mint(mints).send();
