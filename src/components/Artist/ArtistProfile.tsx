@@ -65,7 +65,7 @@ const GetNfts = (userdata: TasksType[]) =>{
       }
     }
     fetchData(userdata);
-  }, [userdata, nft, setNft]);
+  }, [userdata]);
 
   if(nft.length === 0){
     return [];
@@ -103,7 +103,7 @@ const GetCollectedNfts = (userdata: TasksType[]) =>{
       }
     }
     fetchData(userdata);
-  }, [userdata, nft, setNft]);
+  }, [userdata]);
 
   if(nft.length === 0){
     return [];
