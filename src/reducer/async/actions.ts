@@ -612,6 +612,7 @@ export const buyTokenAction = createAsyncThunk<
         salePrice
       );
     }
+    UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
     const pendingMessage = `Buying token from ${tokenSeller} for ${salePrice}`;
     dispatch(notifyPending(requestId, pendingMessage));
     await op.confirmation(2);
@@ -621,7 +622,7 @@ export const buyTokenAction = createAsyncThunk<
     dispatch(getContractNftsQuery(contract));
     
     // upload sold result to firebase
-    UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
+    // UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
 
     return { contract: contract, tokenId: tokenId, saleId: saleId, saleType: saleType };
   } catch (e) {
