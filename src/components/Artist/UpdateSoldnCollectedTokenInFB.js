@@ -1,6 +1,8 @@
 // --this file used to Update Art Token In Firebase when artists list nft for sell. imported in src\reducer\async\actions.ts--
 import firebase from '../../lib/firebase/firebase';
 
+
+let creation = true;
 const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)=>{
     // testing
     // console.log(buyerWallAdd);
@@ -15,7 +17,13 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
 
     // getting the NFT data  from firebase
     const db = firebase.firestore();
-    var document  = db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID);
+    var document
+    if(creation){
+      document  = db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID);
+    }
+    else{
+      document  = db.collection('nfts').doc(sellerWallAdd).collection('Collections').doc(docID);
+    }
     var nft = await document.get().then((doc) => {
       if (doc.exists) {
         console.log("Document data:", doc.data());
@@ -41,7 +49,8 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
     });
 
     // Updating token from seller database
-    await db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID)
+    var collectionName = creation?'Creations': 'Collections';
+    await db.collection('nfts').doc(sellerWallAdd).collection(collectionName).doc(docID)
     .update({
       "title": "SOLD",
     })
@@ -69,6 +78,23 @@ const getDocIDFromFB = async (walletID, tokenId)=>{
   }, (error) => {
     console.log("Error getting documents: ", error);
   });
+
+  if(docID!=="") return docID;
+  creation = false;
+
+  docRef = db.collection('nfts').doc(walletID).collection('Collections');
+  await docRef.get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      if(doc.data().id === tokenId){
+        console.log(doc.id);
+        docID = doc.id;
+        return doc.id;
+      }
+    });
+  }, (error) => {
+    console.log("Error getting documents: ", error);
+  });
+
   return docID;
 }
 
