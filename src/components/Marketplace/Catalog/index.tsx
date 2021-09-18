@@ -14,15 +14,18 @@ import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 export default function Catalog() {
   const { system, marketplace: state } = useSelector(s => s);
   const dispatch = useDispatch();
-  const blackList = ['tz1WAVwFGhUHFBKpt1FQAnw6ze36cGeoeWaz','tz1hMGujLmhUhe5U828JLPfdKGodAf91kEiR','tz1eQn3RDtX1eDNjmEA5CUZpn2cMkmx8SpZY'];
 
-  useEffect(() => {
-    dispatch(getMarketplaceNftsQuery(state.marketplace.address));
-  }, [state.marketplace.address, dispatch]);
+  // blackList for wallet address 
+  // it will block display of minted nfts from them 
+  const blackList = ['tz1VSZaQdqQwWcqdLiJnQwPJkushYVq51PSX'];
 
-  const loadMore = () => {
-    dispatch(loadMoreMarketplaceNftsQuery({}));
-  };
+    useEffect(() => {
+      dispatch(getMarketplaceNftsQuery(state.marketplace.address));
+    }, [state.marketplace.address, dispatch]);
+
+    const loadMore = () => {
+      dispatch(loadMoreMarketplaceNftsQuery({}));
+    };
 
     let tokenss = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
     let tokens = tokenss.filter(x => !blackList.includes(x.metadata.minter!));

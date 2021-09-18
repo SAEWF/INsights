@@ -24,7 +24,6 @@ import { MdCollections } from 'react-icons/md';
 import { useSelector, useDispatch } from '../../reducer';
 import { connectWallet, disconnectWallet } from '../../reducer/async/wallet';
 import { MinterButton } from '.';
-// import logo from './assets/splash-logo.svg';
 import wallet_icon from './assets/wallet.svg';
 import logo_trans from './assets/logo_bb-transparent.png';
 import Navbar from 'react-bootstrap/Navbar';
@@ -218,9 +217,10 @@ function NavItems() {
                   height="100%"
                 >
                   <Flex flexDir="column">
-                    {/* <MobileHeaderLink to="/marketplace" onClick={onClose}>
-                      Marketplace
-                    </MobileHeaderLink> */}
+
+                    <MobileHeaderLink to="/register" onClick={onClose}>
+                      Register
+                    </MobileHeaderLink>
                     <MobileHeaderLink to="/artists" onClick={onClose}>
                       Artists
                     </MobileHeaderLink>
@@ -284,6 +284,9 @@ function NavItems() {
           </Box>
           <Text ml={2} >Marketplace</Text>
         </DesktopHeaderLink> */}
+        <DesktopHeaderLink to="/register">
+          <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>Register</Text>
+        </DesktopHeaderLink>
         <DesktopHeaderLink to="/artists">
           <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>Artists</Text>
         </DesktopHeaderLink>
