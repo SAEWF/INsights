@@ -17,6 +17,7 @@ import Footer from '../common/Footer';
 import AlertBar from '../common/AlertBar';
 import ArtistList from '../Artist/ArtistList';
 import ArtistProfile from '../Artist/ArtistProfile';
+import RegistrationModal from '../common/RegistrationModel';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -65,6 +66,11 @@ export default function App() {
           <Route path="/collections">
             <>
               <CollectionsCatalog />
+            </>
+          </Route>
+          <Route path="/register">
+            <>
+              <RegistrationModal />
             </>
           </Route>
           <Route path="/marketplace">
