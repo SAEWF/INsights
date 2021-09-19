@@ -30,7 +30,7 @@ function Example(props: any) {
 
     const RegisterUser = async () => {
       document.querySelector('.registrationError')!.innerHTML = "";
-      document.querySelector('.successMessage')!.innerHTML = "";
+      document.querySelector('.succesmdessage')!.innerHTML = "";
       document.querySelector('.passcheck')!.innerHTML = "";
       document.querySelector('.passcheck2')!.innerHTML = "";
       document.querySelector('.twtcheck')!.innerHTML = "";
@@ -75,14 +75,14 @@ function Example(props: any) {
             // ..
           });
 
-          if(!ahead) return;
+          if(!ahead || url===undefined) return;
           var data = {...formData,"avatar":url}
 
           await setFormData(data);
           console.log("FINAL",data);
           await docRef.set(data).then(() => {
             setSuccess(true);
-            document.querySelector('.successMessage')!.innerHTML = "You have been registered . Stay tuned for more updates .";
+            document.querySelector('.succesmdessage')!.innerHTML = "You have been registered . Stay tuned for more updates .";
             console.log("Document successfully written!");
           })
           .catch((error)=>{
@@ -163,12 +163,6 @@ function Example(props: any) {
         }
         if(e.target.name==='password'){
           setPassword(e.target.value);
-          // if(e.target.value.length <= 8){
-          //   document.querySelector('.passcheck')!.innerHTML = "Length of password must be greater than 8";
-          // }
-          // else{
-          //   document.querySelector('.passcheck')!.innerHTML = "";
-          // }
           return;
         }
         if(e.target.name==='cpassword'){
@@ -209,15 +203,6 @@ function Example(props: any) {
             setDisable(true);
             await RegisterUser();
             setDisable(false);
-            setPassword("");
-            setDesc("");
-            setCountry("");
-            setWalletID("");
-            setCpassword("");
-            setFile(null);
-            setEmail("");
-            setTwt("");
-            setName("");
         }
         else{
               document.querySelector('.passcheck2')!.innerHTML = "Both passwords dont match . Try again !";
@@ -240,7 +225,7 @@ function Example(props: any) {
         <div className="one mt-4 mb-3">
             <h1>Artist Registration</h1>
         </div>
-        <div className="successMessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green'}}>
+        <div className="succesmdessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green', fontSize: '30px', marginTop: '15%'}}>
           You have been registered . We will return to you soon .
         </div>
         </Container>
@@ -264,69 +249,69 @@ function Example(props: any) {
             <h1>Artist Registration</h1>
           </div>
           <div className="registrationError" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'red'}}></div>
-          <div className="successMessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green'}}></div>
+          <div className="succesmdessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green'}}></div>
           <br />
           <Form id="myform" onSubmit={handleSignup} onChange={handleChange}>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Name *</Form.Label>
-                <Form.Control value={name} className="col-sm-7 col-12" type="text" name="name" id="name" placeholder="Name" required={true}/>
+                <Form.Label className="col-md-5 col-12" >Name *</Form.Label>
+                <Form.Control value={name} className="col-md-5 col-12" type="text" name="name" id="name" placeholder="Name" required={true}/>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Email-id *</Form.Label>
-                <Form.Control value={email} className="col-sm-7 col-12" type="email" name="email" id="email" placeholder="Email" required={true}/>
+                <Form.Label className="col-md-5 col-12" >Email-id *</Form.Label>
+                <Form.Control value={email} className="col-md-5 col-12" type="email" name="email" id="email" placeholder="Email" required={true}/>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Description *</Form.Label>
-                <Form.Control value={desc} className="col-sm-7 col-12" as="textarea" rows={3} name="description" id="desc" placeholder="Description" required={true}/>
+                <Form.Label className="col-md-5 col-12" >Description *</Form.Label>
+                <Form.Control value={desc} className="col-md-5 col-12" as="textarea" rows={3} name="description" id="desc" placeholder="Description" required={true}/>
                 <div className="desccheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Profile Picture *</Form.Label>
-                <Form.Control className="col-sm-7 col-12" accept="image/*" type="file" name="avatar" id="name" required={true}/>
+                <Form.Label className="col-md-5 col-12" >Profile Picture *</Form.Label>
+                <Form.Control className="col-md-5 col-12" accept="image/*" type="file" name="avatar" id="name" required={true}/>
                 <div className="avatarcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Country *</Form.Label>
-                <div className="col-sm-7 col-12" style={{color: 'black'}}>
+                <Form.Label className="col-md-5 col-12" >Country *</Form.Label>
+                <div className="col-md-7 col-12" style={{color: 'black'}}>
                   <CountryDropdown name="country" value={country} onChange={selectCountry} />
                 </div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Password *</Form.Label>
-                <Form.Control value={password} className="col-sm-7 col-12" type="password" name="password" id="password" placeholder="password" required={true}/>
-                <div style={{margin: 'auto 0 auto auto', color: 'red', fontSize: '10px'}}>
+                <Form.Label className="col-md-5 col-12" >Password *</Form.Label>
+                <Form.Control value={password} className="col-md-5 col-12" type="password" name="password" id="password" placeholder="password" required={true}/>
+                <div className="col-md-5 col-12" style={{margin: 'auto 16% auto auto', color: 'red', fontSize: '10px'}}>
                   <div className="passcheck">We recommend to use a strong password</div>
                   <PasswordStrengthBar password={password} />
                 </div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Confirm Password *</Form.Label>
-                <Form.Control value={cpassword} className="col-sm-7 col-12" type="password" name="cpassword" id="cpassword" placeholder="Confirm password" required={true}/>
+                <Form.Label className="col-md-5 col-12" >Confirm Password *</Form.Label>
+                <Form.Control value={cpassword} className="col-md-5 col-12" type="password" name="cpassword" id="cpassword" placeholder="Confirm password" required={true}/>
                 <div className="passcheck2" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Tezos Wallet Address *</Form.Label>
-                <Form.Control value={walletID} className="col-sm-7 col-12" type="text" name="walletAddress" id="walletAddress" placeholder="Wallet Address" required={true}/>
+                <Form.Label className="col-md-5 col-12" >Tezos Wallet Address *</Form.Label>
+                <Form.Control value={walletID} className="col-md-5 col-12" type="text" name="walletAddress" id="walletAddress" placeholder="Wallet Address" required={true}/>
                 <div className="walletcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Twitter Handle *</Form.Label>
-                <Form.Control value={twt} className="col-sm-7 col-12" type="url" name="twt" id="twitter" placeholder="https://twitter.com/example" required={true}/>
+                <Form.Label className="col-md-5 col-12" >Twitter Handle *</Form.Label>
+                <Form.Control value={twt} className="col-md-5 col-12" type="url" name="twt" id="twitter" placeholder="https://twitter.com/name" required={true}/>
                 <div className="twtcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Instagram Link</Form.Label>
-                <Form.Control value={instagram} className="col-sm-7 col-12" type="url" name="ig" id="instagram" placeholder="https://www.instagram.com/example"/>
+                <Form.Label className="col-md-5 col-12" >Instagram Link</Form.Label>
+                <Form.Control value={instagram} className="col-md-5 col-12" type="url" name="ig" id="instagram" placeholder="https://www.instagram.com/name"/>
                 <div className="igcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Youtube Channel</Form.Label>
-                <Form.Control value={utube} className="col-sm-7 col-12" type="url" name="yt" id="youtube" placeholder="https://www.youtube.com/channel/example" />
+                <Form.Label className="col-md-5 col-12" >Youtube Channel</Form.Label>
+                <Form.Control value={utube} className="col-md-5 col-12" type="url" name="yt" id="youtube" placeholder="https://www.youtube.com/channel/name" />
                 <div className="utubecheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="row">
-                <Form.Label className="col-sm-5 col-12" >Linktree</Form.Label>
-                <Form.Control value={linktr} className="col-sm-7 col-12" type="url" name="lt" id="linktree" placeholder="https://linktr.ee/example" />
+                <Form.Label className="col-md-5 col-12" >Linktree</Form.Label>
+                <Form.Control value={linktr} className="col-md-5 col-12" type="url" name="lt" id="linktree" placeholder="https://linktr.ee/name" />
                 <div className="ltcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
 

@@ -194,8 +194,8 @@ export default function ArtistProfile(props: PropType) {
 
                 <Tabs size="lg" variant="line">
                   <TabList>
-                    <Tab defaultIndex={1}>Creations</Tab>
-                    <Tab >Collections</Tab>
+                    <Tab defaultIndex={1}>Creations ( {CreatedNFTs.length} )</Tab>
+                    <Tab >Collections ( {CollectedNFTs.length} )</Tab>
                   </TabList>
                   <TabPanels>
                     {/* 3 TabPanel */}
