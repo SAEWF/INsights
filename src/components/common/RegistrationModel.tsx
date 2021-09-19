@@ -17,7 +17,7 @@ function Example(props: any) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [cpassword, setCpassword] = useState('');
-    const [disable, setDisable] = useState(false);
+    const [disable, setDisable] = useState(true);
     const [file, setFile] = useState(null);
     const [utube, setUtube] = useState('');
     const [instagram, setInstagram] = useState('');
@@ -30,7 +30,7 @@ function Example(props: any) {
 
     const RegisterUser = async () => {
       document.querySelector('.registrationError')!.innerHTML = "";
-      document.querySelector('.succesmdessage')!.innerHTML = "";
+      document.querySelector('.successMessage')!.innerHTML = "";
       document.querySelector('.passcheck')!.innerHTML = "";
       document.querySelector('.passcheck2')!.innerHTML = "";
       document.querySelector('.twtcheck')!.innerHTML = "";
@@ -82,7 +82,6 @@ function Example(props: any) {
           console.log("FINAL",data);
           await docRef.set(data).then(() => {
             setSuccess(true);
-            document.querySelector('.succesmdessage')!.innerHTML = "You have been registered . Stay tuned for more updates .";
             console.log("Document successfully written!");
           })
           .catch((error)=>{
@@ -132,7 +131,7 @@ function Example(props: any) {
           setTwt(e.target.value);
         }
         if(e.target.name==='walletAddress'){
-          if( walletID[0]!=='t' || walletID[1]!=='z' || walletID[2]<'0' || walletID[2]>'9' ){
+          if(walletID.length > 3 && (walletID[0]!=='t' || walletID[1]!=='z' || walletID[2]<'0' || walletID[2]>'9')){
             document.querySelector('.walletcheck')!.innerHTML = "Please enter valid Wallet Address !"
           }
           else{
@@ -163,6 +162,10 @@ function Example(props: any) {
         }
         if(e.target.name==='password'){
           setPassword(e.target.value);
+          return;
+        }
+        if(e.target.name==='terms'){
+          setDisable(!disable);
           return;
         }
         if(e.target.name==='cpassword'){
@@ -200,7 +203,16 @@ function Example(props: any) {
           document.querySelector('.ltcheck')!.innerHTML = "Please enter valid Linktr Handle";
         }
         else if(event.target.password.value === event.target.cpassword.value && isValid(walletID)){
-            setDisable(true);
+            if(linktr===""){
+              setFormData({...formData, "lt" : ''});
+            }
+            if(utube===""){
+              setFormData({...formData, "yt" : ''});
+            }
+            if(instagram===""){
+              setFormData({...formData, "ig" : ''});
+            }
+            setDisable(true); 
             await RegisterUser();
             setDisable(false);
         }
@@ -225,8 +237,8 @@ function Example(props: any) {
         <div className="one mt-4 mb-3">
             <h1>Artist Registration</h1>
         </div>
-        <div className="succesmdessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green', fontSize: '30px', marginTop: '15%'}}>
-          You have been registered . We will return to you soon .
+        <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green', fontSize: '30px', marginTop: '15%'}}>
+          You have been registered . We will get back to you soon .
         </div>
         </Container>
         </Flex>
@@ -249,7 +261,7 @@ function Example(props: any) {
             <h1>Artist Registration</h1>
           </div>
           <div className="registrationError" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'red'}}></div>
-          <div className="succesmdessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green'}}></div>
+          <div className="successMessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green'}}></div>
           <br />
           <Form id="myform" onSubmit={handleSignup} onChange={handleChange}>
             <FormGroup className="row">
@@ -291,7 +303,7 @@ function Example(props: any) {
             </FormGroup>
             <FormGroup className="row">
                 <Form.Label className="col-md-5 col-12" >Tezos Wallet Address *</Form.Label>
-                <Form.Control value={walletID} className="col-md-5 col-12" type="text" name="walletAddress" id="walletAddress" placeholder="Wallet Address" required={true}/>
+                <Form.Control onPaste={()=>setWalletID(walletID)} value={walletID} className="col-md-5 col-12" type="text" name="walletAddress" id="walletAddress" placeholder="Wallet Address" required={true}/>
                 <div className="walletcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="row">
@@ -314,7 +326,12 @@ function Example(props: any) {
                 <Form.Control value={linktr} className="col-md-5 col-12" type="url" name="lt" id="linktree" placeholder="https://linktr.ee/name" />
                 <div className="ltcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
-
+            <br />
+            <FormGroup className="row" style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
+                <Form.Control className="col-md-1 col-1" type="checkbox" name="terms" id="terms" />
+                <Form.Label className="col-md-5 col-12" htmlFor="terms">I agree to the Terms of Service of ByteBlock</Form.Label>
+            </FormGroup>
+            
             <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
               <Button disabled={disable} color="primary" type="submit" className="c-button-up">
                 Register
