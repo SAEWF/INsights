@@ -48,6 +48,11 @@ function Example(props: any) {
         }
         else{
           url = await uploadImage(file);
+
+          if(url===undefined || url===""){
+            document.querySelector('.registrationError')!.innerHTML = "Server Error Occured ";
+            return;
+          }
           var ahead = true;
           await firebase.auth().createUserWithEmailAndPassword(email, password)
           .then((userCredential) => {
@@ -75,7 +80,7 @@ function Example(props: any) {
             // ..
           });
 
-          if(!ahead || url===undefined) return;
+          if(!ahead || url===undefined || url==="") return;
           var data = {...formData,"avatar":url}
 
           await setFormData(data);
