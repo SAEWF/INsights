@@ -17,7 +17,7 @@ export default function Catalog() {
 
   // blackList for wallet address 
   // it will block display of minted nfts from them 
-  const blackList = ['tz1VSZaQdqQwWcqdLiJnQwPJkushYVq51PSX'];
+  const blackList = ['tz1VSZaQdqQwWcqdLiJnQwPJkushYVq51PSX','tz1hcWL5pwX65X1kfNTEL3uuAbkXDpUoURRH'];
 
     useEffect(() => {
       dispatch(getMarketplaceNftsQuery(state.marketplace.address));
