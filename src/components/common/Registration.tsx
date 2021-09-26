@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
-import {Button, Form, FormGroup, Container} from 'react-bootstrap';
+import {Form, FormGroup, Container} from 'react-bootstrap';
 import { CountryDropdown } from 'react-country-region-selector';
 import firebase from '../../lib/firebase/firebase'
 import './styles/style.css';
-import {Flex} from '@chakra-ui/react';
+import {Checkbox, Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, InputRightElement, Button} from '@chakra-ui/react';
 import uploadImage from './uploadImage';
-import PasswordStrengthBar from 'react-password-strength-bar';
 
-function Example(props: any) {
+function RegistrationPage(props: any) {
     const [formData, setFormData] = useState({});
     const [country, setCountry] = useState('');
     const [name, setName] = useState('');
@@ -23,10 +22,14 @@ function Example(props: any) {
     const [instagram, setInstagram] = useState('');
     const [linktr, setlinkTree] = useState('');
     const [success, setSuccess] = useState(false);
+    const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const selectCountry = (val: any) => {
       setCountry(val);
-    }
+    };
+
+    const handlePassState = () => setShow(!show);
 
     const RegisterUser = async () => {
       document.querySelector('.registrationError')!.innerHTML = "";
@@ -105,18 +108,42 @@ function Example(props: any) {
     const handleChange = (e: any) =>{
         if(e.target.name==="twt"){
           setTwt(e.target.value);
+          if(!e.target.value.match(/^https:\/\/twitter.com\//)){
+            document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
+          }
+          else{
+            document.querySelector('.twtcheck')!.innerHTML = "";
+          }
         }
         if(e.target.name==="lt"){
           setlinkTree(e.target.value);
+          if(!e.target.value.match(/^https:\/\/linktr\.ee\//)){
+            document.querySelector('.ltcheck')!.innerHTML = "Please enter valid LinkTree Handle";
+          }
+          else{
+            document.querySelector('.ltcheck')!.innerHTML = "";
+          }
         }
         if(e.target.name==="name"){
           setName(e.target.value);
         }
         if(e.target.name==="yt"){
           setUtube(e.target.value);
+          if(!e.target.value.match(/^https:\/\/www\.youtube\.com\/channel\//)){
+            document.querySelector('.utubecheck')!.innerHTML = "Please enter valid Youtube Channel";
+          }
+          else{
+            document.querySelector('.utubecheck')!.innerHTML = "";
+          }
         }
         if(e.target.name==="ig"){
           setInstagram(e.target.value);
+          if(!e.target.value.match(/^https:\/\/www\.instagram\.com\//)){
+            document.querySelector('.igcheck')!.innerHTML = "Please enter valid Instagram Handle";
+          }
+          else{
+            document.querySelector('.igcheck')!.innerHTML = "";
+          }
         }
         if(e.target.name==="description"){
           if(desc.length>200){
@@ -130,11 +157,8 @@ function Example(props: any) {
           }
           setDesc(e.target.value);
         }
-        if(e.target.name==="twitter"){
-          setTwt(e.target.value);
-        }
         if(e.target.name==='walletAddress'){
-          if(walletID.length > 3 && (walletID[0]!=='t' || walletID[1]!=='z' || walletID[2]<'0' || walletID[2]>'9')){
+          if(e.target.value.length >= 3 && (e.target.value[0]!=='t' || e.target.value[1]!=='z' || e.target.value[2]<'0' || e.target.value[2]>'9')){
             document.querySelector('.walletcheck')!.innerHTML = "Please enter valid Wallet Address !"
           }
           else{
@@ -165,6 +189,30 @@ function Example(props: any) {
         }
         if(e.target.name==='password'){
           setPassword(e.target.value);
+
+          // password validations
+          if(e.target.value.length<6){
+            document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
+          }
+          else if(e.target.value.length>20){
+            document.querySelector('.passcheck')!.innerHTML = "Password should be less than 20 characters long.";
+          }
+          else if(!e.target.value.match(/[a-z]/i)){
+            document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
+          }
+          else if(!e.target.value.match(/[A-Z]/i)){
+            document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one uppercase letter.";
+          }
+          else if(!e.target.value.match(/[0-9]/i)){
+            document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one number.";
+          }
+          else if(!e.target.value.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/i)){
+            document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one special character.";
+          }
+          else{
+            document.querySelector('.passcheck')!.innerHTML = "";
+          }
+
           return;
         }
         if(e.target.name==='terms'){
@@ -202,7 +250,7 @@ function Example(props: any) {
         else if(!instagram.match(/^https:\/\/www.instagram.com\// ) && instagram!==""){
           document.querySelector('.igcheck')!.innerHTML = "Please enter valid Instagram Handle";
         }
-        else if(!linktr.match(/^https:\/\/linktr.ee\// ) && linktr!==""){
+        else if(!linktr.match(/^https:\/\/linktr\.ee\// ) && linktr!==""){
           document.querySelector('.ltcheck')!.innerHTML = "Please enter valid Linktr Handle";
         }
         else if(event.target.password.value === event.target.cpassword.value && isValid(walletID)){
@@ -215,9 +263,11 @@ function Example(props: any) {
             if(instagram===""){
               setFormData({...formData, "ig" : ''});
             }
-            setDisable(true); 
+            setLoading(true); 
+            setDisable(true);
             await RegisterUser();
             setDisable(false);
+            setLoading(false);
         }
         else{
               document.querySelector('.passcheck2')!.innerHTML = "Both passwords dont match . Try again !";
@@ -240,7 +290,7 @@ function Example(props: any) {
         <div className="one mt-4 mb-3">
             <h1>Artist Registration</h1>
         </div>
-        <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green', fontSize: '30px', marginTop: '15%'}}>
+        <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'cyan', fontSize: '30px', marginTop: '15%'}}>
           You have been registered . We will get back to you soon .
         </div>
         </Container>
@@ -259,7 +309,8 @@ function Example(props: any) {
         justify="start"
         flexDir="row"
       >
-    <Container>
+    <Container >
+    <Box p={6} maxWidth="100%" borderWidth={3} borderRadius={10} boxShadow="lg">
           <div className="one mt-4 mb-3">
             <h1>Artist Registration</h1>
           </div>
@@ -267,83 +318,169 @@ function Example(props: any) {
           <div className="successMessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green'}}></div>
           <br />
           <Form id="myform" onSubmit={handleSignup} onChange={handleChange}>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Name *</Form.Label>
-                <Form.Control value={name} className="col-md-5 col-12" type="text" name="name" id="name" placeholder="Name" required={true}/>
+            
+            {/* NAME */}
+            <div className="row align-items-center justify-content-center">
+            <FormGroup className="col-md-8 col-12" >
+                <Input value={name} isInvalid errorBorderColor="cyan.300" 
+                  
+                  variant="filled" 
+                  name="name" id="name" 
+                  placeholder="Full Name *" 
+                  isRequired 
+                  style={{margin: 'auto'}} 
+                />
             </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Email-id *</Form.Label>
-                <Form.Control value={email} className="col-md-5 col-12" type="email" name="email" id="email" placeholder="Email" required={true}/>
+            </div>
+
+            {/* EMAIL */}
+            <div className="row align-items-center justify-content-center">
+            <FormGroup className="col-md-8 col-12">
+                <Input value={email} isInvalid type="email" errorBorderColor="cyan.300" 
+                  name="email" id="email"  
+                  variant="filled" 
+                  placeholder="Email *" 
+                  isRequired 
+                  style={{margin: 'auto'}} 
+                />
             </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Description *</Form.Label>
-                <Form.Control value={desc} className="col-md-5 col-12" as="textarea" rows={3} name="description" id="desc" placeholder="Description" required={true}/>
-                <div className="desccheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            </div>
+
+            {/* PASSWORD FORM */}
+            <div className="row align-items-center justify-content-center">
+            <FormGroup className="col-lg-4 col-md-8 col-12" >
+                <InputGroup size="md" >
+                <Input
+                  
+                  name="password" id="password"
+                  value={password}
+                  type={show ? "text" : "password"}
+                  placeholder="Enter password"
+                  isInvalid
+                  isRequired
+                  errorBorderColor="cyan.300"
+                  variant="filled"
+                />
+                <InputRightElement>
+                  <Button size="sm" onClick={handlePassState}>
+                    {show ? "Hide" : "Show"}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <div className="passcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Profile Picture *</Form.Label>
-                <Form.Control className="col-md-5 col-12" accept="image/*" type="file" name="avatar" id="name" required={true}/>
-                <div className="avatarcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            <FormGroup className="col-lg-4 col-md-8 col-12">
+                <Input value={cpassword} 
+                  isInvalid 
+                  type="password" 
+                  errorBorderColor="cyan.300" 
+                  name="cpassword" id="cpassword" 
+                  variant="filled" 
+                  placeholder="Confirm Password" 
+                  isRequired
+                />
+                <div className="passcheck2" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Country *</Form.Label>
-                <div className="col-md-7 col-12" style={{color: 'black'}}>
+            </div>
+
+            {/* WALLET ID */}
+            <div className="row align-items-center justify-content-center">
+            <FormGroup className="col-md-8 col-12">
+                <Input value={walletID} 
+                  isInvalid type="text" 
+                  errorBorderColor="cyan.300" 
+                  variant="filled" 
+                  name="walletAddress" id="walletAddress" 
+                  placeholder="Tezos Wallet Address * ( eg., tz1...... )" 
+                  isRequired style={{margin: 'auto'}} 
+                />
+                <div className="walletcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            </FormGroup>
+            </div>
+
+              {/* DESCRIPTION */}
+            <div className="row align-items-center justify-content-center">
+            <FormGroup className="col-md-8 col-12">
+                <Textarea value={desc} 
+                  errorBorderColor="cyan.300" 
+                  name="description" id="desc" 
+                  isInvalid isRequired
+                  placeholder="Description [ Max Length : 200 ]" 
+                  style={{margin: 'auto'}} 
+                  variant="filled"
+                />
+                <div className="desccheck col-md-7 col-12" style={{margin: 'auto 0 0 auto', color: 'red'}}>
+                </div>
+            </FormGroup>
+            </div>
+
+             {/* Social Links */}
+             <div className="row">
+            <div className="col-lg-2 col-0"></div>
+            <FormGroup className="col-lg-4 col-md-6 col-12">
+                <Input value={twt} isInvalid type="url" errorBorderColor="cyan.300" name="twt" id="twitter" variant="filled" placeholder="Twitter Handle *" isRequired style={{margin: 'auto'}} />
+                <div className="twtcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            </FormGroup>
+            <FormGroup className="col-lg-4 col-md-6 col-12">
+                <Input value={instagram} isInvalid type="url" errorBorderColor="cyan.300" name="ig" id="instagram" variant="filled" placeholder="Instagram Link" style={{margin: 'auto'}} />
+                <div className="igcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            </FormGroup>
+            </div>
+            <div className="row">
+            <div className="col-lg-2 col-0"></div>
+            <FormGroup className="col-lg-4 col-md-6 col-12">
+                <Input value={utube} isInvalid type="url" errorBorderColor="cyan.300" name="yt" id="youtube" variant="filled" placeholder="Youtube Channel" style={{margin: 'auto'}} />
+                <div className="utubecheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            </FormGroup>
+            <FormGroup className="col-lg-4 col-md-6 col-12">
+                <Input value={linktr} isInvalid type="url" errorBorderColor="cyan.300" name="lt" id="linktree"  variant="filled" placeholder="Linktree" style={{margin: 'auto'}} />
+                <div className="ltcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            </FormGroup>
+            </div>
+
+
+            {/* AVATAR AND COUNTRY */}
+            <div className="row align-items-center justify-content-center">
+            <FormGroup className="col-md-4 col-12" >
+              <InputGroup style={{margin: 'auto', border: 'cyan'}} >
+                <InputLeftAddon children="Profile Picture" />
+                <Input 
+                  style={{margin: 'auto',paddingTop: '3px'}} 
+                  accept="image/*" 
+                  type="file" 
+                  name="avatar" id="name" 
+                  isRequired
+                />
+              </InputGroup>
+              <div className="avatarcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            </FormGroup>
+            <FormGroup className="col-md-4 col-12" >
+                {/* <Form.Label className="col-md-5 col-12" >Country *</Form.Label> */}
+                <div className="countries" style={{color: 'black', margin: 'auto', height: '35px'}}>
                   <CountryDropdown name="country" value={country} onChange={selectCountry} />
                 </div>
             </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Password *</Form.Label>
-                <Form.Control value={password} className="col-md-5 col-12" type="password" name="password" id="password" placeholder="password" required={true}/>
-                <div className="col-md-5 col-12" style={{margin: 'auto 16% auto auto', color: 'red', fontSize: '10px'}}>
-                  <div className="passcheck">We recommend to use a strong password</div>
-                  <PasswordStrengthBar password={password} />
-                </div>
-            </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Confirm Password *</Form.Label>
-                <Form.Control value={cpassword} className="col-md-5 col-12" type="password" name="cpassword" id="cpassword" placeholder="Confirm password" required={true}/>
-                <div className="passcheck2" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Tezos Wallet Address *</Form.Label>
-                <Form.Control onPaste={()=>setWalletID(walletID)} value={walletID} className="col-md-5 col-12" type="text" name="walletAddress" id="walletAddress" placeholder="Wallet Address" required={true}/>
-                <div className="walletcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Twitter Handle *</Form.Label>
-                <Form.Control value={twt} className="col-md-5 col-12" type="url" name="twt" id="twitter" placeholder="https://twitter.com/name" required={true}/>
-                <div className="twtcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Instagram Link</Form.Label>
-                <Form.Control value={instagram} className="col-md-5 col-12" type="url" name="ig" id="instagram" placeholder="https://www.instagram.com/name"/>
-                <div className="igcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Youtube Channel</Form.Label>
-                <Form.Control value={utube} className="col-md-5 col-12" type="url" name="yt" id="youtube" placeholder="https://www.youtube.com/channel/name" />
-                <div className="utubecheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <FormGroup className="row">
-                <Form.Label className="col-md-5 col-12" >Linktree</Form.Label>
-                <Form.Control value={linktr} className="col-md-5 col-12" type="url" name="lt" id="linktree" placeholder="https://linktr.ee/name" />
-                <div className="ltcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <br />
+            </div>
+            
+            
+
+            {/* SUBMIT BUTTON */}
             <FormGroup className="row" style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
-                <Form.Control className="col-md-1 col-1" type="checkbox" name="terms" id="terms" />
-                <Form.Label className="col-md-5 col-12" htmlFor="terms">I agree to the Terms of Service of ByteBlock</Form.Label>
+                <Checkbox colorScheme="green" name="terms" >
+                I agree to the Terms of Service of ByteBlock
+                </Checkbox>
             </FormGroup>
             
             <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
-              <Button disabled={disable} color="primary" type="submit" className="c-button-up">
+              <Button disabled={disable} isLoading={loading} loadingText="Submitting" variant="solid" colorScheme="teal" size="lg" type="submit" className="c-button-up">
                 Register
               </Button>
             </div>
           </Form>
+          </Box>
         </Container>
         </Flex>
       </>
     );
 }
-export default Example;
+export default RegistrationPage;

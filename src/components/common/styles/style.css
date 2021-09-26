@@ -188,3 +188,37 @@
 .closebtn:hover {
   color: #000;
 }
+
+#hide input[type=file] {
+  display:none;
+  margin:10px;
+}
+
+#hide input[type=file] + label {
+display:inline-block;
+margin:20px;
+padding: 4px 32px;
+background-color: #FFFFFF;
+border:solid 1px #666F77;
+border-radius: 6px;
+color:#666F77;
+}
+
+#hide input[type=file]:active + label {
+background-image: none;
+background-color:#2D6C7A;
+color:#FFFFFF;
+}
+
+.countries{
+  background-color: rgb(185, 255, 255);
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.countries select{
+  width: 100%;
+  background-color: rgb(185, 255, 255);
+}
