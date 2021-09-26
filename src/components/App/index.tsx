@@ -17,7 +17,7 @@ import Footer from '../common/Footer';
 import AlertBar from '../common/AlertBar';
 import ArtistList from '../Artist/ArtistList';
 import ArtistProfile from '../Artist/ArtistProfile';
-import RegistrationModal from '../common/RegistrationModel';
+import Registration from '../common/Registration';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -70,7 +70,7 @@ export default function App() {
           </Route>
           <Route path="/register">
             <>
-              <RegistrationModal />
+              <Registration />
             </>
           </Route>
           <Route path="/marketplace">
