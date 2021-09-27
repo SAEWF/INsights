@@ -7,7 +7,7 @@ import {Checkbox, Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, InputR
 import uploadImage from './uploadImage';
 
 function RegistrationPage(props: any) {
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({"ig":"","lt":"","yt":"","display":false});
     const [country, setCountry] = useState('');
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
@@ -254,15 +254,6 @@ function RegistrationPage(props: any) {
           document.querySelector('.ltcheck')!.innerHTML = "Please enter valid Linktr Handle";
         }
         else if(event.target.password.value === event.target.cpassword.value && isValid(walletID)){
-            if(linktr===""){
-              setFormData({...formData, "lt" : ''});
-            }
-            if(utube===""){
-              setFormData({...formData, "yt" : ''});
-            }
-            if(instagram===""){
-              setFormData({...formData, "ig" : ''});
-            }
             setLoading(true); 
             setDisable(true);
             await RegisterUser();
