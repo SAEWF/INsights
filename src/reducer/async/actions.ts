@@ -26,8 +26,9 @@ import { SystemWithToolkit, SystemWithWallet } from '../../lib/system';
 import { notifyPending, notifyFulfilled } from '../slices/notificationsActions';
 import parse from 'csv-parse/lib/sync';
 import * as t from 'io-ts';
-import UpdateArtTokenInFirebase from '../../components/Artist/UpdateArtTokenInFB';
+// import UpdateArtTokenInFirebase from '../../components/Artist/UpdateArtTokenInFB';
 import UpdateSoldnCollectedTokenInFB from '../../components/Artist/UpdateSoldnCollectedTokenInFB';
+import DeleteArtTokenInFB from '../../components/Artist/DeleteArtTokenInFB';
 // import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
 type Options = {
@@ -456,10 +457,16 @@ export const transferTokenAction = createAsyncThunk<
     });
   }
   try {
+    // testing
+    // await DeleteArtTokenInFB(system.tzPublicKey, tokenId);
     const op = await transferToken(system, contract, tokenId, to);
-    dispatch(notifyPending(requestId, `Transferring token to ${to}`));
-    await op.confirmation(2);
 
+    dispatch(notifyPending(requestId, `Transferring token to ${to}`));
+    // console.log("CALL FOR DELETE");
+    // call to remove the token from the database 
+    await DeleteArtTokenInFB(system.tzPublicKey, tokenId);
+    await op.confirmation(2);
+    
     dispatch(notifyFulfilled(requestId, `Transferred token to ${to}`));
     dispatch(getContractNftsQuery(contract));
     return args;
@@ -508,7 +515,7 @@ export const listTokenAction = createAsyncThunk<
 
     // console.log(system.tzPublicKey);
     // console.log(tokenId);
-    UpdateArtTokenInFirebase(system.tzPublicKey,tokenId)
+    // UpdateArtTokenInFirebase(system.tzPublicKey,tokenId)
 
     dispatch(notifyFulfilled(requestId, fulfilledMessage));
     dispatch(getContractNftsQuery(contract));
@@ -612,7 +619,9 @@ export const buyTokenAction = createAsyncThunk<
         salePrice
       );
     }
+    // upload sold result to firebase
     UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
+
     const pendingMessage = `Buying token from ${tokenSeller} for ${salePrice}`;
     dispatch(notifyPending(requestId, pendingMessage));
     await op.confirmation(2);
@@ -620,9 +629,6 @@ export const buyTokenAction = createAsyncThunk<
     const fulfilledMessage = `Bought token from ${tokenSeller} for ${salePrice}`;
     dispatch(notifyFulfilled(requestId, fulfilledMessage));
     dispatch(getContractNftsQuery(contract));
-    
-    // upload sold result to firebase
-    // UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
 
     return { contract: contract, tokenId: tokenId, saleId: saleId, saleType: saleType };
   } catch (e) {
