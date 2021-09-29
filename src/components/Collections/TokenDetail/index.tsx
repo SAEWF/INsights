@@ -99,8 +99,10 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
     system.tzPublicKey &&
     (system.tzPublicKey === token.owner ||
       system.tzPublicKey === token.sale?.seller);
-
+  // for viewing the token in console , turn it on
+  console.log("TOKEN = ",token);
   return (
+    
     <Flex flexDir="column"  flexGrow={1}>
       <Modal
         isOpen={isOpen}
@@ -174,6 +176,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
         height={["100%"]}
         justifyContent="center"
       >
+        
         <TokenMedia
           key={`${token.address}-${token.id}`}
           config={system.config}

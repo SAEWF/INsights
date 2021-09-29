@@ -253,15 +253,18 @@ function RegistrationPage(props: any) {
         else if(!linktr.match(/^https:\/\/linktr\.ee\// ) && linktr!==""){
           document.querySelector('.ltcheck')!.innerHTML = "Please enter valid Linktr Handle";
         }
-        else if(event.target.password.value === event.target.cpassword.value && isValid(walletID)){
-            setLoading(true); 
-            setDisable(true);
-            await RegisterUser();
-            setDisable(false);
-            setLoading(false);
+        else if(!isValid(walletID)){
+            document.querySelector('.walletcheck')!.innerHTML = "Please enter valid Wallet Address";
+        }
+        else if(event.target.password.value !== event.target.cpassword.value){
+          document.querySelector('.passcheck2')!.innerHTML = "Both passwords dont match . Try again !";
         }
         else{
-              document.querySelector('.passcheck2')!.innerHTML = "Both passwords dont match . Try again !";
+          setLoading(true); 
+          setDisable(true);
+          await RegisterUser();
+          setDisable(false);
+          setLoading(false);
         }
     }
 
