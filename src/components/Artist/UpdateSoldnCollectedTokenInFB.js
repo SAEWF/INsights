@@ -42,9 +42,17 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
       return;
     }
 
+    var existinghistory = nft.history===undefined?[]:nft.history;
+
+    var updatedNFT = {...nft, history: [...existinghistory, {
+      seller: sellerWallAdd,
+      buyer: buyerWallAdd,
+      timestamp: new Date().getTime().toLocaleString("en-US")
+    }], sale: null};
+
 
     // Creating token in buyer database
-    await db.collection('nfts').doc(buyerWallAdd).collection('Collections').add(nft).then(function(docRef) {
+    await db.collection('nfts').doc(buyerWallAdd).collection('Collections').add(updatedNFT).then(function(docRef) {
       console.log('Document uploaded to Firestore', docRef.id);
     });
 
@@ -53,6 +61,8 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
     await db.collection('nfts').doc(sellerWallAdd).collection(collectionName).doc(docID)
     .update({
       "title": "SOLD",
+      "history": updatedNFT.history,
+      "sale": null
     })
     .then(function() {
       console.log("Document successfully Updated!");
@@ -99,8 +109,3 @@ const getDocIDFromFB = async (walletID, tokenId)=>{
 }
 
 export default UpdateSoldnCollectedTokenInFB;
-
-// system.tzPublicKey actions.ts:540
-// tz1LjLHwTthS3DU542igtZfqQCaiM7fz9C2C actions.ts:541
-// tz1QBAh8mGg8CD28JritfHM7e7evaqKVyDcT actions.ts:542
-// 76432399781 actions.ts:543
