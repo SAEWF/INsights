@@ -3,7 +3,7 @@ import firebase from '../../lib/firebase/firebase';
 
 
 let creation = true;
-const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)=>{
+const CancelSale = async (sellerWallAdd,tokenId)=>{
     // testing
     // console.log(buyerWallAdd);
     // console.log(sellerWallAdd);
@@ -26,7 +26,7 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
     }
     var nft = await document.get().then((doc) => {
       if (doc.exists) {
-        console.log("Document data:", doc.data());
+        // console.log("Document data:", doc.data());
         const data = doc.data();
         return data;
       }
@@ -42,27 +42,12 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
       return;
     }
 
-    var existinghistory = nft.history===undefined?[]:nft.history;
-
-    var updatedNFT = {...nft, history: [...existinghistory, {
-      seller: sellerWallAdd,
-      buyer: buyerWallAdd,
-      timestamp: new Date().getTime().toLocaleString("en-US")
-    }], sale: null};
-
-
-    // Creating token in buyer database
-    await db.collection('nfts').doc(buyerWallAdd).collection('Collections').add(updatedNFT).then(function(docRef) {
-      console.log('Document uploaded to Firestore', docRef.id);
-    });
 
     // Updating token from seller database
     var collectionName = creation?'Creations': 'Collections';
     await db.collection('nfts').doc(sellerWallAdd).collection(collectionName).doc(docID)
     .update({
-      "title": "SOLD",
-      "history": updatedNFT.history,
-      "sale": null
+      "sale": null,
     })
     .then(function() {
       console.log("Document successfully Updated!");
@@ -108,4 +93,4 @@ const getDocIDFromFB = async (walletID, tokenId)=>{
   return docID;
 }
 
-export default UpdateSoldnCollectedTokenInFB;
+export default CancelSale;

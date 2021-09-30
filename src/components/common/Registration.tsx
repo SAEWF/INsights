@@ -63,6 +63,7 @@ function RegistrationPage(props: any) {
             var user = userCredential.user;
             user?.updateProfile({
               displayName: name,
+              //photoUrl linked as wallet ID to retrieve rest of details
               photoURL: walletID
             }).then(() => {
               // User profile updated
@@ -81,7 +82,10 @@ function RegistrationPage(props: any) {
             }
           });
 
-          if(!ahead || url===undefined || url==="") return;
+          if(!ahead || url===undefined || url===""){
+            document.querySelector('.registrationError')!.innerHTML = "Server Error Occured ";
+            return;
+          }
           var data = {...formData,"avatar":url}
 
           await setFormData(data);

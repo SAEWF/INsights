@@ -30,6 +30,7 @@ import * as t from 'io-ts';
 import UpdateSoldnCollectedTokenInFB from '../../components/Artist/UpdateSoldnCollectedTokenInFB';
 import DeleteArtTokenInFB from '../../components/Artist/DeleteArtTokenInFB';
 import AddSaleDataToFirebase from '../../components/Artist/AddSaleDataToFirebase';
+import CancelSale from '../../components/Artist/CancelSaleToken';
 // import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
 type Options = {
@@ -510,11 +511,11 @@ export const listTokenAction = createAsyncThunk<
       1
     );
 
-    const pendingMessage = `Listing token for sale for ${salePrice / 1000000}ꜩ`;
-    dispatch(notifyPending(requestId, pendingMessage));
-
     // updating sale data in firebase
     await AddSaleDataToFirebase(system.tzPublicKey, tokenId, salePrice, contract);
+
+    const pendingMessage = `Listing token for sale for ${salePrice / 1000000}ꜩ`;
+    dispatch(notifyPending(requestId, pendingMessage));
 
     await op.confirmation(2);
 
@@ -556,6 +557,7 @@ export const cancelTokenSaleAction = createAsyncThunk<
   }
   try {
     let op;
+    await CancelSale(system.tzPublicKey, tokenId);
     if (saleType === "fixedPriceLegacy") {
       op = await cancelTokenSaleLegacy(
         system,
@@ -629,7 +631,7 @@ export const buyTokenAction = createAsyncThunk<
       );
     }
     // upload sold result to firebase
-    await UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
+    UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
 
     const pendingMessage = `Buying token from ${tokenSeller} for ${salePrice}`;
     dispatch(notifyPending(requestId, pendingMessage));
