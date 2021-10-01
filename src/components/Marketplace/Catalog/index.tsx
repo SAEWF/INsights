@@ -17,8 +17,11 @@ export default function Catalog() {
 
   // blackList for wallet address 
   // it will block display of minted nfts from them 
-  const blackList = ['tz1VSZaQdqQwWcqdLiJnQwPJkushYVq51PSX','tz1hcWL5pwX65X1kfNTEL3uuAbkXDpUoURRH'];
-
+    const blackList = ['tz1ZvsgNBPsvqZcqhNuYnHrH5k8LwDbPQzWF',
+      'tz1brJrpAVdmrNAzRNLrDsrRRY1K98mSTR6z',
+      'tz1VSZaQdqQwWcqdLiJnQwPJkushYVq51PSX',
+      'tz1hcWL5pwX65X1kfNTEL3uuAbkXDpUoURRH'];
+      
     useEffect(() => {
       dispatch(getMarketplaceNftsQuery(state.marketplace.address));
     }, [state.marketplace.address, dispatch]);
@@ -27,9 +30,8 @@ export default function Catalog() {
       dispatch(loadMoreMarketplaceNftsQuery({}));
     };
 
-    let tokenss = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
-    let tokens = tokenss.filter(x => !blackList.includes(x.metadata.minter!));
-    
+    let tokens = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
+
     return (
     <>
       <Flex
@@ -90,6 +92,7 @@ export default function Catalog() {
               >
                 <>
                   {tokens.slice(1).map(token => {
+                    if(token.metadata?.minter!==undefined && !blackList.includes(token.metadata?.minter))
                     return (
                       <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
                         <TokenCard
@@ -99,6 +102,7 @@ export default function Catalog() {
                         />
                       </Box>
                     );
+                    else return <></>;
                   })}
                   <VisibilityTrigger
                   key={state.marketplace.tokens?.length + ':' + tokens.length}
