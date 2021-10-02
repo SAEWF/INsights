@@ -5,27 +5,7 @@ import firebase from '../../lib/firebase/firebase';
 import { useLocation } from 'wouter';
 import {Flex} from '@chakra-ui/react';
 
-const useItems = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  useEffect(() => {
-    const ref = firebase
-      .database()
-      .ref("data");
-    const listener = ref.on('value', snapshot => {
-      const fetchedTasks: any[] = [];
-      snapshot.forEach(childSnapshot => {
-        const key = childSnapshot.key;
-        const data = childSnapshot.val();
-        fetchedTasks.push({ id: key, ...data });
-      });
-      setTasks(fetchedTasks);
-    });
-    return () => ref.off('value', listener);
-  }, []);
-  return tasks;
-}
-
+// getting artlist from firestore
 const GetArtists = () =>{
   const [artist, setArtist] = useState<Task[]>([]);
 
@@ -52,12 +32,8 @@ const GetArtists = () =>{
 }
 
 export default function ArtistList() {
-  const listItem = useItems();
   const artists = GetArtists();
   const [, setLocation] = useLocation();
-
-  // console.log("listItem");
-  // console.log(artists);
 
   return (
     <Flex
@@ -76,31 +52,6 @@ export default function ArtistList() {
 </div>
 
       <Row xs={1} md={2} lg={3} xl={3} >
-        {listItem.map(item => (
-          <Col>
-            <div className="card profile-card-1 mb-5"
-              onClick={
-                () => setLocation(`/artistprofile/${item.username}`)
-              }
-            >
-              <img  alt="background" src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
-              <img alt="avatar" src={item.avatar} className="profile" />
-              <div className="card-content">
-                <h2>{item.name}
-                  {/* <small>Artist</small> */}
-                </h2>
-
-                {/* <div className="pt-2">
-                  <Button variant="outline-light" onClick={() =>
-                    setLocation(`/artistprofile/${item.id}`)}>
-                  View Profile</Button>
-                </div> */}
-              </div>
-            </div>
-          </Col>
-        ))
-        }
-
         {
           artists.length>0?
           artists.map(item => (
@@ -114,8 +65,8 @@ export default function ArtistList() {
                 <img  alt="background" src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
                 <img alt="avatar" src={item.avatar} className="profile" />
                 <div className="card-content">
-                  <h2>{item.name}
-                    {/* <small>Artist</small> */}
+                  <h2>
+                    {item.name}
                   </h2>
 
                   {/* <div className="pt-2">
