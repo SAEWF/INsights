@@ -59,7 +59,7 @@ export default function ArtistList() {
             <Col>
               <div className="card profile-card-1 mb-5"
                 onClick={
-                  () => setLocation(`/artistprofile/${item.name.replace(" ","")}`)
+                  () => setLocation(`/artistprofile/${item.name.replaceAll(" ","")}`)
                 }
               >
                 <img  alt="background" src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
