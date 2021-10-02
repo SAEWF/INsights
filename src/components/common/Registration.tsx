@@ -41,6 +41,7 @@ function RegistrationPage(props: any) {
       document.querySelector('.utubecheck')!.innerHTML = "";
       document.querySelector('.igcheck')!.innerHTML = "";
       document.querySelector('.ltcheck')!.innerHTML = "";
+      document.querySelector('.countryCheck')!.innerHTML = "";
 
       const db = firebase.firestore();
       var url="";
@@ -117,6 +118,15 @@ function RegistrationPage(props: any) {
           }
           else{
             document.querySelector('.twtcheck')!.innerHTML = "";
+          }
+        }
+        else if(e.target.name==="country"){
+          setCountry(e.target.value);
+          if(e.target.value===""){
+            document.querySelector('.countryCheck')!.innerHTML = "Please select a country";
+          }
+          else{
+            document.querySelector('.countryCheck')!.innerHTML = "";
           }
         }
         if(e.target.name==="lt"){
@@ -198,9 +208,6 @@ function RegistrationPage(props: any) {
           if(e.target.value.length<6){
             document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
           }
-          else if(e.target.value.length>20){
-            document.querySelector('.passcheck')!.innerHTML = "Password should be less than 20 characters long.";
-          }
           else if(!e.target.value.match(/[a-z]/i)){
             document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
           }
@@ -215,6 +222,10 @@ function RegistrationPage(props: any) {
           }
           else{
             document.querySelector('.passcheck')!.innerHTML = "";
+          }
+
+          if(e.target.value===cpassword){
+            document.querySelector('.passcheck2')!.innerHTML = "";
           }
 
           return;
@@ -242,8 +253,23 @@ function RegistrationPage(props: any) {
     const handleSignup = async (event: any) =>{
         event.preventDefault();
         // console.log("SIGNUP", password, cpassword);
-        if(event.target.password.value.length <= 8){
-            document.querySelector('.passcheck')!.innerHTML = "Length of password must be greater than 8";
+        if(event.target.password.value.length <= 6){
+          document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
+        }
+        else if(!event.target.password.value.match(/[a-z]/i)){
+          document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
+        }
+        else if(!event.target.password.value.match(/[A-Z]/i)){
+          document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one uppercase letter.";
+        }
+        else if(!event.target.password.value.match(/[0-9]/i)){
+          document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one number.";
+        }
+        else if(!event.target.password.value.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/i)){
+          document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one special character.";
+        }
+        else if(country===""){
+            document.querySelector('.countryCheck')!.innerHTML = "Please Select Country";
         }
         else if(!twt.match(/^https:\/\/twitter.com\//)){
             document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
@@ -450,18 +476,16 @@ function RegistrationPage(props: any) {
                   isRequired
                 />
               </InputGroup>
-              <div className="avatarcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+              <div className="avatarcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="col-md-4 col-12" >
-                {/* <Form.Label className="col-md-5 col-12" >Country *</Form.Label> */}
                 <div className="countries" style={{color: 'black', margin: 'auto', height: '35px'}}>
                   <CountryDropdown name="country" value={country} onChange={selectCountry} />
                 </div>
+                <div className="countryCheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             </div>
-            
-            
-
+          
             {/* SUBMIT BUTTON */}
             <FormGroup className="row" style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
                 <Checkbox colorScheme="green" name="terms" >

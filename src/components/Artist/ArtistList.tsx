@@ -26,12 +26,38 @@ const useItems = () => {
   return tasks;
 }
 
+const GetArtists = () =>{
+  const [artist, setArtist] = useState<Task[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const db = firebase.firestore();
+      var docRef = db.collection('artists');
+      let temp: any[] = [];
+      await docRef.get().then(async (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+
+          if(doc.data().display!==undefined && doc.data().display)
+          temp.push({id: doc.id, ...doc.data()});
+        });
+        setArtist(temp);
+      }, (error) => {
+        console.log("Error getting documents: ", error);
+      });
+    }
+    fetchData();
+  }, []);
+  return artist;
+}
+
 export default function ArtistList() {
   const listItem = useItems();
+  const artists = GetArtists();
   const [, setLocation] = useLocation();
 
   // console.log("listItem");
-  // console.log(listItem);
+  // console.log(artists);
 
   return (
     <Flex
@@ -73,6 +99,35 @@ export default function ArtistList() {
             </div>
           </Col>
         ))
+        }
+
+        {
+          artists.length>0?
+          artists.map(item => (
+
+            <Col>
+              <div className="card profile-card-1 mb-5"
+                onClick={
+                  () => setLocation(`/artistprofile/${item.name.replace(" ","")}`)
+                }
+              >
+                <img  alt="background" src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
+                <img alt="avatar" src={item.avatar} className="profile" />
+                <div className="card-content">
+                  <h2>{item.name}
+                    {/* <small>Artist</small> */}
+                  </h2>
+
+                  {/* <div className="pt-2">
+                    <Button variant="outline-light" onClick={() =>
+                      setLocation(`/artistprofile/${item.id}`)}>
+                    View Profile</Button>
+                  </div> */}
+                </div>
+              </div>
+            </Col>
+          ))
+          :<></>
         }
 
       </Row >

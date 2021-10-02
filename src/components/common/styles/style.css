@@ -222,3 +222,15 @@ color:#FFFFFF;
   width: 100%;
   background-color: rgb(185, 255, 255);
 }
+
+.form-group ::-webkit-input-placeholder {
+  color: rgb(150, 150, 150);
+}
+
+.form-group :-ms-input-placeholder { 
+  color: rgb(150, 150, 150);
+}
+
+.form-group ::placeholder {
+  color: rgb(150, 150, 150);
+}
