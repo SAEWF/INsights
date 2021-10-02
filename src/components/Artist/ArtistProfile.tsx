@@ -11,9 +11,31 @@ import defaultBanner from '../common/assets/defaultBanner.jpg';
 // import ArtistProfileCard from './ArtistProfileCard';
 import TokenCard from '../Marketplace/Catalog/TokenCard';
 
+
+// getting artists from firestore
+async function fetchData(setTasks: any, usernameFromUrl: string) {
+  const db = firebase.firestore();
+  var docRef = db.collection('artists');
+  let temp: any[] = [];
+  await docRef.get().then(async (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      // console.log(doc.id, " => ", doc.data());
+      var username = doc.data().name;
+      username = username.replace(" ","");
+      if(username===usernameFromUrl && doc.data().display!==undefined && doc.data().display){
+        temp.push({id: doc.id, ...doc.data()});
+      }
+    });
+    setTasks(temp);
+  }, (error) => {
+    console.log("Error getting documents: ", error);
+  });
+}
+
 const useItems = (usernameFromUrl: string) => {
   const [tasks, setTasks] = useState<TasksType[]>([]);
   
+  // getting data from realtime database
   useEffect(() => {
     const ref = firebase
       .database()
@@ -24,6 +46,7 @@ const useItems = (usernameFromUrl: string) => {
       .on('value', snapshot => {
         const fetchedTasks: any[] = [];
         snapshot.forEach(childSnapshot => {
+          // console.log(childSnapshot.val());
           const key = childSnapshot.key;
           const data = childSnapshot.val();
           fetchedTasks.push({ id: key, ...data });
@@ -32,7 +55,14 @@ const useItems = (usernameFromUrl: string) => {
       });
     return () => ref.off('value', listener);
   }, [usernameFromUrl]);
-  return tasks;
+
+  // console.log(tasks);
+  if(tasks.length!==0)
+    return tasks;
+  else{
+    fetchData(setTasks,usernameFromUrl);
+    return tasks;
+  }
 }
 
 const GetNfts = (userdata: TasksType[]) =>{
@@ -179,10 +209,11 @@ export default function ArtistProfile(props: PropType) {
 
                         <ul className="social-icons mt-2">
                             {(item.twt) !==""? <li><a className="twitter" href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
-                            {(item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
+                            {(item.fb) !==undefined && (item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
                             {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}
                             {(item.yt) !==""? <li><a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube " ></i></a></li>:""}
-                            {(item.linktr) !==""? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
+                            {(item.linktr) !=="" && item.linktr!==undefined? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
+                            {(item.lt) !=="" && item.lt!==undefined? <li><a className="" href={item.lt} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
                           </ul>
                         </Card.Body>
                       </Card>
