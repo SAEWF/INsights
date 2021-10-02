@@ -22,7 +22,7 @@ function FetchArtistData(usernameFromUrl: string) {
       querySnapshot.forEach((doc) => {
         // console.log(doc.id, " => ", doc.data());
         var username = doc.data().name;
-        username = username.replace(" ","");
+        username = username.replaceAll(" ","");
         if(username===usernameFromUrl && doc.data().display!==undefined && doc.data().display){
           temp.push({id: doc.id, ...doc.data()});
         }
