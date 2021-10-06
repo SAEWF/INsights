@@ -12,6 +12,7 @@ export default class Footer extends Component {
               <ul className="list-inline">
                 <li className="list-inline-item mr-3"><a href="/create">Create</a></li>
                 <li className="list-inline-item mr-3"><a href="https://github.com/byteblock-labs/ByteBlockNFT-Doc/wiki" target="_blank" rel="noopener noreferrer">Doc</a></li>
+                <li className="list-inline-item mr-3"><a href="https://docs.google.com/forms/d/e/1FAIpQLSeMkFGYr4SrTYRHC17z-6zzXBAS9nCQ-NNwitwS6eYo3S8SUA/viewform" target="_blank" rel="noopener noreferrer">Report</a></li>
                 <li className="list-inline-item"><a href="https://github.com/byteblock-labs/ByteBlockNFT-Doc/wiki/FAQ" target="_blank" rel="noopener noreferrer">FAQ</a></li>
               </ul>
             </Col>
