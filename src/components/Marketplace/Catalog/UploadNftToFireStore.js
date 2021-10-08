@@ -11,7 +11,7 @@ const UploadNftToFireStore = async (walletAddress,collection,metadata, token_id)
             "address": collection,
             "artifactUri": metadata.artifactUri,
             "description": metadata.description,
-            "title": metadata.attributes[0].value,
+            "title": metadata.name,
             "metadata": metadata
         };
         await db.doc(walletAddress).collection('Creations').add(nft).then(function(docRef) {
