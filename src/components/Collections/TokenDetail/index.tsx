@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   // Accordion,
   // AccordionButton,
   // AccordionIcon,
   // AccordionItem,
   // AccordionPanel,
-  // Link,
+  Link,
   Box,
   Button,
   Flex,
@@ -35,6 +35,7 @@ import { TokenMedia } from '../../common/TokenMedia';
 // import lk from '../../common/assets/link-icon.svg'
 import tz from '../../common/assets/tezos-sym-white.svg'
 import { Maximize2 } from 'react-feather';
+import firebase from '../../../lib/firebase/firebase'
 
 function NotFound() {
   return (
@@ -64,6 +65,7 @@ function NotFound() {
   );
 }
 
+
 interface TokenDetailProps {
   contractAddress: string;
   tokenId: number;
@@ -75,6 +77,10 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   const dispatch = useDispatch();
   const collection = state.collections[contractAddress];
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [tokenHook, setTokenHook] = useState<any>(null);
+
+  const [owner, setOwner] = useState<any[]>([]);
+  const [creator, setCreator] = useState<any[]>([]);
 
   const collectionUndefined = collection === undefined;
 
@@ -84,13 +90,44 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
     } else {
       dispatch(getContractNftsQuery(contractAddress));
     }
-  }, [contractAddress, tokenId, collectionUndefined, dispatch]);
+
+    if(tokenHook!==null && tokenHook!==undefined && owner.length===0){
+      const walletAddress = tokenHook.owner;
+      const hook = firebase.firestore().collection('artists').doc(walletAddress);
+      hook.onSnapshot(doc => {
+        if(doc.exists){
+          const data = doc.data();
+          var temp = [];
+          temp.push({id: doc.id, ...data});
+          setOwner(temp);
+        }
+      })
+    }
+
+    if(tokenHook!==null && tokenHook!==undefined && creator.length===0){
+      const walletAddress = tokenHook.metadata.minter;
+      const hook = firebase.firestore().collection('artists').doc(walletAddress);
+      hook.onSnapshot(doc => {
+        if(doc.exists){
+          const data = doc.data();
+          var temp = [];
+          temp.push({id: doc.id, ...data});
+          setCreator(temp);
+        }
+      })
+    }
+  }, [contractAddress, tokenId, collectionUndefined, dispatch, tokenHook, owner, creator]);
 
   if (!collection?.tokens) {
     return null;
   }
 
   const token = collection.tokens.find(token => token.id === tokenId);
+
+  if (tokenHook===undefined || tokenHook===null) {
+    setTokenHook(token);
+  }
+
   if (!token) {
     return <NotFound />;
   }
@@ -99,7 +136,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
     system.tzPublicKey &&
     (system.tzPublicKey === token.owner ||
       system.tzPublicKey === token.sale?.seller);
-  // for viewing the token in console , turn it on
+
   console.log("TOKEN = ",token);
   return (
     
@@ -230,51 +267,53 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               {token.description || 'No description provided'}
             </Text>
 
-            {token?.metadata?.attributes?.map(({ name, value }) => (
-              <Flex key={name + value} mt={[4, 8]}>
-                <Text color="secColDarkTheme">{name}:</Text>
-                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
-                  {value}
-                </Text>
-              </Flex>
-            ))}
+            {
+              owner.map((owner)=>{
+                return(
+                  <Flex key="artist" mt={[4, 8]}>
+                    <Text color="secColDarkTheme">Owner :</Text>
+                    <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                      <Link display="block" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" href={`/artistprofile/${owner.name.replaceAll(" ","")}`}>
+                        {owner.name}
+                        {/* <sup><img src={lk} alt="" width="auto" height="auto" style={{ display: 'inline-block' }} /></sup> */}
+                      </Link>
+                    </Text> 
+                  </Flex>
+                )
+              })
+            }
 
-            {/* <Accordion allowToggle mt={4}>
-              <AccordionItem border="none">
-                <AccordionButton p={0}>
-                  <Text color="brand.neutralGray">Token Info</Text>
-                  <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel pb={4}>
-                  <Flex mt={[4, 8]}>
-                    <Text color="brand.neutralGray">Minter:</Text>
-                    <Text color="brand.darkGray" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden">
-                      <Link display="block" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" href={`/creator/${token?.metadata?.minter}`}>{
-                        token?.metadata?.minter}&nbsp;<sup><img src={lk} alt="" width="auto" height="auto" style={{ display: 'inline-block' }} /></sup></Link>
+            {
+              creator.map((creator)=>{
+                return( 
+                  <Flex key="artist" mt={[4, 8]}>
+                    <Text color="secColDarkTheme">Creator :</Text>
+                    <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                    <Link display="block" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" href={`/artistprofile/${creator.name.replaceAll(" ","")}`}>
+                        {creator.name}
+                        {/* <sup><img src={lk} alt="" width="auto" height="auto" style={{ display: 'inline-block' }} /></sup> */}
+                      </Link>
                     </Text>
                   </Flex>
-                  <Flex mt={[4, 8]}>
-                    <Text color="brand.neutralGray">Collection:</Text>
-                    <Text color="brand.darkGray" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden">
-                      <Link display="block" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" href={`/collection/${contractAddress}`}>
-                        {state.selectedCollection ? state.collections[state.selectedCollection]?.metadata.name
-                          : collection?.metadata.name ? collection?.metadata.name
-                            : contractAddress
-                        }&nbsp;
-                        <sup><img src={lk} alt="" width="auto" height="auto" style={{ display: 'inline-block' }} /></sup></Link>
-                    </Text>
-                  </Flex>
-                  {token?.metadata?.attributes?.map(({ name, value }) => (
-                    <Flex key={name + value} mt={[4, 8]}>
-                      <Text color="brand.neutralGray">{name}:</Text>
-                      <Text display="block" color="brand.darkGray" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
-                        {value}
-                      </Text>
-                    </Flex>
-                  ))}
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion> */}
+                )
+              }
+            )}
+
+            {
+              token?.metadata?.attributes?.map(({ name, value }) => {
+              if(name === 'Artist' && owner.length>0) return null;
+              if(name === '') return null;
+              return(
+                <Flex key={name + value} mt={[4, 8]}>
+                  <Text color="secColDarkTheme">{name}:</Text>
+                  <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                    {value}
+                  </Text>
+                </Flex>
+              )}
+            )}
+
+            {/* Accordion can also be used to show information */}
             <Flex display={['flex']} justifyContent="space-between" alignItems="center" width="100%" flexDir={['column', 'row']} flexWrap="wrap" marginTop={2}>
               <Flex justifyContent={["flex-start"]} alignItems="center" width="100%" marginTop={4}>
                 {token.sale ? (
