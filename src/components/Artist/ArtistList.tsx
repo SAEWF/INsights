@@ -16,7 +16,7 @@ const GetArtists = () =>{
       let temp: any[] = [];
       await docRef.get().then(async (querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
+          // console.log(doc.id, " => ", doc.data());
 
           if(doc.data().display!==undefined && doc.data().display)
           temp.push({id: doc.id, ...doc.data()});

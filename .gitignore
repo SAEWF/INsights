@@ -47,4 +47,9 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-src/lib/firebase/firebase.tsx
+
+# API keys
+src/lib/firebase/
+
+#build folder
+build/
