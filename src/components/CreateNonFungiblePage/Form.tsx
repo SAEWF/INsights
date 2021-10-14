@@ -35,17 +35,17 @@ export default function Form() {
   const state = useSelector(s => s.createNft);
   const dispatch = useDispatch();
   const { name, description } = state.fields;
-  const [artistName, setartistName] = useState("");
+  // const [artistName, setartistName] = useState("");
   const [tags, setTags] = useState("");
   const [, setEdition] = useState("1");
 
   
-  useEffect(() => {
-    dispatch(addMetadataRow());
-    dispatch(updateMetadataRowName({ key: 0, name: 'Artist' }));
-    return;
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   dispatch(addMetadataRow());
+  //   dispatch(updateMetadataRowName({ key: 0, name: 'Artist' }));
+  //   return;
+  //   // eslint-disable-next-line
+  // }, []);
 
   useEffect(() => {
     dispatch(addMetadataRow());
@@ -100,7 +100,7 @@ export default function Form() {
         />
       </FormControl>
       {/* Artist Name */}
-      <FormControl paddingBottom={6}>
+      {/* <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
           Artist Name
         </FormLabel>
@@ -115,7 +115,7 @@ export default function Form() {
           }
           }
         />
-      </FormControl>
+      </FormControl> */}
       {/* Tags */}
       <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
