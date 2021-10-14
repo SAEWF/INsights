@@ -11,6 +11,7 @@ import { MinterButton } from '../../common';
 import { TokenMedia } from '../../common/TokenMedia';
 import tz from '../../common/assets/tezos-sym-white.svg';
 import { Container, Row, Col } from 'react-bootstrap';
+import firebase from '../../../lib/firebase/firebase';
 
 interface FeaturedTokenProps extends Token {
   config: IpfsGatewayConfig;
@@ -18,6 +19,34 @@ interface FeaturedTokenProps extends Token {
 
 export default function FeaturedToken(props: FeaturedTokenProps) {
   const [, setLocation] = useLocation();
+  const [owner, setOwner] = React.useState('');
+
+  React.useEffect(() => {
+    var own : any;
+    if(props.sale!==undefined && props.sale!==null) {
+      own = props.sale.seller;
+    } else if(props.metadata.minter!==undefined && props.metadata.minter!==null) {
+      own = props.metadata.minter;
+    } else {
+      own = props.owner;
+    }
+    
+    const db = firebase.firestore();
+    const docRef = db.collection('artists').doc(own);
+    docRef.get().then(function(doc) {
+      if (doc.exists) {
+        var data = doc.data()!;
+        setOwner(data.name);
+        console.log("Document data:", data);
+      } else {
+        setOwner(own);
+        console.log("No such document!", own);
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  }, [props]);
+
   return (
     <>
       <Container fluid className="mb-5">
@@ -67,21 +96,9 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
                   boxShadow: "0px 0px 2px #888",
                   padding: "0.5em 0.6em",
                 }}></i>
-                  {(props.metadata?.attributes?.length === 0)
-                    ? <>Anonymous</>
-                    // eslint-disable-next-line
-                    : props.metadata?.attributes?.map(({ name, value }, idx) => {
-                      if (name === "Artist" && value !== '') {
-                        return (
-                          <>{value}</>
-                        )
-                      }
-                      else if (idx === 0) {
-                        return (
-                          <>Anonymous</>
-                        )
-                      }
-                    })}
+              {
+                owner===''?<>Anonymous</>:owner
+              }
                 </p>
               </div>
               <div className="mt-2">

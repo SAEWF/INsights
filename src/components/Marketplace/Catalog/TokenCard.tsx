@@ -6,13 +6,45 @@ import { AspectRatio, Box, Flex } from '@chakra-ui/react';
 import { TokenMedia } from '../../common/TokenMedia';
 import tz from '../../common/assets/tezos-sym-white.svg'
 import { Card } from 'react-bootstrap';
+import firebase from '../../../lib/firebase/firebase';
 
 interface TokenCardProps extends Token {
   config: IpfsGatewayConfig;
 }
 
+
 export default function TokenCard(props: TokenCardProps) {
   const [, setLocation] = useLocation();
+  const [owner, setOwner] = React.useState('');
+
+  React.useEffect(() => {
+    var own : any;
+    if(props.sale!==undefined && props.sale!==null) {
+      own = props.sale.seller;
+    } else if(props.metadata.minter!==undefined && props.metadata.minter!==null) {
+      own = props.metadata.minter;
+    } else {
+      own = props.owner;
+    }
+    
+    const db = firebase.firestore();
+    const docRef = db.collection('artists').doc(own);
+    docRef.get().then(function(doc) {
+      if (doc.exists) {
+        var data = doc.data()!;
+        setOwner(data.name);
+        console.log("Document data:", data);
+      } else {
+        setOwner(own);
+        console.log("No such document!", own);
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  }, [props]);
+
+
+
   return (
     <Flex
       position="relative"
@@ -81,21 +113,9 @@ export default function TokenCard(props: TokenCardProps) {
                 )
               }
             })} */}
-          {(props.metadata?.attributes?.length === 0)
-            ? <>Anonymous</>
-            // eslint-disable-next-line
-            : props.metadata?.attributes?.map(({ name, value }, idx) => {
-              if ((name === "Artist" || name === "3D - CGI") && value !== '') {
-                return (
-                  <>{value}</>
-                )
-              }
-              else if (idx === 0) {
-                return (
-                  <>Anonymous</>
-                )
-              }
-            })}
+          {
+            owner===''?<>Anonymous</>:owner
+          }
         </p>
       </Card.Body>
 

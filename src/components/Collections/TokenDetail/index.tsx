@@ -92,7 +92,12 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
     }
 
     if(tokenHook!==null && tokenHook!==undefined && owner.length===0){
-      const walletAddress = tokenHook.sale?.seller;
+      var walletAddress ;
+      if(tokenHook.sale!==null && tokenHook.sale!==undefined){
+        walletAddress = tokenHook.sale.seller;
+      }else{
+        walletAddress = tokenHook.owner;
+      }
       const hook = firebase.firestore().collection('artists').doc(walletAddress);
       hook.onSnapshot(doc => {
         if(doc.exists){
@@ -139,6 +144,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
     (system.tzPublicKey === token.owner ||
       system.tzPublicKey === token.sale?.seller);
   // for viewing the token in console , turn it on
+  // console.log("OWNER + ", owner);
   console.log("TOKEN = ",token);
   return (
     
@@ -270,7 +276,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             </Text>
 
             {
-              (owner && owner.length > 0)?
+              (owner.length > 0)?
               owner.map((owner)=>{
                 return(
                   <Flex key="artist" mt={[4, 8]}>
@@ -285,16 +291,18 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 )
               })
               :
-              <Flex key="artist" mt={[4, 8]}>
-              <Text color="secColDarkTheme">Owner :</Text>
-              <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
-                  {token.sale?.seller}
-              </Text> 
-              </Flex>
+              <>
+                <Flex key="artist" mt={[4, 8]}>
+                <Text color="secColDarkTheme">Owner :</Text>
+                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                    {(token.sale!==undefined)?token.sale.seller:token.owner}
+                </Text> 
+                </Flex>
+              </>
             }
 
             {
-              (creator && creator.length > 0)?
+              (creator.length > 0)?
               creator.map((creator)=>{
                 return( 
                   <Flex key="artist" mt={[4, 8]}>
@@ -309,12 +317,14 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 )
               })
               :
-              <Flex key="artist" mt={[4, 8]}>
-              <Text color="secColDarkTheme">Creator :</Text>
-                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
-                      {token.metadata.minter}
-                </Text> 
-              </Flex>
+              <>
+                <Flex key="artist" mt={[4, 8]}>
+                <Text color="secColDarkTheme">Creator :</Text>
+                  <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                        {token.metadata.minter}
+                  </Text> 
+                </Flex>
+              </>
             }
 
             {
