@@ -110,9 +110,11 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       hook.onSnapshot(doc => {
         if(doc.exists){
           const data = doc.data();
-          var temp = [];
-          temp.push({id: doc.id, ...data});
-          setCreator(temp);
+          if(data!.display){
+            var temp = [];
+            temp.push({id: doc.id, ...data});
+            setCreator(temp);
+          }
         }
       })
     }
