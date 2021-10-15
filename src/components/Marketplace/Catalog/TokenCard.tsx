@@ -21,7 +21,7 @@ export default function TokenCard(props: TokenCardProps) {
     var own : any;
     if(props.sale!==undefined && props.sale!==null) {
       own = props.sale.seller;
-    } else if(props.metadata.minter!==undefined && props.metadata.minter!==null) {
+    } else if(props.metadata!==undefined && props.metadata!==null) {
       own = props.metadata.minter;
     } else {
       own = props.owner;
@@ -33,7 +33,7 @@ export default function TokenCard(props: TokenCardProps) {
       if (doc.exists) {
         var data = doc.data()!;
         setOwner(data.name);
-        console.log("Document data:", data);
+        // console.log("Document data:", data);
       } else {
         setOwner(own);
         console.log("No such document!", own);
@@ -103,16 +103,6 @@ export default function TokenCard(props: TokenCardProps) {
           boxShadow: "0px 0px 2px #888",
           padding: "0.5em 0.6em",
         }}></i>
-          {/* {(props.metadata?.attributes?.length === 0)
-            ? <>Anonymous</>
-            // eslint-disable-next-line
-            : props.metadata?.attributes?.map(({ name, value }) => {
-              if (name === "Artist") {
-                return (
-                  <>{value || 'Anonymous'}</>
-                )
-              }
-            })} */}
           {
             owner===''?<>Anonymous</>:owner
           }
