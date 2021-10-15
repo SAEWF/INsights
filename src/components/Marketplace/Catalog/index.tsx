@@ -20,7 +20,10 @@ export default function Catalog() {
     const blackList = ['tz1ZvsgNBPsvqZcqhNuYnHrH5k8LwDbPQzWF',
       'tz1brJrpAVdmrNAzRNLrDsrRRY1K98mSTR6z',
       'tz1VSZaQdqQwWcqdLiJnQwPJkushYVq51PSX',
-      'tz1hcWL5pwX65X1kfNTEL3uuAbkXDpUoURRH'];
+      'tz1hcWL5pwX65X1kfNTEL3uuAbkXDpUoURRH',
+      'tz1WiopX436BPwi4maDbbBDuzYgdtTTuKDAK',
+      'tz1W331jqP7ahn938oAcokknRUZiQhwtXQWM',
+      'tz1W331jqP7ahn938oAcokknRUZiQhwtXQWM'];
       
     useEffect(() => {
       dispatch(getMarketplaceNftsQuery(state.marketplace.address));
