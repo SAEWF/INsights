@@ -11,6 +11,7 @@ export const steps: Step[] = ['file_upload', 'asset_details', 'confirm'];
 interface Fields {
   name: string | null;
   description: string | null;
+  royalty: string | null;
 }
 
 export enum CreateStatus {
@@ -49,7 +50,8 @@ export const initialState: CreateNftState = {
   uploadedArtifact: null,
   fields: {
     name: null,
-    description: null
+    description: null,
+    royalty: null
   },
   attributes: [],
   collectionAddress: null,

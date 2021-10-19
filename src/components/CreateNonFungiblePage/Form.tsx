@@ -34,19 +34,17 @@ const DESCRIPTION_PLACEHOLDER =
 export default function Form() {
   const state = useSelector(s => s.createNft);
   const dispatch = useDispatch();
-  const { name, description } = state.fields;
+  const { name, description, royalty } = state.fields;
   // const [artistName, setartistName] = useState("");
   const [tags, setTags] = useState("");
   const [, setEdition] = useState("1");
 
-  
-  // useEffect(() => {
-  //   dispatch(addMetadataRow());
-  //   dispatch(updateMetadataRowName({ key: 0, name: 'Artist' }));
-  //   return;
-  //   // eslint-disable-next-line
-  // }, []);
-
+  useEffect(() => {
+    dispatch(addMetadataRow());
+    dispatch(updateMetadataRowName({ key: 0, name: 'Artist' }));
+    return;
+    // eslint-disable-next-line
+  }, []);
   useEffect(() => {
     dispatch(addMetadataRow());
     dispatch(updateMetadataRowName({ key: 1, name: 'Tags' }));
@@ -57,6 +55,13 @@ export default function Form() {
     dispatch(addMetadataRow());
     dispatch(updateMetadataRowName({ key: 2, name: 'Edition' }));
     dispatch(updateMetadataRowValue({ key: 2, value: '1' }))
+    return;
+    // eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    dispatch(addMetadataRow());
+    dispatch(updateMetadataRowName({ key: 3, name: 'Royalty' }));
+    dispatch(updateMetadataRowValue({ key: 3, value: '5' }))
     return;
     // eslint-disable-next-line
   }, []);
@@ -99,23 +104,6 @@ export default function Form() {
           }
         />
       </FormControl>
-      {/* Artist Name */}
-      {/* <FormControl paddingBottom={6}>
-        <FormLabel fontFamily="mono" display="flex">
-          Artist Name
-        </FormLabel>
-        <Input
-          autoFocus={true}
-          placeholder="Input artist name"
-          value={artistName || ''}
-          //  used before dispatchupdate Metadata Row Name by useEffect
-          onChange={e => {
-            setartistName(e.target.value)
-            dispatch(updateMetadataRowValue({ key: 0, value: e.target.value }))
-          }
-          }
-        />
-      </FormControl> */}
       {/* Tags */}
       <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
@@ -133,22 +121,37 @@ export default function Form() {
           }
         />
       </FormControl>
-       {/* Editions */}
-       {/* <FormControl paddingBottom={6}>
+
+      {/* Royalty percentage */}
+       <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
-          Editions
+          Royalty (%)
         </FormLabel>
-        <Input
-          placeholder="Input edition of your nft"
-          value={edition || ''}
-          // used before dispatch update Metadata Row Name by useEffect
-          onChange={e => {
-            setEdition(e.target.value)
-            dispatch(updateMetadataRowValue({ key: 2, value: e.target.value }))
-          }
-          }
-        />
-      </FormControl> */}
+        <NumberInput 
+          placeholder="Royalty percentage"
+          step={1} 
+          defaultValue={5} 
+          value={royalty || '5'}
+          min={5}
+          max={10}
+          onChange={(valueString) =>{
+            if(parseInt(valueString) > 10 || parseInt(valueString) < 5){
+              return;
+            }
+            dispatch(
+              updateField({ name: 'royalty', value: valueString })
+            )
+          }}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+      </NumberInput>
+      </FormControl>
+
+      {/* Editions */}
        <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
           Editions

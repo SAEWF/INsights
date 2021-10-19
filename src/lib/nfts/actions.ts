@@ -308,6 +308,16 @@ export async function removeTokenOperator(
     .send();
 }
 
+export async function transferRoyalty(
+  system: SystemWithWallet,
+  minter: string,
+  royalty: number
+) {
+  return system.toolkit.wallet
+    .transfer({to: minter, amount: royalty})
+    .send();
+}
+
 export async function buyTokenLegacy(
   system: SystemWithWallet,
   marketplaceContract: string,
