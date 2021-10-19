@@ -20,9 +20,15 @@ interface BuyTokenModalProps extends BaseModalProps {
   token: Nft;
 }
 
+// change for cases when minter is not present 
+const ADMIN_WALLET = 'tz1c3U4UUB59WssxJ1XJ7fibn6vwT7jDwRoV';
+const DEFAULT_ROYALTY_PERCENT = 10;
+
 export function BuyTokenModal(props: BuyTokenModalProps) {
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
+  const royalty = props.token.metadata!.attributes?.filter(it => it.name==='Royalty');
+  // console.log(royalty);
   return (
     <FormModal
       disclosure={props.disclosure}
@@ -36,7 +42,9 @@ export function BuyTokenModal(props: BuyTokenModalProps) {
             tokenSeller: props.token.sale?.seller || '',
             salePrice: props.token.sale?.price || 0,
             saleId: props.token.sale?.saleId || 0,
-            saleType: props.token.sale?.type || ''
+            saleType: props.token.sale?.type || '',
+            minter: props.token.metadata.minter || ADMIN_WALLET,
+            royalty: (royalty!==undefined && royalty!.length > 0) ? parseInt(royalty[0].value) : DEFAULT_ROYALTY_PERCENT,
           })
         )
       }

@@ -49,14 +49,18 @@ export default function Confirmation() {
         {fields.description || 'No description provided'}
       </Text>
 
-      {attributes?.map(({ name, value }) => (
-        <>
-          <Label>{name}</Label>
-          <Text fontSize="md" mb={[2, 4]}>
-            {value || 'No value provided'}
-          </Text>
-        </>
-      ))}
+      {attributes?.map(({ name, value }) => {
+        if(name!=='' && value!=='') 
+        return (
+          <>
+            <Label>{name}</Label>
+            <Text fontSize="md" mb={[2, 4]}>
+              {value || 'No value provided'}
+              {name==='Royalty'?'%':''}
+            </Text>
+          </>
+        )
+      })}
 
       {/* <Accordion allowToggle>
         <AccordionItem border="none">

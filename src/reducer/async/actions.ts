@@ -10,7 +10,8 @@ import {
   cancelTokenSale,
   cancelTokenSaleLegacy,
   buyToken,
-  buyTokenLegacy
+  buyTokenLegacy,
+  transferRoyalty,
 } from '../../lib/nfts/actions';
 import { ErrorKind, RejectValue } from './errors';
 import { getContractNftsQuery, getWalletAssetContractsQuery } from './queries';
@@ -31,6 +32,8 @@ import UpdateSoldnCollectedTokenInFB from '../../components/Artist/UpdateSoldnCo
 import DeleteArtTokenInFB from '../../components/Artist/DeleteArtTokenInFB';
 import AddSaleDataToFirebase from '../../components/Artist/AddSaleDataToFirebase';
 import CancelSale from '../../components/Artist/CancelSaleToken';
+import { sys } from 'typescript';
+import { number } from 'fp-ts';
 // import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
 type Options = {
@@ -590,12 +593,12 @@ export const cancelTokenSaleAction = createAsyncThunk<
 });
 
 export const buyTokenAction = createAsyncThunk<
-  { contract: string; tokenId: number; saleId: number; saleType: string },
-  { contract: string; tokenId: number; tokenSeller: string; salePrice: number; saleId: number; saleType: string },
+  { contract: string; tokenId: number; saleId: number; saleType: string},
+  { contract: string; tokenId: number; tokenSeller: string; salePrice: number; saleId: number; saleType: string; minter: string, royalty: number },
   Options
 >('action/buyToken', async (args, api) => {
   const { getState, rejectWithValue, dispatch, requestId } = api;
-  const { contract, tokenId, tokenSeller, salePrice, saleId, saleType } = args;
+  const { contract, tokenId, tokenSeller, salePrice, saleId, saleType, minter, royalty } = args;
   let { system } = getState();
   // UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId); //testing
 
@@ -613,6 +616,28 @@ export const buyTokenAction = createAsyncThunk<
   }
   try {
     let op;
+    var userAddress = system.tzPublicKey;
+    var userBigBalance = await system.toolkit.rpc.getBalance(userAddress);
+    var userBalance = userBigBalance.toNumber()/1000000;
+    console.log("userBalance", userBalance);
+
+    if(minter !== tokenSeller) {
+      // calculate the total price of the token
+      const royaltyAmount = salePrice * (royalty/100.0);
+      const totalPrice = salePrice + royaltyAmount;
+
+      if(userBalance < totalPrice) throw new Error("Not enough balance");
+
+      // 1. transfer royalty 
+      op = await transferRoyalty(system, minter, royaltyAmount);
+      await op.confirmation().then((result) => {
+        if(result.completed)
+        console.log("royalty transfer success");
+        else throw new Error("royalty transfer failed");
+      });
+    }
+
+    // 2. transfer token
     if (saleType === "fixedPriceLegacy") {
       op = await buyTokenLegacy(
         system,
@@ -642,8 +667,15 @@ export const buyTokenAction = createAsyncThunk<
     dispatch(getContractNftsQuery(contract));
 
     return { contract: contract, tokenId: tokenId, saleId: saleId, saleType: saleType };
-  } catch (e) {
-    return rejectWithValue({
+  } catch (e: any) {
+    console.error(e);
+    if(e.message === "Not enough balance"){
+      return rejectWithValue({
+        kind: ErrorKind.BuyTokenFailed,
+        message: 'Not enough balance'
+      });
+    }
+    else return rejectWithValue({
       kind: ErrorKind.BuyTokenFailed,
       message: 'Purchase token failed'
     });
