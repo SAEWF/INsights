@@ -44,6 +44,10 @@ export default function TokenCard(props: TokenCardProps) {
   }, [props]);
 
 
+  const openInNewTab = (url: string) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+  }
 
   return (
     <Flex
@@ -63,7 +67,7 @@ export default function TokenCard(props: TokenCardProps) {
         boxShadow: '0px 0px 10px #3339',
       }}
       onClick={() =>
-        setLocation(`/collection/${props.address}/token/${props.id}`)
+        openInNewTab(`/collection/${props.address}/token/${props.id}`)
       }
     >
       {/* {console.log(props)} */}
