@@ -86,8 +86,10 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
   useEffect(() => {
     if (collectionUndefined) {
+      console.log("DISPATCHED getNftAssetContractQuery contract", contractAddress);
       dispatch(getNftAssetContractQuery(contractAddress));
     } else {
+      console.log("DISPATCHED getContractNftsQuery");
       dispatch(getContractNftsQuery(contractAddress));
     }
 
@@ -145,9 +147,11 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       system.tzPublicKey === token.sale?.seller);
   // for viewing the token in console , turn it on
   // console.log("OWNER + ", owner);
+  console.log("TOKEN =", token);
   const royaltyArray = token.metadata!.attributes?.filter(it => it.name==='Royalty');
   const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
   const royaltyAmount = (token.sale !== undefined) ?  royaltyPercentage*token.sale!.price / 100.0 : 0;
+  const totalAmount = (token.sale !== undefined) ?  token.sale!.price + royaltyAmount : 0;
   return (
     
     <Flex flexDir="column"  flexGrow={1}>
@@ -331,7 +335,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
             {
               token?.metadata?.attributes?.map(({ name, value }) => {
-              if(name === 'Artist' || name === '') return null;
+              if(name === 'Artist' || name === '' || name === 'Royalty') return null;
               return(
                 <Flex key={name + value} mt={[4, 8]}>
                   <Text color="secColDarkTheme">{name}:</Text>
@@ -343,6 +347,15 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               )}
             )}
 
+            {
+              <Flex key="artist" mt={[4, 8]}>
+                <Text color="secColDarkTheme">Royalty :</Text>
+                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                  {royaltyPercentage}%
+                </Text>
+              </Flex>
+            }
+
             {/* Accordion can also be used to show information */}
             <Flex display={['flex']} justifyContent="space-between" alignItems="center" width="100%" flexDir={['column', 'row']} flexWrap="wrap" marginTop={2}>
               <Flex justifyContent={["flex-start"]} alignItems="center" width="100%" marginTop={4}>
@@ -350,7 +363,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   isOwner ? (
                     <>
                       <Text color="brand.black" fontSize="xl" fontWeight="700" marginRight={8}>
-                        {token.sale.price} + {(royaltyAmount!==undefined && token.sale.seller!==token.metadata.minter)?royaltyAmount:0} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
+                        {totalAmount} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
                       </Text>
                       <Box marginRight={8}>
                         <CancelTokenSaleButton
@@ -366,7 +379,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                       <Text 
                       // color="black"
                        fontSize={['md', 'md', 'lg']} mr={1} fontWeight="700" marginRight={8}>
-                        {token.sale.price.toFixed(2)} + {(royaltyAmount!==undefined && token.sale.seller!==token.metadata.minter)?royaltyAmount:0}  <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
+                        {totalAmount}  <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
                       </Text>
                       <Box>
                         <BuyTokenButton token={token} />
