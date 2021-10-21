@@ -145,7 +145,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       system.tzPublicKey === token.sale?.seller);
   // for viewing the token in console , turn it on
   // console.log("OWNER + ", owner);
-  console.log("TOKEN = ",token);
+  const royaltyArray = token.metadata!.attributes?.filter(it => it.name==='Royalty');
+  const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+  const royaltyAmount = (token.sale !== undefined) ?  royaltyPercentage*token.sale!.price / 100.0 : 0;
   return (
     
     <Flex flexDir="column"  flexGrow={1}>
@@ -335,6 +337,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   <Text color="secColDarkTheme">{name}:</Text>
                   <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                     {value}
+                    {name==='Royalty'?'%':''}
                   </Text>
                 </Flex>
               )}
@@ -347,7 +350,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   isOwner ? (
                     <>
                       <Text color="brand.black" fontSize="xl" fontWeight="700" marginRight={8}>
-                        {token.sale.price} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
+                        {token.sale.price} + {(royaltyAmount!==undefined && token.sale.seller!==token.metadata.minter)?royaltyAmount:0} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
                       </Text>
                       <Box marginRight={8}>
                         <CancelTokenSaleButton
@@ -363,7 +366,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                       <Text 
                       // color="black"
                        fontSize={['md', 'md', 'lg']} mr={1} fontWeight="700" marginRight={8}>
-                        {token.sale.price.toFixed(2)} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
+                        {token.sale.price.toFixed(2)} + {(royaltyAmount!==undefined && token.sale.seller!==token.metadata.minter)?royaltyAmount:0}  <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
                       </Text>
                       <Box>
                         <BuyTokenButton token={token} />
