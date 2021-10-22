@@ -49,6 +49,11 @@ export default function TokenCard(props: TokenCardProps) {
     if (newWindow) newWindow.opener = null
   }
 
+  const royaltyArray = props.metadata!.attributes?.filter(it => it.name==='Royalty');
+  const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+  const royaltyAmount = (props.sale !== undefined && props.sale !== null) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
+  const totalAmount = (props.sale !== undefined && props.sale !== null) ?  props.sale!.price + royaltyAmount : 0;
+
   return (
     <Flex
       position="relative"
@@ -112,14 +117,13 @@ export default function TokenCard(props: TokenCardProps) {
           }
         </p>
       </Card.Body>
-
       <Card.Footer className="text-white" style={{ backgroundColor: '#000' }}>
-        <p className="text-muted d-inline mr-2">Price:</p>
-        <p className="d-inline"> {props.sale?.price}
+      <p className="text-muted d-inline mr-2">Price:</p>
+
+        <p className="d-inline"> {totalAmount>0?totalAmount.toFixed(2):'Not on sale'}
           <img src={tz} alt="tz" width={10} height="auto" style={{ display: 'inline-block' }} className="ml-1" />
         </p>
       </Card.Footer>
-
     </Flex>
   );
 }
