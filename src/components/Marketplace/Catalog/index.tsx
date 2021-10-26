@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, Flex, Heading, Spinner, SimpleGrid, Box, } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
@@ -6,14 +6,19 @@ import {
   getMarketplaceNftsQuery,
   loadMoreMarketplaceNftsQuery
 } from '../../../reducer/async/queries'; //
+
 import TokenCard from './TokenCard';
 import FeaturedToken from './FeaturedToken';
+import '../index.css'
 import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
-
+import { Pagination } from 'react-bootstrap'
 export default function Catalog() {
   const { system, marketplace: state } = useSelector(s => s);
   const dispatch = useDispatch();
+  const [active, setActive] = useState(1);
+  const [start, setStart] = useState(1);
+  const [end, setEnd] = useState(9);
 
   // blackList for wallet address 
   // it will block display of minted nfts from them 
@@ -26,11 +31,115 @@ export default function Catalog() {
       dispatch(getMarketplaceNftsQuery(state.marketplace.address));
     }, [state.marketplace.address, dispatch]);
 
-    const loadMore = () => {
-      dispatch(loadMoreMarketplaceNftsQuery({}));
+    const loadMore = (pageNumber: number) => {
+      dispatch(loadMoreMarketplaceNftsQuery({page:pageNumber}));
     };
 
+    useEffect(() => {
+      loadMoreMarketplaceNftsQuery({page: active});
+    }, [active]);
+
+    console.log('marketplace tokens', state.marketplace.tokens);
     let tokens = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
+    tokens = tokens.filter(x => !blackList.includes(x.metadata?.minter ?? ''));
+
+    // for getting all tokens sale data , uncomment below line
+    console.log('tokens', tokens);
+    // for getting all tokenData from marketplace , change a bit in the getMarketplaceNftsQuery dispatcher
+
+    // PAGINATION
+    let items = [];
+    const numberOfPages = Math.ceil(tokens.length-1 / 8);
+    for (let number = 1; number <= numberOfPages; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === active} onClick={()=>{
+          setActive(number);
+          setStart((number-1)*8 + 1);
+          setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*8)+1);
+          console.log('start', (number-1)*8 + 1, 'end', end);
+          loadMore(number);
+        }}>
+          {number}
+        </Pagination.Item>
+      );
+    }
+
+    const handleFirst = () =>{
+      setActive(1);
+      setStart(1);
+      setEnd(9);
+      loadMore(1);
+    }
+    const handlePrev = () =>{
+      if(active > 1){
+        setActive(active-1);
+        setStart(start-8);
+        setEnd(end-8);
+        loadMore(active-1);
+      }
+    }
+    const handleNext = () =>{
+      if(active < numberOfPages){
+        setActive(active+1);
+        setStart(start+8);
+        setEnd(end+8);
+        loadMore(active+1);
+      }
+    }
+    const handleLast = () =>{
+      setActive(numberOfPages);
+      setStart((numberOfPages-1)*8 + 1);
+      setEnd(state.marketplace.tokens?.length ?? 0);
+      loadMore(numberOfPages);
+    }
+
+    const paginationBasic = (
+      <Pagination>
+          <Pagination.First onClick ={()=>setActive(1)} />
+          <Pagination.Prev onClick={()=>{if(active>1) setActive(active-1)}} />
+            {items}
+          <Pagination.Next onClick={()=>{if(active<numberOfPages) setActive(active+1)}}/>
+          <Pagination.Last onClick={()=>{setActive(numberOfPages)}}/>
+      </Pagination>
+    )
+
+    const PaginationWithEllipses = (
+      <Pagination size="lg" id="paginate">
+        <Pagination.First onClick ={handleFirst} />
+        <Pagination.Prev onClick={handlePrev} />
+        {items.slice(0, 1)}
+        <Pagination.Ellipsis />
+        {
+            (active===1 || active===numberOfPages) ?
+            items.slice((numberOfPages+1)/2 - 2, (numberOfPages+1)/2 + 1)
+              :
+            <></>
+        }
+        {
+            (active===2) ?
+            items.slice((active-1), (active+2))
+              :
+            <></>
+        }
+        {
+            (active===numberOfPages-1) ?
+            items.slice((active-3), (active))
+              :
+            <></>
+        }
+        {
+          (active!==1 && active!==2 && active!==numberOfPages-1 && active!==numberOfPages) ?
+            items.slice((active-2), (active+1))
+            :
+            <></>  
+        }
+        <Pagination.Ellipsis />
+        {items.slice(items.length-1, items.length)}
+        <Pagination.Next onClick={handleNext}/>
+        <Pagination.Last onClick={handleLast}/>
+      </Pagination>
+    )
+    
 
     return (
     <>
@@ -91,10 +200,11 @@ export default function Catalog() {
                 pb={8}
               >
                 <>
-                  {tokens.slice(1).map(token => {
-                    if(token.metadata?.minter!==undefined && !blackList.includes(token.metadata?.minter))
+                  {state.marketplace.tokens?.slice(start, end).map(tokenDetail => {
+                    const token = tokenDetail.token;
+                    if(token && token.metadata?.minter!==undefined && !blackList.includes(token.metadata?.minter))
                     return (
-                      <Box display="grid" transition="250ms padding" padding={1} _hover={{ padding: 0 }} mb={7}>
+                      <Box display="grid" transition="250ms padding" padding={1} style={{transition: 'all .2s ease-in-out'}} _hover={{ transform: 'scale(1.05)' }} mb={7}>
                         <TokenCard
                           key={`${token.address}-${token.id}`}
                           config={system.config}
@@ -104,15 +214,21 @@ export default function Catalog() {
                     );
                     else return <></>;
                   })}
-                  <VisibilityTrigger
-                  key={state.marketplace.tokens?.length + ':' + tokens.length}
-                  onVisible={loadMore}
-                  allowedDistanceToViewport={600}
-                />
+                  {/* <VisibilityTrigger
+                    key={state.marketplace.tokens?.length + ':' + tokens.length}
+                    onVisible={()=>loadMore(active)}
+                    allowedDistanceToViewport={600}
+                  /> */}
                 </>
                 {/* <StaticMarketplaceDisplay /> */}
 
               </SimpleGrid>
+              {
+                (state.marketplace.tokens?.length ?? 0) < 8 ? 
+                  paginationBasic
+                  :
+                  PaginationWithEllipses
+              }
             </>
           )}
         </Flex>

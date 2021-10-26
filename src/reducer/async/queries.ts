@@ -9,6 +9,7 @@ import {
   loadMarketplaceNft,
   getNftAssetContracts
 } from '../../lib/nfts/queries';
+
 import { Nft, AssetContract } from '../../lib/nfts/decoders';
 import { ErrorKind, RejectValue } from './errors';
 
@@ -22,6 +23,7 @@ export const getNftAssetContractQuery = createAsyncThunk<
   const { getState, rejectWithValue } = api;
   const { system } = getState();
   try {
+    console.log("CALLED getNftAssetContract using system and address");
     return await getNftAssetContract(system, address);
   } catch (e) {
     return rejectWithValue({
@@ -132,17 +134,17 @@ export const getMarketplaceNftsQuery = createAsyncThunk<
 
 export const loadMoreMarketplaceNftsQuery = createAsyncThunk<
   { tokens: MarketplaceNftLoadingData[] },
-  {},
+  {page: number},
   Opts
 >(
   'query/loadMoreMarketplaceNftsQuery',
-  async (_, { getState, rejectWithValue }) => {
+  async (args, { getState, rejectWithValue }) => {
     const { system, marketplace } = getState();
     try {
       const tokens = marketplace.marketplace.tokens ?? [];
 
       // Load 8 more (at least 2 rows)
-      const iStart = tokens.findIndex(x => !x.loaded);
+      const iStart = (args.page-1)*8 + 1;
       const iEnd = iStart + 8;
 
       // Need to rebuild the array

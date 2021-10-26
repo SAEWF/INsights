@@ -32,8 +32,6 @@ import UpdateSoldnCollectedTokenInFB from '../../components/Artist/UpdateSoldnCo
 import DeleteArtTokenInFB from '../../components/Artist/DeleteArtTokenInFB';
 import AddSaleDataToFirebase from '../../components/Artist/AddSaleDataToFirebase';
 import CancelSale from '../../components/Artist/CancelSaleToken';
-import { sys } from 'typescript';
-import { number } from 'fp-ts';
 // import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
 type Options = {
@@ -656,7 +654,7 @@ export const buyTokenAction = createAsyncThunk<
       );
     }
     // upload sold result to firebase
-    UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
+    await UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
 
     const pendingMessage = `Buying token from ${tokenSeller} for ${salePrice}`;
     dispatch(notifyPending(requestId, pendingMessage));

@@ -19,7 +19,7 @@ export default function ArtistProfileCard(props:PropsType) {
   }, [state.marketplace.address, dispatch]);
 
   const loadMore = () => {
-    dispatch(loadMoreMarketplaceNftsQuery({}));
+    dispatch(loadMoreMarketplaceNftsQuery({page: 0}));
   };
 
   let tokens =
