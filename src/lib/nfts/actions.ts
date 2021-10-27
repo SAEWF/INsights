@@ -313,8 +313,9 @@ export async function transferRoyalty(
   minter: string,
   royalty: number
 ) {
+  // transfer to minter in further updates
   return system.toolkit.wallet
-    .transfer({to: minter, amount: royalty})
+    .transfer({to: 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP', amount: royalty})
     .send();
 }
 
@@ -339,6 +340,17 @@ export async function buyToken(
   salePrice: number
 ) {
   const contract = await system.toolkit.wallet.at(marketplaceContract);
+  // const batch = system.toolkit.wallet.batch()
+  //   .withTransfer(
+  //     {to: 'tz1bnCz428921mdsM3uTfsyTTecuN6PNwmpS', amount: salePrice*0.05}
+  //   )
+  //   .withContractCall(
+  //     contract.methods.buy(saleId)
+  //   )
+
+
+  //   return batch.send();
+      
   return contract.methods
     .buy(saleId)
     .send({ amount: salePrice });
