@@ -1,0 +1,24 @@
+.pagination{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+}
+
+#paginate .page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: cyan;
+    background-color: black;
+    border: 1px solid white;
+}
+
+#paginate .page-item.active .page-link {
+    z-index: 3;
+    color: black;
+    background-color: cyan;
+    border-color: #007bff;
+}

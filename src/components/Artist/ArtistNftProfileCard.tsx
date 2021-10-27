@@ -18,7 +18,7 @@ export default function ArtistNftProfileCard(props:PropsType) {
   }, [state.marketplace.address, dispatch]);
 
   const loadMore = () => {
-    dispatch(loadMoreMarketplaceNftsQuery({}));
+    dispatch(loadMoreMarketplaceNftsQuery({page: 0}));
   };
 
   let tokens =
