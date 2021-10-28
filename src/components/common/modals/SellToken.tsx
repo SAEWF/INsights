@@ -84,7 +84,9 @@ export function SellTokenModal(props: SellTokenModalProps) {
               </Box>
             </Flex>
           </ModalBody>
-          <ModalFooter />
+          <ModalFooter >
+            * Final listing price will have additional royalty included .
+          </ModalFooter>
         </>
       )}
     />
