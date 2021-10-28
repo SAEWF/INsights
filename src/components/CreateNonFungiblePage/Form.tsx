@@ -135,12 +135,12 @@ export default function Form() {
           min={5}
           max={10}
           onChange={(valueString) =>{
-            if(parseInt(valueString) > 10 || parseInt(valueString) < 5){
-              return;
-            }
             dispatch(
               updateField({ name: 'royalty', value: valueString })
-            )
+            );
+            dispatch(
+              updateMetadataRowValue({ key: 3, value: valueString })
+            );
           }}
         >
           <NumberInputField />
