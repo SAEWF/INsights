@@ -28,6 +28,10 @@ export function BuyTokenModal(props: BuyTokenModalProps) {
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
   const royalty = props.token.metadata!.attributes?.filter(it => it.name==='Royalty');
+  const royaltyArray = props.token.metadata!.attributes?.filter(it => it.name==='Royalty');
+  const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+  const royaltyAmount = (props.token.sale !== undefined) ?  royaltyPercentage*props.token.sale!.price / 100.0 : 0;
+  const totalAmount = (props.token.sale !== undefined) ?  props.token.sale!.price + royaltyAmount : 0;
   // console.log(royalty);
   return (
     <FormModal
@@ -60,7 +64,7 @@ export function BuyTokenModal(props: BuyTokenModalProps) {
               You are about to purchase
               <Box as="span" fontWeight="bold">
                 {' '}
-                {props.token.title} (<img src={tz} alt="" width={10} height="auto" style={{display: 'inline-block'}}/> {props.token.sale?.price})
+                {props.token.title} (<img src={tz} alt="" width={10} height="auto" style={{display: 'inline-block'}}/> {totalAmount})
               </Box>
             </Text>
           </ModalBody>
