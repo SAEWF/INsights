@@ -623,12 +623,15 @@ export const buyTokenAction = createAsyncThunk<
     const royaltyAmount = salePrice * (royalty/100.0);
     const totalPrice = salePrice + royaltyAmount;
 
-    if(minter !== tokenSeller) {
+    if(minter !== tokenSeller && minter!==system.tzPublicKey) {
 
       if(userBalance < totalPrice) throw new Error("Not enough balance");
 
       // 1. transfer royalty 
       op = await transferRoyalty(system, minter, royaltyAmount);
+      const pendingMessage = `Transferring royalty amount. Please wait !!`;
+      dispatch(notifyPending(requestId, pendingMessage));
+
       await op.confirmation().then((result) => {
         if(result.completed){
           console.log("royalty transfer completed");
