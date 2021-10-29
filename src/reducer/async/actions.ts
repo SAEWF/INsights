@@ -619,18 +619,22 @@ export const buyTokenAction = createAsyncThunk<
     var userBalance = userBigBalance.toNumber()/1000000;
     console.log("userBalance", userBalance);
 
+    // calculate the total price of the token
+    const royaltyAmount = salePrice * (royalty/100.0);
+    const totalPrice = salePrice + royaltyAmount;
+
     if(minter !== tokenSeller) {
-      // calculate the total price of the token
-      const royaltyAmount = salePrice * (royalty/100.0);
-      const totalPrice = salePrice + royaltyAmount;
 
       if(userBalance < totalPrice) throw new Error("Not enough balance");
 
       // 1. transfer royalty 
       op = await transferRoyalty(system, minter, royaltyAmount);
       await op.confirmation().then((result) => {
-        if(result.completed)
-        console.log("royalty transfer success");
+        if(result.completed){
+          console.log("royalty transfer completed");
+          const fulfilledMessage = `Royalty transferred . Please complete the next transaction to buy !!`;
+          dispatch(notifyFulfilled(requestId, fulfilledMessage));
+        }
         else throw new Error("royalty transfer failed");
       });
     }
@@ -656,11 +660,11 @@ export const buyTokenAction = createAsyncThunk<
     // upload sold result to firebase
     await UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
 
-    const pendingMessage = `Buying token from ${tokenSeller} for ${salePrice}`;
+    const pendingMessage = `Buying token from ${tokenSeller} for ${totalPrice}`;
     dispatch(notifyPending(requestId, pendingMessage));
     await op.confirmation(2);
     
-    const fulfilledMessage = `Bought token from ${tokenSeller} for ${salePrice}`;
+    const fulfilledMessage = `Bought token from ${tokenSeller} for ${totalPrice}`;
     dispatch(notifyFulfilled(requestId, fulfilledMessage));
     dispatch(getContractNftsQuery(contract));
 
