@@ -10,7 +10,7 @@ import {
 import TokenCard from './TokenCard';
 import FeaturedToken from './FeaturedToken';
 import '../index.css'
-import { VisibilityTrigger } from '../../common/VisibilityTrigger';
+// import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
 import { Pagination } from 'react-bootstrap'
 export default function Catalog() {

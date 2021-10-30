@@ -60,6 +60,7 @@ export default function Confirmation() {
             </Text>
           </>
         )
+        else return null;
       })}
 
       {/* <Accordion allowToggle>
