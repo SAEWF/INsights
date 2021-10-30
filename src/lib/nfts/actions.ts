@@ -315,7 +315,7 @@ export async function transferRoyalty(
 ) {
   // transfer to minter in further updates
   return system.toolkit.wallet
-    .transfer({to: 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP', amount: royalty})
+    .transfer({to: minter, amount: royalty})
     .send();
 }
 
@@ -331,6 +331,20 @@ export async function buyTokenLegacy(
   return contract.methods
     .buy(tokenSeller, tokenContract, tokenId)
     .send({ amount: salePrice });
+  // const batch = system.toolkit.wallet.batch()
+  // .withTransfer(
+  //   {to: 'tz1bnCz428921mdsM3uTfsyTTecuN6PNwmpS', amount: salePrice*0.05}
+  // )
+  // .withContractCall(
+  //   contract.methods.buy(tokenSeller, tokenContract, tokenId)
+  //   // contract.methods.transfer([
+  //   //   {
+  //   //     from_: tokenSeller,
+  //   //     txs: [{ to_: system.tzPublicKey, token_id: tokenId, amount: salePrice }]
+  //   //   }
+  //   // ]).send({amount: salePrice})
+  // )
+  // return batch.send();
 }
 
 export async function buyToken(
