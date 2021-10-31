@@ -1,6 +1,5 @@
 import React from 'react';
 import { Token } from '../../../reducer/slices/collections';
-import { useLocation } from 'wouter';
 import { IpfsGatewayConfig } from '../../../lib/util/ipfs';
 import { AspectRatio, Box, Flex } from '@chakra-ui/react';
 import { TokenMedia } from '../../common/TokenMedia';
@@ -14,7 +13,6 @@ interface TokenCardProps extends Token {
 
 
 export default function TokenCard(props: TokenCardProps) {
-  const [, setLocation] = useLocation();
   const [owner, setOwner] = React.useState('');
 
   React.useEffect(() => {

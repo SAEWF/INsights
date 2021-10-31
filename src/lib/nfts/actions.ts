@@ -325,47 +325,46 @@ export async function buyTokenLegacy(
   tokenContract: string,
   tokenId: number,
   tokenSeller: string,
-  salePrice: number
+  salePrice: number,
+  royaltyAmount: number,
+  minter: string
 ) {
   const contract = await system.toolkit.wallet.at(marketplaceContract);
-  return contract.methods
-    .buy(tokenSeller, tokenContract, tokenId)
-    .send({ amount: salePrice });
-  // const batch = system.toolkit.wallet.batch()
-  // .withTransfer(
-  //   {to: 'tz1bnCz428921mdsM3uTfsyTTecuN6PNwmpS', amount: salePrice*0.05}
-  // )
-  // .withContractCall(
-  //   contract.methods.buy(tokenSeller, tokenContract, tokenId)
-  //   // contract.methods.transfer([
-  //   //   {
-  //   //     from_: tokenSeller,
-  //   //     txs: [{ to_: system.tzPublicKey, token_id: tokenId, amount: salePrice }]
-  //   //   }
-  //   // ]).send({amount: salePrice})
-  // )
-  // return batch.send();
+
+  // transfer with royalty
+  if(minter !== tokenSeller && minter!==system.tzPublicKey) {
+    const batch = system.toolkit.wallet.batch()
+    .withTransfer(
+      {to: minter, amount: royaltyAmount}
+    )
+    .withTransfer(
+      contract.methods.buy(tokenSeller, tokenContract, tokenId).toTransferParams({amount: salePrice})
+    )
+    return batch.send();
+  } 
+  // without royalty
+  else {
+    return contract.methods.buy(tokenSeller, tokenContract, tokenId).send({amount: salePrice});
+  }
 }
 
 export async function buyToken(
   system: SystemWithWallet,
   marketplaceContract: string,
   saleId: number,
-  salePrice: number
+  salePrice: number,
+  royaltyAmount: number,
+  minter: string
 ) {
   const contract = await system.toolkit.wallet.at(marketplaceContract);
-  // const batch = system.toolkit.wallet.batch()
-  //   .withTransfer(
-  //     {to: 'tz1bnCz428921mdsM3uTfsyTTecuN6PNwmpS', amount: salePrice*0.05}
-  //   )
-  //   .withContractCall(
-  //     contract.methods.buy(saleId)
-  //   )
+  
+  const batch = system.toolkit.wallet.batch()
+    .withTransfer(
+      {to: minter, amount: royaltyAmount}
+    )
+    .withTransfer(
+      contract.methods.buy(saleId).toTransferParams({amount: salePrice})
+    )
 
-
-  //   return batch.send();
-      
-  return contract.methods
-    .buy(saleId)
-    .send({ amount: salePrice });
+    return batch.send();
 }

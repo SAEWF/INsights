@@ -11,7 +11,6 @@ import {
   cancelTokenSaleLegacy,
   buyToken,
   buyTokenLegacy,
-  transferRoyalty,
 } from '../../lib/nfts/actions';
 import { ErrorKind, RejectValue } from './errors';
 import { getContractNftsQuery, getWalletAssetContractsQuery } from './queries';
@@ -623,26 +622,9 @@ export const buyTokenAction = createAsyncThunk<
     const royaltyAmount = salePrice * (royalty/100.0);
     const totalPrice = salePrice + royaltyAmount;
 
-    if(minter !== tokenSeller && minter!==system.tzPublicKey) {
+    if(userBalance < totalPrice) throw new Error("Not enough balance");
 
-      if(userBalance < totalPrice) throw new Error("Not enough balance");
-
-      // 1. transfer royalty 
-      op = await transferRoyalty(system, minter, royaltyAmount);
-      const pendingMessage = `Transferring royalty amount. Please wait !!`;
-      dispatch(notifyPending(requestId, pendingMessage));
-
-      await op.confirmation().then((result) => {
-        if(result.completed){
-          console.log("royalty transfer completed");
-          const fulfilledMessage = `Royalty transferred . Please complete the next transaction to buy !!`;
-          dispatch(notifyFulfilled(requestId, fulfilledMessage));
-        }
-        else throw new Error("royalty transfer failed");
-      });
-    }
-
-    // 2. transfer token
+    // transfer token
     if (saleType === "fixedPriceLegacy") {
       op = await buyTokenLegacy(
         system,
@@ -650,14 +632,18 @@ export const buyTokenAction = createAsyncThunk<
         contract,
         tokenId,
         tokenSeller,
-        salePrice
+        salePrice,
+        royaltyAmount,
+        minter
       );
     } else {
       op = await buyToken(
         system,
         marketplaceContract,
         saleId,
-        salePrice
+        salePrice,
+        royaltyAmount,
+        minter
       );
     }
     // upload sold result to firebase

@@ -31,7 +31,7 @@ function FetchArtistData(usernameFromUrl: string) {
     }, (error) => {
       console.log("Error getting documents: ", error);
     });
-  }, []);
+  }, [usernameFromUrl]);
 
   return tasks;
 }
@@ -116,6 +116,7 @@ const GetCollectedNfts = (userdata: TasksType[]) =>{
 
 export default function ArtistProfile(props: PropType) {
 
+  // eslint-disable-next-line
   const { system, marketplace: state } = useSelector(s => s);
 
   var usernameFromUrl: string = props.username

@@ -71,6 +71,11 @@ interface TokenDetailProps {
   tokenId: number;
 }
 
+const getIPFSlink = (hash: string) =>{
+    const cid = hash.replace(':','');
+    return `https://tqtezos.mypinata.cloud/${cid}`;
+}
+
 function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   const { system, collections: state } = useSelector(s => s);
   const disclosure = useDisclosure();
@@ -352,6 +357,24 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 <Text color="secColDarkTheme">Royalty :</Text>
                 <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                   {royaltyPercentage}%
+                </Text>
+              </Flex>
+            }
+
+            {
+              <Flex key="artist" mt={[4, 8]}>
+                <Text color="secColDarkTheme">View on IPFS :</Text>
+                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                  <a href={getIPFSlink(token?.metadata?.artifactUri ?? '')} target="_blank" rel="noopener noreferrer">View</a>
+                </Text>
+              </Flex>
+            }
+
+            {
+              <Flex key="artist" mt={[4, 8]}>
+                <Text color="secColDarkTheme">Metadata :</Text>
+                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                  <a href={getIPFSlink(token?.metadata?.[''] ?? '')} target="_blank" rel="noopener noreferrer">View</a>
                 </Text>
               </Flex>
             }

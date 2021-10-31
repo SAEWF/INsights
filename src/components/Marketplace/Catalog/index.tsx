@@ -10,7 +10,7 @@ import {
 import TokenCard from './TokenCard';
 import FeaturedToken from './FeaturedToken';
 import '../index.css'
-import { VisibilityTrigger } from '../../common/VisibilityTrigger';
+// import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
 import { Pagination } from 'react-bootstrap'
 export default function Catalog() {
@@ -111,8 +111,14 @@ export default function Catalog() {
         {items.slice(0, 1)}
         <Pagination.Ellipsis />
         {
-            (active===1 || active===numberOfPages) ?
-            items.slice((numberOfPages+1)/2 - 2, (numberOfPages+1)/2 + 1)
+            (active===1) ?
+            items.slice(active, active+3)
+              :
+            <></>
+        }
+        {
+            (active===numberOfPages) ?
+            items.slice(active-3, active)
               :
             <></>
         }
