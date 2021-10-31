@@ -111,7 +111,7 @@ export default function Catalog() {
         <Pagination.Ellipsis />
         {
             (active===1) ?
-            items.slice(active+1, active+4)
+            items.slice(active, active+3)
               :
             <></>
         }
