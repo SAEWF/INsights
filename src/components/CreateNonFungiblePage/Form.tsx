@@ -133,7 +133,7 @@ export default function Form() {
           defaultValue={5} 
           value={royalty || '5'}
           min={5}
-          max={10}
+          max={15}
           onChange={(valueString) =>{
             dispatch(
               updateField({ name: 'royalty', value: valueString })
