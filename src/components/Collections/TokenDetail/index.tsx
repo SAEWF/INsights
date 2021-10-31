@@ -363,18 +363,18 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
             {
               <Flex key="artist" mt={[4, 8]}>
-                <Text color="secColDarkTheme">View on IPFS :</Text>
+                <Text color="secColDarkTheme"><i className="fas fa-link"></i></Text>
                 <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
-                  <a href={getIPFSlink(token?.metadata?.artifactUri ?? '')} target="_blank" rel="noopener noreferrer">View</a>
+                  <a href={getIPFSlink(token?.metadata?.artifactUri ?? '')} target="_blank" rel="noopener noreferrer">View on IPFS</a>
                 </Text>
               </Flex>
             }
 
             {
               <Flex key="artist" mt={[4, 8]}>
-                <Text color="secColDarkTheme">Metadata :</Text>
+                <Text color="secColDarkTheme"><i className="fas fa-link"></i></Text>
                 <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
-                  <a href={getIPFSlink(token?.metadata?.[''] ?? '')} target="_blank" rel="noopener noreferrer">View</a>
+                  <a href={getIPFSlink(token?.metadata?.[''] ?? '')} target="_blank" rel="noopener noreferrer">View metadata</a>
                 </Text>
               </Flex>
             }
