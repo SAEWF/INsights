@@ -1,21 +1,33 @@
 {
-  "rpc": "https://rpc.tzbeta.net",
-  "network": "mainnet",
-  "bcd": {
-    "api": "https://api.better-call.dev",
-    "gui": "https://better-call.dev"
-  },
-  "tzkt": {
-    "api": "https://api.mainnet.tzkt.io"
-  },
-  "contracts": {
-    "nftFaucet": "KT1QcxwB4QyPKfmSwjH1VRxa6kquUjeDWeEy",
-    "marketplace": {
-      "fixedPrice": {
-        "tez": "KT1E8Qzgx3C5AAE4iGuXvqSQjdd21LK2aXAk"
-      }
-    }
-  },
-  "ipfsApi": "https://minter-api.tqhosted.com",
-  "ipfsGateway": "https://tqtezos.mypinata.cloud"
+	"network": "mainnet",
+	"rpc": "https://rpc.tzbeta.net",
+	"bcd": {
+		"api": "https://api.better-call.dev",
+		"gui": "https://better-call.dev"
+	},
+	"tzkt": {
+		"api": "https://api.mainnet.tzkt.io"
+	},
+	"admin": {
+		"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
+	},
+	"ipfsApi": "https://minter-api.tqhosted.com",
+	"ipfsGateway": "https://tqtezos.mypinata.cloud",
+	"contractOpts": {
+		"marketplace": {
+			"adminOnly": false,
+			"fee": {
+				"percent": 4,
+				"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
+			}
+		}
+	},
+	"contracts": {
+		"nftFaucet": "KT1MxGrhSmLPe4W842AutygvuoxUejLJDuWq",
+		"marketplace": {
+			"fixedPrice": {
+				"tez": "KT1NNpYRX8bAL5JTbGWtWRrSqG2iWdUdiXF5"
+			}
+		}
+	}
 }

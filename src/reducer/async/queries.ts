@@ -43,12 +43,7 @@ export const getContractNftsQuery = createAsyncThunk<
     const tokens = await getContractNfts(system, address);
     return { address, tokens };
   } catch (e) {
-    return rejectWithValue({
-      kind: ErrorKind.GetContractNftsFailed,
-      message: `Failed to retrieve contract nfts from: ${
-        collections.collections[address]?.metadata?.name ?? address
-      }`
-    });
+      console.log("Missed to get NFTs");
   }
 });
 
