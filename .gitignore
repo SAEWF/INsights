@@ -53,3 +53,4 @@ src/lib/firebase/
 
 #build folder
 build/
+src/lib/firebase/firebase.tsx
