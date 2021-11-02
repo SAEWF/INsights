@@ -89,6 +89,21 @@ export function FilePreview({ file }: { file: SelectedFile }) {
       </>
     );
   }
+  if(/^audio\/.*/.test(file.type)){
+    return (
+      <>
+      <audio controls src={file.objectUrl}></audio>
+      </>
+    )
+  }
+  if(file.type === 'application/pdf'){
+    return (
+      <>
+        <iframe  height="500px" width="400px" src={file.objectUrl} title={file.name}></iframe>
+      </>
+    )
+  }
+
   return null;
 }
 
@@ -110,10 +125,12 @@ export default function FileUpload() {
     accept: [
       'image/*',
       'video/*',
+      'audio/*',
       'model/gltf-binary',
       'model/gltf+json',
       '.gltf',
-      '.glb'
+      '.glb',
+      '.pdf'
     ]
   });
 

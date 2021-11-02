@@ -86,6 +86,23 @@ export function TokenMedia(props: TokenMediaProps) {
     );
   }
 
+  if(/^audio\/.*/.test(obj.type)){
+    return (
+      <>
+      <audio controls src={obj.url}></audio>
+      </>
+    )
+  }
+
+  if(obj.type === 'application/pdf'){
+    console.log(obj)
+    return (
+      <>
+      <iframe  height="500px" width="300px" src={obj.url} title={obj.type}></iframe>
+      </>
+    )
+  }
+
   if (props.metadata.formats?.length) {
     if (
       props.metadata.formats[0].mimeType === 'model/gltf-binary' ||
