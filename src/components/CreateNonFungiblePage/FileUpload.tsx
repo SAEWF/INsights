@@ -194,10 +194,7 @@ export default function FileUpload() {
             flex="1"
           >
             <Text fontSize={20} textAlign="center" paddingX={4}>
-              Click or Drag the NFT
-            </Text>
-            <Text fontSize={18} color="brand.gray">
-              Single file at a time
+              Click or Drag the File
             </Text>
           </Flex>
         )}

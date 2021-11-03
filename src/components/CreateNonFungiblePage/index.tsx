@@ -210,8 +210,7 @@ export default function CreateNonFungiblePage() {
                     <span role="img" aria-label="lightbulb">
                       🌱
                     </span>{' '}
-                    Minting on ByteBlock NFT platform is 1,500,000 times less CO2 emissions
-                    than Ethereum.
+                    Processing Blockchain operation(s).
                   </Text>
                 </>
               }

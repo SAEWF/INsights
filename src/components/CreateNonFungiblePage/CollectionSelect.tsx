@@ -39,7 +39,7 @@ export default function CollectionSelect() {
       <CreateBaseCollection />
       <Flex pb={8} flexDir="column">
         <Flex pb={4} align="center" justify="space-between">
-          <Heading size="md">Select Your Own Collection</Heading>
+          <Heading size="md">Select a Collection</Heading>
           {/* <CreateCollectionButton sync={true} /> 
           commented for hidden new collection button*/}
         </Flex>
@@ -61,7 +61,7 @@ export default function CollectionSelect() {
               </Box>
               {(state.collectionAddress &&
                 collections[state.collectionAddress]?.metadata?.name) ||
-                'Select a collection'}
+                'Collection'}
             </Flex>
           </MenuButton>
           <MenuList>

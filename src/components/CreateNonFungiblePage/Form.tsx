@@ -72,10 +72,10 @@ export default function Form() {
     <>
       <CollectionSelect />
       <Heading size="md" paddingBottom={6}>
-        Describe your NFT
+        Details about your NFT
       </Heading>
       <FormControl paddingBottom={6}>
-        <FormLabel fontFamily="mono">NFT Name</FormLabel>
+        <FormLabel fontFamily="mono">Title</FormLabel>
         <Input
           autoFocus={true}
           placeholder="Input your asset name"
@@ -87,7 +87,7 @@ export default function Form() {
       </FormControl>
       <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
-          A Very Good Description
+          Description
           <Text marginLeft={2} color="brand.lightGray">
             (Must Give)
           </Text>
