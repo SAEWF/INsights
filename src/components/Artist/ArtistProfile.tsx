@@ -50,12 +50,15 @@ const GetNfts = (userdata: TasksType[]) =>{
         return;
       }
       const db = firebase.firestore();
-      let nfts: any[] = [];
-      var docRef = db.collection('nfts').doc(walletID).collection('Creations');
+      let nfts: any[] = [], uniqueID: any[] = [];
+      var docRef = db.collection('nfts').doc(walletID).collection('Creations').orderBy("id","desc");
       await docRef.get().then(async (querySnapshot) => {
         await querySnapshot.forEach((doc) => {
           // console.log(doc.id, " => ", doc.data());
-          nfts.push(doc.data());
+          if(!uniqueID.includes(doc.data().address+'-'+doc.data().id)){
+            nfts.push(doc.data());
+          }
+          uniqueID.push(doc.data().address+'-'+doc.data().id);
         });
       }, (error) => {
         console.log("Error getting documents: ", error);
@@ -88,12 +91,15 @@ const GetCollectedNfts = (userdata: TasksType[]) =>{
         return;
       }
       const db = firebase.firestore();
-      let nfts: any[] = [];
-      var docRef = db.collection('nfts').doc(walletID).collection('Collections');
+      let nfts: any[] = [], uniqueID: any[] = [];;
+      var docRef = db.collection('nfts').doc(walletID).collection('Collections').orderBy("id","desc");
       await docRef.get().then(async (querySnapshot) => {
         await querySnapshot.forEach((doc) => {
           // console.log(doc.id, " => ", doc.data());
-          nfts.push(doc.data());
+          if(!uniqueID.includes(doc.data().address+'-'+doc.data().id)){
+            nfts.push(doc.data());
+          }
+          uniqueID.push(doc.data().address+'-'+doc.data().id);
         });
       }, (error) => {
         console.log("Error getting documents: ", error);

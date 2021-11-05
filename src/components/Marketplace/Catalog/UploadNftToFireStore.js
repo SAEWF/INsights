@@ -15,8 +15,9 @@ const UploadNftToFireStore = async (walletAddress,collection,metadata, token_id)
             "metadata": metadata,
             "date": new Date().toISOString(),
         };
-        await db.doc(walletAddress).collection('Creations').add(nft).then(function(docRef) {
-            console.log('Document uploaded to Firestore')//, docRef.id);
+        var docID =collection+'-'+token_id;
+        await db.doc(walletAddress).collection('Creations').docID(docID).set(nft).then(function(docRef) {
+            console.log('Document uploaded')//, docRef.id);
         }).catch((error)=>{
             console.log(error);
         });
