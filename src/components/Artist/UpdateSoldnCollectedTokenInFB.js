@@ -52,8 +52,9 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
 
 
     // Creating token in buyer database
-    await db.collection('nfts').doc(buyerWallAdd).collection('Collections').add(updatedNFT).then(function(docRef) {
-      console.log('Document uploaded to Firestore', docRef.id);
+    var docname = updatedNFT.address+'-'+updatedNFT.id;
+    await db.collection('nfts').doc(buyerWallAdd).collection('Collections').doc(docname).set(updatedNFT).then(function(docRef) {
+      console.log('Document uploaded', docRef.id);
     });
 
     // Updating token from seller database
@@ -76,7 +77,7 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
 const getDocIDFromFB = async (walletID, tokenId)=>{
   const db = firebase.firestore();
   var docID ="";
-  var docRef = db.collection('nfts').doc(walletID).collection('Creations');
+  var docRef = db.collection('nfts').doc(walletID).collection('Creations').orderBy('id', 'desc');
   await docRef.get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       if(doc.data().id === tokenId){
@@ -92,7 +93,7 @@ const getDocIDFromFB = async (walletID, tokenId)=>{
   if(docID!=="") return docID;
   creation = false;
 
-  docRef = db.collection('nfts').doc(walletID).collection('Collections');
+  docRef = db.collection('nfts').doc(walletID).collection('Collections').orderBy('id', 'desc');
   await docRef.get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       if(doc.data().id === tokenId){

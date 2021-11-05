@@ -31,7 +31,7 @@ const DeleteArtTokenInFB = async (WalletAddress, tokenId) => {
 const getDocIDFromFB = async (walletID, tokenId)=>{
     const db = firebase.firestore();
     var docID ="";
-    var docRef = db.collection('nfts').doc(walletID).collection('Creations');
+    var docRef = db.collection('nfts').doc(walletID).collection('Creations').orderBy('id','desc');
     await docRef.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         if(doc.data().id === tokenId){
@@ -47,7 +47,7 @@ const getDocIDFromFB = async (walletID, tokenId)=>{
     if(docID!=="") return docID;
     creation = false;
   
-    docRef = db.collection('nfts').doc(walletID).collection('Collections');
+    docRef = db.collection('nfts').doc(walletID).collection('Collections').orderBy('id', 'desc');
     await docRef.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         if(doc.data().id === tokenId){
