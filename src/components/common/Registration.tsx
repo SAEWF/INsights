@@ -3,7 +3,7 @@ import {Form, FormGroup, Container} from 'react-bootstrap';
 import { CountryDropdown } from 'react-country-region-selector';
 import firebase from '../../lib/firebase/firebase'
 import './styles/style.css';
-import {Checkbox, Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, InputRightElement, Button} from '@chakra-ui/react';
+import {Checkbox, Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, InputRightElement, Button, Link} from '@chakra-ui/react';
 import uploadImage from './uploadImage';
 
 function RegistrationPage(props: any) {
@@ -489,7 +489,7 @@ function RegistrationPage(props: any) {
             {/* SUBMIT BUTTON */}
             <FormGroup className="row" style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
                 <Checkbox colorScheme="green" name="terms" >
-                I agree to the Terms of Service of ByteBlock
+                I agree to the <Link to="/legal/tnc"> Terms of Service of ByteBlock </Link>
                 </Checkbox>
             </FormGroup>
             

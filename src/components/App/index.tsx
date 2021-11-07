@@ -18,6 +18,7 @@ import AlertBar from '../common/AlertBar';
 import ArtistList from '../Artist/ArtistList';
 import ArtistProfile from '../Artist/ArtistProfile';
 import Registration from '../common/Registration';
+import Terms from '../common/Terms';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -94,6 +95,9 @@ export default function App() {
           </Route>
           <Route path="/artists">
             <ArtistList />
+          </Route>
+          <Route path="/legal/tnc">
+            <Terms />
           </Route>
           <Route path="/artistprofile/:username">
             {({ username }) => (
