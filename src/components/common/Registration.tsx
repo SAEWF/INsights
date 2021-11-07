@@ -489,7 +489,8 @@ function RegistrationPage(props: any) {
             {/* SUBMIT BUTTON */}
             <FormGroup className="row" style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
                 <Checkbox colorScheme="green" name="terms" >
-                I agree to the <Link to="/legal/tnc"> Terms of Service of ByteBlock </Link>
+                I agree to the 
+                <Link href="/legal/tnc"> Terms of Service of ByteBlock </Link>  
                 </Checkbox>
             </FormGroup>
             
