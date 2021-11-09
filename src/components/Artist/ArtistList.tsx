@@ -68,7 +68,7 @@ export default function ArtistList() {
                   <h2>
                     {item.name}
                   </h2>
-                  <ul className="social-icons mt-2">
+                  <ul className="social-icons mt-2" style={{justifyContent: 'center'}}>
                     {(item.twt) !==""? <li><a className="twitter" href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
                     {(item.fb) !==undefined && (item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
                     {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}

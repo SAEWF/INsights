@@ -52,7 +52,6 @@ export function TokenMedia(props: TokenMediaProps) {
   if (errored) {
     return <MediaNotFound />;
   }
-  console.log(obj, errored);
 
   if (!obj) return null;
 
