@@ -58,29 +58,28 @@ export default function ArtistList() {
 
             <Col>
               <div className="card profile-card-1 mb-5"
-                onClick={
-                  () => setLocation(`/artistprofile/${item.name.replaceAll(" ","")}`)
-                }
               >
-                <img  alt="background" src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" />
+                <img  alt="background" src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg?w=500&h=650&auto=compress&cs=tinysrgb" className="background" 
+                  onClick={
+                    () => setLocation(`/artistprofile/${item.name.replaceAll(" ","")}`)
+                }/>
                 <img alt="avatar" src={item.avatar} className="profile" />
-                <div className="card-content">
-                  <h2>
+                <div className="card-content" >
+                  <h2 onClick={
+                  () => setLocation(`/artistprofile/${item.name.replaceAll(" ","")}`)
+                }>
                     {item.name}
                   </h2>
-                  <ul className="social-icons mt-2" style={{justifyContent: 'center'}}>
-                    {(item.twt) !==""? <li><a className="twitter" href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
-                    {(item.fb) !==undefined && (item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
-                    {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}
-                    {(item.yt) !==""? <li><a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube " ></i></a></li>:""}
-                    {(item.linktr) !=="" && item.linktr!==undefined? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
-                    {(item.lt) !=="" && item.lt!==undefined? <li><a className="" href={item.lt} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
+                  <ul className="mt-2" style={{justifyContent: 'center', display:'flex', zIndex: 1}} 
+                    onClick={
+                      () => setLocation(`/artists`)
+                  }>
+                    {(item.twt) !==""? <a className="twitter" href={item.twt} target="_blank" id="twt" rel="noopener noreferrer" style={{color:'red'}}><i className="fab fa-twitter " ></i></a>:""}
+                    {(item.fb) !==undefined && (item.fb) !==""? <a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a>:""}
+                    {(item.ig) !==""? <a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a>:""}
+                    {(item.yt) !==""? <a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer" id="yt"><i className="fab fa-youtube " ></i></a>:""}
+                    {(item.lt) !=="" && item.lt!==undefined? <a className="" href={item.lt} target="_blank" rel="noopener noreferrer"><img id="lt" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a>:""}
                   </ul>
-                  {/* <div className="pt-2">
-                    <Button variant="outline-light" onClick={() =>
-                      setLocation(`/artistprofile/${item.id}`)}>
-                    View Profile</Button>
-                  </div> */}
                 </div>
               </div>
             </Col>
