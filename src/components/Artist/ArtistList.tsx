@@ -68,7 +68,14 @@ export default function ArtistList() {
                   <h2>
                     {item.name}
                   </h2>
-
+                  <ul className="social-icons mt-2">
+                    {(item.twt) !==""? <li><a className="twitter" href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
+                    {(item.fb) !==undefined && (item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
+                    {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}
+                    {(item.yt) !==""? <li><a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube " ></i></a></li>:""}
+                    {(item.linktr) !=="" && item.linktr!==undefined? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
+                    {(item.lt) !=="" && item.lt!==undefined? <li><a className="" href={item.lt} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
+                  </ul>
                   {/* <div className="pt-2">
                     <Button variant="outline-light" onClick={() =>
                       setLocation(`/artistprofile/${item.id}`)}>
