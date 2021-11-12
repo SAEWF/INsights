@@ -18,19 +18,31 @@ import { useDispatch, useSelector } from '../../../reducer';
 import { listTokenAction } from '../../../reducer/async/actions';
 import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 import tz from '../assets/tezos-sym-white.svg'
+import { number } from 'fp-ts';
 
 interface SellTokenModalProps extends BaseModalProps {
   contract: string;
   tokenId: number;
+  royaltyPercent: number;
 }
 
 export function SellTokenModal(props: SellTokenModalProps) {
   const [price, setPrice] = useState('');
+  const [total, setTotal] = useState('0');
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
 
+  console.log(props);
   const salePrice = Math.floor(Number(price) * 1000000);
   const validPrice = !Number.isNaN(price) && salePrice > 0;
+
+  const handleChange = (e: any) => {
+      const totalP: number = (Number(e.target.value) + (Number(e.target.value) * props.royaltyPercent)/100.0);
+      setPrice(e.target.value);
+      setTotal(totalP+'');
+      return;
+  };
+
   return (
     <FormModal
       disclosure={props.disclosure}
@@ -68,7 +80,7 @@ export function SellTokenModal(props: SellTokenModalProps) {
                     ref={initialRef}
                     placeholder="Enter sale amount"
                     value={price}
-                    onChange={e => setPrice(e.target.value)}
+                    onChange={handleChange}
                   />
                 </InputGroup>
               </FormControl>
@@ -85,7 +97,7 @@ export function SellTokenModal(props: SellTokenModalProps) {
             </Flex>
           </ModalBody>
           <ModalFooter >
-            * Final listing price will have additional royalty included .
+            * Final listing price icluding royalty will be {total}.
           </ModalFooter>
         </>
       )}
@@ -96,6 +108,7 @@ export function SellTokenModal(props: SellTokenModalProps) {
 interface SellTokenButtonProps extends BaseModalButtonProps {
   contract: string;
   tokenId: number;
+  royaltyPercent: number;
 }
 
 export function SellTokenButton(props: SellTokenButtonProps) {

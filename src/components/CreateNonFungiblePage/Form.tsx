@@ -35,7 +35,7 @@ export default function Form() {
   const state = useSelector(s => s.createNft);
   const dispatch = useDispatch();
   const { name, description, royalty } = state.fields;
-  // const [artistName, setartistName] = useState("");
+  const [artistName, setartistName] = useState("");
   const [tags, setTags] = useState("");
   const [, setEdition] = useState("1");
 
@@ -104,6 +104,25 @@ export default function Form() {
           }
         />
       </FormControl>
+
+        {/* Artists */}
+      <FormControl paddingBottom={6}>
+        <FormLabel fontFamily="mono" display="flex">
+          Artist
+        </FormLabel>
+        <Input
+          autoFocus={true}
+          placeholder="Artist"
+          value={artistName || ''}
+          // used before dispatch update Metadata Row Name by useEffect
+          onChange={e => {
+            setartistName(e.target.value);
+            dispatch(updateMetadataRowValue({ key: 0, value: e.target.value }))
+          }
+          }
+        />
+      </FormControl>
+
       {/* Tags */}
       <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">

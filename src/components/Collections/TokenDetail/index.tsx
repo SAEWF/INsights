@@ -412,7 +412,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 ) : isOwner ? (
                   <>
                   <Box marginRight={2}>
-                    <SellTokenButton contract={contractAddress} tokenId={tokenId} />
+                    <SellTokenButton contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage} />
                   </Box>
                   <Box marginRight={2}>
                   <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />
