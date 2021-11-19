@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Flex, Heading, Spinner, SimpleGrid, Box, } from '@chakra-ui/react'; //
+import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
   getMarketplaceNftsQuery,
-  loadMoreMarketplaceNftsQuery
+  loadMoreMarketplaceNftsQuery,
+  refreshMarketplaceNftsQuery
 } from '../../../reducer/async/queries'; //
 
 import TokenCard from './TokenCard';
@@ -13,12 +14,14 @@ import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
 import { Pagination } from 'react-bootstrap'
+
 export default function Catalog() {
   const { system, marketplace: state } = useSelector(s => s);
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const [start, setStart] = useState(1);
   const [end, setEnd] = useState(9);
+  const [reverse, setReverse] = useState(1);
 
   // blackList for wallet address 
   // it will block display of minted nfts from them 
@@ -29,8 +32,9 @@ export default function Catalog() {
       'tz1WiopX436BPwi4maDbbBDuzYgdtTTuKDAK'];
       
     useEffect(() => {
-      dispatch(getMarketplaceNftsQuery(state.marketplace.address));
-    }, [state.marketplace.address, dispatch]);
+        dispatch(refreshMarketplaceNftsQuery());
+        dispatch(getMarketplaceNftsQuery({address: state.marketplace.address, reverse: reverse}));
+    }, [state.marketplace.address, dispatch, reverse]);
 
     const loadMore = (pageNumber: number) => {
       dispatch(loadMoreMarketplaceNftsQuery({page:pageNumber}));
@@ -147,9 +151,25 @@ export default function Catalog() {
       </Pagination>
     )
     
+    const handleChange = (e: any) =>{
+      setReverse(e.target.value);
+    }
 
     return (
     <>
+      <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex'}}>
+      <Select
+          bg="#00ffbe"
+          borderColor="tomato"
+          color="black"
+          onChange={handleChange}
+        >
+          <option value={1} selected={true}>Newest</option>
+          <option value={2}>Oldest</option>
+          <option value={3}>Price : Low to High</option>
+          <option value={4}>Price : High to Low</option>
+        </Select>
+      </div>
       <Flex
         w="100vw"
         h="100%"
@@ -159,6 +179,7 @@ export default function Catalog() {
         justify="start"
         flexDir="column"
       >
+
         {/* FeaturedToken  */}
         {state.marketplace.loaded && tokens.length > 0 ? (
           // <Flex width="calc(100vw - 5rem)" justifyContent="center" alignItems="center">

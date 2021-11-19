@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from '../../../reducer';
 import { listTokenAction } from '../../../reducer/async/actions';
 import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 import tz from '../assets/tezos-sym-white.svg'
-import { number } from 'fp-ts';
 
 interface SellTokenModalProps extends BaseModalProps {
   contract: string;

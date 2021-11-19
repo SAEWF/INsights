@@ -282,7 +282,8 @@ export type MarketplaceNftLoadingData = {
 
 export async function getMarketplaceNfts(
   system: SystemWithToolkit | SystemWithWallet,
-  address: string
+  address: string,
+  reverse: number
 ): Promise<MarketplaceNftLoadingData[]> {
   const tokenSales = await getFixedPriceSalesBigMap(system.tzkt, address);
   const activeSales = tokenSales.filter(v => v.active);
@@ -314,7 +315,27 @@ export async function getMarketplaceNfts(
   );
 
   // Sort descending (newest first)
-  const salesToView = [...activeSales].reverse();
+  let salesToView;
+
+  // rev = 1 means newest first
+  if(Number(reverse) === 1)
+    salesToView = [...activeSales].reverse();
+  // rev = 2 means oldest first
+  else if(Number(reverse) === 2)
+    salesToView = [...activeSales];
+  // rev = 3 means low to high price
+  else if(Number(reverse) === 3){
+    salesToView = [...activeSales].sort((a,b)=>{
+      return Number(a.value.sale_data.price) - Number(b.value.sale_data.price);
+    })
+  }
+  // rev = 4 means high to low price
+  else{
+    salesToView = [...activeSales].sort((a,b)=>{
+      return - Number(a.value.sale_data.price) + Number(b.value.sale_data.price);
+    })
+  }
+
   const salesWithTokenMetadata = salesToView
     .map(x => ({
       tokenSale: x,
