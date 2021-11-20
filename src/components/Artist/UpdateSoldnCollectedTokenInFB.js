@@ -52,9 +52,9 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
 
 
     // Creating token in buyer database
-    var docname = updatedNFT.address+'-'+updatedNFT.id;
+    var docname = nft.address+'-'+nft.id;
     await db.collection('nfts').doc(buyerWallAdd).collection('Collections').doc(docname).set(updatedNFT).then(function(docRef) {
-      console.log('Document uploaded', docRef.id);
+      console.log('Document uploaded');
     });
 
     // Updating token from seller database
