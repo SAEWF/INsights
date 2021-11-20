@@ -37,10 +37,10 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
       if (doc.exists) {
         var data = doc.data()!;
         setOwner(data.name);
-        console.log("Document data:", data);
+        // console.log("Document data:", data);
       } else {
         setOwner(own);
-        console.log("No such document!", own);
+        // console.log("No such document!", own);
       }
     }).catch(function(error) {
       console.log("Error getting document:", error);
