@@ -157,19 +157,6 @@ export default function Catalog() {
 
     return (
     <>
-      <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex'}}>
-      <Select
-          bg="#00ffbe"
-          borderColor="tomato"
-          color="black"
-          onChange={handleChange}
-        >
-          <option value={1} selected={true}>Newest</option>
-          <option value={2}>Oldest</option>
-          <option value={3}>Price : Low to High</option>
-          <option value={4}>Price : High to Low</option>
-        </Select>
-      </div>
       <Flex
         w="100vw"
         h="100%"
@@ -179,6 +166,19 @@ export default function Catalog() {
         justify="start"
         flexDir="column"
       >
+        <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex', position: 'sticky'}}>
+          <Select
+            bg="#00ffbe"
+            borderColor="#00ffbe"
+            color="black"
+            onChange={handleChange}
+          >
+            <option style={{color:'white', backgroundColor: 'black', borderColor: 'cyan'}} key="1" value={1} defaultChecked={true}>Newest</option>
+            <option style={{color:'white', backgroundColor: 'black'}} color="white" key="2" value={2}>Oldest</option>
+            <option style={{color:'white', backgroundColor: 'black'}} key="3" value={3}>Price : Low to High</option>
+            <option style={{color:'white', backgroundColor: 'black'}} key="4" value={4}>Price : High to Low</option>
+          </Select>
+        </div>
 
         {/* FeaturedToken  */}
         {state.marketplace.loaded && tokens.length > 0 ? (
