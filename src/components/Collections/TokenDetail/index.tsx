@@ -16,7 +16,9 @@ import {
   ModalCloseButton,
   ModalContent,
   Text,
-  useDisclosure
+  useDisclosure,
+  Container,
+  Spinner
 } from '@chakra-ui/react';
 import { ChevronLeft, HelpCircle, MoreHorizontal } from 'react-feather';
 import { MinterButton, MinterMenuButton, MinterMenuItem } from '../../common';
@@ -91,14 +93,12 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
   useEffect(() => {
     if (collectionUndefined) {
-      console.log("DISPATCHED getNftAssetContractQuery contract", contractAddress);
-      dispatch(getNftAssetContractQuery(contractAddress));
-    } else {
-      console.log("DISPATCHED getContractNftsQuery");
-      dispatch(getContractNftsQuery(contractAddress));
+      dispatch(getNftAssetContractQuery(contractAddress)).then(() =>
+        dispatch(getContractNftsQuery(contractAddress))
+      );
     }
 
-    if(tokenHook!==null && tokenHook!==undefined && owner.length===0){
+    if(!collectionUndefined && tokenHook!==null && tokenHook!==undefined && owner.length===0){
       var walletAddress ;
       if(tokenHook.sale!==null && tokenHook.sale!==undefined){
         walletAddress = tokenHook.sale.seller;
@@ -116,7 +116,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       })
     }
 
-    if(tokenHook!==null && tokenHook!==undefined && creator.length===0){
+    if(!collectionUndefined &&tokenHook!==null && tokenHook!==undefined && creator.length===0){
       const walletAddress = tokenHook.metadata.minter;
       const hook = firebase.firestore().collection('artists').doc(walletAddress);
       hook.onSnapshot(doc => {
@@ -130,10 +130,20 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
         }
       })
     }
-  }, [contractAddress, tokenId, collectionUndefined, dispatch, tokenHook, owner, creator]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contractAddress, collectionUndefined, dispatch, tokenHook]);
 
   if (!collection?.tokens) {
-    return null;
+    return(
+      <Container className="main-container">
+        <Flex flexDir="column" align="center" flex="1" pt={20}>
+          <Spinner size="xl" mb={6} color="gray.300" />
+          <Heading size="lg" textAlign="center" color="gray.500">
+            Loading...
+          </Heading>
+        </Flex>
+      </Container>
+    )
   }
 
   const token = collection.tokens.find(token => token.id === tokenId);
@@ -290,7 +300,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               (owner.length > 0)?
               owner.map((owner)=>{
                 return(
-                  <Flex key="artist" mt={[4, 8]}>
+                  <Flex key="ownerName" mt={[4, 8]}>
                     <Text color="secColDarkTheme">Owner :</Text>
                     <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                       <Link display="block" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" href={`/artistprofile/${owner.name.replaceAll(" ","")}`}>
@@ -303,7 +313,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               })
               :
               <>
-                <Flex key="artist" mt={[4, 8]}>
+                <Flex key="ownerAddress" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Owner :</Text>
                 <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                     {(token.sale!==undefined)?token.sale.seller:token.owner}
@@ -316,7 +326,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               (creator.length > 0)?
               creator.map((creator)=>{
                 return( 
-                  <Flex key="artist" mt={[4, 8]}>
+                  <Flex key="creatorName" mt={[4, 8]}>
                     <Text color="secColDarkTheme">Creator :</Text>
                     <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                     <Link display="block" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" href={`/artistprofile/${creator.name.replaceAll(" ","")}`}>
@@ -329,7 +339,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               })
               :
               <>
-                <Flex key="artist" mt={[4, 8]}>
+                <Flex key="creatorAddress" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Creator :</Text>
                   <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                         {token.metadata.minter}
@@ -353,7 +363,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             )}
 
             {
-              <Flex key="artist" mt={[4, 8]}>
+              <Flex key="royalty" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Royalty :</Text>
                 <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                   {royaltyPercentage}%
@@ -362,7 +372,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             }
 
             {
-              <Flex key="artist" mt={[4, 8]}>
+              <Flex key="metadata" mt={[4, 8]}>
                 <Text color="secColDarkTheme"><i className="fas fa-link"></i></Text>
                 <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                   <a href={getIPFSlink(token?.metadata?.artifactUri ?? '')} target="_blank" rel="noopener noreferrer">View on IPFS</a>
@@ -371,7 +381,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             }
 
             {
-              <Flex key="artist" mt={[4, 8]}>
+              <Flex key="metadataIPFS" mt={[4, 8]}>
                 <Text color="secColDarkTheme"><i className="fas fa-link"></i></Text>
                 <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                   <a href={getIPFSlink(token?.metadata?.[''] ?? '')} target="_blank" rel="noopener noreferrer">View metadata</a>
