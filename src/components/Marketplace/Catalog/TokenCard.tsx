@@ -34,7 +34,7 @@ export default function TokenCard(props: TokenCardProps) {
         // console.log("Document data:", data);
       } else {
         setOwner(own);
-        console.log("No such document!", own);
+        // console.log("No such document!", own);
       }
     }).catch(function(error) {
       console.log("Error getting document:", error);
