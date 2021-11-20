@@ -81,7 +81,7 @@ const getDocIDFromFB = async (walletID, tokenId)=>{
   await docRef.get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       if(doc.data().id === tokenId){
-        console.log(doc.id);
+        // console.log(doc.id);
         docID = doc.id;
         return doc.id;
       }
@@ -97,7 +97,7 @@ const getDocIDFromFB = async (walletID, tokenId)=>{
   await docRef.get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       if(doc.data().id === tokenId){
-        console.log(doc.id);
+        // console.log(doc.id);
         docID = doc.id;
         return doc.id;
       }
