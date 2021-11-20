@@ -109,14 +109,16 @@ export const getAssetContractsQuery = createAsyncThunk<
 
 export const getMarketplaceNftsQuery = createAsyncThunk<
   { tokens: MarketplaceNftLoadingData[] },
-  string,
+  {address:  string, reverse: number},
   Opts
 >(
   'query/getMarketplaceNfts',
-  async (address, { getState, rejectWithValue }) => {
+  async (args, { getState, rejectWithValue }) => {
     const { system } = getState();
     try {
-      const tokens = await getMarketplaceNfts(system, address);
+      let tokens;
+
+      tokens = await getMarketplaceNfts(system, args.address, args.reverse);
 
       // Load 9 initially (1-feature + at least 2 rows)
       for (const i in tokens.slice(0, 9)) {
@@ -127,7 +129,27 @@ export const getMarketplaceNftsQuery = createAsyncThunk<
     } catch (e) {
       return rejectWithValue({
         kind: ErrorKind.GetMarketplaceNftsFailed,
-        message: `Failed to retrieve marketplace nfts from: ${address}`
+        message: `Failed to retrieve marketplace nfts from: ${args.address}`
+      });
+    }
+  }
+);
+
+export const refreshMarketplaceNftsQuery = createAsyncThunk<
+  { tokens: MarketplaceNftLoadingData[] },
+  undefined,
+  Opts
+>(
+  'query/refreshMarketplaceNfts',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      let tokens: MarketplaceNftLoadingData[]  = [];
+
+      return { tokens };
+    } catch (e) {
+      return rejectWithValue({
+        kind: ErrorKind.GetMarketplaceNftsFailed,
+        message: `Error occured ! Please reload the page .`
       });
     }
   }

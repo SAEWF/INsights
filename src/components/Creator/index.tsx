@@ -19,7 +19,7 @@ export default function Creator({ minter }: { minter: string }) {
   // }, [system.status, dispatch, minter, collections.globalCollection]);
 
   useEffect(() => {
-    dispatch(getMarketplaceNftsQuery(marketplace.address));
+    dispatch(getMarketplaceNftsQuery({address:marketplace.address, reverse: 1}));
   }, [marketplace.address, dispatch]);
 
   const creatorsCollections = {} as { [key: string]: Collection };

@@ -14,7 +14,7 @@ export default function ArtistNftProfileCard(props:PropsType) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMarketplaceNftsQuery(state.marketplace.address));
+    dispatch(getMarketplaceNftsQuery({address: state.marketplace.address, reverse: 1}));
   }, [state.marketplace.address, dispatch]);
 
   const loadMore = () => {
