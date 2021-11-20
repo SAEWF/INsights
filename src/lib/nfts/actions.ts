@@ -335,7 +335,7 @@ export async function buyTokenLegacy(
   if(minter !== tokenSeller && minter!==system.tzPublicKey) {
     const batch = system.toolkit.wallet.batch()
     .withTransfer(
-      {to: minter, amount: royaltyAmount}
+      {to: minter, amount: Number(royaltyAmount.toFixed(6))}
     )
     .withTransfer(
       contract.methods.buy(tokenSeller, tokenContract, tokenId).toTransferParams({amount: salePrice})
@@ -360,7 +360,7 @@ export async function buyToken(
   
   const batch = system.toolkit.wallet.batch()
     .withTransfer(
-      {to: minter, amount: royaltyAmount}
+      {to: minter, amount: Number(royaltyAmount.toFixed(6))}
     )
     .withTransfer(
       contract.methods.buy(saleId).toTransferParams({amount: salePrice})
