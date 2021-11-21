@@ -95,7 +95,7 @@ export function TokenMedia(props: TokenMediaProps) {
   }
 
   if(obj.type === 'application/pdf'){
-    console.log(obj)
+    // console.log(obj)
     return (
       <>
       <iframe  height="500px" width="300px" src={obj.url} title={obj.type}></iframe>

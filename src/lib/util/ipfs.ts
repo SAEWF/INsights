@@ -19,8 +19,6 @@ export async function uploadIPFSJSON(api: string, data: any) {
 export async function uploadIPFSFile(api: string, file: File) {
   const formData = new FormData();
   formData.append('file', file);
-  console.log("file");
-        console.log(file);
    const headers = { 
           'maxContentLength': 'Infinity',
           'maxBodyLength': 'Infinity',

@@ -162,7 +162,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       system.tzPublicKey === token.sale?.seller);
   // for viewing the token in console , turn it on
   // console.log("OWNER + ", owner);
-  console.log("TOKEN =", token);
+  // console.log("TOKEN =", token);
   const royaltyArray = token.metadata!.attributes?.filter(it => it.name==='Royalty');
   const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
   const royaltyAmount = (token.sale !== undefined && token.sale.seller!==token.metadata.minter ) ?  royaltyPercentage*token.sale!.price / 100.0 : 0;

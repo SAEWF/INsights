@@ -260,8 +260,8 @@ export const mintTokenAction = createAsyncThunk<
    
     try {
       if(editionNo>=2){
-        console.log("metadataArray in mintToken");
-        console.log(metadataArray);
+        // console.log("metadataArray in mintToken");
+        // console.log(metadataArray);
         const op = await mintTokens(system, address, metadataArray); // minting multiple tokens
         const pendingMessage = `Minting new tokens from multiple editions`;
         dispatch(notifyPending(requestId, pendingMessage));
@@ -274,8 +274,8 @@ export const mintTokenAction = createAsyncThunk<
         return { contract: address, metadata };
       }
       else{
-        console.log("metadata in mintToken");
-        console.log(metadata);
+        // console.log("metadata in mintToken");
+        // console.log(metadata);
         
         const op = await mintToken(system, address, metadata);
         const pendingMessage = `Minting new token: ${metadata.name}`;
@@ -420,10 +420,10 @@ export const mintCsvTokensAction = createAsyncThunk<null, undefined, Options>(
     try {
       const address = parsed[0].collection;
       const op = await mintTokens(system, address, metadataArray);
-      console.log("system parsed--");
-      console.log(system);
-      console.log(address);
-      console.log(metadataArray);
+      // console.log("system parsed--");
+      // console.log(system);
+      // console.log(address);
+      // console.log(metadataArray);
 
 
       const pendingMessage = `Minting new tokens from CSV`;
