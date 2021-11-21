@@ -31,7 +31,7 @@ export function BuyTokenModal(props: BuyTokenModalProps) {
   const royaltyArray = props.token.metadata!.attributes?.filter(it => it.name==='Royalty');
   const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
   const royaltyAmount = (props.token.sale !== undefined && props.token.sale.seller!==props.token.metadata.minter) ?  royaltyPercentage*props.token.sale!.price / 100.0 : 0;
-  const totalAmount = (props.token.sale !== undefined) ?  props.token.sale!.price + royaltyAmount : 0;
+  const totalAmount = (props.token.sale !== undefined) ?  Number((props.token.sale!.price + royaltyAmount).toFixed(2)) : 0;
   // console.log(royalty);
   return (
     <FormModal
