@@ -165,7 +165,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   console.log("TOKEN =", token);
   const royaltyArray = token.metadata!.attributes?.filter(it => it.name==='Royalty');
   const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
-  const royaltyAmount = (token.sale !== undefined) ?  royaltyPercentage*token.sale!.price / 100.0 : 0;
+  const royaltyAmount = (token.sale !== undefined && token.sale.seller!==token.metadata.minter ) ?  royaltyPercentage*token.sale!.price / 100.0 : 0;
   const totalAmount = (token.sale !== undefined) ?  token.sale!.price + royaltyAmount : 0;
   return (
     
@@ -422,7 +422,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 ) : isOwner ? (
                   <>
                   <Box marginRight={2}>
-                    <SellTokenButton contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage} />
+                    <SellTokenButton contract={contractAddress} tokenId={tokenId} royaltyPercent = {(royaltyAmount>0)?royaltyPercentage:0} />
                   </Box>
                   <Box marginRight={2}>
                   <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />

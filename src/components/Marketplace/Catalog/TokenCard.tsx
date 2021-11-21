@@ -49,7 +49,7 @@ export default function TokenCard(props: TokenCardProps) {
 
   const royaltyArray = (props.metadata!==undefined)?props.metadata!.attributes?.filter(it => it.name==='Royalty') : undefined;
   const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
-  const royaltyAmount = (props.sale !== undefined && props.sale !== null) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
+  const royaltyAmount = (props.sale !== undefined && props.sale !== null && props.sale.seller!==props.metadata.minter) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
   const totalAmount = (props.sale !== undefined && props.sale !== null) ?  props.sale!.price + royaltyAmount : 0;
 
   return (

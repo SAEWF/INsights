@@ -31,7 +31,6 @@ export function SellTokenModal(props: SellTokenModalProps) {
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
 
-  console.log(props);
   const salePrice = Math.floor(Number(price) * 1000000);
   const validPrice = !Number.isNaN(price) && salePrice > 0;
 

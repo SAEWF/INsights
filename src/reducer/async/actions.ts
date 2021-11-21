@@ -616,7 +616,6 @@ export const buyTokenAction = createAsyncThunk<
     var userAddress = system.tzPublicKey;
     var userBigBalance = await system.toolkit.rpc.getBalance(userAddress);
     var userBalance = userBigBalance.toNumber()/1000000;
-    console.log("userBalance", userBalance);
 
     // calculate the total price of the token
     const royaltyAmount = salePrice * (royalty/100.0);
@@ -643,7 +642,8 @@ export const buyTokenAction = createAsyncThunk<
         saleId,
         salePrice,
         royaltyAmount,
-        minter
+        minter,
+        tokenSeller
       );
     }
     // upload sold result to firebase
