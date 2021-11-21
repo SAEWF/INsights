@@ -23,7 +23,7 @@ export const getNftAssetContractQuery = createAsyncThunk<
   const { getState, rejectWithValue } = api;
   const { system } = getState();
   try {
-    console.log("CALLED getNftAssetContract using system and address");
+    // console.log("CALLED getNftAssetContract using system and address");
     return await getNftAssetContract(system, address);
   } catch (e) {
     return rejectWithValue({

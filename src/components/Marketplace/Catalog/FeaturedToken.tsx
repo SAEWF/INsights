@@ -49,8 +49,8 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
 
   const royaltyArray = props.metadata!.attributes?.filter(it => it.name==='Royalty');
   const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
-  const royaltyAmount = (props.sale !== undefined && props.sale !== null) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
-  const totalAmount = (props.sale !== undefined && props.sale !== null) ?  props.sale!.price + royaltyAmount : 0;
+  const royaltyAmount = (props.sale !== undefined && props.sale !== null && props.sale.seller!==props.metadata.minter) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
+  const totalAmount = (props.sale !== undefined && props.sale !== null) ?  Number((props.sale!.price + royaltyAmount).toFixed(2)) : 0;
 
   return (
     <>

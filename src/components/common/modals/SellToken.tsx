@@ -31,12 +31,11 @@ export function SellTokenModal(props: SellTokenModalProps) {
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
 
-  console.log(props);
   const salePrice = Math.floor(Number(price) * 1000000);
   const validPrice = !Number.isNaN(price) && salePrice > 0;
 
   const handleChange = (e: any) => {
-      const totalP: number = (Number(e.target.value) + (Number(e.target.value) * props.royaltyPercent)/100.0);
+      const totalP: number = Number((Number(e.target.value) + (Number(e.target.value) * props.royaltyPercent)/100.0).toFixed(2));
       setPrice(e.target.value);
       setTotal(totalP+'');
       return;

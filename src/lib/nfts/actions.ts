@@ -354,17 +354,24 @@ export async function buyToken(
   saleId: number,
   salePrice: number,
   royaltyAmount: number,
-  minter: string
+  minter: string,
+  tokenSeller: string
 ) {
   const contract = await system.toolkit.wallet.at(marketplaceContract);
-  
-  const batch = system.toolkit.wallet.batch()
-    .withTransfer(
-      {to: minter, amount: Number(royaltyAmount.toFixed(6))}
-    )
-    .withTransfer(
-      contract.methods.buy(saleId).toTransferParams({amount: salePrice})
-    )
+    // transfer with royalty
+    if(minter !== tokenSeller && minter!==system.tzPublicKey) {
+      const batch = system.toolkit.wallet.batch()
+      .withTransfer(
+        {to: minter, amount: Number(royaltyAmount.toFixed(6))}
+      )
+      .withTransfer(
+        contract.methods.buy(saleId).toTransferParams({amount: salePrice})
+      )
 
-    return batch.send();
+      return batch.send();
+    }
+    // without royalty
+    else{
+      return contract.methods.buy(saleId).send({amount: salePrice});
+    }
 }
