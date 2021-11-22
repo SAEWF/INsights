@@ -3,7 +3,9 @@ import {Form, FormGroup, Container} from 'react-bootstrap';
 import { CountryDropdown } from 'react-country-region-selector';
 import firebase from '../../lib/firebase/firebase'
 import './styles/style.css';
-import {Checkbox, Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, InputRightElement, Button, Link} from '@chakra-ui/react';
+import {Checkbox, Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, 
+  // InputRightElement, 
+Button, Link} from '@chakra-ui/react';
 import uploadImage from './uploadImage';
 
 function RegistrationPage(props: any) {
@@ -14,28 +16,28 @@ function RegistrationPage(props: any) {
     const [twt, setTwt] = useState('');
     const [walletID, setWalletID] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [cpassword, setCpassword] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [cpassword, setCpassword] = useState('');
     const [disable, setDisable] = useState(true);
     const [file, setFile] = useState(null);
     const [utube, setUtube] = useState('');
     const [instagram, setInstagram] = useState('');
     const [linktr, setlinkTree] = useState('');
     const [success, setSuccess] = useState(false);
-    const [show, setShow] = useState(false);
+    // const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const selectCountry = (val: any) => {
       setCountry(val);
     };
 
-    const handlePassState = () => setShow(!show);
+    // const handlePassState = () => setShow(!show);
 
     const RegisterUser = async () => {
       document.querySelector('.registrationError')!.innerHTML = "";
       document.querySelector('.successMessage')!.innerHTML = "";
-      document.querySelector('.passcheck')!.innerHTML = "";
-      document.querySelector('.passcheck2')!.innerHTML = "";
+      // document.querySelector('.passcheck')!.innerHTML = "";
+      // document.querySelector('.passcheck2')!.innerHTML = "";
       document.querySelector('.twtcheck')!.innerHTML = "";
       document.querySelector('.walletcheck')!.innerHTML = "";
       document.querySelector('.utubecheck')!.innerHTML = "";
@@ -54,37 +56,38 @@ function RegistrationPage(props: any) {
           url = await uploadImage(file);
 
           if(url===undefined || url===""){
-            document.querySelector('.registrationError')!.innerHTML = "Server Error Occured ";
+            document.querySelector('.registrationError')!.innerHTML = "Error in uploading image . Please try again .";
             return;
           }
           var ahead = true;
-          await firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            // Signed in 
-            var user = userCredential.user;
-            user?.updateProfile({
-              displayName: name,
-              //photoUrl linked as wallet ID to retrieve rest of details
-              photoURL: walletID
-            }).then(() => {
-              // User profile updated
-            }).catch((error) => {
-              console.error(error);
-            });
-          })
-          .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.error(errorMessage);
-            if (errorCode === 'auth/email-already-in-use') {
-              ahead = false;
-              document.querySelector('.registrationError')!.innerHTML = "Email already in use.";
-              return;
-            }
-          });
+
+          // await firebase.auth().createUserWithEmailAndPassword(email, password)
+          // .then((userCredential) => {
+          //   // Signed in 
+          //   var user = userCredential.user;
+          //   user?.updateProfile({
+          //     displayName: name,
+          //     //photoUrl linked as wallet ID to retrieve rest of details
+          //     photoURL: walletID
+          //   }).then(() => {
+          //     // User profile updated
+          //   }).catch((error) => {
+          //     console.error(error);
+          //   });
+          // })
+          // .catch((error) => {
+          //   var errorCode = error.code;
+          //   var errorMessage = error.message;
+          //   console.error(errorMessage);
+          //   if (errorCode === 'auth/email-already-in-use') {
+          //     ahead = false;
+          //     document.querySelector('.registrationError')!.innerHTML = "Email already in use.";
+          //     return;
+          //   }
+          // });
 
           if(!ahead || url===undefined || url===""){
-            document.querySelector('.registrationError')!.innerHTML = "Server Error Occured ";
+            document.querySelector('.registrationError')!.innerHTML = "Server Error Occured . Please try again .";
             return;
           }
           var data = {...formData,"avatar":url}
@@ -96,7 +99,7 @@ function RegistrationPage(props: any) {
             // console.log("Document successfully written!");
           })
           .catch((error)=>{
-              document.querySelector('.registrationError')!.innerHTML = "An Error occured";
+              document.querySelector('.registrationError')!.innerHTML = "An Error occured . Please try again .";
               // console.log("ERROR OCCURED !!");
           })
         }
@@ -201,50 +204,50 @@ function RegistrationPage(props: any) {
           // console.log(e.target.files[0]);
           return;
         }
-        if(e.target.name==='password'){
-          setPassword(e.target.value);
+        // if(e.target.name==='password'){
+        //   setPassword(e.target.value);
 
-          // password validations
-          if(e.target.value.length<6){
-            document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
-          }
-          else if(!e.target.value.match(/[a-z]/i)){
-            document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
-          }
-          else if(!e.target.value.match(/[A-Z]/i)){
-            document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one uppercase letter.";
-          }
-          else if(!e.target.value.match(/[0-9]/i)){
-            document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one number.";
-          }
-          else if(!e.target.value.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/i)){
-            document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one special character.";
-          }
-          else{
-            document.querySelector('.passcheck')!.innerHTML = "";
-          }
+        //   // password validations
+        //   if(e.target.value.length<6){
+        //     document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
+        //   }
+        //   else if(!e.target.value.match(/[a-z]/i)){
+        //     document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
+        //   }
+        //   else if(!e.target.value.match(/[A-Z]/i)){
+        //     document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one uppercase letter.";
+        //   }
+        //   else if(!e.target.value.match(/[0-9]/i)){
+        //     document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one number.";
+        //   }
+        //   else if(!e.target.value.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/i)){
+        //     document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one special character.";
+        //   }
+        //   else{
+        //     document.querySelector('.passcheck')!.innerHTML = "";
+        //   }
 
-          if(e.target.value===cpassword){
-            document.querySelector('.passcheck2')!.innerHTML = "";
-          }
+        //   if(e.target.value===cpassword){
+        //     document.querySelector('.passcheck2')!.innerHTML = "";
+        //   }
 
-          return;
-        }
+        //   return;
+        // }
         if(e.target.name==='terms'){
           setDisable(!disable);
           return;
         }
-        if(e.target.name==='cpassword'){
-          setCpassword(e.target.value);
-          if(e.target.value!==password){
-            document.querySelector('.passcheck2')!.innerHTML = "Passwords do not match.";
-            return;
-          }
-          else{
-            document.querySelector('.passcheck2')!.innerHTML = "";
-            return;
-          }
-        }
+        // if(e.target.name==='cpassword'){
+        //   setCpassword(e.target.value);
+        //   if(e.target.value!==password){
+        //     document.querySelector('.passcheck2')!.innerHTML = "Passwords do not match.";
+        //     return;
+        //   }
+        //   else{
+        //     document.querySelector('.passcheck2')!.innerHTML = "";
+        //     return;
+        //   }
+        // }
 
         setFormData({...formData, [e.target.name] : e.target.value});
         // console.log(formData);
@@ -253,22 +256,22 @@ function RegistrationPage(props: any) {
     const handleSignup = async (event: any) =>{
         event.preventDefault();
         // console.log("SIGNUP", password, cpassword);
-        if(event.target.password.value.length <= 6){
-          document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
-        }
-        else if(!event.target.password.value.match(/[a-z]/i)){
-          document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
-        }
-        else if(!event.target.password.value.match(/[A-Z]/i)){
-          document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one uppercase letter.";
-        }
-        else if(!event.target.password.value.match(/[0-9]/i)){
-          document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one number.";
-        }
-        else if(!event.target.password.value.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/i)){
-          document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one special character.";
-        }
-        else if(country===""){
+        // if(event.target.password.value.length <= 6){
+        //   document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
+        // }
+        // else if(!event.target.password.value.match(/[a-z]/i)){
+        //   document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
+        // }
+        // else if(!event.target.password.value.match(/[A-Z]/i)){
+        //   document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one uppercase letter.";
+        // }
+        // else if(!event.target.password.value.match(/[0-9]/i)){
+        //   document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one number.";
+        // }
+        // else if(!event.target.password.value.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/i)){
+        //   document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one special character.";
+        // }
+        if(country===""){
             document.querySelector('.countryCheck')!.innerHTML = "Please Select Country";
         }
         else if(!twt.match(/^https:\/\/twitter.com\//)){
@@ -286,9 +289,9 @@ function RegistrationPage(props: any) {
         else if(!isValid(walletID)){
             document.querySelector('.walletcheck')!.innerHTML = "Please enter valid Wallet Address";
         }
-        else if(event.target.password.value !== event.target.cpassword.value){
-          document.querySelector('.passcheck2')!.innerHTML = "Both passwords dont match . Try again !";
-        }
+        // else if(event.target.password.value !== event.target.cpassword.value){
+        //   document.querySelector('.passcheck2')!.innerHTML = "Both passwords dont match . Try again !";
+        // }
         else{
           setLoading(true); 
           setDisable(true);
@@ -371,7 +374,7 @@ function RegistrationPage(props: any) {
             </div>
 
             {/* PASSWORD FORM */}
-            <div className="row align-items-center justify-content-center">
+            {/* <div className="row align-items-center justify-content-center">
             <FormGroup className="col-lg-4 col-md-8 col-12" >
                 <InputGroup size="md" >
                 <Input
@@ -405,7 +408,7 @@ function RegistrationPage(props: any) {
                 />
                 <div className="passcheck2" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
-            </div>
+            </div> */}
 
             {/* WALLET ID */}
             <div className="row align-items-center justify-content-center">
