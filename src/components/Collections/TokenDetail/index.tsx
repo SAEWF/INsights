@@ -92,7 +92,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   const collectionUndefined = collection === undefined;
 
   useEffect(() => {
-    if (collectionUndefined) {
+    if (collectionUndefined || tokenHook===null) {
       dispatch(getNftAssetContractQuery(contractAddress)).then(() =>
         dispatch(getContractNftsQuery(contractAddress))
       );
