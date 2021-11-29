@@ -366,8 +366,8 @@ function RegistrationPage(props: any) {
                 <Input value={email} isInvalid type="email" errorBorderColor="cyan.300" 
                   name="email" id="email"  
                   variant="filled" 
-                  placeholder="Email *" 
-                  isRequired 
+                  placeholder="Email " 
+                  // isRequired 
                   style={{margin: 'auto'}} 
                 />
             </FormGroup>

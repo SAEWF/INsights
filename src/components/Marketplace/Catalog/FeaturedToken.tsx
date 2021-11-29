@@ -7,6 +7,8 @@ import {
   Text,
   Heading,
 } from '@chakra-ui/react';
+import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
+import { useDispatch } from 'react-redux';
 import { MinterButton } from '../../common';
 import { TokenMedia } from '../../common/TokenMedia';
 import tz from '../../common/assets/tezos-sym-white.svg';
@@ -20,6 +22,7 @@ interface FeaturedTokenProps extends Token {
 export default function FeaturedToken(props: FeaturedTokenProps) {
   const [, setLocation] = useLocation();
   const [owner, setOwner] = React.useState('');
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     var own : any;
@@ -46,6 +49,16 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
       console.log("Error getting document:", error);
     });
   }, [props]);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(`byteblock.art/collection/${props.address}/token/${props.id}`);
+    dispatch(notifyFulfilled('1', 'Link copied to clipboard'));
+  }
+  
+  const openInNewTab = (url: string) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+  }
 
   const royaltyArray = props.metadata!.attributes?.filter(it => it.name==='Royalty');
   const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
@@ -121,13 +134,19 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
                   w="150px" mt={3}
                   onClick={e => {
                     e.preventDefault();
-                    setLocation(`/collection/${props.address}/token/${props.id}`, {
-                      replace: false
-                    });
+                    openInNewTab(`/collection/${props.address}/token/${props.id}`);
                   }}
                 >
                   <Text>View</Text>
                 </MinterButton>
+                <div style={{marginLeft: 'auto', marginRight: '0'}}>
+                  <button 
+                    style={{color: 'black',borderRadius: '3px', backgroundColor: '#00ffbe',padding: '3px' ,position: 'relative', justifyContent: 'flex-end',alignItems: 'flex-end'}}
+                    onClick={() => copyToClipboard()}  
+                  >
+                    Share <i className="fas fa-share-alt ml-1"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </Col>
