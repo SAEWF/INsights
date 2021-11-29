@@ -8,6 +8,7 @@ import { isLeft } from 'fp-ts/lib/Either';
 import { compact } from 'fp-ts/lib/Array';
 import { getRight } from 'fp-ts/lib/Option';
 import * as D from './decoders';
+import { getLedgerBigMapObjkt, getTokenMetadataBigMapObjkt } from './actionObjkt';
 
 function fromHexString(input: string) {
   if (/^([A-Fa-f0-9]{2})*$/.test(input)) {
@@ -24,6 +25,7 @@ async function getAssetMetadataBigMap(
 ): Promise<D.AssetMetadataBigMap> {
   const path = 'metadata';
   const data = await tzkt.getContractBigMapKeys(address, path);
+  console.log("DATA",data);
   const decoded = D.LedgerBigMap.decode(data);
   if (isLeft(decoded)) {
     throw Error('Failed to decode `getAssetMetadata` response');
@@ -37,7 +39,9 @@ async function getLedgerBigMap(
 ): Promise<D.LedgerBigMap> {
   const path = 'assets.ledger';
   const data = await tzkt.getContractBigMapKeys(address, path);
+  console.log("DATA call",data);
   const decoded = D.LedgerBigMap.decode(data);
+  console.log("DECODED",decoded);
   if (isLeft(decoded)) {
     throw Error('Failed to decode `getLedger` response');
   }
@@ -82,6 +86,7 @@ async function getBigMapUpdates<K extends t.Mixed, V extends t.Mixed>(
   content: { key: K; value: V }
 ) {
   const bigMapUpdates = await tzkt.getBigMapUpdates(params);
+  // console.log("BIGMUADTES",bigMapUpdates);
   const decoder = t.array(D.BigMapUpdateRow(content));
   const decoded = decoder.decode(bigMapUpdates);
   if (isLeft(decoded)) {
@@ -124,11 +129,22 @@ export async function getContractNfts(
   system: SystemWithToolkit | SystemWithWallet,
   address: string
 ): Promise<D.Nft[]> {
-  const ledger = await getLedgerBigMap(system.tzkt, address);
-  const tokens = await getTokenMetadataBigMap(system.tzkt, address);
+  console.log("ADDRESS",address);
+  const ledgerA = await getLedgerBigMap(system.tzkt, address);
+  const ledgerB = await getLedgerBigMapObjkt(system.tzkt, address);
+
+  const ledger = [...ledgerA, ...ledgerB];
+  // console.log("LEDGER",ledger);
+  const tokensA = await getTokenMetadataBigMap(system.tzkt, address);
+  const tokensB = await getTokenMetadataBigMapObjkt(system.tzkt, address);
+  const tokens = [...tokensA, ...tokensB];
+  // console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
+  // console.log("MKTADDRESS",mktAddress);
   const tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
+  // console.log("TOKENSALES",tokenSales);
   const activeSales = tokenSales.filter(sale => sale.active);
+  // console.log("ACTIVESALES",activeSales);
 
   // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
@@ -165,7 +181,7 @@ export async function getContractNfts(
           type: saleData.value.isLegacy ? 'fixedPriceLegacy' : 'fixedPrice'
         };
 
-        return {
+        return  {
           id: parseInt(tokenId, 10),
           owner: ledger.find(e => e.key === tokenId)?.value!,
           title: metadata.name,
@@ -184,7 +200,9 @@ export async function getNftAssetContract(
   address: string
 ): Promise<D.AssetContract> {
   const contract = await getContract(system.tzkt, address, {}, t.unknown);
+  // console.log("CONTRACT", contract);
   const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
+  // console.log("METABIGMAP", metaBigMap);
   const metaUri = metaBigMap.find(v => v.key === '')?.value;
   if (!metaUri) {
     throw Error(`Could not extract metadata URI from ${address} storage`);
@@ -196,9 +214,11 @@ export async function getNftAssetContract(
   );
   const decoded = D.AssetContractMetadata.decode(metadata);
 
+  
   if (isLeft(decoded)) {
     throw Error('Metadata validation failed');
   }
+  // console.log("DECODED returned", decoded.right);
   return { ...contract, metadata: decoded.right };
 }
 
@@ -212,6 +232,8 @@ export async function getNftAssetContracts(
   system: SystemWithWallet,
   tzPublicKey: string
 ): Promise<D.AssetContract[]> {
+
+  // Get all contracts of the specified wallet address 
   const contracts = await getContracts(
     system.tzkt,
     {
@@ -220,6 +242,8 @@ export async function getNftAssetContracts(
     },
     t.unknown
   );
+
+  // console.log("CONTRACTS fetched : ",contracts);
 
   const addresses = _.uniq(
     contracts
@@ -297,7 +321,26 @@ export async function getMarketplaceNfts(
     return [];
   }
 
-  const tokenBigMapRows = await getBigMapUpdates(
+  // console.log(`Loading ${uniqueAddresses.length} addresses`, uniqueAddresses);
+
+  const tokenBigMapRows1 = await getBigMapUpdates(
+    system.tzkt,
+    {
+      path: 'token_metadata',
+      action: 'add_key',
+      'contract.in': addresses.join(','),
+      limit: '10000'
+    },
+    {
+      key: t.string,
+      value: t.type({
+        token_id: t.string,
+        token_info: t.record(t.string, t.string)
+      })
+    }
+  );
+
+  const tokenBigMapRows2 = await getBigMapUpdates(
     system.tzkt,
     {
       path: 'assets.token_metadata',
@@ -313,6 +356,10 @@ export async function getMarketplaceNfts(
       })
     }
   );
+
+  const tokenBigMapRows = [...tokenBigMapRows1, ...tokenBigMapRows2];
+
+  // console.log(`Loaded ${tokenBigMapRows.length} rows`, tokenBigMapRows);
 
   // Sort descending (newest first)
   let salesToView;
@@ -336,6 +383,8 @@ export async function getMarketplaceNfts(
     })
   }
 
+  // console.log("salesToview", salesToView);
+
   const salesWithTokenMetadata = salesToView
     .map(x => ({
       tokenSale: x,
@@ -352,6 +401,8 @@ export async function getMarketplaceNfts(
       tokenSale: x.tokenSale,
       tokenMetadata: x.tokenItem?.content?.value?.token_info['']
     }));
+
+  // console.log("salesToken", salesWithTokenMetadata);
 
   return salesWithTokenMetadata;
 }
