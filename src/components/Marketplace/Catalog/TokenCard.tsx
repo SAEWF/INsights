@@ -145,7 +145,7 @@ export default function TokenCard(props: TokenCardProps) {
             style={{color: 'black',borderRadius: '3px', backgroundColor: '#00ffbe',padding: '3px' ,position: 'relative', justifyContent: 'flex-end',alignItems: 'flex-end'}}
             onClick={() => copyToClipboard()}  
           >
-            Share <i className="fas fa-share-alt ml-1"></i>
+            <i className="fas fa-share-alt ml-1"></i>
           </button>
         </div>
       </Card.Footer>
