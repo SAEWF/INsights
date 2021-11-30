@@ -21,6 +21,7 @@ export default function TokenCard(props: TokenCardProps) {
       bg="white"
       border="1px solid"
       borderColor="#eee"
+      color="black"
       borderRadius="0px"
       overflow="hidden"
       boxShadow="none"
