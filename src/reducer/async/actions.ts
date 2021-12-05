@@ -12,6 +12,8 @@ import {
   buyToken,
   buyTokenLegacy,
 } from '../../lib/nfts/actions';
+
+
 import { ErrorKind, RejectValue } from './errors';
 import { getContractNftsQuery, getWalletAssetContractsQuery } from './queries';
 import { validateCreateNftForm } from '../validators/createNft';
@@ -31,6 +33,8 @@ import UpdateSoldnCollectedTokenInFB from '../../components/Artist/UpdateSoldnCo
 import DeleteArtTokenInFB from '../../components/Artist/DeleteArtTokenInFB';
 import AddSaleDataToFirebase from '../../components/Artist/AddSaleDataToFirebase';
 import CancelSale from '../../components/Artist/CancelSaleToken';
+import firebase from '../../lib/firebase/firebase';
+
 // import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
 type Options = {
@@ -109,6 +113,56 @@ export const createAssetContractAction = createAsyncThunk<
       return rejectWithValue({
         kind: ErrorKind.CreateAssetContractFailed,
         message: 'Collection creation failed'
+      });
+    }
+  }
+);
+
+export const addObjktCollectionAction = createAsyncThunk<
+  { name: string; address: string },
+  { name: string; address: string },
+  Options
+>(
+  'action/addObjktCollection',
+  async (args, { getState, rejectWithValue, dispatch, requestId }) => {
+    const { system } = getState();
+    if (system.status !== 'WalletConnected') {
+      return rejectWithValue({
+        kind: ErrorKind.WalletNotConnected,
+        message: 'Cannot Add collection: Wallet not connected'
+      });
+    }
+    try {
+      console.log('args', args);
+      const name = args.name;
+      const address = args.address;
+      const db = firebase.firestore();
+
+      const pendingMessage = `Adding new collection ${name}`;
+      dispatch(notifyPending(requestId, pendingMessage));
+
+      const docRef = db.collection('artists').doc(system.tzPublicKey);
+      const doc = await docRef.get();
+
+      if(doc.exists){
+        await docRef.update({
+          objkt: args.address,
+          objkt_name: args.name
+        });
+      } else {
+        await docRef.set({
+          objkt: args.address,
+          objkt_name: args.name
+        });
+      }
+
+      const fulfilledMessage = `Added new collection ${name} (${address})`;
+      dispatch(notifyFulfilled(requestId, fulfilledMessage));
+      return { name, address };
+    } catch (e) {
+      return rejectWithValue({
+        kind: ErrorKind.CreateAssetContractFailed,
+        message: e.message
       });
     }
   }

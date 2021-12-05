@@ -107,7 +107,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       }
       const hook = firebase.firestore().collection('artists').doc(walletAddress);
       hook.onSnapshot(doc => {
-        if(doc.exists){
+        if(doc.exists && doc.data()!.display!==undefined && doc.data()!.display){
           const data = doc.data();
           var temp = [];
           temp.push({id: doc.id, ...data});
@@ -122,7 +122,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       hook.onSnapshot(doc => {
         if(doc.exists){
           const data = doc.data();
-          if(data!.display){
+          if(data!.display!==undefined && data!.display){
             var temp = [];
             temp.push({id: doc.id, ...data});
             setCreator(temp);

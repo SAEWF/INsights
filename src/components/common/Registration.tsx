@@ -26,6 +26,7 @@ function RegistrationPage(props: any) {
     const [success, setSuccess] = useState(false);
     // const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [objkt, setObjkt] = useState('');
 
     const selectCountry = (val: any) => {
       setCountry(val);
@@ -50,6 +51,19 @@ function RegistrationPage(props: any) {
       const docRef = db.collection('artists').doc(walletID);
       await docRef.get().then(async (doc)=>{
         if(doc.exists){
+          if(doc.data()!.display===undefined){
+            url = await uploadImage(file);
+
+            if(url===undefined || url===""){
+              document.querySelector('.registrationError')!.innerHTML = "Error in uploading image . Please try again .";
+              return;
+            }
+
+            var data = {...formData,"avatar":url};
+            docRef.update(data);
+            setSuccess(true);
+          }
+          else 
           document.querySelector('.registrationError')!.innerHTML = "Wallet ID already exists .";
         }
         else{
@@ -420,6 +434,22 @@ function RegistrationPage(props: any) {
                   name="walletAddress" id="walletAddress" 
                   placeholder="Tezos Wallet Address * ( eg., tz1...... )" 
                   isRequired style={{margin: 'auto'}} 
+                />
+                <div className="walletcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+            </FormGroup>
+            </div>
+
+            {/* {objkt} */}
+            <div className="row align-items-center justify-content-center">
+            <FormGroup className="col-md-8 col-12">
+                <Input value={objkt} 
+                  isInvalid type="text" 
+                  errorBorderColor="cyan.300" 
+                  variant="filled" 
+                  name="objktCollection" id="objkt" 
+                  placeholder="Objkt Collection Address ( eg., KT1...... )" 
+                  style={{margin: 'auto',justifyContent: 'center'}} 
+                  onChange={(event)=>{setObjkt(event.target.value)}}
                 />
                 <div className="walletcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
