@@ -4,12 +4,10 @@ import * as D from './decoders';
 export async function getLedgerBigMapObjkt(
     tzkt: TzKt,
     address: string
-  ): Promise<D.LedgerBigMap> {
+  ): Promise<any> {
     const path = 'ledger';
     const data = await tzkt.getContractBigMapKeys(address, path);
     console.log("DATA call",data);
-    const decoded = D.LedgerBigMap.decode(data);
-    console.log("DECODED",decoded);
     return data;
 }
 

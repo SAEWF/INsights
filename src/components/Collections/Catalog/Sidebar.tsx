@@ -1,16 +1,40 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Flex, Heading } from '@chakra-ui/react';
-import { CreateCollectionButton } from '../../common/modals/CreateCollection';
+import { CreateCollectionButton, AddObjktCollectionButton } from '../../common/modals/CreateCollection';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
   selectCollection
 } from '../../../reducer/slices/collections';
 import CollectionTab from './CollectionTab';
+import firebase from '../../../lib/firebase/firebase'
 
 export default function Sidebar() {
   const tzPublicKey = useSelector(s => s.system.tzPublicKey);
   const state = useSelector(s => s.collections);
   const dispatch = useDispatch();
+  const [objktState, setObjktState] = React.useState('');
+
+  useEffect(() => {
+    console.log('Sidebar useEffect');
+    if(tzPublicKey) {
+      var db = firebase.firestore();
+      db.collection("artists").doc(tzPublicKey).onSnapshot(function(doc) {
+        if(doc.exists) {
+          if(doc.data()!.objkt===undefined) {
+            setObjktState('not-set');
+          }
+          else{
+            setObjktState(doc.data()!.objkt);
+            dispatch(selectCollection(doc.data()!.objkt));
+          }
+        }
+        else{
+          setObjktState('not-set');
+        }
+      });
+    }
+  }, [tzPublicKey, objktState, dispatch]);
+
   return (
     <>
       <Heading px={4} pt={6} pb={4} size="md" color="brand.darkGray">
@@ -57,6 +81,24 @@ export default function Sidebar() {
             {...state.collections[address]}
           />
         ))}
+
+        {
+          objktState==='not-set' ? (
+            <AddObjktCollectionButton />
+          ) :
+          <></>
+        }
+        {
+          objktState!=='not-set' && objktState!==''? (
+            <CollectionTab
+            key={ objktState + 'objkt'}
+            selected={objktState === state.selectedCollection}
+            onSelect={address => dispatch(selectCollection(objktState))}
+            {...state.collections[objktState]}
+            />
+          ) :
+          <></>
+        }
       <Flex px={2} pt={4} justify="center" pb={8}>
         <CreateCollectionButton />
       </Flex>

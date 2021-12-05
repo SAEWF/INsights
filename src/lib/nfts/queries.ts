@@ -129,14 +129,21 @@ export async function getContractNfts(
   system: SystemWithToolkit | SystemWithWallet,
   address: string
 ): Promise<D.Nft[]> {
-  console.log("ADDRESS",address);
+  // console.log("ADDRESS",address);
   const ledgerA = await getLedgerBigMap(system.tzkt, address);
-  const ledgerB = await getLedgerBigMapObjkt(system.tzkt, address);
+  // console.log("LEDGER",ledgerA);
+  let ledgerB = [];
+  if(ledgerA.length === 0){
+    ledgerB = await getLedgerBigMapObjkt(system.tzkt, address);
+  }
 
   const ledger = [...ledgerA, ...ledgerB];
   // console.log("LEDGER",ledger);
   const tokensA = await getTokenMetadataBigMap(system.tzkt, address);
-  const tokensB = await getTokenMetadataBigMapObjkt(system.tzkt, address);
+  let tokensB: D.TokenMetadataBigMap = [];
+  if(tokensA.length === 0){
+    tokensB = await getTokenMetadataBigMapObjkt(system.tzkt, address);
+  }
   const tokens = [...tokensA, ...tokensB];
   // console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
@@ -181,9 +188,14 @@ export async function getContractNfts(
           type: saleData.value.isLegacy ? 'fixedPriceLegacy' : 'fixedPrice'
         };
 
+        var owner = ledger.find(e => e.key === tokenId)?.value!;
+        if(owner === undefined){
+          owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
+          // console.log("OWNER",owner);
+        }
         return  {
           id: parseInt(tokenId, 10),
-          owner: ledger.find(e => e.key === tokenId)?.value!,
+          owner: owner,
           title: metadata.name,
           description: metadata.description,
           artifactUri: metadata.artifactUri,

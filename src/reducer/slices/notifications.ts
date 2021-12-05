@@ -10,7 +10,8 @@ import {
   transferTokenAction,
   listTokenAction,
   cancelTokenSaleAction,
-  buyTokenAction
+  buyTokenAction,
+  addObjktCollectionAction
 } from '../async/actions';
 import { connectWallet, disconnectWallet } from '../async/wallet';
 import {
@@ -69,7 +70,8 @@ const slice = createSlice({
       getNftAssetContractQuery,
       getWalletAssetContractsQuery,
       connectWallet,
-      disconnectWallet
+      disconnectWallet,
+      addObjktCollectionAction
     ].forEach(action => {
       addCase(action.rejected, (state, { meta, payload }) => {
         if (!payload) {
