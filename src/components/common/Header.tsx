@@ -345,7 +345,7 @@ export function Header() {
           {/* <h2 className="d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>ByteBlock NFT </h2> */}
 
         <div className="d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>
-          <h2>ByteBlock NFT </h2>
+          <h2>ByteBlock</h2>
           <p className="mx-auto" style={{ color: "#bfbfbf", fontSize: "10.5px" }}>Beta Version</p>
           {/* #9c9fa3 */}
         </div>
