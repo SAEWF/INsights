@@ -20,7 +20,7 @@ export default function Catalog() {
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const [start, setStart] = useState(1);
-  const [end, setEnd] = useState(9);
+  const [end, setEnd] = useState(17);
   const [reverse, setReverse] = useState(1);
 
   // blackList for wallet address 
@@ -54,14 +54,14 @@ export default function Catalog() {
 
     // PAGINATION
     let items = [];
-    const numberOfPages = Math.ceil(tokens.length-1 / 8);
+    const numberOfPages = Math.ceil(tokens.length-1 / 16);
     for (let number = 1; number <= numberOfPages; number++) {
       items.push(
         <Pagination.Item key={number} active={number === active} onClick={()=>{
           setActive(number);
-          setStart((number-1)*8 + 1);
-          setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*8)+1);
-          console.log('start', (number-1)*8 + 1, 'end', end);
+          setStart((number-1)*16 + 1);
+          setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*16)+1);
+          console.log('start', (number-1)*16 + 1, 'end', end);
           loadMore(number);
         }}>
           {number}
@@ -72,28 +72,28 @@ export default function Catalog() {
     const handleFirst = () =>{
       setActive(1);
       setStart(1);
-      setEnd(9);
+      setEnd(17);
       loadMore(1);
     }
     const handlePrev = () =>{
       if(active > 1){
         setActive(active-1);
-        setStart(start-8);
-        setEnd(end-8);
+        setStart(start-16);
+        setEnd(end-16);
         loadMore(active-1);
       }
     }
     const handleNext = () =>{
       if(active < numberOfPages){
         setActive(active+1);
-        setStart(start+8);
-        setEnd(end+8);
+        setStart(start+16);
+        setEnd(end+16);
         loadMore(active+1);
       }
     }
     const handleLast = () =>{
       setActive(numberOfPages);
-      setStart((numberOfPages-1)*8 + 1);
+      setStart((numberOfPages-1)*16 + 1);
       setEnd(state.marketplace.tokens?.length ?? 0);
       loadMore(numberOfPages);
     }
@@ -252,7 +252,7 @@ export default function Catalog() {
 
               </SimpleGrid>
               {
-                (state.marketplace.tokens?.length ?? 0) < 8 ? 
+                (state.marketplace.tokens?.length ?? 0) < 16 ? 
                   paginationBasic
                   :
                   PaginationWithEllipses
