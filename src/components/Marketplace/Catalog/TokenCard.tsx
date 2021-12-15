@@ -86,10 +86,7 @@ export default function TokenCard(props: TokenCardProps) {
         onClick={() =>
         openInNewTab(`/collection/${props.address}/token/${props.id}`)
       }>
-        <Box       
-          onClick={() =>
-          openInNewTab(`/collection/${props.address}/token/${props.id}`)
-        }>
+        <Box>
           <TokenMedia {...props} />
           {/* <Image src='https://tqtezos.mypinata.cloud/ipfs/QmYM5pi7D1DpJkABV6aHpw4rQz4Te4doUxdN7wcbLMeAUW' thumbnail /> */}
         </Box>

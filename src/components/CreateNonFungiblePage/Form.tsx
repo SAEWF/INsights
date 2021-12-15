@@ -180,7 +180,7 @@ export default function Form() {
           step={1} 
           defaultValue={1} 
           min={1}
-          max={5}
+          max={500}
           onChange={(valueString) =>{
             setEdition(valueString)
             dispatch(updateMetadataRowValue({ key: 2, value: valueString }))
