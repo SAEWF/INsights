@@ -163,9 +163,9 @@ function RegistrationPage(props: any) {
           }
         }
         if(e.target.name==="description"){
-          if(desc.length>200){
-            document.querySelector('.desccheck')!.innerHTML = "Description should be less than 200 characters.";
-            setDesc(e.target.value.substring(0,200));
+          if(desc.length>500){
+            document.querySelector('.desccheck')!.innerHTML = "Description should be less than 500 characters.";
+            setDesc(e.target.value.substring(0,500));
             return;
           }
           else{
@@ -432,7 +432,7 @@ function RegistrationPage(props: any) {
                   errorBorderColor="cyan.300" 
                   name="description" id="desc" 
                   isInvalid isRequired
-                  placeholder="Description [ Max Length : 200 ]" 
+                  placeholder="Description [ Max Length : 500 ]" 
                   style={{margin: 'auto'}} 
                   variant="filled"
                 />
