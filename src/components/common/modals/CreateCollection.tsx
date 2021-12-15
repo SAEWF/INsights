@@ -69,27 +69,18 @@ function AddObjktCollectionModal(props: CreateCollectionModalProps) {
     <FormModal
       disclosure={props.disclosure}
       sync={props.sync}
-      method="createAssetContract"
+      method="addObjktCollection"
       dispatchThunk={() => dispatch(addObjktCollectionAction({name: contractName, address: contractAddress}))}
       onComplete={() => setContractName('')}
       initialRef={initialRef}
       pendingMessage="Adding collection..."
+      pendingAsyncMessage="Adding collection..."
       completeMessage="Collection added"
       body={onSubmit => (
         <>
           <ModalHeader>Objkt Collection</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl>
-              <FormLabel fontFamily="mono">Collection Name</FormLabel>
-              <Input
-                autoFocus={true}
-                ref={initialRef}
-                placeholder="Input your collection Name"
-                value={contractName}
-                onChange={e => setContractName(e.target.value)}
-              />
-            </FormControl>
             <FormControl>
               <FormLabel fontFamily="mono">Collection Address</FormLabel>
               <Input
