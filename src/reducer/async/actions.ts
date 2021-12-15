@@ -34,6 +34,7 @@ import DeleteArtTokenInFB from '../../components/Artist/DeleteArtTokenInFB';
 import AddSaleDataToFirebase from '../../components/Artist/AddSaleDataToFirebase';
 import CancelSale from '../../components/Artist/CancelSaleToken';
 import firebase from '../../lib/firebase/firebase';
+import { getNftAssetContract } from '../../lib/nfts/queries';
 
 // import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
@@ -133,35 +134,46 @@ export const addObjktCollectionAction = createAsyncThunk<
       });
     }
     try {
-      console.log('args', args);
       const name = args.name;
       const address = args.address;
       const db = firebase.firestore();
 
-      const pendingMessage = `Adding new collection ${name}`;
+      const pendingMessage = `Adding new collection ${address}`;
       dispatch(notifyPending(requestId, pendingMessage));
+
+      const contractInfo: any = await getNftAssetContract(system, address);
+
+      if(contractInfo.creator.alias !== "objkt.com Minting Factory"){
+        throw new Error("Invalid objkt collection");
+      }
+
+      if(!contractInfo.metadata.authors.includes(system.tzPublicKey)){
+        throw new Error(`The collection does not belong to wallet ${system.tzPublicKey}`);
+      }
 
       const docRef = db.collection('artists').doc(system.tzPublicKey);
       const doc = await docRef.get();
 
       if(doc.exists){
         await docRef.update({
-          objkt: args.address,
-          objkt_name: args.name
+          objkt: args.address
+        }).catch((error) => {
+          throw new Error("Error updating document");
         });
       } else {
         await docRef.set({
-          objkt: args.address,
-          objkt_name: args.name
+          objkt: args.address
+        }).catch((error) => {
+          throw new Error("Error updating document");
         });
       }
 
-      const fulfilledMessage = `Added new collection ${name} (${address})`;
+      const fulfilledMessage = `Added new collection ${address}`;
       dispatch(notifyFulfilled(requestId, fulfilledMessage));
       return { name, address };
-    } catch (e) {
+    } catch (e: any) {
       return rejectWithValue({
-        kind: ErrorKind.CreateAssetContractFailed,
+        kind: ErrorKind.AddObjktCollectionFailed,
         message: e.message
       });
     }
