@@ -116,12 +116,12 @@ function RegistrationPage(props: any) {
     const handleChange = (e: any) =>{
         if(e.target.name==="twt"){
           setTwt(e.target.value);
-          if(!e.target.value.match(/^https:\/\/twitter.com\//)){
-            document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
-          }
-          else{
-            document.querySelector('.twtcheck')!.innerHTML = "";
-          }
+          // if(!e.target.value.match(/^https:\/\/twitter.com\//)){
+          //   document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
+          // }
+          // else{
+          //   document.querySelector('.twtcheck')!.innerHTML = "";
+          // }
         }
         else if(e.target.name==="country"){
           setCountry(e.target.value);
@@ -274,9 +274,9 @@ function RegistrationPage(props: any) {
         if(country===""){
             document.querySelector('.countryCheck')!.innerHTML = "Please Select Country";
         }
-        else if(!twt.match(/^https:\/\/twitter.com\//)){
-            document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
-        }
+        // else if(!twt.match(/^https:\/\/twitter.com\//)){
+        //     document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
+        // }
         else if(!utube.match(/^https:\/\/www.youtube.com\/channel\// ) && utube!==""){
           document.querySelector('.utubecheck')!.innerHTML = "Please enter valid Youtube Channel";
         }
@@ -445,7 +445,7 @@ function RegistrationPage(props: any) {
              <div className="row">
             <div className="col-lg-2 col-0"></div>
             <FormGroup className="col-lg-4 col-md-6 col-12">
-                <Input value={twt} isInvalid type="url" errorBorderColor="cyan.300" name="twt" id="twitter" variant="filled" placeholder="Twitter Handle *" isRequired style={{margin: 'auto'}} />
+                <Input value={twt} isInvalid type="text" errorBorderColor="cyan.300" name="twt" id="twitter" variant="filled" placeholder="Twitter Handle *" isRequired style={{margin: 'auto'}} />
                 <div className="twtcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="col-lg-4 col-md-6 col-12">
