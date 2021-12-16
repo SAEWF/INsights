@@ -88,6 +88,7 @@ export default function App() {
           <Route path="/collection/:contractAddress/token/:tokenId">
             {({ contractAddress, tokenId }) => (
               <CollectionsTokenDetail
+                key={contractAddress + tokenId}
                 contractAddress={contractAddress}
                 tokenId={parseInt(tokenId)}
               />

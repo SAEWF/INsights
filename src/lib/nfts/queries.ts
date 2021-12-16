@@ -8,6 +8,8 @@ import { isLeft } from 'fp-ts/lib/Either';
 import { compact } from 'fp-ts/lib/Array';
 import { getRight } from 'fp-ts/lib/Option';
 import * as D from './decoders';
+import { getLedgerBigMapCustom, getTokenMetadataBigMapCustom } from './actionCustom';
+
 
 function fromHexString(input: string) {
   if (/^([A-Fa-f0-9]{2})*$/.test(input)) {
@@ -124,11 +126,29 @@ export async function getContractNfts(
   system: SystemWithToolkit | SystemWithWallet,
   address: string
 ): Promise<D.Nft[]> {
-  const ledger = await getLedgerBigMap(system.tzkt, address);
-  const tokens = await getTokenMetadataBigMap(system.tzkt, address);
+  // console.log("ADDRESS",address);
+  const ledgerA = await getLedgerBigMap(system.tzkt, address);
+  // console.log("LEDGER",ledgerA);
+  let ledgerB = [];
+  if(ledgerA.length === 0){
+    ledgerB = await getLedgerBigMapCustom(system.tzkt, address);
+  }
+
+  const ledger = [...ledgerA, ...ledgerB];
+  // console.log("LEDGER",ledger);
+  const tokensA = await getTokenMetadataBigMap(system.tzkt, address);
+  let tokensB: D.TokenMetadataBigMap = [];
+  if(tokensA.length === 0){
+    tokensB = await getTokenMetadataBigMapCustom(system.tzkt, address);
+  }
+  const tokens = [...tokensA, ...tokensB];
+  // console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
+  // console.log("MKTADDRESS",mktAddress);
   const tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
+  // console.log("TOKENSALES",tokenSales);
   const activeSales = tokenSales.filter(sale => sale.active);
+  // console.log("ACTIVESALES",activeSales);
 
   // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
@@ -165,9 +185,14 @@ export async function getContractNfts(
           type: saleData.value.isLegacy ? 'fixedPriceLegacy' : 'fixedPrice'
         };
 
+        var owner = ledger.find(e => e.key === tokenId)?.value!;
+        if(owner === undefined){
+          owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
+        }
+
         return {
           id: parseInt(tokenId, 10),
-          owner: ledger.find(e => e.key === tokenId)?.value!,
+          owner: owner,
           title: metadata.name,
           description: metadata.description,
           artifactUri: metadata.artifactUri,
@@ -184,18 +209,26 @@ export async function getNftAssetContract(
   address: string
 ): Promise<D.AssetContract> {
   const contract = await getContract(system.tzkt, address, {}, t.unknown);
+  console.log("CONTRACT", contract);
   const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
+  console.log("METABIGMAP", metaBigMap);
   const metaUri = metaBigMap.find(v => v.key === '')?.value;
+  
   if (!metaUri) {
     throw Error(`Could not extract metadata URI from ${address} storage`);
   }
 
+  // Kraznik exception to be removed later 
+  if(fromHexString(metaUri)==="https://example.com"){
+    return { ...contract, metadata: {name: "Kraznik"} };
+  }
+
+  // other contracts
   const { metadata } = await system.resolveMetadata(
     fromHexString(metaUri),
     address
   );
   const decoded = D.AssetContractMetadata.decode(metadata);
-
   if (isLeft(decoded)) {
     throw Error('Metadata validation failed');
   }
@@ -297,7 +330,26 @@ export async function getMarketplaceNfts(
     return [];
   }
 
-  const tokenBigMapRows = await getBigMapUpdates(
+  const tokenBigMapRows1 = await getBigMapUpdates(
+    system.tzkt,
+    {
+      path: 'token_metadata',
+      action: 'add_key',
+      'contract.in': addresses.join(','),
+      limit: '10000'
+    },
+    {
+      key: t.string,
+      value: t.type({
+        token_id: t.string,
+        token_info: t.record(t.string, t.string)
+      })
+    }
+  );
+
+  // console.log("TOKENBIGMAPROWS", tokenBigMapRows1);
+
+  const tokenBigMapRows2 = await getBigMapUpdates(
     system.tzkt,
     {
       path: 'assets.token_metadata',
@@ -314,6 +366,11 @@ export async function getMarketplaceNfts(
     }
   );
 
+  // console.log("TOKENBIGMAPROWS", tokenBigMapRows2);
+
+  const tokenBigMapRows = [...tokenBigMapRows1, ...tokenBigMapRows2];
+
+  // console.log("TOKENBIGMAPROWS", tokenBigMapRows);
   // Sort descending (newest first)
   let salesToView;
 
