@@ -53,4 +53,9 @@ src/lib/firebase/
 
 #build folder
 build/
+blockchain.js
+src/config.json
 src/lib/firebase/firebase.tsx
+
+#yarn
+yarn.lock
