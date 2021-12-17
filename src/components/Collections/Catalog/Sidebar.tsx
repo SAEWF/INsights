@@ -10,6 +10,8 @@ import CollectionTab from './CollectionTab';
 export default function Sidebar() {
   const tzPublicKey = useSelector(s => s.system.tzPublicKey);
   const state = useSelector(s => s.collections);
+
+  const kraznik = state.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'];
   const dispatch = useDispatch();
   return (
     <>
@@ -57,6 +59,19 @@ export default function Sidebar() {
             {...state.collections[address]}
           />
         ))}
+
+        {
+          kraznik ? 
+          <CollectionTab
+            key={'KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'}
+            selected={'KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr' === state.selectedCollection}
+            onSelect={address => dispatch(selectCollection(address))}
+            {...state.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr']}
+          />
+          : null
+        }
+
+
       <Flex px={2} pt={4} justify="center" pb={8}>
         <CreateCollectionButton />
       </Flex>
