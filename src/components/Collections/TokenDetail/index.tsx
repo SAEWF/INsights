@@ -175,7 +175,11 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       for(var walletID in shares){
         royalty = shares[walletID];
       }
-      royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+
+      if(tokenHook.metadata.creators[0]==="KraznikDAO")
+        royaltyPercentage = 3;
+      else 
+        royaltyPercentage = royalty*Math.pow(10,-decimal+2);
       royaltyAmount = royaltyPercentage*Math.pow(10,-decimal)*token.sale.price;
       totalAmount = token.sale.price + royaltyAmount;
     }
@@ -194,7 +198,10 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       for(var wallet in shares){
         royalty = shares[wallet];
       }
-      royaltyPercentage = royalty*Math.pow(10,decimal-2);
+      if(tokenHook.metadata.creators[0]==="KraznikDAO")
+        royaltyPercentage = 3;
+      else 
+        royaltyPercentage = royalty*Math.pow(10,-decimal+2);
     }
     else{
       console.log(" royal = ");

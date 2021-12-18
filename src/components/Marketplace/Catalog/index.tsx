@@ -14,6 +14,8 @@ import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
 import { Pagination } from 'react-bootstrap'
+import { useLocation } from 'wouter';
+
 
 export default function Catalog() {
   const { system, marketplace: state } = useSelector(s => s);
@@ -22,6 +24,7 @@ export default function Catalog() {
   const [start, setStart] = useState(1);
   const [end, setEnd] = useState(17);
   const [reverse, setReverse] = useState(1);
+  const [, setLocation] = useLocation();
 
   // blackList for wallet address 
   // it will block display of minted nfts from them 
@@ -44,12 +47,12 @@ export default function Catalog() {
       loadMoreMarketplaceNftsQuery({page: active});
     }, [active]);
 
-    // console.log('marketplace tokens', state.marketplace.tokens);
+    console.log('marketplace tokens', state.marketplace.tokens);
     let tokens = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
     tokens = tokens.filter(x => !blackList.includes(x.metadata?.minter ?? ''));
 
     // for getting all tokens sale data , uncomment below line
-    // console.log('tokens', tokens);
+    console.log('tokens', tokens);
     // for getting all tokenData from marketplace , change a bit in the getMarketplaceNftsQuery dispatcher
 
     // PAGINATION
@@ -155,6 +158,15 @@ export default function Catalog() {
       setReverse(e.target.value);
     }
 
+    const HandleChangeCollection = (e: any) =>{
+      if(e.target.value==='marketplace') {
+        setLocation('/');
+      }
+      else{
+        setLocation('/collection/' + e.target.value);
+      }
+    }
+
     return (
     <>
       <Flex
@@ -166,7 +178,7 @@ export default function Catalog() {
         justify="start"
         flexDir="column"
       >
-        <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex', position: 'sticky'}}>
+        <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' }}>
           <Select
             bg="#00ffbe"
             borderColor="#00ffbe"
@@ -177,6 +189,17 @@ export default function Catalog() {
             <option style={{color:'white', backgroundColor: 'black'}} color="white" key="2" value={2}>Oldest</option>
             <option style={{color:'white', backgroundColor: 'black'}} key="3" value={3}>Price : Low to High</option>
             <option style={{color:'white', backgroundColor: 'black'}} key="4" value={4}>Price : High to Low</option>
+          </Select>
+          &nbsp;
+          <Select
+            bg="#00ffbe"
+            borderColor="#00ffbe"
+            color="black"
+            onChange={HandleChangeCollection}
+          >
+            <option style={{color:'white', backgroundColor: 'black', borderColor: 'cyan'}} key="1" value="marketplace" defaultChecked={true}>Marketplace</option>
+            <option style={{color:'white', backgroundColor: 'black'}} color="white" key="2" value="KT1MxGrhSmLPe4W842AutygvuoxUejLJDuWq">Minter</option>
+            <option style={{color:'white', backgroundColor: 'black'}} color="white" key="2" value="KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr">Kraznik</option>
           </Select>
         </div>
 

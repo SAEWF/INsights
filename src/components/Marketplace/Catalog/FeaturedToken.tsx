@@ -1,6 +1,6 @@
 import React from 'react';
 import { Token } from '../../../reducer/slices/collections';
-import { useLocation } from 'wouter';
+// import { useLocation } from 'wouter';
 import { IpfsGatewayConfig } from '../../../lib/util/ipfs';
 import {
   // Flex,
@@ -17,10 +17,11 @@ import firebase from '../../../lib/firebase/firebase';
 
 interface FeaturedTokenProps extends Token {
   config: IpfsGatewayConfig;
+  metadata: any;
 }
 
 export default function FeaturedToken(props: FeaturedTokenProps) {
-  const [, setLocation] = useLocation();
+  // const [, setLocation] = useLocation();
   const [owner, setOwner] = React.useState('');
   const dispatch = useDispatch();
 
@@ -60,10 +61,45 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
     if (newWindow) newWindow.opener = null
   }
 
-  const royaltyArray = props.metadata!.attributes?.filter(it => it.name==='Royalty');
-  const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
-  const royaltyAmount = (props.sale !== undefined && props.sale !== null && props.sale.seller!==props.metadata.minter) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
-  const totalAmount = (props.sale !== undefined && props.sale !== null) ?  Number((props.sale!.price + royaltyAmount).toFixed(2)) : 0;
+  let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any;
+  
+  if(props.sale){
+    if(props.metadata.royalties!==undefined){
+      const shares = props.metadata.royalties.shares;
+      const decimal = props.metadata.royalties.decimals;
+      for(var walletID in shares){
+        royalty = shares[walletID];
+      }
+      if(props.metadata.creators[0]==="KraznikDAO")
+        royaltyPercentage = 3;
+      else 
+        royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+      royaltyAmount = royaltyPercentage*Math.pow(10,-decimal)*props.sale.price;
+      totalAmount = props.sale.price + royaltyAmount;
+    }
+    else{
+      royalty = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyArray = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+      royaltyAmount = (props.sale !== undefined && props.sale.seller!==props.metadata.minter) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
+      totalAmount = (props.sale !== undefined) ?  Number((props.sale!.price + royaltyAmount).toFixed(2)) : 0;
+    }
+  }
+  else{
+    if(props.metadata?.royalties!==undefined){
+      const shares = props.metadata.royalties.shares;
+      const decimal = props.metadata.royalties.decimals;
+      for(var wallet in shares){
+        royalty = shares[wallet];
+      }
+      royaltyPercentage = royalty*Math.pow(10,decimal-2);
+    }
+    else{
+      royalty = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyArray = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+    }
+  }
 
   return (
     <>
