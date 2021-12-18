@@ -13,8 +13,9 @@ import FeaturedToken from './FeaturedToken';
 import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
-import { Pagination } from 'react-bootstrap'
+import { Pagination } from 'react-bootstrap';
 import { useLocation } from 'wouter';
+import collections from '../../../lib/collections/data.js';
 
 
 export default function Catalog() {
@@ -197,9 +198,14 @@ export default function Catalog() {
             color="black"
             onChange={HandleChangeCollection}
           >
-            <option style={{color:'white', backgroundColor: 'black', borderColor: 'cyan'}} key="1" value="marketplace" defaultChecked={true}>Marketplace</option>
-            <option style={{color:'white', backgroundColor: 'black'}} color="white" key="2" value="KT1MxGrhSmLPe4W842AutygvuoxUejLJDuWq">Minter</option>
-            <option style={{color:'white', backgroundColor: 'black'}} color="white" key="2" value="KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr">Kraznik</option>
+            <option style={{color:'white', backgroundColor: 'black', borderColor: 'cyan'}} key="1" value="marketplace" defaultChecked={true}>Collections</option>
+            {
+              collections.data.map((collection: any) => {
+                return(
+                  <option style={{color:'white', backgroundColor: 'black'}} key={collection.id} value={collection.address}>{collection.name}</option>
+                );
+              })
+            }
           </Select>
         </div>
 
