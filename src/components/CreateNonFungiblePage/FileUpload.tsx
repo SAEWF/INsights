@@ -155,7 +155,7 @@ export default function FileUpload() {
         textAlign="center"
         pb={4}
       >
-        Comfortable size 10MB
+        Comfortable size 30MB
       </Text>
       <Flex
         borderStyle="dashed"

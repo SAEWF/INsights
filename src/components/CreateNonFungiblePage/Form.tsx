@@ -173,7 +173,7 @@ export default function Form() {
       {/* Editions */}
        <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
-          Editions
+          Editions (Max 500)
         </FormLabel>
         <NumberInput 
           placeholder="Input editions of your nft, 1-20"
