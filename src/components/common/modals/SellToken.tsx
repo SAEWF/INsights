@@ -95,7 +95,7 @@ export function SellTokenModal(props: SellTokenModalProps) {
             </Flex>
           </ModalBody>
           <ModalFooter >
-            * Final listing price icluding royalty will be {total}.
+          Final listing price [ {total} ], including royalty 
           </ModalFooter>
         </>
       )}
