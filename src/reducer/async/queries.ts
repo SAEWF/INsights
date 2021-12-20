@@ -41,8 +41,10 @@ export const getContractNftsQuery = createAsyncThunk<
   const { system, collections } = getState();
   try {
     const tokens = await getContractNfts(system, address);
+    // console.log("TOKENS", tokens);
     return { address, tokens };
   } catch (e) {
+    // console.error(e);
     return rejectWithValue({
        kind: ErrorKind.GetContractNftsFailed,
        message: `Retrying NFTs: ${
@@ -119,6 +121,7 @@ export const getMarketplaceNftsQuery = createAsyncThunk<
       let tokens;
       // console.log(args);
       tokens = await getMarketplaceNfts(system, args.address, args.reverse);
+
       // console.log(tokens);
       // Load 17 initially (1-feature + at least 2 rows)
       for (const i in tokens.slice(0, 17)) {

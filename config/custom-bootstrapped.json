@@ -29,5 +29,12 @@
 				"tez": "KT1NNpYRX8bAL5JTbGWtWRrSqG2iWdUdiXF5"
 			}
 		}
+	},
+	"ByteBlockEnglishAuction": {
+		"EnglishAuction": "KT1KhB9feNM8k62drsHLmNH73C278hn3F9hJ",
+		"AuctionFee": {
+			"percent": 4,
+			"address": "tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP"
+		}
 	}
 }

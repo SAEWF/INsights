@@ -15,7 +15,8 @@ export enum ErrorKind {
   GetMarketplaceNftsFailed,
   IPFSUploadFailed,
   WalletAlreadyConnected,
-  WalletPermissionRequestDenied
+  WalletPermissionRequestDenied,
+  AddObjktCollectionFailed
 }
 
 export interface RejectValue {
