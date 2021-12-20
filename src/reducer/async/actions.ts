@@ -154,15 +154,20 @@ export const addObjktCollectionAction = createAsyncThunk<
       const docRef = db.collection('artists').doc(system.tzPublicKey);
       const doc = await docRef.get();
 
+      var collections = [{
+        "name": "objkt",
+        "address": address
+      }];
+
       if(doc.exists){
         await docRef.update({
-          objkt: args.address
+          collections: collections
         }).catch((error) => {
           throw new Error("Error updating document");
         });
       } else {
         await docRef.set({
-          objkt: args.address
+          collections: collections
         }).catch((error) => {
           throw new Error("Error updating document");
         });

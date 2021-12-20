@@ -6,7 +6,8 @@ import {
   selectCollection
 } from '../../../reducer/slices/collections';
 import CollectionTab from './CollectionTab';
-import firebase from '../../../lib/firebase/firebase'
+import firebase from '../../../lib/firebase/firebase';
+// import collections from '../../../lib/customCollections/collections';
 
 export default function Sidebar() {
   const tzPublicKey = useSelector(s => s.system.tzPublicKey);
@@ -22,11 +23,12 @@ export default function Sidebar() {
       var db = firebase.firestore();
       db.collection("artists").doc(tzPublicKey).onSnapshot(function(doc) {
         if(doc.exists) {
-          if(doc.data()!.objkt===undefined) {
+          if(doc.data()!.collections===undefined) {
             setObjktState('not-set');
           }
           else{
-            setObjktState(doc.data()!.objkt);
+            const objkt = doc.data()!.collections.filter((c: any) => c.name === 'objkt');
+            setObjktState(objkt[0].address);
             dispatch(selectCollection(doc.data()!.objkt));
           }
         }
@@ -59,6 +61,18 @@ export default function Sidebar() {
           {...state.collections[state.globalCollection]}
         />
       ) : null}
+      {/* {
+        collections.secondary.map((collection:any) => {
+          return (
+            <CollectionTab
+              key={collection.address}
+              selected={collection.address === state.selectedCollection}
+              onSelect={address => dispatch(selectCollection(collection.address))}
+              {...collection}
+            />
+          );
+        })
+      } */}
       <Heading
         fontFamily="mono"
         px={4}
@@ -102,10 +116,10 @@ export default function Sidebar() {
         {
           objktState!=='not-set' && objktState!==''? (
             <CollectionTab
-            key={ objktState + 'objkt'}
-            selected={objktState === state.selectedCollection}
-            onSelect={address => dispatch(selectCollection(objktState))}
-            {...state.collections[objktState]}
+              key={ objktState + 'objkt'}
+              selected={objktState === state.selectedCollection}
+              onSelect={address => dispatch(selectCollection(objktState))}
+              {...state.collections[objktState]}
             />
           ) :
           <></>
