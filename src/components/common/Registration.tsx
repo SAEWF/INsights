@@ -59,8 +59,8 @@ function RegistrationPage(props: any) {
               return;
             }
 
-            var data = {...formData,"avatar":url};
-            docRef.update(data);
+            var data1 = {...formData,"avatar":url};
+            docRef.update(data1);
             setSuccess(true);
           }
           else 
@@ -130,12 +130,12 @@ function RegistrationPage(props: any) {
     const handleChange = (e: any) =>{
         if(e.target.name==="twt"){
           setTwt(e.target.value);
-          if(!e.target.value.match(/^https:\/\/twitter.com\//)){
-            document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
-          }
-          else{
-            document.querySelector('.twtcheck')!.innerHTML = "";
-          }
+          // if(!e.target.value.match(/^https:\/\/twitter.com\//)){
+          //   document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
+          // }
+          // else{
+          //   document.querySelector('.twtcheck')!.innerHTML = "";
+          // }
         }
         else if(e.target.name==="country"){
           setCountry(e.target.value);
@@ -177,9 +177,9 @@ function RegistrationPage(props: any) {
           }
         }
         if(e.target.name==="description"){
-          if(desc.length>200){
-            document.querySelector('.desccheck')!.innerHTML = "Description should be less than 200 characters.";
-            setDesc(e.target.value.substring(0,200));
+          if(desc.length>500){
+            document.querySelector('.desccheck')!.innerHTML = "Description should be less than 500 characters.";
+            setDesc(e.target.value.substring(0,500));
             return;
           }
           else{
@@ -288,9 +288,9 @@ function RegistrationPage(props: any) {
         if(country===""){
             document.querySelector('.countryCheck')!.innerHTML = "Please Select Country";
         }
-        else if(!twt.match(/^https:\/\/twitter.com\//)){
-            document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
-        }
+        // else if(!twt.match(/^https:\/\/twitter.com\//)){
+        //     document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
+        // }
         else if(!utube.match(/^https:\/\/www.youtube.com\/channel\// ) && utube!==""){
           document.querySelector('.utubecheck')!.innerHTML = "Please enter valid Youtube Channel";
         }
@@ -380,8 +380,8 @@ function RegistrationPage(props: any) {
                 <Input value={email} isInvalid type="email" errorBorderColor="cyan.300" 
                   name="email" id="email"  
                   variant="filled" 
-                  placeholder="Email *" 
-                  isRequired 
+                  placeholder="Email " 
+                  // isRequired 
                   style={{margin: 'auto'}} 
                 />
             </FormGroup>
@@ -462,7 +462,7 @@ function RegistrationPage(props: any) {
                   errorBorderColor="cyan.300" 
                   name="description" id="desc" 
                   isInvalid isRequired
-                  placeholder="Description [ Max Length : 200 ]" 
+                  placeholder="Description [ Max Length : 500 ]" 
                   style={{margin: 'auto'}} 
                   variant="filled"
                 />
@@ -475,7 +475,7 @@ function RegistrationPage(props: any) {
              <div className="row">
             <div className="col-lg-2 col-0"></div>
             <FormGroup className="col-lg-4 col-md-6 col-12">
-                <Input value={twt} isInvalid type="url" errorBorderColor="cyan.300" name="twt" id="twitter" variant="filled" placeholder="Twitter Handle *" isRequired style={{margin: 'auto'}} />
+                <Input value={twt} isInvalid type="text" errorBorderColor="cyan.300" name="twt" id="twitter" variant="filled" placeholder="Twitter Handle *" isRequired style={{margin: 'auto'}} />
                 <div className="twtcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
             <FormGroup className="col-lg-4 col-md-6 col-12">

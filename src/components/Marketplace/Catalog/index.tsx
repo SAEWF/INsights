@@ -13,15 +13,19 @@ import FeaturedToken from './FeaturedToken';
 import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
-import { Pagination } from 'react-bootstrap'
+import { Pagination } from 'react-bootstrap';
+import { useLocation } from 'wouter';
+import collections from '../../../lib/collections/data.js';
+
 
 export default function Catalog() {
   const { system, marketplace: state } = useSelector(s => s);
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const [start, setStart] = useState(1);
-  const [end, setEnd] = useState(9);
+  const [end, setEnd] = useState(17);
   const [reverse, setReverse] = useState(1);
+  const [, setLocation] = useLocation();
 
   // blackList for wallet address 
   // it will block display of minted nfts from them 
@@ -44,24 +48,24 @@ export default function Catalog() {
       loadMoreMarketplaceNftsQuery({page: active});
     }, [active]);
 
-    // console.log('marketplace tokens', state.marketplace.tokens);
+    console.log('marketplace tokens', state.marketplace.tokens);
     let tokens = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
     tokens = tokens.filter(x => !blackList.includes(x.metadata?.minter ?? ''));
 
     // for getting all tokens sale data , uncomment below line
-    // console.log('tokens', tokens);
+    console.log('tokens', tokens);
     // for getting all tokenData from marketplace , change a bit in the getMarketplaceNftsQuery dispatcher
 
     // PAGINATION
     let items = [];
-    const numberOfPages = Math.ceil(tokens.length-1 / 8);
+    const numberOfPages = Math.ceil(tokens.length-1 / 16);
     for (let number = 1; number <= numberOfPages; number++) {
       items.push(
         <Pagination.Item key={number} active={number === active} onClick={()=>{
           setActive(number);
-          setStart((number-1)*8 + 1);
-          setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*8)+1);
-          console.log('start', (number-1)*8 + 1, 'end', end);
+          setStart((number-1)*16 + 1);
+          setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*16)+1);
+          console.log('start', (number-1)*16 + 1, 'end', end);
           loadMore(number);
         }}>
           {number}
@@ -72,28 +76,28 @@ export default function Catalog() {
     const handleFirst = () =>{
       setActive(1);
       setStart(1);
-      setEnd(9);
+      setEnd(17);
       loadMore(1);
     }
     const handlePrev = () =>{
       if(active > 1){
         setActive(active-1);
-        setStart(start-8);
-        setEnd(end-8);
+        setStart(start-16);
+        setEnd(end-16);
         loadMore(active-1);
       }
     }
     const handleNext = () =>{
       if(active < numberOfPages){
         setActive(active+1);
-        setStart(start+8);
-        setEnd(end+8);
+        setStart(start+16);
+        setEnd(end+16);
         loadMore(active+1);
       }
     }
     const handleLast = () =>{
       setActive(numberOfPages);
-      setStart((numberOfPages-1)*8 + 1);
+      setStart((numberOfPages-1)*16 + 1);
       setEnd(state.marketplace.tokens?.length ?? 0);
       loadMore(numberOfPages);
     }
@@ -155,6 +159,15 @@ export default function Catalog() {
       setReverse(e.target.value);
     }
 
+    const HandleChangeCollection = (e: any) =>{
+      if(e.target.value==='marketplace') {
+        setLocation('/');
+      }
+      else{
+        setLocation('/collection/' + e.target.value);
+      }
+    }
+
     return (
     <>
       <Flex
@@ -166,7 +179,7 @@ export default function Catalog() {
         justify="start"
         flexDir="column"
       >
-        <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex', position: 'sticky'}}>
+        <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' }}>
           <Select
             bg="#00ffbe"
             borderColor="#00ffbe"
@@ -177,6 +190,22 @@ export default function Catalog() {
             <option style={{color:'white', backgroundColor: 'black'}} color="white" key="2" value={2}>Oldest</option>
             <option style={{color:'white', backgroundColor: 'black'}} key="3" value={3}>Price : Low to High</option>
             <option style={{color:'white', backgroundColor: 'black'}} key="4" value={4}>Price : High to Low</option>
+          </Select>
+          &nbsp;
+          <Select
+            bg="#00ffbe"
+            borderColor="#00ffbe"
+            color="black"
+            onChange={HandleChangeCollection}
+          >
+            <option style={{color:'white', backgroundColor: 'black', borderColor: 'cyan'}} key="1" value="marketplace" defaultChecked={true}>Collections</option>
+            {
+              collections.data.map((collection: any) => {
+                return(
+                  <option style={{color:'white', backgroundColor: 'black'}} key={collection.id} value={collection.address}>{collection.name}</option>
+                );
+              })
+            }
           </Select>
         </div>
 
@@ -252,7 +281,7 @@ export default function Catalog() {
 
               </SimpleGrid>
               {
-                (state.marketplace.tokens?.length ?? 0) < 8 ? 
+                (state.marketplace.tokens?.length ?? 0) < 16 ? 
                   paginationBasic
                   :
                   PaginationWithEllipses

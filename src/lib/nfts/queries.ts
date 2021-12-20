@@ -8,7 +8,8 @@ import { isLeft } from 'fp-ts/lib/Either';
 import { compact } from 'fp-ts/lib/Array';
 import { getRight } from 'fp-ts/lib/Option';
 import * as D from './decoders';
-import { getLedgerBigMapObjkt, getTokenMetadataBigMapObjkt } from './actionObjkt';
+
+import { getLedgerBigMapCustom, getTokenMetadataBigMapCustom } from './actionCustom';
 
 function fromHexString(input: string) {
   if (/^([A-Fa-f0-9]{2})*$/.test(input)) {
@@ -134,7 +135,7 @@ export async function getContractNfts(
   // console.log("LEDGER",ledgerA);
   let ledgerB = [];
   if(ledgerA.length === 0){
-    ledgerB = await getLedgerBigMapObjkt(system.tzkt, address);
+    ledgerB = await getLedgerBigMapCustom(system.tzkt, address);
   }
 
   const ledger = [...ledgerA, ...ledgerB];
@@ -142,7 +143,7 @@ export async function getContractNfts(
   const tokensA = await getTokenMetadataBigMap(system.tzkt, address);
   let tokensB: D.TokenMetadataBigMap = [];
   if(tokensA.length === 0){
-    tokensB = await getTokenMetadataBigMapObjkt(system.tzkt, address);
+    tokensB = await getTokenMetadataBigMapCustom(system.tzkt, address);
   }
   const tokens = [...tokensA, ...tokensB];
   // console.log("TOKENS",tokens);
@@ -191,9 +192,9 @@ export async function getContractNfts(
         var owner = ledger.find(e => e.key === tokenId)?.value!;
         if(owner === undefined){
           owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
-          // console.log("OWNER",owner);
         }
-        return  {
+
+        return {
           id: parseInt(tokenId, 10),
           owner: owner,
           title: metadata.name,
@@ -215,18 +216,25 @@ export async function getNftAssetContract(
   // console.log("CONTRACT", contract);
   const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
   // console.log("METABIGMAP", metaBigMap);
+
   const metaUri = metaBigMap.find(v => v.key === '')?.value;
+  
   if (!metaUri) {
     throw Error(`Could not extract metadata URI from ${address} storage`);
   }
 
+  // Kraznik exception to be removed later 
+  if(fromHexString(metaUri)==="https://example.com"){
+    return { ...contract, metadata: {name: "Kraznik"} };
+  }
+
+  // other contracts
   const { metadata } = await system.resolveMetadata(
     fromHexString(metaUri),
     address
   );
   const decoded = D.AssetContractMetadata.decode(metadata);
 
-  
   if (isLeft(decoded)) {
     throw Error('Metadata validation failed');
   }
@@ -333,8 +341,6 @@ export async function getMarketplaceNfts(
     return [];
   }
 
-  // console.log(`Loading ${uniqueAddresses.length} addresses`, uniqueAddresses);
-
   const tokenBigMapRows1 = await getBigMapUpdates(
     system.tzkt,
     {
@@ -370,8 +376,6 @@ export async function getMarketplaceNfts(
   );
 
   const tokenBigMapRows = [...tokenBigMapRows1, ...tokenBigMapRows2];
-
-  // console.log(`Loaded ${tokenBigMapRows.length} rows`, tokenBigMapRows);
 
   // Sort descending (newest first)
   let salesToView;

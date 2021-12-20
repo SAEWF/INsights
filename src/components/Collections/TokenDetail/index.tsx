@@ -92,10 +92,11 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   const collectionUndefined = collection === undefined;
 
   useEffect(() => {
-    if (collectionUndefined || tokenHook===null) {
-      dispatch(getNftAssetContractQuery(contractAddress)).then(() =>
-        dispatch(getContractNftsQuery(contractAddress))
-      );
+    if (collectionUndefined) {
+      dispatch(getNftAssetContractQuery(contractAddress));
+    }
+    else{
+      dispatch(getContractNftsQuery(contractAddress));
     }
 
     if(!collectionUndefined && tokenHook!==null && tokenHook!==undefined && owner.length===0){
@@ -148,12 +149,12 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
   const token = collection.tokens.find(token => token.id === tokenId);
 
-  if (tokenHook===undefined || tokenHook===null) {
-    setTokenHook(token);
-  }
-
   if (!token) {
     return <NotFound />;
+  }
+
+  if ((tokenHook===undefined || tokenHook===null) && token) {
+    setTokenHook(token);
   }
 
   const isOwner =
@@ -162,11 +163,54 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       system.tzPublicKey === token.sale?.seller);
   // for viewing the token in console , turn it on
   // console.log("OWNER + ", owner);
-  // console.log("TOKEN =", token);
-  const royaltyArray = token.metadata!.attributes?.filter(it => it.name==='Royalty');
-  const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
-  const royaltyAmount = (token.sale !== undefined && token.sale.seller!==token.metadata.minter ) ?  royaltyPercentage*token.sale!.price / 100.0 : 0;
-  const totalAmount = (token.sale !== undefined) ?  Number((token.sale!.price + royaltyAmount).toFixed(2)) : 0;
+  console.log("TOKEN =", token);
+
+
+  let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any;
+  
+  if(token.sale && tokenHook){
+    if(tokenHook.metadata.royalties!==undefined){
+      const shares = tokenHook.metadata.royalties.shares;
+      const decimal = tokenHook.metadata.royalties.decimals;
+      for(var walletID in shares){
+        royalty = shares[walletID];
+      }
+
+      if(tokenHook.metadata.creators[0]==="KraznikDAO")
+        royaltyPercentage = 3;
+      else 
+        royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+      royaltyAmount = royaltyPercentage*Math.pow(10,-decimal)*token.sale.price;
+      totalAmount = token.sale.price + royaltyAmount;
+    }
+    else{
+      royalty = token.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyArray = token.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+      royaltyAmount = (token.sale !== undefined && token.sale.seller!==token.metadata.minter) ?  royaltyPercentage*token.sale!.price / 100.0 : 0;
+      totalAmount = (token.sale !== undefined) ?  Number((token.sale!.price + royaltyAmount).toFixed(2)) : 0;
+    }
+  }
+  else if(tokenHook){
+    if(tokenHook.metadata?.royalties!==undefined){
+      const shares = tokenHook.metadata.royalties.shares;
+      const decimal = tokenHook.metadata.royalties.decimals;
+      for(var wallet in shares){
+        royalty = shares[wallet];
+      }
+      if(tokenHook.metadata.creators[0]==="KraznikDAO")
+        royaltyPercentage = 3;
+      else 
+        royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+    }
+    else{
+      console.log(" royal = ");
+      royalty = tokenHook.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyArray = tokenHook.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+    }
+  }
+
   return (
     
     <Flex flexDir="column"  flexGrow={1}>
@@ -337,8 +381,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   </Flex>
                 )
               })
-              :
-              <>
+              :(
+                (token.metadata.minter!==undefined)?
+                <>
                 <Flex key="creatorAddress" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Creator :</Text>
                   <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
@@ -346,6 +391,16 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   </Text> 
                 </Flex>
               </>
+              : 
+              <>
+              <Flex key="creatorAddress" mt={[4, 8]}>
+              <Text color="secColDarkTheme">Creator :</Text>
+                  <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                        {token.metadata.creators && token.metadata.creators[0]}
+                  </Text> 
+                </Flex>
+              </>
+              )
             }
 
             {
@@ -392,7 +447,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             {/* Accordion can also be used to show information */}
             <Flex display={['flex']} justifyContent="space-between" alignItems="center" width="100%" flexDir={['column', 'row']} flexWrap="wrap" marginTop={2}>
               <Flex justifyContent={["flex-start"]} alignItems="center" width="100%" marginTop={4}>
-                {token.sale ? (
+              {token.sale ? (
                   isOwner ? (
                     <>
                       <Text color="brand.black" fontSize="xl" fontWeight="700" marginRight={8}>
@@ -415,14 +470,18 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                         {totalAmount}  <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
                       </Text>
                       <Box>
-                        <BuyTokenButton token={token} />
+                        <BuyTokenButton token={token} 
+                          totalAmount={totalAmount} 
+                          royalty={royaltyPercentage ?? 0} 
+                          minter={(token && token.metadata.minter!==undefined)?token.metadata.minter:(tokenHook)?Object.keys(tokenHook.metadata?.royalties.shares)[0]: undefined} 
+                        />
                       </Box>
                     </>
                   )
                 ) : isOwner ? (
                   <>
                   <Box marginRight={2}>
-                    <SellTokenButton contract={contractAddress} tokenId={tokenId} royaltyPercent = {(royaltyAmount>0)?royaltyPercentage:0} />
+                    <SellTokenButton contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
                   </Box>
                   <Box marginRight={2}>
                   <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />

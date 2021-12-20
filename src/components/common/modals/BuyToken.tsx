@@ -18,6 +18,9 @@ import tz from '../assets/tezos-sym.svg'
 
 interface BuyTokenModalProps extends BaseModalProps {
   token: Nft;
+  totalAmount: number;
+  minter: string | undefined;
+  royalty: number;
 }
 
 // change for cases when minter is not present 
@@ -27,11 +30,6 @@ const DEFAULT_ROYALTY_PERCENT = 10;
 export function BuyTokenModal(props: BuyTokenModalProps) {
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
-  const royalty = props.token.metadata!.attributes?.filter(it => it.name==='Royalty');
-  const royaltyArray = props.token.metadata!.attributes?.filter(it => it.name==='Royalty');
-  const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
-  const royaltyAmount = (props.token.sale !== undefined && props.token.sale.seller!==props.token.metadata.minter) ?  royaltyPercentage*props.token.sale!.price / 100.0 : 0;
-  const totalAmount = (props.token.sale !== undefined) ?  Number((props.token.sale!.price + royaltyAmount).toFixed(2)) : 0;
   // console.log(royalty);
   return (
     <FormModal
@@ -47,8 +45,8 @@ export function BuyTokenModal(props: BuyTokenModalProps) {
             salePrice: props.token.sale?.price || 0,
             saleId: props.token.sale?.saleId || 0,
             saleType: props.token.sale?.type || '',
-            minter: props.token.metadata.minter || ADMIN_WALLET,
-            royalty: (royalty!==undefined && royalty!.length > 0) ? parseInt(royalty[0].value) : DEFAULT_ROYALTY_PERCENT,
+            minter: (props.minter!==undefined)? props.minter : ADMIN_WALLET,
+            royalty: (props.royalty!==undefined)? props.royalty : DEFAULT_ROYALTY_PERCENT,
           })
         )
       }
@@ -64,7 +62,7 @@ export function BuyTokenModal(props: BuyTokenModalProps) {
               You are about to purchase
               <Box as="span" fontWeight="bold">
                 {' '}
-                {props.token.title} (<img src={tz} alt="" width={10} height="auto" style={{display: 'inline-block'}}/> {totalAmount})
+                {props.token.title} (<img src={tz} alt="" width={10} height="auto" style={{display: 'inline-block'}}/> {props.totalAmount})
               </Box>
             </Text>
           </ModalBody>
@@ -85,6 +83,9 @@ export function BuyTokenModal(props: BuyTokenModalProps) {
 
 interface BuyTokenButtonProps extends BaseModalButtonProps {
   token: Nft;
+  totalAmount: number;
+  minter: string | undefined;
+  royalty: number;
 }
 
 export function BuyTokenButton(props: BuyTokenButtonProps) {

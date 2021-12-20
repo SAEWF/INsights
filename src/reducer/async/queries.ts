@@ -119,12 +119,12 @@ export const getMarketplaceNftsQuery = createAsyncThunk<
     const { system } = getState();
     try {
       let tokens;
-
+      // console.log(args);
       tokens = await getMarketplaceNfts(system, args.address, args.reverse);
 
-      // console.log("GOT ", tokens);
-      // Load 9 initially (1-feature + at least 2 rows)
-      for (const i in tokens.slice(0, 9)) {
+      // console.log(tokens);
+      // Load 17 initially (1-feature + at least 2 rows)
+      for (const i in tokens.slice(0, 17)) {
         tokens[i] = await loadMarketplaceNft(system, tokens[i]);
       }
 
@@ -169,9 +169,9 @@ export const loadMoreMarketplaceNftsQuery = createAsyncThunk<
     try {
       const tokens = marketplace.marketplace.tokens ?? [];
 
-      // Load 8 more (at least 2 rows)
-      const iStart = (args.page-1)*8 + 1;
-      const iEnd = iStart + 8;
+      // Load 16 more (at least 2 rows)
+      const iStart = (args.page-1)*16 + 1;
+      const iEnd = iStart + 16;
 
       // Need to rebuild the array
       const tokensAfter = await Promise.all(

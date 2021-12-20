@@ -5,16 +5,19 @@ import { AspectRatio, Box, Flex } from '@chakra-ui/react';
 import { TokenMedia } from '../../common/TokenMedia';
 import tz from '../../common/assets/tezos-sym-white.svg'
 import { Card } from 'react-bootstrap';
+import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
+import { useDispatch } from 'react-redux';
 import firebase from '../../../lib/firebase/firebase';
 
 interface TokenCardProps extends Token {
   config: IpfsGatewayConfig;
+  metadata: any;
 }
 
 
 export default function TokenCard(props: TokenCardProps) {
   const [owner, setOwner] = React.useState('');
-
+  const dispatch = useDispatch();
   React.useEffect(() => {
     var own : any;
     if(props.sale!==undefined && props.sale!==null) {
@@ -47,10 +50,54 @@ export default function TokenCard(props: TokenCardProps) {
     if (newWindow) newWindow.opener = null
   }
 
-  const royaltyArray = (props.metadata!==undefined)?props.metadata!.attributes?.filter(it => it.name==='Royalty') : undefined;
-  const royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
-  const royaltyAmount = (props.sale !== undefined && props.sale !== null && props.sale.seller!==props.metadata.minter) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
-  const totalAmount = (props.sale !== undefined && props.sale !== null) ?  Number((props.sale!.price + royaltyAmount).toFixed(2)) : 0;
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(`byteblock.art/collection/${props.address}/token/${props.id}`);
+    dispatch(notifyFulfilled('1', 'Link copied to clipboard'));
+  }
+
+
+  let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any;
+  
+  if(props.sale){
+    if(props.metadata.royalties!==undefined){
+      const shares = props.metadata.royalties.shares;
+      const decimal = props.metadata.royalties.decimals;
+      for(var walletID in shares){
+        royalty = shares[walletID];
+      }
+      if(props.metadata.creators[0]==="KraznikDAO")
+        royaltyPercentage = 3;
+      else 
+        royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+      royaltyAmount = royaltyPercentage*Math.pow(10,-decimal)*props.sale.price;
+      totalAmount = props.sale.price + royaltyAmount;
+    }
+    else{
+      royalty = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyArray = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+      royaltyAmount = (props.sale !== undefined && props.sale.seller!==props.metadata.minter) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
+      totalAmount = (props.sale !== undefined) ?  Number((props.sale!.price + royaltyAmount).toFixed(2)) : 0;
+    }
+  }
+  else{
+    if(props.metadata?.royalties!==undefined){
+      const shares = props.metadata.royalties.shares;
+      const decimal = props.metadata.royalties.decimals;
+      for(var wallet in shares){
+        royalty = shares[wallet];
+      }
+      if(props.metadata.creators[0]==="KraznikDAO")
+        royaltyPercentage = 3;
+      else 
+        royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+    }
+    else{
+      royalty = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyArray = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
+      royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
+    }
+  }
 
   return (
     <Flex
@@ -69,15 +116,15 @@ export default function TokenCard(props: TokenCardProps) {
         cursor: 'pointer',
         boxShadow: '0px 0px 10px #3339',
       }}
-      onClick={() =>
-        openInNewTab(`/collection/${props.address}/token/${props.id}`)
-      }
     >
       {/* {console.log(props)} */}
       {/* {console.log(props.metadata?.attributes)} */}
 
 
-      <AspectRatio ratio={3 / 3.5}>
+      <AspectRatio ratio={3 / 3.5}       
+        onClick={() =>
+        openInNewTab(`/collection/${props.address}/token/${props.id}`)
+      }>
         <Box>
           <TokenMedia {...props} />
           {/* <Image src='https://tqtezos.mypinata.cloud/ipfs/QmYM5pi7D1DpJkABV6aHpw4rQz4Te4doUxdN7wcbLMeAUW' thumbnail /> */}
@@ -98,7 +145,10 @@ export default function TokenCard(props: TokenCardProps) {
           {props.sale?.price} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
         </Flex>
       </Flex> */}
-      <Card.Body className="ml-2">
+      <Card.Body className="ml-2"       
+        onClick={() =>
+        openInNewTab(`byteblock.art/collection/${props.address}/token/${props.id}`)
+      }>
         <Card.Title className="ml-1" >{props.title}</Card.Title>
         {/* <Card.Text>
                 This is a wider card with supporting text below as a natural lead-in to
@@ -115,12 +165,25 @@ export default function TokenCard(props: TokenCardProps) {
           }
         </p>
       </Card.Body>
-      <Card.Footer className="text-white" style={{ backgroundColor: '#000' }}>
-      <p className="text-muted d-inline mr-2">Price:</p>
-
+      {/* background-color: cyan; position: relative; left: 22px; top: 0px; display: flex; justify-content: flex-end; align-items: flex-start; */}
+      <Card.Footer className="text-white" style={{ backgroundColor: '#000', display: 'flex' }}>
+        <Flex        
+          onClick={() =>
+          openInNewTab(`byteblock.art/collection/${props.address}/token/${props.id}`)
+        }>
+        <p className="text-muted d-inline mr-2">Price:</p>
         <p className="d-inline"> {totalAmount>0?totalAmount.toFixed(2):'Not on sale'}
-          <img src={tz} alt="tz" width={10} height="auto" style={{ display: 'inline-block' }} className="ml-1" />
+          <img src={tz} alt="tz" width={10} height="auto" style={{ display: 'inline-flex' }} className="ml-1" />
         </p>
+        </Flex>
+        <div style={{marginLeft: 'auto', marginRight: '0'}}>
+          <button 
+            style={{color: 'black',borderRadius: '3px', backgroundColor: '#00ffbe',padding: '3px' ,position: 'relative', justifyContent: 'flex-end',alignItems: 'flex-end'}}
+            onClick={() => copyToClipboard()}  
+          >
+            <i className="fas fa-share-alt ml-1"></i>
+          </button>
+        </div>
       </Card.Footer>
     </Flex>
   );
