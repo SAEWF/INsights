@@ -6,7 +6,8 @@ import {
   listTokenAction,
   cancelTokenSaleAction,
   buyTokenAction,
-  mintCsvTokensAction
+  mintCsvTokensAction,
+  addObjktCollectionAction
 } from '../async/actions';
 import {
   getContractNftsQuery,
@@ -27,6 +28,7 @@ export interface Status {
 
 export interface StatusState {
   createAssetContract: Status;
+  addObjktCollection: Status;
   mintToken: Status;
   mintCsvTokens: Status;
   transferToken: Status;
@@ -44,6 +46,7 @@ const defaultStatus: Status = { status: 'ready', error: null };
 
 const initialState: StatusState = {
   createAssetContract: defaultStatus,
+  addObjktCollection: defaultStatus,
   mintToken: defaultStatus,
   mintCsvTokens: defaultStatus,
   transferToken: defaultStatus,
@@ -76,6 +79,7 @@ const slice = createSlice({
   extraReducers: ({ addCase }) => {
     [
       methodMap('createAssetContract', createAssetContractAction),
+      methodMap('addObjktCollection', addObjktCollectionAction),
       methodMap('mintToken', mintTokenAction),
       methodMap('mintCsvTokens', mintCsvTokensAction),
       methodMap('transferToken', transferTokenAction),

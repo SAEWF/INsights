@@ -332,7 +332,7 @@ export async function buyTokenLegacy(
   const contract = await system.toolkit.wallet.at(marketplaceContract);
 
   // transfer with royalty
-  if(minter !== tokenSeller && minter!==system.tzPublicKey) {
+  if(minter !== tokenSeller && minter!==system.tzPublicKey && Number(royaltyAmount.toFixed(6)) > 0) {
     const batch = system.toolkit.wallet.batch()
     .withTransfer(
       {to: minter, amount: Number(royaltyAmount.toFixed(6))}
@@ -359,7 +359,7 @@ export async function buyToken(
 ) {
   const contract = await system.toolkit.wallet.at(marketplaceContract);
     // transfer with royalty
-    if(minter !== tokenSeller && minter!==system.tzPublicKey) {
+    if(minter !== tokenSeller && minter!==system.tzPublicKey && Number(royaltyAmount.toFixed(6)) > 0) {
       const batch = system.toolkit.wallet.batch()
       .withTransfer(
         {to: minter, amount: Number(royaltyAmount.toFixed(6))}

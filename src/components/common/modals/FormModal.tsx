@@ -35,7 +35,9 @@ interface ContentProps {
 
 function Content(props: ContentProps) {
   const { status, onClose, onRetry, onCancel } = props;
+  // console.log("PROPS",props);
   if (status.error) {
+    // console.log("ERRORED",props);
     return (
       <Flex flexDir="column" align="center" px={4} py={10}>
         <Box color="brand.blue" mb={6}>
@@ -67,6 +69,7 @@ function Content(props: ContentProps) {
     );
   }
   if (status.status === 'in_transit') {
+    // console.log('in_transit', props);
     return (
       <Flex flexDir="column" align="center" px={4} py={10}>
         <Spinner size="xl" mb={6} color="gray.300" />
@@ -79,6 +82,7 @@ function Content(props: ContentProps) {
     );
   }
   if (status.status === 'complete') {
+    // console.log('complete', props);
     return (
       <Flex flexDir="column" align="center" px={4} py={10}>
         <Box color="brand.blue" mb={6}>
@@ -153,6 +157,9 @@ export default function FormModal(props: FormModalProps) {
     onClose();
     setRequestId(null);
     dispatch(clearError({ method: props.method }));
+    if(props.method==="addObjktCollection"){
+      dispatch(setStatus({ method: props.method, status: 'ready' }));
+    }
     withCallback && props.afterClose && props.afterClose();
   };
 

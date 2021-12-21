@@ -12,6 +12,8 @@ import {
   buyToken,
   buyTokenLegacy,
 } from '../../lib/nfts/actions';
+
+
 import { ErrorKind, RejectValue } from './errors';
 import { getContractNftsQuery, getWalletAssetContractsQuery } from './queries';
 import { validateCreateNftForm } from '../validators/createNft';
@@ -31,6 +33,9 @@ import UpdateSoldnCollectedTokenInFB from '../../components/Artist/UpdateSoldnCo
 import DeleteArtTokenInFB from '../../components/Artist/DeleteArtTokenInFB';
 import AddSaleDataToFirebase from '../../components/Artist/AddSaleDataToFirebase';
 import CancelSale from '../../components/Artist/CancelSaleToken';
+import firebase from '../../lib/firebase/firebase';
+import { getNftAssetContract } from '../../lib/nfts/queries';
+
 // import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNftToFireStore'
 
 type Options = {
@@ -109,6 +114,72 @@ export const createAssetContractAction = createAsyncThunk<
       return rejectWithValue({
         kind: ErrorKind.CreateAssetContractFailed,
         message: 'Collection creation failed'
+      });
+    }
+  }
+);
+
+export const addObjktCollectionAction = createAsyncThunk<
+  { name: string; address: string },
+  { name: string; address: string },
+  Options
+>(
+  'action/addObjktCollection',
+  async (args, { getState, rejectWithValue, dispatch, requestId }) => {
+    const { system } = getState();
+    if (system.status !== 'WalletConnected') {
+      return rejectWithValue({
+        kind: ErrorKind.WalletNotConnected,
+        message: 'Cannot Add collection: Wallet not connected'
+      });
+    }
+    try {
+      const name = args.name;
+      const address = args.address;
+      const db = firebase.firestore();
+
+      const pendingMessage = `Adding new collection ${address}`;
+      dispatch(notifyPending(requestId, pendingMessage));
+
+      const contractInfo: any = await getNftAssetContract(system, address);
+
+      if(contractInfo.creator.alias !== "objkt.com Minting Factory"){
+        throw new Error("Invalid objkt collection");
+      }
+
+      if(!contractInfo.metadata.authors.includes(system.tzPublicKey)){
+        throw new Error(`The collection does not belong to wallet ${system.tzPublicKey}`);
+      }
+
+      const docRef = db.collection('artists').doc(system.tzPublicKey);
+      const doc = await docRef.get();
+
+      var collections = [{
+        "name": "objkt",
+        "address": address
+      }];
+
+      if(doc.exists){
+        await docRef.update({
+          collections: collections
+        }).catch((error) => {
+          throw new Error("Error updating document");
+        });
+      } else {
+        await docRef.set({
+          collections: collections
+        }).catch((error) => {
+          throw new Error("Error updating document");
+        });
+      }
+
+      const fulfilledMessage = `Added new collection ${address}`;
+      dispatch(notifyFulfilled(requestId, fulfilledMessage));
+      return { name, address };
+    } catch (e: any) {
+      return rejectWithValue({
+        kind: ErrorKind.AddObjktCollectionFailed,
+        message: e.message
       });
     }
   }

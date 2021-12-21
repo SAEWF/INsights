@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Flex, Heading } from '@chakra-ui/react';
-import { CreateCollectionButton } from '../../common/modals/CreateCollection';
+import { CreateCollectionButton, AddObjktCollectionButton } from '../../common/modals/CreateCollection';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
   selectCollection
 } from '../../../reducer/slices/collections';
 import CollectionTab from './CollectionTab';
+import firebase from '../../../lib/firebase/firebase';
+// import collections from '../../../lib/customCollections/collections';
 
 export default function Sidebar() {
   const tzPublicKey = useSelector(s => s.system.tzPublicKey);
@@ -13,6 +15,30 @@ export default function Sidebar() {
 
   const kraznik = state.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'];
   const dispatch = useDispatch();
+  const [objktState, setObjktState] = React.useState('');
+
+  useEffect(() => {
+    console.log('Sidebar useEffect');
+    if(tzPublicKey) {
+      var db = firebase.firestore();
+      db.collection("artists").doc(tzPublicKey).onSnapshot(function(doc) {
+        if(doc.exists) {
+          if(doc.data()!.collections===undefined) {
+            setObjktState('not-set');
+          }
+          else{
+            const objkt = doc.data()!.collections.filter((c: any) => c.name === 'objkt');
+            setObjktState(objkt[0].address);
+            dispatch(selectCollection(doc.data()!.objkt));
+          }
+        }
+        else{
+          setObjktState('not-set');
+        }
+      });
+    }
+  }, [tzPublicKey, objktState, dispatch]);
+
   return (
     <>
       <Heading px={4} pt={6} pb={4} size="md" color="brand.darkGray">
@@ -35,6 +61,18 @@ export default function Sidebar() {
           {...state.collections[state.globalCollection]}
         />
       ) : null}
+      {/* {
+        collections.secondary.map((collection:any) => {
+          return (
+            <CollectionTab
+              key={collection.address}
+              selected={collection.address === state.selectedCollection}
+              onSelect={address => dispatch(selectCollection(collection.address))}
+              {...collection}
+            />
+          );
+        })
+      } */}
       <Heading
         fontFamily="mono"
         px={4}
@@ -59,7 +97,6 @@ export default function Sidebar() {
             {...state.collections[address]}
           />
         ))}
-
         {
           kraznik ? 
           <CollectionTab
@@ -70,8 +107,23 @@ export default function Sidebar() {
           />
           : null
         }
-
-
+        {
+          objktState==='not-set' ? (
+            <AddObjktCollectionButton />
+          ) :
+          <></>
+        }
+        {
+          objktState!=='not-set' && objktState!==''? (
+            <CollectionTab
+              key={ objktState + 'objkt'}
+              selected={objktState === state.selectedCollection}
+              onSelect={address => dispatch(selectCollection(objktState))}
+              {...state.collections[objktState]}
+            />
+          ) :
+          <></>
+        }
       <Flex px={2} pt={4} justify="center" pb={8}>
         <CreateCollectionButton />
       </Flex>

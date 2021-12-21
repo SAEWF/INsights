@@ -179,7 +179,7 @@ function getWallet(
 ): BeaconWallet {
   if (wallet === null) {
     wallet = new BeaconWallet({
-      name: 'ByteBlock NFT',
+      name: 'ByteBlock',
       preferredNetwork: networkType(system.config),
       eventHandlers
     });
