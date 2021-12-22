@@ -7,6 +7,7 @@ import {
 } from '../../../reducer/slices/collections';
 import CollectionTab from './CollectionTab';
 import firebase from '../../../lib/firebase/firebase';
+import { getNftAssetContractQuery } from '../../../reducer/async/queries';
 // import collections from '../../../lib/customCollections/collections';
 
 export default function Sidebar() {
@@ -29,7 +30,7 @@ export default function Sidebar() {
           else{
             const objkt = doc.data()!.collections.filter((c: any) => c.name === 'objkt');
             setObjktState(objkt[0].address);
-            dispatch(selectCollection(doc.data()!.objkt));
+            dispatch(getNftAssetContractQuery(objkt[0].address));
           }
         }
         else{

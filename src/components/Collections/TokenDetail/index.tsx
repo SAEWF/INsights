@@ -118,8 +118,13 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
     }
 
     if(!collectionUndefined &&tokenHook!==null && tokenHook!==undefined && creator.length===0){
-      const walletAddress = tokenHook.metadata.minter;
-      const hook = firebase.firestore().collection('artists').doc(walletAddress);
+      var WalletAddress ;
+      if(tokenHook.metadata.symbol==='OBJKTCOM'){
+        WalletAddress = Object.keys(tokenHook.metadata?.royalties.shares)[0];
+      }else{
+        WalletAddress = tokenHook.metadata.minter;
+      }
+      const hook = firebase.firestore().collection('artists').doc(WalletAddress);
       hook.onSnapshot(doc => {
         if(doc.exists){
           const data = doc.data();
@@ -166,7 +171,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   console.log("TOKEN =", token);
 
 
-  let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any;
+  let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any, creatorAddress, ownerAddress;
   
   if(token.sale && tokenHook){
     if(tokenHook.metadata.royalties!==undefined){
@@ -180,8 +185,18 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
         royaltyPercentage = 3;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+        
       royaltyAmount = royaltyPercentage*Math.pow(10,-decimal)*token.sale.price;
-      totalAmount = token.sale.price + royaltyAmount;
+
+      creatorAddress = Object.keys(tokenHook.metadata?.royalties.shares)[0];
+      ownerAddress = tokenHook.sale.seller;
+
+      if(creatorAddress===ownerAddress){
+        totalAmount = token.sale.price;
+      }
+      else{
+        totalAmount = token.sale.price + royaltyAmount;
+      }
     }
     else{
       royalty = token.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
@@ -382,7 +397,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 )
               })
               :(
-                (token.metadata.minter!==undefined)?
+                (token.metadata.minter!==undefined && token.metadata.minter!=='KT1Aq4wWmVanpQhq4TTfjZXB5AjFpx15iQMM')?
                 <>
                 <Flex key="creatorAddress" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Creator :</Text>
@@ -473,7 +488,10 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                         <BuyTokenButton token={token} 
                           totalAmount={totalAmount} 
                           royalty={royaltyPercentage ?? 0} 
-                          minter={(token && token.metadata.minter!==undefined)?token.metadata.minter:(tokenHook)?Object.keys(tokenHook.metadata?.royalties.shares)[0]: undefined} 
+                          minter={(token // token exists
+                            && token.metadata.minter!==undefined // minter exists
+                            && token.metadata.minter!=='KT1Aq4wWmVanpQhq4TTfjZXB5AjFpx15iQMM' // minter is not the objkt minter
+                          )?token.metadata.minter:(tokenHook)?Object.keys(tokenHook.metadata?.royalties.shares)[0]: undefined} 
                         />
                       </Box>
                     </>
