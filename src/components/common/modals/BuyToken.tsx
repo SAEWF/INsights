@@ -39,6 +39,7 @@ export function BuyTokenModal(props: BuyTokenModalProps) {
       dispatchThunk={() =>
         dispatch(
           buyTokenAction({
+            token: props.token,
             contract: props.token.sale?.saleToken.address || '',
             tokenId: props.token.sale?.saleToken.tokenId || 0,
             tokenSeller: props.token.sale?.seller || '',

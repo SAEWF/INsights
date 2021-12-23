@@ -23,7 +23,7 @@ import {
 } from '../../lib/util/ipfs';
 import { SelectedFile } from '../slices/createNft';
 import { connectWallet } from './wallet';
-import { NftMetadata } from '../../lib/nfts/decoders';
+import { Nft, NftMetadata } from '../../lib/nfts/decoders';
 import { SystemWithToolkit, SystemWithWallet } from '../../lib/system';
 import { notifyPending, notifyFulfilled } from '../slices/notificationsActions';
 import parse from 'csv-parse/lib/sync';
@@ -552,14 +552,14 @@ export const transferTokenAction = createAsyncThunk<
 });
 
 export const listTokenAction = createAsyncThunk<
-  { contract: string; tokenId: number; salePrice: number },
-  { contract: string; tokenId: number; salePrice: number },
+  { token: Nft, contract: string; tokenId: number; salePrice: number },
+  { token: Nft, contract: string; tokenId: number; salePrice: number },
   Options
 >('action/listToken', async (args, api) => {
     // console.log("hello");
     // UpdateArtTokenInFirebase();
   const { getState, rejectWithValue, dispatch, requestId } = api;
-  const { contract, tokenId, salePrice } = args;
+  const { token, contract, tokenId, salePrice } = args;
   const { system } = getState();
   const marketplaceContract =
     system.config.contracts.marketplace.fixedPrice.tez;
@@ -583,7 +583,7 @@ export const listTokenAction = createAsyncThunk<
     );
 
     // updating sale data in firebase
-    await AddSaleDataToFirebase(system.tzPublicKey, tokenId, salePrice, contract);
+    AddSaleDataToFirebase(token,contract, system.tzPublicKey, tokenId, salePrice, contract);
 
     const pendingMessage = `Listing token for sale for ${salePrice / 1000000}ꜩ`;
     dispatch(notifyPending(requestId, pendingMessage));
@@ -662,13 +662,13 @@ export const cancelTokenSaleAction = createAsyncThunk<
 
 export const buyTokenAction = createAsyncThunk<
   { contract: string; tokenId: number; saleId: number; saleType: string},
-  { contract: string; tokenId: number; tokenSeller: string; salePrice: number; saleId: number; saleType: string; minter: string, royalty: number },
+  { token: Nft, contract: string; tokenId: number; tokenSeller: string; salePrice: number; saleId: number; saleType: string; minter: string, royalty: number },
   Options
 >('action/buyToken', async (args, api) => {
   const { getState, rejectWithValue, dispatch, requestId } = api;
-  const { contract, tokenId, tokenSeller, salePrice, saleId, saleType, minter, royalty } = args;
+  const { token, contract, tokenId, tokenSeller, salePrice, saleId, saleType, minter, royalty } = args;
   let { system } = getState();
-  // UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId); //testing
+  // UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId,contract, token);
 
   const marketplaceContract =
     system.config.contracts.marketplace.fixedPrice.tez;
@@ -718,7 +718,7 @@ export const buyTokenAction = createAsyncThunk<
       );
     }
     // upload sold result to firebase
-    await UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId);
+    await UpdateSoldnCollectedTokenInFB(system.tzPublicKey,tokenSeller,tokenId,contract, token);
 
     const pendingMessage = `Buying token from ${tokenSeller} for ${totalPrice}`;
     dispatch(notifyPending(requestId, pendingMessage));

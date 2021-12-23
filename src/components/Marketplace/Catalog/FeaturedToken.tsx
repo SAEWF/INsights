@@ -74,7 +74,7 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
         royaltyPercentage = 3;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
-      royaltyAmount = royaltyPercentage*Math.pow(10,-decimal)*props.sale.price;
+      royaltyAmount = royalty*Math.pow(10,-decimal)*props.sale.price;
       totalAmount = props.sale.price + royaltyAmount;
     }
     else{
