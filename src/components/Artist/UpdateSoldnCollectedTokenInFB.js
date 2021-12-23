@@ -3,20 +3,57 @@ import firebase from '../../lib/firebase/firebase';
 
 
 let creation = true;
-const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)=>{
+const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd, sellerWallAdd, tokenId, collection, token)=>{
     // testing
     // console.log(buyerWallAdd);
     // console.log(sellerWallAdd);
-    // console.log(tokenId);
+    // console.log(token);
+    const db = firebase.firestore();
 
     // getting the ID of NFT token to be transacted
-    const docID = await getDocIDFromFB(sellerWallAdd, tokenId);
+    const docID = await getDocIDFromFB(sellerWallAdd,collection,tokenId);
 
+    if(docID===""){
+      console.log("No such token in the collection");
+      const docName = collection +'-'+ tokenId;
+      console.log(docName);
 
-    if(docID==="") return;
+      var metadata = {};
+      for(var key in token.metadata){
+        if(key !== '')
+        metadata[key] = token.metadata[key];
+      }
+      var nftToken = {
+        "id": tokenId,
+        "address": collection,
+        "artifactUri": token.metadata.artifactUri,
+        "description": token.metadata.description,
+        "title": token.metadata.name,
+        "metadata": metadata,
+        "date": new Date().toISOString(),
+      };
+
+      await  db.collection('nfts').doc(buyerWallAdd).collection('Collections').doc(docName)
+      .set(nftToken).then(()=>{
+        console.log("Document successfully written!");
+      }).catch((error)=>{
+        console.log("Error writing document: ", error);
+      });
+
+      console.log("Document successfully written!dknbdkjbdb");
+
+      await db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docName)
+      .set(nftToken).then(()=>{
+        console.log("Document successfully written!");
+      }).catch((error)=>{
+        console.log("Error writing document: ", error);
+      });
+
+      return;
+    }
 
     // getting the NFT data  from firebase
-    const db = firebase.firestore();
+    
     var document
     if(creation){
       document  = db.collection('nfts').doc(sellerWallAdd).collection('Creations').doc(docID);
@@ -74,13 +111,13 @@ const UpdateSoldnCollectedTokenInFB = async (buyerWallAdd,sellerWallAdd,tokenId)
     return null;
 };
 
-const getDocIDFromFB = async (walletID, tokenId)=>{
+const getDocIDFromFB = async (walletID,collection, tokenId)=>{
   const db = firebase.firestore();
   var docID ="";
   var docRef = db.collection('nfts').doc(walletID).collection('Creations').orderBy('id', 'desc');
   await docRef.get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-      if(doc.data().id === tokenId){
+      if(doc.data().id === tokenId && doc.data().address === collection){
         // console.log(doc.id);
         docID = doc.id;
         return doc.id;
@@ -96,7 +133,7 @@ const getDocIDFromFB = async (walletID, tokenId)=>{
   docRef = db.collection('nfts').doc(walletID).collection('Collections').orderBy('id', 'desc');
   await docRef.get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-      if(doc.data().id === tokenId){
+      if(doc.data().id === tokenId && doc.data().address === collection){
         // console.log(doc.id);
         docID = doc.id;
         return doc.id;
