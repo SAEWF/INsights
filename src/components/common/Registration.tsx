@@ -59,7 +59,12 @@ function RegistrationPage(props: any) {
               return;
             }
 
-            var data1 = {...formData,"avatar":url};
+            var data1 = {...formData,"avatar":url, collections: [
+              {
+                name: 'objkt',
+                address: objkt
+              }
+            ]};
             docRef.update(data1);
             setSuccess(true);
           }
@@ -104,7 +109,12 @@ function RegistrationPage(props: any) {
             document.querySelector('.registrationError')!.innerHTML = "Server Error Occured . Please try again .";
             return;
           }
-          var data = {...formData,"avatar":url}
+          var data = {...formData,"avatar":url, collections: [
+            {
+              name: 'objkt',
+              address: objkt
+            }
+          ]};
 
           await setFormData(data);
           // console.log("FINAL",data);
