@@ -69,7 +69,7 @@ export default function TokenCard(props: TokenCardProps) {
         royaltyPercentage = 3;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
-      royaltyAmount = royaltyPercentage*Math.pow(10,-decimal)*props.sale.price;
+      royaltyAmount = royalty*Math.pow(10,-decimal)*props.sale.price;
       totalAmount = props.sale.price + royaltyAmount;
     }
     else{
@@ -87,7 +87,7 @@ export default function TokenCard(props: TokenCardProps) {
       for(var wallet in shares){
         royalty = shares[wallet];
       }
-      if(props.metadata.creators[0]==="KraznikDAO")
+      if(props.metadata.creators && props.metadata.creators[0]==="KraznikDAO")
         royaltyPercentage = 3;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);

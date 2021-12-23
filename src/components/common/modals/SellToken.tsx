@@ -18,8 +18,10 @@ import { useDispatch, useSelector } from '../../../reducer';
 import { listTokenAction } from '../../../reducer/async/actions';
 import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 import tz from '../assets/tezos-sym-white.svg'
+import { Nft } from '../../../lib/nfts/decoders';
 
 interface SellTokenModalProps extends BaseModalProps {
+  token: Nft;
   contract: string;
   tokenId: number;
   royaltyPercent: number;
@@ -49,6 +51,7 @@ export function SellTokenModal(props: SellTokenModalProps) {
       dispatchThunk={() =>
         dispatch(
           listTokenAction({
+            token: props.token,
             contract: props.contract,
             tokenId: props.tokenId,
             salePrice: salePrice
@@ -104,6 +107,7 @@ export function SellTokenModal(props: SellTokenModalProps) {
 }
 
 interface SellTokenButtonProps extends BaseModalButtonProps {
+  token: Nft;
   contract: string;
   tokenId: number;
   royaltyPercent: number;

@@ -186,7 +186,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
         
-      royaltyAmount = royaltyPercentage*Math.pow(10,-decimal)*token.sale.price;
+      royaltyAmount = royalty*Math.pow(10,-decimal)*token.sale.price;
 
       creatorAddress = Object.keys(tokenHook.metadata?.royalties.shares)[0];
       ownerAddress = tokenHook.sale.seller;
@@ -499,7 +499,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 ) : isOwner ? (
                   <>
                   <Box marginRight={2}>
-                    <SellTokenButton contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
+                    <SellTokenButton token={token} contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
                   </Box>
                   <Box marginRight={2}>
                   <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />
