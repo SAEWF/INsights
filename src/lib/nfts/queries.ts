@@ -130,52 +130,53 @@ export async function getContractNfts(
   system: SystemWithToolkit | SystemWithWallet,
   address: string
 ): Promise<D.Nft[]> {
-  // console.log("ADDRESS",address);
+   console.log("ADDRESS",address);
   const ledgerA = await getLedgerBigMap(system.tzkt, address);
-  // console.log("LEDGER",ledgerA);
+   console.log("LEDGER",ledgerA);
   let ledgerB = [];
   if(ledgerA.length === 0){
     ledgerB = await getLedgerBigMapCustom(system.tzkt, address);
   }
 
   const ledger = [...ledgerA, ...ledgerB];
-  // console.log("LEDGER",ledger);
+ console.log("LEDGER",ledger);
   const tokensA = await getTokenMetadataBigMap(system.tzkt, address);
   let tokensB: D.TokenMetadataBigMap = [];
   if(tokensA.length === 0){
     tokensB = await getTokenMetadataBigMapCustom(system.tzkt, address);
   }
   const tokens = [...tokensA, ...tokensB];
-  // console.log("TOKENS",tokens);
+   console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
-  // console.log("MKTADDRESS",mktAddress);
+   console.log("MKTADDRESS",mktAddress);
   const tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
-  // console.log("TOKENSALES",tokenSales);
+   console.log("TOKENSALES",tokenSales);
   const activeSales = tokenSales.filter(sale => sale.active);
-  // console.log("ACTIVESALES",activeSales);
+   console.log("ACTIVESALES",activeSales);
 
   // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
-
+  console.log("tokensSorted",tokensSorted);
   return Promise.all(
     tokensSorted.map(
       async (token): Promise<D.Nft> => {
         const { token_id: tokenId, token_info: tokenInfo } = token.value;
-
+        console.log("TOKEN_ID ", tokenId, tokenInfo);
         // TODO: Write decoder function for data retrieval
         const decodedInfo = _.mapValues(tokenInfo, fromHexString) as any;
         const resolvedInfo = await system.resolveMetadata(
           decodedInfo[''],
           address
         );
+        console.log("token_id2");
         const metadata = { ...decodedInfo, ...resolvedInfo.metadata };
-
+        console.log("metadata");
         const saleData = activeSales.find(
           v =>
             v.value.sale_data.sale_token.fa2_address === address &&
             v.value.sale_data.sale_token.token_id === tokenId
         );
-
+        console.log("sale");
         const sale = saleData && {
           id: saleData.id,
           seller: saleData.value.seller,
@@ -188,11 +189,12 @@ export async function getContractNfts(
           saleId: saleData.value.isLegacy ? 0 : Number.parseInt(saleData.key),
           type: saleData.value.isLegacy ? 'fixedPriceLegacy' : 'fixedPrice'
         };
-
+        console.log("sale done",sale);
         var owner = ledger.find(e => e.key === tokenId)?.value!;
         if(owner === undefined){
           owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
         }
+        console.log("owner ",tokenId, owner);
 
         return {
           id: parseInt(tokenId, 10),
@@ -213,12 +215,12 @@ export async function getNftAssetContract(
   address: string
 ): Promise<D.AssetContract> {
   const contract = await getContract(system.tzkt, address, {}, t.unknown);
-  // console.log("CONTRACT", contract);
+   console.log("CONTRACT", contract);
   const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
-  // console.log("METABIGMAP", metaBigMap);
+   console.log("METABIGMAP", metaBigMap);
 
   const metaUri = metaBigMap.find(v => v.key === '')?.value;
-  
+  console.log("METAURI", metaUri);
   if (!metaUri) {
     throw Error(`Could not extract metadata URI from ${address} storage`);
   }
@@ -228,6 +230,10 @@ export async function getNftAssetContract(
     return { ...contract, metadata: {name: "Kraznik"} };
   }
 
+  console.log("String Name ", fromHexString(metaUri));
+  if(fromHexString(metaUri)==="tezos-storage:metadata"){
+    return { ...contract, metadata: {name: "hash3"} };
+  }
   // other contracts
   const { metadata } = await system.resolveMetadata(
     fromHexString(metaUri),
@@ -238,7 +244,7 @@ export async function getNftAssetContract(
   if (isLeft(decoded)) {
     throw Error('Metadata validation failed');
   }
-  // console.log("DECODED returned", decoded.right);
+   console.log("DECODED returned", decoded.right);
   return { ...contract, metadata: decoded.right };
 }
 

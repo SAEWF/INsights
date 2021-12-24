@@ -1,5 +1,5 @@
 // edit the text b/w double quotes
 
-const text = "Most supportive NFT Marketplace, empowering millions of Artists";
+const text = "Objkt.com and Kraznik secondary sale on ByteBlock";
 
 export default text;

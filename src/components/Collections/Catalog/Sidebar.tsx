@@ -15,6 +15,7 @@ export default function Sidebar() {
   const state = useSelector(s => s.collections);
 
   const kraznik = state.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'];
+  const hash3 = state.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'];
   const dispatch = useDispatch();
   const [objktState, setObjktState] = React.useState('');
 
@@ -105,6 +106,16 @@ export default function Sidebar() {
             selected={'KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr' === state.selectedCollection}
             onSelect={address => dispatch(selectCollection(address))}
             {...state.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr']}
+          />
+          : null
+        }
+        {
+          hash3 ? 
+          <CollectionTab
+            key={'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'}
+            selected={'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg' === state.selectedCollection}
+            onSelect={address => dispatch(selectCollection(address))}
+            {...state.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg']}
           />
           : null
         }
