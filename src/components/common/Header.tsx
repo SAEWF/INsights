@@ -27,6 +27,8 @@ import { MinterButton } from '.';
 import wallet_icon from './assets/wallet.svg';
 import logo_trans from './assets/logo_bb-transparent.png';
 import Navbar from 'react-bootstrap/Navbar';
+import { Icon, IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { FaSun, FaMoon, FaWallet } from 'react-icons/fa';
 
 
 
@@ -53,7 +55,7 @@ function MobileHeaderLink(props: MobileHeaderLinkProps) {
     >
       <Heading
         fontWeight={selected ? '600' : 'normal'}
-        color="brand.background"
+        // color="brand.background"
         mb={4}
         pl={selected ? 4 : 0}
         borderLeft={selected ? '5px solid' : 'none'}
@@ -88,7 +90,7 @@ function DesktopHeaderLink(props: DesktopHeaderLinkProps) {
       py={2}
       ml={4}
       bg={selected ? 'gray.700' : 'none'}
-      color={selected ? 'gray.400' : 'gray.200'}
+      // color={selected ? 'gray.400' : 'gray.200'}
       display="flex"
       transition="none"
       _hover={{
@@ -133,12 +135,7 @@ function WalletDisplay() {
               color: '#EDF2F7'
             }}
           >
-            <Image
-              src={wallet_icon}
-              width={4}
-              height="auto"
-              style={{ filter: 'invert(1)' }}
-            />
+            <Icon ml={2} as={FaWallet} style={{ color: "#00FFBE" }}></Icon>
           </MenuButton>
           <MenuList color="brand.black">
             <Flex flexDir="column" px={4} py={2}>
@@ -166,9 +163,15 @@ function WalletDisplay() {
             e.preventDefault();
             dispatch(connectWallet());
           }}
+
+          _hover={{
+            textDecoration: 'none',
+            background: '#2D3748',
+            color: '#EDF2F7'
+          }}
         >
-          Wallet
-          <Image src={wallet_icon} width="auto" height="40%" paddingLeft={3} />
+          Wallet <Icon ml={2} as={FaWallet} style={{ color: "#00FFBE" }}></Icon>
+          
         </MinterButton>
       )}
     </>
@@ -181,7 +184,9 @@ function NavItems() {
   const [, setLocation] = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-
+  const { colorMode, toggleColorMode } = useColorMode();
+  const bg = useColorModeValue('gray.100', 'black');
+  const color = useColorModeValue('black', 'white');
   return (
     <>
       {/* Mobile */}
@@ -217,7 +222,7 @@ function NavItems() {
                   height="100%"
                 >
                   <Flex flexDir="column">
-
+                   
                     <MobileHeaderLink to="/register" onClick={onClose}>
                       Register
                     </MobileHeaderLink>
@@ -233,6 +238,7 @@ function NavItems() {
                         Mint
                       </MobileHeaderLink>
                     ) : null}
+                    
                   </Flex>
                   {system.status === 'WalletConnected' ? (
                     <MinterButton
@@ -254,13 +260,7 @@ function NavItems() {
                       }}
                       mb={4}
                     >
-                      Wallet
-                      <Image
-                        src={wallet_icon}
-                        width="auto"
-                        height="40%"
-                        paddingLeft={3}
-                      />
+                      Wallet <Icon ml={2} as={FaWallet} style={{ color: "#00FFBE" }}></Icon>
                     </MinterButton>
                   )}
                 </Flex>
@@ -294,7 +294,7 @@ function NavItems() {
           <>
             <DesktopHeaderLink to="/collections">
               <Box color="brand.turquoise">
-                <MdCollections size={16} />
+                <MdCollections size={16} style={{ color: "#00FFBE" }}/>
               </Box>
               <Text ml={2}>Collections</Text>
             </DesktopHeaderLink>
@@ -316,6 +316,14 @@ function NavItems() {
           borderColor="brand.darkGray"
         >
           <WalletDisplay />
+          <IconButton 
+            icon = { colorMode==='light' ? <FaSun/> : <FaMoon/>} 
+            aria-label='toggle dark mode'
+            isround = 'true'
+            size = 'lg'
+            borderRadius='5'
+            onClick={toggleColorMode}
+          />
         </Flex>
       </Flex>
     </>
@@ -324,11 +332,13 @@ function NavItems() {
 
 export function Header() {
   // const [, setLocation] = useLocation();
+  const bg = useColorModeValue('gray.100', 'black');
+  const color = useColorModeValue('black', 'white');
   return (
     <>
       <Flex
         width="100%"
-        bg="#121212" // 1. brand.darkGray 2. 393e46
+        bg={bg} color={color}
         paddingX={4}
         paddingY={3}
         alignItems="center"
@@ -344,9 +354,9 @@ export function Header() {
           />{' '}
           {/* <h2 className="d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>ByteBlock NFT </h2> */}
 
-        <div className="d-inline-block text-white font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>
+        <div className="d-inline-block font-weight-bold" style={{ letterSpacing: "0.1em", verticalAlign: "middle" }}>
           <h2>ByteBlock</h2>
-          <p className="mx-auto" style={{ color: "#bfbfbf", fontSize: "10.5px" }}>Beta Version</p>
+          <p className="mx-auto" style={{  fontSize: "10.5px" }}>Beta Version</p>
           {/* #9c9fa3 */}
         </div>
         </Navbar.Brand>

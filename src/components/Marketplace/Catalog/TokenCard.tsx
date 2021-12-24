@@ -8,6 +8,7 @@ import { Card } from 'react-bootstrap';
 import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
 import { useDispatch } from 'react-redux';
 import firebase from '../../../lib/firebase/firebase';
+import { useColorModeValue, Text, Image} from '@chakra-ui/react';
 
 interface TokenCardProps extends Token {
   config: IpfsGatewayConfig;
@@ -16,6 +17,8 @@ interface TokenCardProps extends Token {
 
 
 export default function TokenCard(props: TokenCardProps) {
+  const bg = useColorModeValue('gray.100', 'black');
+  const color = useColorModeValue('black', 'white');
   const [owner, setOwner] = React.useState('');
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -166,25 +169,28 @@ export default function TokenCard(props: TokenCardProps) {
         </p>
       </Card.Body>
       {/* background-color: cyan; position: relative; left: 22px; top: 0px; display: flex; justify-content: flex-end; align-items: flex-start; */}
-      <Card.Footer className="text-white" style={{ backgroundColor: '#000', display: 'flex' }}>
-        <Flex        
-          onClick={() =>
-          openInNewTab(`byteblock.art/collection/${props.address}/token/${props.id}`)
-        }>
-        <p className="text-muted d-inline mr-2">Price:</p>
-        <p className="d-inline"> {totalAmount>0?totalAmount.toFixed(2):'Not on sale'}
-          <img src={tz} alt="tz" width={10} height="auto" style={{ display: 'inline-flex' }} className="ml-1" />
-        </p>
-        </Flex>
-        <div style={{marginLeft: 'auto', marginRight: '0'}}>
-          <button 
-            style={{color: 'black',borderRadius: '3px', backgroundColor: '#00ffbe',padding: '3px' ,position: 'relative', justifyContent: 'flex-end',alignItems: 'flex-end'}}
-            onClick={() => copyToClipboard()}  
-          >
-            <i className="fas fa-share-alt ml-1"></i>
-          </button>
-        </div>
-      </Card.Footer>
+      <Box bg={bg} color={color}>
+        <Card.Footer className="text-white" style={{ display: 'flex' }}>
+          <Flex        
+            onClick={() =>
+            openInNewTab(`byteblock.art/collection/${props.address}/token/${props.id}`)
+          }>
+          <p className="text-muted d-inline mr-2">Price:</p>
+          <p className="d-inline"> <Text color={color}>{totalAmount>0?totalAmount.toFixed(2):'Not on sale'} ꜩ</Text>
+            
+          </p>
+          </Flex>
+          <div style={{marginLeft: 'auto', marginRight: '0'}}>
+            <button 
+              style={{color: 'black',borderRadius: '3px', backgroundColor: '#00ffbe',padding: '3px' ,position: 'relative', justifyContent: 'flex-end',alignItems: 'flex-end'}}
+              onClick={() => copyToClipboard()}  
+            >
+              <i className="fas fa-share-alt ml-1"></i>
+            </button>
+          </div>
+        </Card.Footer>
+      </Box>
+      
     </Flex>
   );
 }
