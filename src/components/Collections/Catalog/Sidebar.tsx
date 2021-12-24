@@ -15,7 +15,7 @@ export default function Sidebar() {
   const state = useSelector(s => s.collections);
 
   const kraznik = state.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'];
-  const hash3 = state.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'];
+  const hash3points = state.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'];
   const dispatch = useDispatch();
   const [objktState, setObjktState] = React.useState('');
 
@@ -110,7 +110,7 @@ export default function Sidebar() {
           : null
         }
         {
-          hash3 ? 
+          hash3points ? 
           <CollectionTab
             key={'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'}
             selected={'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg' === state.selectedCollection}

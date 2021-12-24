@@ -232,7 +232,7 @@ export async function getNftAssetContract(
 
   console.log("String Name ", fromHexString(metaUri));
   if(fromHexString(metaUri)==="tezos-storage:metadata"){
-    return { ...contract, metadata: {name: "hash3"} };
+    return { ...contract, metadata: {name: "hash3points"} };
   }
   // other contracts
   const { metadata } = await system.resolveMetadata(

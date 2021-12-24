@@ -21,7 +21,7 @@ export default function Catalog() {
     collections.collections[collections.globalCollection];
 
   const kraznik = collections.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'];
-  const hash3 = collections.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'];
+  const hash3points = collections.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'];
   
   
 
@@ -33,7 +33,7 @@ export default function Catalog() {
     else if(globalCollection!== undefined && kraznik===undefined ) {
       dispatch(getNftAssetContractQuery('KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'));
     }
-    else if(globalCollection!== undefined && hash3===undefined ) {
+    else if(globalCollection!== undefined && hash3points===undefined ) {
       dispatch(getNftAssetContractQuery('KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'));
     }
     if (collections.selectedCollection === null) {
@@ -45,7 +45,7 @@ export default function Catalog() {
     collections.selectedCollection,
     collections.globalCollection,
     kraznik,
-    hash3,
+    hash3points,
     dispatch
   ]);
 
