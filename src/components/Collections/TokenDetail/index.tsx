@@ -183,6 +183,8 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
       if(tokenHook.metadata.creators[0]==="KraznikDAO")
         royaltyPercentage = 3;
+      else if(tokenHook.metadata.creators[0]==="deconcept.tez")
+        royaltyPercentage = 5;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
         
@@ -215,6 +217,8 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       }
       if(tokenHook.metadata.creators[0]==="KraznikDAO")
         royaltyPercentage = 3;
+      else if(tokenHook.metadata.creators[0]==="deconcept.tez")
+        royaltyPercentage = 5;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
     }

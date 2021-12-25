@@ -72,6 +72,8 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
       }
       if(props.metadata.creators[0]==="KraznikDAO")
         royaltyPercentage = 3;
+      else if(props.metadata.creators[0]==="deconcept.tez")
+        royaltyPercentage = 5;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
       royaltyAmount = royalty*Math.pow(10,-decimal)*props.sale.price;
