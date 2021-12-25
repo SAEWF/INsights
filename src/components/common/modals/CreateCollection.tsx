@@ -35,7 +35,7 @@ function CreateCollectionModal(props: CreateCollectionModalProps) {
       completeMessage="Collection created"
       body={onSubmit => (
         <>
-          <ModalHeader>New Collection</ModalHeader>
+          <ModalHeader>ByteBlock Collection</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
@@ -113,7 +113,7 @@ export function CreateCollectionButton(props: CreateCollectionButtonProps) {
         <Box color="currentcolor">
           <Plus size={16} strokeWidth="3" />
         </Box>
-        <Text ml={2}>New Collection</Text>
+        <Text ml={2}>ByteBlock Collection</Text>
       </MinterButton>
       <CreateCollectionModal disclosure={disclosure} sync={props.sync} />
     </>
