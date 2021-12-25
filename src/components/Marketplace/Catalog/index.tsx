@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select } from '@chakra-ui/react'; //
+import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
@@ -26,6 +26,7 @@ export default function Catalog() {
   const [end, setEnd] = useState(17);
   const [reverse, setReverse] = useState(1);
   const [, setLocation] = useLocation();
+  const bg = useColorModeValue('gray.100', 'black');
 
   // blackList for wallet address 
   // it will block display of minted nfts from them 
@@ -103,16 +104,19 @@ export default function Catalog() {
     }
 
     const paginationBasic = (
-      <Pagination>
+      <Box bg={bg}>
+        <Pagination>
           <Pagination.First onClick ={()=>setActive(1)} />
           <Pagination.Prev onClick={()=>{if(active>1) setActive(active-1)}} />
             {items}
           <Pagination.Next onClick={()=>{if(active<numberOfPages) setActive(active+1)}}/>
           <Pagination.Last onClick={()=>{setActive(numberOfPages)}}/>
       </Pagination>
+      </Box>
     )
 
     const PaginationWithEllipses = (
+      <Box bg={bg}>
       <Pagination size="lg" id="paginate">
         <Pagination.First onClick ={handleFirst} />
         <Pagination.Prev onClick={handlePrev} />
@@ -153,6 +157,7 @@ export default function Catalog() {
         <Pagination.Next onClick={handleNext}/>
         <Pagination.Last onClick={handleLast}/>
       </Pagination>
+      </Box>
     )
     
     const handleChange = (e: any) =>{
