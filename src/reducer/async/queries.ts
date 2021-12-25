@@ -23,7 +23,6 @@ export const getNftAssetContractQuery = createAsyncThunk<
   const { getState, rejectWithValue } = api;
   const { system } = getState();
   try {
-     console.log("CALLED getNftAssetContract using system and address");
     return await getNftAssetContract(system, address);
   } catch (e) {
     return rejectWithValue({
@@ -41,7 +40,7 @@ export const getContractNftsQuery = createAsyncThunk<
   const { system, collections } = getState();
   try {
     const tokens = await getContractNfts(system, address);
-     console.log("TOKENS", tokens);
+    //  console.log("TOKENS", tokens);
     return { address, tokens };
   } catch (e) {
     // console.error(e);
@@ -73,7 +72,6 @@ export const getWalletAssetContractsQuery = createAsyncThunk<
     try {
       return await getWalletNftAssetContracts(system);
     } catch (e) {
-      console.log(e);
       return rejectWithValue({
         kind: ErrorKind.GetWalletNftAssetContractsFailed,
         message: "Failed to retrieve wallet's asset contracts"

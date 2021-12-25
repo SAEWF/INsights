@@ -94,7 +94,7 @@ export function TokenMedia(props: TokenMediaProps) {
     )
   }
 
-  if(obj.type === 'application/pdf'){
+  if(obj.type === 'text/html' || obj.type === 'application/pdf'){
     // console.log(obj)
     return (
       <>

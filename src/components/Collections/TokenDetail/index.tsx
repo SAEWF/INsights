@@ -168,7 +168,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       system.tzPublicKey === token.sale?.seller);
   // for viewing the token in console , turn it on
   // console.log("OWNER + ", owner);
-  console.log("TOKEN =", token);
+  // console.log("TOKEN =", token);
 
 
   let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any, creatorAddress, ownerAddress;
@@ -183,6 +183,8 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
       if(tokenHook.metadata.creators[0]==="KraznikDAO")
         royaltyPercentage = 3;
+      else if(tokenHook.metadata.creators[0]==="deconcept.tez")
+        royaltyPercentage = 5;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
         
@@ -215,11 +217,12 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       }
       if(tokenHook.metadata.creators[0]==="KraznikDAO")
         royaltyPercentage = 3;
+      else if(tokenHook.metadata.creators[0]==="deconcept.tez")
+        royaltyPercentage = 5;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
     }
     else{
-      console.log(" royal = ");
       royalty = tokenHook.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyArray = tokenHook.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
