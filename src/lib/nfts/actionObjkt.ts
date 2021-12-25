@@ -7,7 +7,6 @@ export async function getLedgerBigMapObjkt(
   ): Promise<any> {
     const path = 'ledger';
     const data = await tzkt.getContractBigMapKeys(address, path);
-    console.log("DATA call",data);
     return data;
 }
 

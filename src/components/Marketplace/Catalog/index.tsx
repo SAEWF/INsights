@@ -48,12 +48,12 @@ export default function Catalog() {
       loadMoreMarketplaceNftsQuery({page: active});
     }, [active]);
 
-    console.log('marketplace tokens', state.marketplace.tokens);
+    // console.log('marketplace tokens', state.marketplace.tokens);
     let tokens = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
     tokens = tokens.filter(x => !blackList.includes(x.metadata?.minter ?? ''));
 
     // for getting all tokens sale data , uncomment below line
-    console.log('tokens', tokens);
+    // console.log('tokens', tokens);
     // for getting all tokenData from marketplace , change a bit in the getMarketplaceNftsQuery dispatcher
 
     // PAGINATION
@@ -65,7 +65,7 @@ export default function Catalog() {
           setActive(number);
           setStart((number-1)*16 + 1);
           setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*16)+1);
-          console.log('start', (number-1)*16 + 1, 'end', end);
+          // console.log('start', (number-1)*16 + 1, 'end', end);
           loadMore(number);
         }}>
           {number}
