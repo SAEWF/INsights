@@ -24,7 +24,7 @@ import { MdCollections } from 'react-icons/md';
 import { useSelector, useDispatch } from '../../reducer';
 import { connectWallet, disconnectWallet } from '../../reducer/async/wallet';
 import { MinterButton } from '.';
-import wallet_icon from './assets/wallet.svg';
+// import wallet_icon from './assets/wallet.svg';
 import logo_trans from './assets/logo_bb-transparent.png';
 import Navbar from 'react-bootstrap/Navbar';
 import { Icon, IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
@@ -185,8 +185,8 @@ function NavItems() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
   const { colorMode, toggleColorMode } = useColorMode();
-  const bg = useColorModeValue('gray.100', 'black');
-  const color = useColorModeValue('black', 'white');
+  // const bg = useColorModeValue('gray.100', 'black');
+  // const color = useColorModeValue('black', 'white');
   return (
     <>
       {/* Mobile */}

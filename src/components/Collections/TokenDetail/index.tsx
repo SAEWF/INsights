@@ -19,7 +19,6 @@ import {
   useDisclosure,
   Container,
   Spinner,
-  useColorModeValue
 } from '@chakra-ui/react';
 import { ChevronLeft, HelpCircle, MoreHorizontal } from 'react-feather';
 import { MinterButton, MinterMenuButton, MinterMenuItem } from '../../common';
@@ -36,7 +35,7 @@ import {
 } from '../../../reducer/async/queries';
 import { TokenMedia } from '../../common/TokenMedia';
 // import lk from '../../common/assets/link-icon.svg'
-import tz from '../../common/assets/tezos-sym-white.svg'
+// import tz from '../../common/assets/tezos-sym-white.svg'
 import { Maximize2 } from 'react-feather';
 import firebase from '../../../lib/firebase/firebase'
 
