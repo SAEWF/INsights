@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'wouter';
 import {
   Box,
@@ -24,11 +24,12 @@ import { MdCollections } from 'react-icons/md';
 import { useSelector, useDispatch } from '../../reducer';
 import { connectWallet, disconnectWallet } from '../../reducer/async/wallet';
 import { MinterButton } from '.';
-import wallet_icon from './assets/wallet.svg';
+// import wallet_icon from './assets/wallet.svg';
 import logo_trans from './assets/logo_bb-transparent.png';
 import Navbar from 'react-bootstrap/Navbar';
 import { Icon, IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { FaSun, FaMoon, FaWallet } from 'react-icons/fa';
+import firebase from '../../../src/lib/firebase/firebase';
 
 
 
@@ -185,8 +186,24 @@ function NavItems() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
   const { colorMode, toggleColorMode } = useColorMode();
-  const bg = useColorModeValue('gray.100', 'black');
-  const color = useColorModeValue('black', 'white');
+  const [isRegistered , setIsRegistered] = useState('');
+
+  useEffect(() => {
+    if (system.status === 'WalletConnected') {
+      const wallet = system.tzPublicKey;
+      const db = firebase.firestore();
+      db.collection('artists').doc(wallet).onSnapshot(function(doc) {
+        if (doc.exists) {
+          var data = doc.data();
+          if(data===undefined) return;
+          if(data.display!==undefined && data.display){
+            setIsRegistered(data.name.replaceAll(' ', ''));
+          }
+        }
+      });
+  }
+}, [system.status, system.tzPublicKey]);
+
   return (
     <>
       {/* Mobile */}
@@ -222,10 +239,16 @@ function NavItems() {
                   height="100%"
                 >
                   <Flex flexDir="column">
-                   
-                    <MobileHeaderLink to="/register" onClick={onClose}>
-                      Register
-                    </MobileHeaderLink>
+                    { isRegistered!=='' ? (
+                        <MobileHeaderLink to={`/artistprofile/${isRegistered}`} onClick={onClose}>
+                          My profile
+                        </MobileHeaderLink>
+                      ) :      
+                      <MobileHeaderLink to="/register" onClick={onClose}>
+                        Register
+                      </MobileHeaderLink>
+                    }
+
                     <MobileHeaderLink to="/artists" onClick={onClose}>
                       Artists
                     </MobileHeaderLink>
@@ -284,9 +307,18 @@ function NavItems() {
           </Box>
           <Text ml={2} >Marketplace</Text>
         </DesktopHeaderLink> */}
-        <DesktopHeaderLink to="/register">
-          <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>Register</Text>
-        </DesktopHeaderLink>
+        {
+          isRegistered==='' ? (
+            <DesktopHeaderLink to="/register">
+              <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>Register</Text>
+            </DesktopHeaderLink>
+          ) : (
+            <DesktopHeaderLink to={`/artistprofile/${isRegistered}`}>
+              <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>My profile</Text>
+            </DesktopHeaderLink>
+          )
+        }
+
         <DesktopHeaderLink to="/artists">
           <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>Artists</Text>
         </DesktopHeaderLink>
