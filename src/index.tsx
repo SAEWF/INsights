@@ -3,175 +3,175 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import { ChakraProvider, extendTheme,ColorModeScript } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
 import { store } from './reducer';
 import theme from './theme';
 
-const Button = {
-  variants: {
-    primaryAction: {
-      bg: 'brand.blue',
-      borderColor: 'brand.blue',
-      borderRadius: '2px',
-      color: 'white',
-      transition: 'none',
-      _active: {
-        opacity: '0.5',
-        bg: 'brand.blue'
-      },
-      _hover: {
-        opacity: '0.8'
-      }
-    },
-    primaryActionInactive: {
-      bg: 'brand.blue',
-      borderColor: 'brand.blue',
-      borderRadius: '2px',
-      color: 'white',
-      opacity: '0.3',
-      transition: 'none',
-      _active: {
-        bg: 'brand.blue'
-      }
-    },
-    primaryActionLined: {
-      bg: 'transparent',
-      borderColor: 'brand.blue',
-      borderRadius: '2px',
-      borderWidth: '1px',
-      color: 'brand.blue',
-      transition: 'none',
-      _active: {
-        opacity: '0.5'
-      },
-      _hover: {
-        // bg: 'white',
-        // color: 'brand.blue',
-        opacity: '0.8'
-      }
-    },
-    primaryActionInverted: {
-      bg: 'transparent',
-      borderColor: 'brand.blue',
-      borderRadius: '2px',
-      color: 'brand.blue',
-      transition: 'none',
-      _active: {
-        opacity: '0.5'
-      },
-      _hover: {
-        bg: 'brand.blue',
-        color: 'white'
-      }
-    },
-    secondaryAction: {
-      bg: 'brand.turquoise',
-      color: 'brand.background',
-      borderColor: 'brand.turquoise',
-      borderRadius: '2px',
-      borderWidth: '1px',
-      transition: 'none',
-      _active: {
-        opacity: '0.5',
-        bg: 'brand.turquoise'
-      },
-      _hover: {
-        bg: 'brand.turquoise',
-        color: 'brand.background',
-        opacity: '0.8'
-      }
-    },
-    secondaryActionLined: {
-      bg: 'none',
-      borderColor: 'brand.turquoise',
-      borderRadius: '2px',
-      borderWidth: '1px',
-      color: 'brand.turquoise',
-      transition: 'none',
-      _active: {
-        opacity: '0.8',
-        bg: 'brand.turquoise'
-      },
-      _hover: {
-        bg: 'brand.turquoise',
-        color: 'brand.background'
-      }
-    },
-    cancelAction: {
-      bg: 'none',
-      borderColor: 'brand.red',
-      borderRadius: '2px',
-      borderWidth: '1px',
-      color: 'brand.red',
-      transition: 'none',
-      _active: {
-        opacity: '0.8',
-        bg: 'brand.red'
-      },
-      _hover: {
-        bg: 'brand.red',
-        color: 'white'
-      }
-    },
-    tertiaryAction: {
-      bg: 'gray.200',
-      color: 'gray.500',
-      borderRadius: '2px',
-      _hover: {
-        bg: 'gray.100',
-        color: 'gray.400'
-      },
-      _active: {
-        bg: 'gray.100',
-        color: 'gray.400'
-      }
-    }
-  }
-};
+// const Button = {
+//   variants: {
+//     primaryAction: {
+//       bg: 'brand.blue',
+//       borderColor: 'brand.blue',
+//       borderRadius: '2px',
+//       color: 'white',
+//       transition: 'none',
+//       _active: {
+//         opacity: '0.5',
+//         bg: 'brand.blue'
+//       },
+//       _hover: {
+//         opacity: '0.8'
+//       }
+//     },
+//     primaryActionInactive: {
+//       bg: 'brand.blue',
+//       borderColor: 'brand.blue',
+//       borderRadius: '2px',
+//       color: 'white',
+//       opacity: '0.3',
+//       transition: 'none',
+//       _active: {
+//         bg: 'brand.blue'
+//       }
+//     },
+//     primaryActionLined: {
+//       bg: 'transparent',
+//       borderColor: 'brand.blue',
+//       borderRadius: '2px',
+//       borderWidth: '1px',
+//       color: 'brand.blue',
+//       transition: 'none',
+//       _active: {
+//         opacity: '0.5'
+//       },
+//       _hover: {
+//         // bg: 'white',
+//         // color: 'brand.blue',
+//         opacity: '0.8'
+//       }
+//     },
+//     primaryActionInverted: {
+//       bg: 'transparent',
+//       borderColor: 'brand.blue',
+//       borderRadius: '2px',
+//       color: 'brand.blue',
+//       transition: 'none',
+//       _active: {
+//         opacity: '0.5'
+//       },
+//       _hover: {
+//         bg: 'brand.blue',
+//         color: 'white'
+//       }
+//     },
+//     secondaryAction: {
+//       bg: 'brand.turquoise',
+//       color: 'brand.background',
+//       borderColor: 'brand.turquoise',
+//       borderRadius: '2px',
+//       borderWidth: '1px',
+//       transition: 'none',
+//       _active: {
+//         opacity: '0.5',
+//         bg: 'brand.turquoise'
+//       },
+//       _hover: {
+//         bg: 'brand.turquoise',
+//         color: 'brand.background',
+//         opacity: '0.8'
+//       }
+//     },
+//     secondaryActionLined: {
+//       bg: 'none',
+//       borderColor: 'brand.turquoise',
+//       borderRadius: '2px',
+//       borderWidth: '1px',
+//       color: 'brand.turquoise',
+//       transition: 'none',
+//       _active: {
+//         opacity: '0.8',
+//         bg: 'brand.turquoise'
+//       },
+//       _hover: {
+//         bg: 'brand.turquoise',
+//         color: 'brand.background'
+//       }
+//     },
+//     cancelAction: {
+//       bg: 'none',
+//       borderColor: 'brand.red',
+//       borderRadius: '2px',
+//       borderWidth: '1px',
+//       color: 'brand.red',
+//       transition: 'none',
+//       _active: {
+//         opacity: '0.8',
+//         bg: 'brand.red'
+//       },
+//       _hover: {
+//         bg: 'brand.red',
+//         color: 'white'
+//       }
+//     },
+//     tertiaryAction: {
+//       bg: 'gray.200',
+//       color: 'gray.500',
+//       borderRadius: '2px',
+//       _hover: {
+//         bg: 'gray.100',
+//         color: 'gray.400'
+//       },
+//       _active: {
+//         bg: 'gray.100',
+//         color: 'gray.400'
+//       }
+//     }
+//   }
+// };
 
-const Link = {
-  variants: {
-    primaryAction: {
-      alignItems: 'center',
-      bg: 'brand.blue',
-      borderColor: 'brand.blue',
-      borderRadius: '2px',
-      color: 'white',
-      display: 'inline-flex',
-      fontSize: '1rem',
-      fontWeight: '600',
-      height: 10,
-      justifyContent: 'center',
-      lineHeight: '1.2',
-      paddingX: 4,
-      transition: 'none',
-      _hover: {
-        bg: 'white',
-        color: 'brand.blue',
-        textDecoration: 'none'
-      }
-    },
-    primaryActionInactive: {
-      alignItems: 'center',
-      bg: 'gray.600',
-      borderRadius: '2px',
-      color: 'gray.400',
-      display: 'inline-flex',
-      fontSize: '1rem',
-      fontWeight: '600',
-      height: 10,
-      justifyContent: 'center',
-      lineHeight: '1.2',
-      paddingX: 4,
-      transition: 'none',
-      _hover: {
-        color: 'gray.400',
-        textDecoration: 'none'
-      }
-    }
-  }
-};
+// const Link = {
+//   variants: {
+//     primaryAction: {
+//       alignItems: 'center',
+//       bg: 'brand.blue',
+//       borderColor: 'brand.blue',
+//       borderRadius: '2px',
+//       color: 'white',
+//       display: 'inline-flex',
+//       fontSize: '1rem',
+//       fontWeight: '600',
+//       height: 10,
+//       justifyContent: 'center',
+//       lineHeight: '1.2',
+//       paddingX: 4,
+//       transition: 'none',
+//       _hover: {
+//         bg: 'white',
+//         color: 'brand.blue',
+//         textDecoration: 'none'
+//       }
+//     },
+//     primaryActionInactive: {
+//       alignItems: 'center',
+//       bg: 'gray.600',
+//       borderRadius: '2px',
+//       color: 'gray.400',
+//       display: 'inline-flex',
+//       fontSize: '1rem',
+//       fontWeight: '600',
+//       height: 10,
+//       justifyContent: 'center',
+//       lineHeight: '1.2',
+//       paddingX: 4,
+//       transition: 'none',
+//       _hover: {
+//         color: 'gray.400',
+//         textDecoration: 'none'
+//       }
+//     }
+//   }
+// };
 
 // const theme = extendTheme({
 //   styles: {

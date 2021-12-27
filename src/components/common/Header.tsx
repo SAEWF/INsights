@@ -186,6 +186,7 @@ function NavItems() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
   const { colorMode, toggleColorMode } = useColorMode();
+
   const [isRegistered , setIsRegistered] = useState('');
 
   useEffect(() => {
@@ -201,8 +202,8 @@ function NavItems() {
           }
         }
       });
-  }
-}, [system.status, system.tzPublicKey]);
+    }
+  }, [system.status, system.tzPublicKey]);
 
   return (
     <>

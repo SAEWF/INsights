@@ -3,12 +3,12 @@ import { Token } from '../../../reducer/slices/collections';
 import { IpfsGatewayConfig } from '../../../lib/util/ipfs';
 import { AspectRatio, Box, Flex } from '@chakra-ui/react';
 import { TokenMedia } from '../../common/TokenMedia';
-import tz from '../../common/assets/tezos-sym-white.svg'
+// import tz from '../../common/assets/tezos-sym-white.svg'
 import { Card } from 'react-bootstrap';
 import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
 import { useDispatch } from 'react-redux';
 import firebase from '../../../lib/firebase/firebase';
-import { useColorModeValue, Text, Image} from '@chakra-ui/react';
+import { useColorModeValue, Text} from '@chakra-ui/react';
 
 interface TokenCardProps extends Token {
   config: IpfsGatewayConfig;

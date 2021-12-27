@@ -100,12 +100,12 @@ export const createAssetContractAction = createAsyncThunk<
     }
     try {
       const op = await createAssetContract(system, { name });
-      const pendingMessage = `Creating new collection ${name}`;
+      const pendingMessage = `Creating ByteBlock collection ${name}`;
       dispatch(notifyPending(requestId, pendingMessage));
       await op.confirmation();
 
       const { address } = await op.contract();
-      const fulfilledMessage = `Created new collection ${name} (${address})`;
+      const fulfilledMessage = `Created ByteBlock collection ${name} (${address})`;
       dispatch(notifyFulfilled(requestId, fulfilledMessage));
       // TODO: Poll for contract availability on indexer
       dispatch(getWalletAssetContractsQuery());
@@ -140,7 +140,8 @@ export const addObjktCollectionAction = createAsyncThunk<
 
       if(address==="") throw new Error("Address is empty")
 
-      const pendingMessage = `Adding new collection ${address}`;
+      const pendingMessage = `Adding ByteBlock collection ${address}`;
+
       dispatch(notifyPending(requestId, pendingMessage));
 
       const contractInfo: any = await getNftAssetContract(system, address);
@@ -187,7 +188,7 @@ export const addObjktCollectionAction = createAsyncThunk<
         });
       }
 
-      const fulfilledMessage = `Added new collection ${address}`;
+      const fulfilledMessage = `Added ByteBlock collection ${address}`;
       dispatch(notifyFulfilled(requestId, fulfilledMessage));
       return { name, address };
     } catch (e: any) {

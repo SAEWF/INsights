@@ -18,7 +18,7 @@ import {
   Text,
   useDisclosure,
   Container,
-  Spinner
+  Spinner,
 } from '@chakra-ui/react';
 import { ChevronLeft, HelpCircle, MoreHorizontal } from 'react-feather';
 import { MinterButton, MinterMenuButton, MinterMenuItem } from '../../common';
@@ -35,7 +35,7 @@ import {
 } from '../../../reducer/async/queries';
 import { TokenMedia } from '../../common/TokenMedia';
 // import lk from '../../common/assets/link-icon.svg'
-import tz from '../../common/assets/tezos-sym-white.svg'
+// import tz from '../../common/assets/tezos-sym-white.svg'
 import { Maximize2 } from 'react-feather';
 import firebase from '../../../lib/firebase/firebase'
 
@@ -349,7 +349,6 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             </Heading>
             <Text
               fontSize="md"
-              color="white"
               // brand.neutralGray
               fontWeight="bold"
               mt={[2, 4]}
@@ -364,7 +363,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 return(
                   <Flex key="ownerName" mt={[4, 8]}>
                     <Text color="secColDarkTheme">Owner :</Text>
-                    <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                    <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                       <Link display="block" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" href={`/artistprofile/${owner.name.replaceAll(" ","")}`}>
                         {owner.name}
                         {/* <sup><img src={lk} alt="" width="auto" height="auto" style={{ display: 'inline-block' }} /></sup> */}
@@ -377,7 +376,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               <>
                 <Flex key="ownerAddress" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Owner :</Text>
-                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                     {(token.sale!==undefined)?token.sale.seller:token.owner}
                 </Text> 
                 </Flex>
@@ -390,7 +389,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 return( 
                   <Flex key="creatorName" mt={[4, 8]}>
                     <Text color="secColDarkTheme">Creator :</Text>
-                    <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                    <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                     <Link display="block" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" href={`/artistprofile/${creator.name.replaceAll(" ","")}`}>
                         {creator.name}
                         {/* <sup><img src={lk} alt="" width="auto" height="auto" style={{ display: 'inline-block' }} /></sup> */}
@@ -404,7 +403,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 <>
                 <Flex key="creatorAddress" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Creator :</Text>
-                  <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                  <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                         {token.metadata.minter}
                   </Text> 
                 </Flex>
@@ -427,7 +426,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               return(
                 <Flex key={name + value} mt={[4, 8]}>
                   <Text color="secColDarkTheme">{name}:</Text>
-                  <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                  <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                     {value}
                     {name==='Royalty'?'%':''}
                   </Text>
@@ -438,7 +437,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             {
               <Flex key="royalty" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Royalty :</Text>
-                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                   {royaltyPercentage}%
                 </Text>
               </Flex>
@@ -447,7 +446,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             {
               <Flex key="metadata" mt={[4, 8]}>
                 <Text color="secColDarkTheme"><i className="fas fa-link"></i></Text>
-                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                   <a href={getIPFSlink(token?.metadata?.artifactUri ?? '')} target="_blank" rel="noopener noreferrer">View on IPFS</a>
                 </Text>
               </Flex>
@@ -456,7 +455,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             {
               <Flex key="metadataIPFS" mt={[4, 8]}>
                 <Text color="secColDarkTheme"><i className="fas fa-link"></i></Text>
-                <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                   <a href={getIPFSlink(token?.metadata?.[''] ?? '')} target="_blank" rel="noopener noreferrer">View metadata</a>
                 </Text>
               </Flex>
@@ -469,7 +468,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   isOwner ? (
                     <>
                       <Text color="brand.black" fontSize="xl" fontWeight="700" marginRight={8}>
-                        {totalAmount} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
+                        {totalAmount} ꜩ
                       </Text>
                       <Box marginRight={8}>
                         <CancelTokenSaleButton
@@ -485,7 +484,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                       <Text 
                       // color="black"
                        fontSize={['md', 'md', 'lg']} mr={1} fontWeight="700" marginRight={8}>
-                        {totalAmount}  <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
+                        {totalAmount} ꜩ
                       </Text>
                       <Box>
                         <BuyTokenButton token={token} 
