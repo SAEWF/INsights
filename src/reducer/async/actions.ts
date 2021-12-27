@@ -356,7 +356,7 @@ export const mintTokenAction = createAsyncThunk<
         const fulfilledMessage = `Created new tokens from multiple editions in ${address}`;
         // UploadNftToFireStore(system.tzPublicKey,address,metadata); changed location to mintTokens function
         dispatch(notifyFulfilled(requestId, fulfilledMessage));
-        dispatch(getContractNftsQuery(address));
+        dispatch(getContractNftsQuery({ address: address , ownedOnly: false }));
         return { contract: address, metadata };
       }
       else{
@@ -371,7 +371,7 @@ export const mintTokenAction = createAsyncThunk<
         const fulfilledMessage = `Created new token: ${metadata.name} in ${address}`;
         // UploadNftToFireStore(system.tzPublicKey,address,metadata); changed to mint token function
         dispatch(notifyFulfilled(requestId, fulfilledMessage));
-        dispatch(getContractNftsQuery(address));
+        dispatch(getContractNftsQuery({ address: address , ownedOnly: false }));
         return { contract: address, metadata };
       }
     } catch (e) {
@@ -518,7 +518,7 @@ export const mintCsvTokensAction = createAsyncThunk<null, undefined, Options>(
 
       const fulfilledMessage = `Created new tokens from CSV in ${address}`;
       dispatch(notifyFulfilled(requestId, fulfilledMessage));
-      dispatch(getContractNftsQuery(address));
+      dispatch(getContractNftsQuery({ address: address , ownedOnly: false }));
     } catch (e) {
       return rejectWithValue({
         kind: ErrorKind.MintTokenFailed,
@@ -556,7 +556,7 @@ export const transferTokenAction = createAsyncThunk<
     await op.confirmation(2);
 
     dispatch(notifyFulfilled(requestId, `Transferred token to ${to}`));
-    dispatch(getContractNftsQuery(contract));
+    dispatch(getContractNftsQuery({ address: contract , ownedOnly: false }));
     return args;
   } catch (e) {
     return rejectWithValue({
@@ -614,7 +614,7 @@ export const listTokenAction = createAsyncThunk<
     // UpdateArtTokenInFirebase(system.tzPublicKey,tokenId)
 
     dispatch(notifyFulfilled(requestId, fulfilledMessage));
-    dispatch(getContractNftsQuery(contract));
+    dispatch(getContractNftsQuery({ address: contract , ownedOnly: false }));
     return args;
   } catch (e) {
       console.log(e);
@@ -665,7 +665,7 @@ export const cancelTokenSaleAction = createAsyncThunk<
     await op.confirmation(2);
 
     dispatch(notifyFulfilled(requestId, `Token sale canceled`));
-    dispatch(getContractNftsQuery(contract));
+    dispatch(getContractNftsQuery({ address: contract , ownedOnly: false }));
     return { contract: contract, tokenId: tokenId, saleId: saleId, saleType: saleType };
   } catch (e) {
     return rejectWithValue({
@@ -741,7 +741,7 @@ export const buyTokenAction = createAsyncThunk<
     
     const fulfilledMessage = `Bought token from ${tokenSeller} for ${totalPrice}`;
     dispatch(notifyFulfilled(requestId, fulfilledMessage));
-    dispatch(getContractNftsQuery(contract));
+    dispatch(getContractNftsQuery({ address: contract , ownedOnly: false }));
 
     return { contract: contract, tokenId: tokenId, saleId: saleId, saleType: saleType };
   } catch (e: any) {
