@@ -3,7 +3,8 @@ import { Token } from '../../../reducer/slices/collections';
 // import { useLocation } from 'wouter';
 import { IpfsGatewayConfig } from '../../../lib/util/ipfs';
 import {
-  // Flex,
+  Flex,
+  Image,
   Text,
   Heading,
 } from '@chakra-ui/react';
@@ -11,7 +12,7 @@ import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
 import { useDispatch } from 'react-redux';
 import { MinterButton } from '../../common';
 import { TokenMedia } from '../../common/TokenMedia';
-import tz from '../../common/assets/tezos-sym-white.svg';
+// import tz from '../../common/assets/tezos-sym-white.svg';
 import { Container, Row, Col } from 'react-bootstrap';
 import firebase from '../../../lib/firebase/firebase';
 
@@ -23,6 +24,7 @@ interface FeaturedTokenProps extends Token {
 export default function FeaturedToken(props: FeaturedTokenProps) {
   // const [, setLocation] = useLocation();
   const [owner, setOwner] = React.useState('');
+  const [artistImg, setArtistImg] = React.useState('');
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -40,6 +42,7 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
     docRef.get().then(function(doc) {
       if (doc.exists) {
         var data = doc.data()!;
+        setArtistImg(data.avatar);
         setOwner(data.name);
         // console.log("Document data:", data);
       } else {
@@ -146,22 +149,28 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
                 </Heading>
               </div>
               <div className="mt-2">
-                <p><i className="fas fa-user mr-2" style={{
+                {owner==='' ? 
+                (<Flex>
+                 <i className="fas fa-user mr-2" style={{
                   display: "inline-block",
                   borderRadius: "60px",
                   boxShadow: "0px 0px 2px #888",
                   padding: "0.5em 0.6em",
-                }}></i>
-              {
-                owner===''?<>Anonymous</>:owner
+                }}></i>{ owner===''?<>Anonymous</>:owner }
+                </Flex>)
+                :(<Flex>
+              <Image borderRadius='full' w={8} h={8} mr={2} src={artistImg} alt={owner} /> <Text fontWeight='bold' bgGradient='linear(to-r, pink.500, pink.300, blue.500)' bgClip='text'>{owner}</Text>
+             </Flex>)
               }
-                </p>
+                
+              
+                
               </div>
               <div className="mt-2">
                 <Text fontSize="lg" >
                   Price:{' '}
                   <Text as="span" fontWeight="600">
-                    {totalAmount} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
+                    {totalAmount} ꜩ
                   </Text>
                 </Text>
               </div>
