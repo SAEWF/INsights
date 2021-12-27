@@ -349,7 +349,6 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             </Heading>
             <Text
               fontSize="md"
-              color="white"
               // brand.neutralGray
               fontWeight="bold"
               mt={[2, 4]}
