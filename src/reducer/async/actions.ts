@@ -138,7 +138,10 @@ export const addObjktCollectionAction = createAsyncThunk<
       const address = args.address;
       const db = firebase.firestore();
 
+      if(address==="") throw new Error("Address is empty")
+
       const pendingMessage = `Adding ByteBlock collection ${address}`;
+
       dispatch(notifyPending(requestId, pendingMessage));
 
       const contractInfo: any = await getNftAssetContract(system, address);
@@ -160,8 +163,20 @@ export const addObjktCollectionAction = createAsyncThunk<
       }];
 
       if(doc.exists){
+        var data = doc.data()!.collections;
+        if(data === undefined){
+          data = collections;
+        }
+        else{
+          if(data.find((x:any) => x.address === address) !== undefined)
+            throw new Error("Collection already exists");
+          data.push({
+            "name": "objkt",
+            "address": address
+          })
+        }
         await docRef.update({
-          collections: collections
+          collections: data
         }).catch((error) => {
           throw new Error("Error updating document");
         });
