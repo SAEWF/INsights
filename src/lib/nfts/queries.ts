@@ -9,7 +9,7 @@ import { compact } from 'fp-ts/lib/Array';
 import { getRight } from 'fp-ts/lib/Option';
 import * as D from './decoders';
 
-import { getLedgerBigMapCustom, getTokenMetadataBigMapCustom } from './actionCustom';
+import { getLedgerBigMapCustom, getTokenMetadataBigMapCustom, getOwnedLedgerBigMapCustom, getOwnedTokenMetadataBigMapCustom } from './actionCustom';
 
 function fromHexString(input: string) {
   if (/^([A-Fa-f0-9]{2})*$/.test(input)) {
@@ -26,7 +26,6 @@ async function getAssetMetadataBigMap(
 ): Promise<D.AssetMetadataBigMap> {
   const path = 'metadata';
   const data = await tzkt.getContractBigMapKeys(address, path);
-  console.log("DATA",data);
   const decoded = D.LedgerBigMap.decode(data);
   if (isLeft(decoded)) {
     throw Error('Failed to decode `getAssetMetadata` response');
@@ -126,14 +125,20 @@ async function getContract<S extends t.Mixed>(
 
 export async function getContractNfts(
   system: SystemWithToolkit | SystemWithWallet,
-  address: string
+  address: string,
+  ownedOnly: boolean
 ): Promise<D.Nft[]> {
-  //  console.log("ADDRESS",address);
+  //  console.log("ADDRESS",address, ownedOnly);
   const ledgerA = await getLedgerBigMap(system.tzkt, address);
   //  console.log("LEDGER",ledgerA);
   let ledgerB = [];
   if(ledgerA.length === 0){
-    ledgerB = await getLedgerBigMapCustom(system.tzkt, address);
+    if(ownedOnly && system.status==='WalletConnected'){
+      ledgerB = await getOwnedLedgerBigMapCustom(system.tzkt, address, system.tzPublicKey);
+    }
+    else{
+      ledgerB = await getLedgerBigMapCustom(system.tzkt, address);
+    }
   }
 
   const ledger = [...ledgerA, ...ledgerB];
@@ -141,7 +146,16 @@ export async function getContractNfts(
   const tokensA = await getTokenMetadataBigMap(system.tzkt, address);
   let tokensB: D.TokenMetadataBigMap = [];
   if(tokensA.length === 0){
-    tokensB = await getTokenMetadataBigMapCustom(system.tzkt, address);
+    if(ownedOnly && system.status==='WalletConnected'){
+      var keys: string[] = [];
+      for(var i=0;i<ledger.length;i++){
+        keys.push(ledger[i].key.nat);
+      }
+      tokensB = await getOwnedTokenMetadataBigMapCustom(system.tzkt, address, keys);
+    }
+    else{
+      tokensB = await getTokenMetadataBigMapCustom(system.tzkt, address);
+    }
   }
   const tokens = [...tokensA, ...tokensB];
   //  console.log("TOKENS",tokens);
@@ -187,7 +201,7 @@ export async function getContractNfts(
           saleId: saleData.value.isLegacy ? 0 : Number.parseInt(saleData.key),
           type: saleData.value.isLegacy ? 'fixedPriceLegacy' : 'fixedPrice'
         };
-        // console.log("sale done",sale);
+        // console.log("sale done",ledger.slice(1,10));
         var owner = ledger.find(e => e.key === tokenId)?.value!;
         if(owner === undefined){
           owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
@@ -245,6 +259,12 @@ export async function getNftAssetContract(
   if (isLeft(decoded)) {
     throw Error('Metadata validation failed');
   }
+
+  // HEN improvement for name
+  if(decoded.right.name === "OBJKTs"){
+    return { ...contract, metadata: {...decoded.right, name: "HEN"} };
+  }
+
   //  console.log("DECODED returned", decoded.right);
   return { ...contract, metadata: decoded.right };
 }

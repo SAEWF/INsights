@@ -96,7 +96,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       dispatch(getNftAssetContractQuery(contractAddress));
     }
     else{
-      dispatch(getContractNftsQuery(contractAddress));
+      dispatch(getContractNftsQuery({ address: contractAddress , ownedOnly: false }));
     }
 
     if(!collectionUndefined && tokenHook!==null && tokenHook!==undefined && owner.length===0){

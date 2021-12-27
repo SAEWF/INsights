@@ -39,7 +39,7 @@ export default function CreatorDisplay({
   useEffect(() => {
     if (selectedCollection) {
       dispatch(getNftAssetContractQuery(selectedCollection)).then(() =>
-        dispatch(getContractNftsQuery(selectedCollection))
+        dispatch(getContractNftsQuery({ address: selectedCollection , ownedOnly: false }))
       );
     }
   }, [dispatch, selectedCollection]);
