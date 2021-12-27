@@ -262,7 +262,7 @@ export async function getNftAssetContract(
 
   // HEN improvement for name
   if(decoded.right.name === "OBJKTs"){
-    return { ...contract, metadata: {...decoded.right, name: "HEN"} };
+    return { ...contract, metadata: {...decoded.right, name: "hicetnunc"} };
   }
 
   //  console.log("DECODED returned", decoded.right);
