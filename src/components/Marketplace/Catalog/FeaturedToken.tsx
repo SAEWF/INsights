@@ -15,6 +15,7 @@ import { TokenMedia } from '../../common/TokenMedia';
 // import tz from '../../common/assets/tezos-sym-white.svg';
 import { Container, Row, Col } from 'react-bootstrap';
 import firebase from '../../../lib/firebase/firebase';
+import user_icon from '../assets/user_icon.png';
 
 interface FeaturedTokenProps extends Token {
   config: IpfsGatewayConfig;
@@ -24,7 +25,7 @@ interface FeaturedTokenProps extends Token {
 export default function FeaturedToken(props: FeaturedTokenProps) {
   // const [, setLocation] = useLocation();
   const [owner, setOwner] = React.useState('');
-  const [artistImg, setArtistImg] = React.useState('');
+  const [artistImg, setArtistImg] = React.useState(user_icon);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -159,7 +160,7 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
                 }}></i>{ owner===''?<>Anonymous</>:owner }
                 </Flex>)
                 :(<Flex>
-              <Image borderRadius='full' w={8} h={8} mr={2} src={artistImg} alt={owner} /> <Text fontWeight='bold' bgGradient='linear(to-r, pink.500, pink.300, blue.500)' bgClip='text'>{owner}</Text>
+              <Image borderRadius='full' w={8} h={8} mr={2} src={artistImg} bg='gray.300' alt=" " /> <Text fontWeight='bold' bgGradient='linear(to-r, pink.500, pink.300, blue.500)' bgClip='text'>{owner}</Text>
              </Flex>)
               }
                 
