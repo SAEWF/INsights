@@ -8,7 +8,7 @@ import { Card } from 'react-bootstrap';
 import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
 import { useDispatch } from 'react-redux';
 import firebase from '../../../lib/firebase/firebase';
-import { useColorModeValue, Text} from '@chakra-ui/react';
+import { useColorModeValue, Image, Text} from '@chakra-ui/react';
 
 interface TokenCardProps extends Token {
   config: IpfsGatewayConfig;
@@ -20,7 +20,9 @@ export default function TokenCard(props: TokenCardProps) {
   const bg = useColorModeValue('gray.100', 'black');
   const color = useColorModeValue('black', 'white');
   const [owner, setOwner] = React.useState('');
+  const [artistImg, setArtistImg] = React.useState('');
   const dispatch = useDispatch();
+  console.log("Props => ", props);
   React.useEffect(() => {
     var own : any;
     if(props.sale!==undefined && props.sale!==null) {
@@ -36,6 +38,7 @@ export default function TokenCard(props: TokenCardProps) {
     docRef.get().then(function(doc) {
       if (doc.exists) {
         var data = doc.data()!;
+        setArtistImg(data.avatar);
         setOwner(data.name);
         // console.log("Document data:", data);
       } else {
@@ -111,17 +114,17 @@ export default function TokenCard(props: TokenCardProps) {
       position="relative"
       flexDir="column"
       ratio={1}
-      w="100%"
+      w="90%"
       // bg="white"
       border="1px solid"
-      borderColor="#eee"
+      borderColor={color}
       borderRadius="10px"
       overflow="hidden"
       boxShadow="none"
       transition="all linear 50ms"
       _hover={{
         cursor: 'pointer',
-        boxShadow: '0px 0px 10px #3339',
+        boxShadow: '0px 0px 10px gray',
       }}
     >
       {/* {console.log(props)} */}
@@ -161,16 +164,23 @@ export default function TokenCard(props: TokenCardProps) {
                 This is a wider card with supporting text below as a natural lead-in to
                 additional content. This content is a little bit longer.
             </Card.Text> */}
-        <p><i className="fas fa-user mr-2" style={{
-          display: "inline-block",
-          borderRadius: "60px",
-          boxShadow: "0px 0px 2px #888",
-          padding: "0.5em 0.6em",
-        }}></i>
-          {
-            owner===''?<>Anonymous</>:owner
+        <Box>
+          {/* <Image borderRadius={"100%"} src={artistImg} alt="artist" width={10} height={10} />  */}
+          { owner==='' ?
+             (<Flex><i className="fas fa-user mr-2" style={{
+              display: "inline-block",
+              borderRadius: "60px",
+              boxShadow: "0px 0px 2px #888",
+              padding: "0.5em 0.6em",
+            }}></i> <Text fontWeight='bold' bgGradient='linear(to-r, pink.500, pink.300, blue.500)' bgClip='text'>Anonymous</Text> </Flex>)
+            :(<Flex>
+              <Image borderRadius='full' w={8} h={8} mr={2} src={artistImg} alt={owner} /> <Text fontWeight='bold' bgGradient='linear(to-r, pink.500, pink.300, blue.500)' bgClip='text'>{owner}</Text>
+             </Flex>)
           }
-        </p>
+          
+        {/*  */}
+          
+        </Box>
       </Card.Body>
       {/* background-color: cyan; position: relative; left: 22px; top: 0px; display: flex; justify-content: flex-end; align-items: flex-start; */}
       <Box bg={bg} color={color}>
