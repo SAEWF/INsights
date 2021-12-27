@@ -26,7 +26,7 @@ function RegistrationPage(props: any) {
     const [success, setSuccess] = useState(false);
     // const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [objkt, setObjkt] = useState('');
+    // const [objkt, setObjkt] = useState('');
 
     const selectCountry = (val: any) => {
       setCountry(val);
@@ -59,12 +59,7 @@ function RegistrationPage(props: any) {
               return;
             }
 
-            var data1 = {...formData,"avatar":url, collections: [
-              {
-                name: 'objkt',
-                address: objkt
-              }
-            ]};
+            var data1 = {...formData,"avatar":url}
             docRef.update(data1);
             setSuccess(true);
           }
@@ -109,12 +104,7 @@ function RegistrationPage(props: any) {
             document.querySelector('.registrationError')!.innerHTML = "Server Error Occured . Please try again .";
             return;
           }
-          var data = {...formData,"avatar":url, collections: [
-            {
-              name: 'objkt',
-              address: objkt
-            }
-          ]};
+          var data = {...formData,"avatar":url};
 
           await setFormData(data);
           // console.log("FINAL",data);
@@ -450,7 +440,7 @@ function RegistrationPage(props: any) {
             </div>
 
             {/* {objkt} */}
-            <div className="row align-items-center justify-content-center">
+            {/* <div className="row align-items-center justify-content-center">
             <FormGroup className="col-md-8 col-12">
                 <Input value={objkt} 
                   isInvalid type="text" 
@@ -463,7 +453,7 @@ function RegistrationPage(props: any) {
                 />
                 <div className="walletcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
-            </div>
+            </div> */}
 
               {/* DESCRIPTION */}
             <div className="row align-items-center justify-content-center">

@@ -34,12 +34,13 @@ export const getNftAssetContractQuery = createAsyncThunk<
 
 export const getContractNftsQuery = createAsyncThunk<
   { address: string; tokens: Nft[] },
-  string,
+  { address: string, ownedOnly: boolean},
   Opts
->('query/getContractNfts', async (address, { getState, rejectWithValue }) => {
+>('query/getContractNfts', async (args, { getState, rejectWithValue }) => {
   const { system, collections } = getState();
+  const { address, ownedOnly } = args;
   try {
-    const tokens = await getContractNfts(system, address);
+    const tokens = await getContractNfts(system, address, ownedOnly);
     //  console.log("TOKENS", tokens);
     return { address, tokens };
   } catch (e) {

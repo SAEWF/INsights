@@ -34,10 +34,10 @@ export default function CollectionDisplay({
   useEffect(() => {
     if (address !== null) {
       dispatch(getNftAssetContractQuery(address)).then(() =>
-        dispatch(getContractNftsQuery(address))
+        dispatch(getContractNftsQuery({ address, ownedOnly }))
       );
     }
-  }, [address, dispatch]);
+  }, [address, dispatch, ownedOnly]);
 
   if (address === null) {
     return <></>;
@@ -178,7 +178,7 @@ export default function CollectionDisplay({
               onClick={() => {
                 const selectedCollection = collections.selectedCollection;
                 if (selectedCollection !== null) {
-                  dispatch(getContractNftsQuery(selectedCollection));
+                  dispatch(getContractNftsQuery({ address: selectedCollection, ownedOnly }));
                 }
               }}
               mt={{
