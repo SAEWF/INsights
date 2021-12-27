@@ -18,29 +18,34 @@ export default function Sidebar() {
   const hash3points = state.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'];
   const HEN = state.collections['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'];
   const dispatch = useDispatch();
-  const [objktState, setObjktState] = React.useState('');
+  const [objktState, setObjktState] = React.useState([]);
 
   useEffect(() => {
-    console.log('Sidebar useEffect');
-    if(tzPublicKey) {
+    // console.log('Sidebar useEffect');
+    if(tzPublicKey && objktState.length === 0) {
       var db = firebase.firestore();
       db.collection("artists").doc(tzPublicKey).onSnapshot(function(doc) {
         if(doc.exists) {
           if(doc.data()!.collections===undefined) {
-            setObjktState('not-set');
+            setObjktState([]);
           }
           else{
-            const objkt = doc.data()!.collections.filter((c: any) => c.name === 'objkt');
-            setObjktState(objkt[0].address);
-            dispatch(getNftAssetContractQuery(objkt[0].address));
+            const objkt = doc.data()!.collections.filter((c: any) => c.name === 'objkt' && c.address!=='');
+            setObjktState(objkt);
+            for(let i=0; i<objkt.length; i++) {
+              dispatch(getNftAssetContractQuery(objkt[i].address));
+            }
           }
         }
         else{
-          setObjktState('not-set');
+          setObjktState([]);
         }
       });
     }
-  }, [tzPublicKey, objktState, dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tzPublicKey, objktState]);
+ 
+  
 
   return (
     <>
@@ -130,23 +135,24 @@ export default function Sidebar() {
           />
           : null
         }
+
         {
-          objktState==='not-set' ? (
-            <AddObjktCollectionButton />
-          ) :
-          <></>
+          objktState.length>0 ?
+          objktState.map((collection:any) => {
+            return (
+              <CollectionTab
+                key={collection.address + 'objkt'}
+                selected={collection.address === state.selectedCollection}
+                onSelect={address => dispatch(selectCollection(collection.address))}
+                {...state.collections[collection.address]}
+              />
+            );
+          })
+          : null
         }
-        {
-          objktState!=='not-set' && objktState!==''? (
-            <CollectionTab
-              key={ objktState + 'objkt'}
-              selected={objktState === state.selectedCollection}
-              onSelect={address => dispatch(selectCollection(objktState))}
-              {...state.collections[objktState]}
-            />
-          ) :
-          <></>
-        }
+
+      <AddObjktCollectionButton />
+        
       <Flex px={2} pt={4} justify="center" pb={8}>
         <CreateCollectionButton />
       </Flex>
