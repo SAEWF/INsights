@@ -23,7 +23,7 @@ export default function TokenCard(props: TokenCardProps) {
   const [owner, setOwner] = React.useState('');
   const [artistImg, setArtistImg] = React.useState(user_icon);
   const dispatch = useDispatch();
-  console.log("Props => ", props);
+  // console.log("Props => ", props);
   React.useEffect(() => {
     var own : any;
     if(props.sale!==undefined && props.sale!==null) {
