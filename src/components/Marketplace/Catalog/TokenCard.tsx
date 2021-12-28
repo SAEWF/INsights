@@ -9,6 +9,7 @@ import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
 import { useDispatch } from 'react-redux';
 import firebase from '../../../lib/firebase/firebase';
 import { useColorModeValue, Image, Text} from '@chakra-ui/react';
+import user_icon from '../assets/user_icon.png';
 
 interface TokenCardProps extends Token {
   config: IpfsGatewayConfig;
@@ -20,7 +21,7 @@ export default function TokenCard(props: TokenCardProps) {
   const bg = useColorModeValue('gray.100', 'black');
   const color = useColorModeValue('black', 'white');
   const [owner, setOwner] = React.useState('');
-  const [artistImg, setArtistImg] = React.useState('');
+  const [artistImg, setArtistImg] = React.useState(user_icon);
   const dispatch = useDispatch();
   console.log("Props => ", props);
   React.useEffect(() => {
@@ -174,7 +175,7 @@ export default function TokenCard(props: TokenCardProps) {
               padding: "0.5em 0.6em",
             }}></i> <Text fontWeight='bold' bgGradient='linear(to-r, pink.500, pink.300, blue.500)' bgClip='text'>Anonymous</Text> </Flex>)
             :(<Flex>
-              <Image borderRadius='full' w={8} h={8} mr={2} src={artistImg} alt={owner} /> <Text fontWeight='bold' bgGradient='linear(to-r, pink.500, pink.300, blue.500)' bgClip='text'>{owner}</Text>
+              <Image borderRadius='full' w={8} h={8} mr={2} bg='gray.300' src={artistImg} alt=" " /> <Text fontWeight='bold' bgGradient='linear(to-r, pink.500, pink.300, blue.500)' bgClip='text'>{owner}</Text>
              </Flex>)
           }
           
