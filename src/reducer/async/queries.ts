@@ -7,7 +7,8 @@ import {
   getWalletNftAssetContracts,
   MarketplaceNftLoadingData,
   loadMarketplaceNft,
-  getNftAssetContracts
+  getNftAssetContracts,
+  getContractNft
 } from '../../lib/nfts/queries';
 
 import { Nft, AssetContract } from '../../lib/nfts/decoders';
@@ -51,7 +52,28 @@ export const getContractNftsQuery = createAsyncThunk<
          collections.collections[address]?.metadata?.name ?? address
        }`
     });
+  }
+});
 
+export const getContractNftQuery = createAsyncThunk<
+  { address: string; tokens: Nft[] },
+  { address: string, tokenID: number },
+  Opts
+>('query/getContractNft', async (args, { getState, rejectWithValue }) => {
+  const { system, collections } = getState();
+  const { address, tokenID } = args;
+  try {
+    const tokens = await getContractNft(system, address, tokenID);
+    //  console.log("TOKENS", tokens);
+    return { address, tokens };
+  } catch (e) {
+    // console.error(e);
+    return rejectWithValue({
+       kind: ErrorKind.GetContractNftsFailed,
+       message: `Retrying NFTs: ${
+         collections.collections[address]?.metadata?.name ?? address
+       }`
+    });
   }
 });
 

@@ -11,6 +11,7 @@ import {
 } from '../async/actions';
 import {
   getContractNftsQuery,
+  getContractNftQuery,
   getNftAssetContractQuery,
   getWalletAssetContractsQuery
 } from '../async/queries';
@@ -36,6 +37,7 @@ export interface StatusState {
   cancelTokenSale: Status;
   buyToken: Status;
   getContractNfts: Status;
+  getContractNft: Status;
   getNftAssetContract: Status;
   getWalletAssetContracts: Status;
 }
@@ -54,6 +56,7 @@ const initialState: StatusState = {
   cancelTokenSale: defaultStatus,
   buyToken: defaultStatus,
   getContractNfts: defaultStatus,
+  getContractNft: defaultStatus,
   getNftAssetContract: defaultStatus,
   getWalletAssetContracts: defaultStatus
 };
@@ -87,6 +90,7 @@ const slice = createSlice({
       methodMap('cancelTokenSale', cancelTokenSaleAction),
       methodMap('buyToken', buyTokenAction),
       methodMap('getContractNfts', getContractNftsQuery),
+      methodMap('getContractNft', getContractNftQuery),
       methodMap('getNftAssetContract', getNftAssetContractQuery),
       methodMap('getWalletAssetContracts', getWalletAssetContractsQuery)
     ].forEach(({ method, action }) => {

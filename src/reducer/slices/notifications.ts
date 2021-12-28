@@ -16,6 +16,7 @@ import {
 import { connectWallet, disconnectWallet } from '../async/wallet';
 import {
   getContractNftsQuery,
+  getContractNftQuery,
   getNftAssetContractQuery,
   getWalletAssetContractsQuery
 } from '../async/queries';
@@ -67,6 +68,7 @@ const slice = createSlice({
       cancelTokenSaleAction,
       buyTokenAction,
       getContractNftsQuery,
+      getContractNftQuery,
       getNftAssetContractQuery,
       getWalletAssetContractsQuery,
       connectWallet,

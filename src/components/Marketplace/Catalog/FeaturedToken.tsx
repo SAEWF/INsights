@@ -65,7 +65,7 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
     if (newWindow) newWindow.opener = null
   }
 
-  let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any;
+  let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any, creatorAddress, ownerAddress;;
   
   if(props.sale){
     if(props.metadata.royalties!==undefined){
@@ -80,15 +80,43 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
         royaltyPercentage = 5;
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+
       royaltyAmount = royalty*Math.pow(10,-decimal)*props.sale.price;
-      totalAmount = props.sale.price + royaltyAmount;
+      creatorAddress = Object.keys(props.metadata?.royalties.shares)[0];
+      ownerAddress = props.sale.seller;
+
+      if(creatorAddress===ownerAddress){
+        totalAmount = props.sale.price;
+      }
+      else{
+        totalAmount = props.sale.price + royaltyAmount;
+      }
+    }
+    else if(props.metadata.symbol && props.metadata.symbol==='OBJKT'){
+      royaltyPercentage = 0.1;
+      royaltyAmount = props.sale.price*royaltyPercentage;
+      creatorAddress = props.metadata.creators[0];
+      ownerAddress = props.sale.seller;
+      if(creatorAddress===ownerAddress){
+        totalAmount = props.sale.price;
+      }
+      else{
+        totalAmount = props.sale.price + royaltyAmount;
+      }
     }
     else{
       royalty = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyArray = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
       royaltyAmount = (props.sale !== undefined && props.sale.seller!==props.metadata.minter) ?  royaltyPercentage*props.sale!.price / 100.0 : 0;
-      totalAmount = (props.sale !== undefined) ?  Number((props.sale!.price + royaltyAmount).toFixed(2)) : 0;
+      creatorAddress = props.metadata.minter;
+      ownerAddress = props.sale.seller;
+      if(creatorAddress===ownerAddress){
+        totalAmount = props.sale.price;
+      }
+      else{
+        totalAmount = props.sale.price + royaltyAmount;
+      }
     }
   }
   else{
@@ -96,11 +124,22 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
       const shares = props.metadata.royalties.shares;
       const decimal = props.metadata.royalties.decimals;
       for(var wallet in shares){
+        creatorAddress = wallet;
         royalty = shares[wallet];
       }
-      royaltyPercentage = royalty*Math.pow(10,decimal-2);
+      if(props.metadata.creators[0]==="KraznikDAO")
+        royaltyPercentage = 3;
+      else if(props.metadata.creators[0]==="deconcept.tez")
+        royaltyPercentage = 5;
+      else 
+        royaltyPercentage = royalty*Math.pow(10,-decimal+2);
+    }
+    else if(props.metadata?.symbol && props.metadata.symbol==="OBJKT"){
+      royaltyPercentage = 10;
+      creatorAddress = props.metadata.creators[0];
     }
     else{
+      creatorAddress = props.metadata.minter;
       royalty = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyArray = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;

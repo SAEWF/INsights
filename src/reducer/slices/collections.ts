@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 import {
   getAssetContractsQuery,
   getContractNftsQuery,
+  getContractNftQuery,
   getNftAssetContractQuery,
   getWalletAssetContractsQuery
 } from '../async/queries';
@@ -81,6 +82,7 @@ const slice = createSlice({
   },
   extraReducers: ({ addCase }) => {
     addCase(getContractNftsQuery.fulfilled, populateCollectionR);
+    addCase(getContractNftQuery.fulfilled, populateCollectionR);
     addCase(getNftAssetContractQuery.fulfilled, updateCollectionR);
     addCase(getWalletAssetContractsQuery.fulfilled, updateCollectionsR);
     addCase(getAssetContractsQuery.fulfilled, updateCollectionsR);
