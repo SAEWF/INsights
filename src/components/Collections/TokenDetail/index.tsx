@@ -30,7 +30,7 @@ import { CancelTokenSaleButton } from '../../common/modals/CancelTokenSale';
 import { BuyTokenButton } from '../../common/modals/BuyToken';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
-  getContractNftsQuery,
+  getContractNftQuery,
   getNftAssetContractQuery
 } from '../../../reducer/async/queries';
 import { TokenMedia } from '../../common/TokenMedia';
@@ -96,7 +96,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       dispatch(getNftAssetContractQuery(contractAddress));
     }
     else{
-      dispatch(getContractNftsQuery({ address: contractAddress , ownedOnly: false }));
+      dispatch(getContractNftQuery({ address: contractAddress , tokenID: tokenId}));
     }
 
     if(!collectionUndefined && tokenHook!==null && tokenHook!==undefined && owner.length===0){
@@ -200,12 +200,31 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
         totalAmount = token.sale.price + royaltyAmount;
       }
     }
+    else if(tokenHook.metadata.symbol && tokenHook.metadata.symbol==="OBJKT"){
+      royaltyPercentage = 10;
+      royaltyAmount = token.sale.price*0.1;
+      creatorAddress = tokenHook.metadata.creators[0];
+      ownerAddress = tokenHook.sale.seller;
+      if(creatorAddress===ownerAddress){
+        totalAmount = token.sale.price;
+      }
+      else{
+        totalAmount = token.sale.price + royaltyAmount;
+      }
+    }
     else{
       royalty = token.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyArray = token.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
-      royaltyAmount = (token.sale !== undefined && token.sale.seller!==token.metadata.minter) ?  royaltyPercentage*token.sale!.price / 100.0 : 0;
-      totalAmount = (token.sale !== undefined) ?  Number((token.sale!.price + royaltyAmount).toFixed(2)) : 0;
+      royaltyAmount = royaltyPercentage*token.sale!.price / 100.0 ;
+      creatorAddress = tokenHook.metadata.minter;
+      ownerAddress = tokenHook.sale.seller;
+      if(creatorAddress===ownerAddress){
+        totalAmount = token.sale.price;
+      }
+      else{
+        totalAmount = token.sale.price + royaltyAmount;
+      }
     }
   }
   else if(tokenHook){
@@ -213,6 +232,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       const shares = tokenHook.metadata.royalties.shares;
       const decimal = tokenHook.metadata.royalties.decimals;
       for(var wallet in shares){
+        creatorAddress = wallet;
         royalty = shares[wallet];
       }
       if(tokenHook.metadata.creators[0]==="KraznikDAO")
@@ -222,7 +242,12 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       else 
         royaltyPercentage = royalty*Math.pow(10,-decimal+2);
     }
+    else if(tokenHook.metadata?.symbol && tokenHook.metadata.symbol==="OBJKT"){
+      royaltyPercentage = 10;
+      creatorAddress = tokenHook.metadata.creators[0];
+    }
     else{
+      creatorAddress = tokenHook.metadata.minter;
       royalty = tokenHook.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyArray = tokenHook.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
@@ -490,10 +515,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                         <BuyTokenButton token={token} 
                           totalAmount={totalAmount} 
                           royalty={royaltyPercentage ?? 0} 
-                          minter={(token // token exists
-                            && token.metadata.minter!==undefined // minter exists
-                            && token.metadata.minter!=='KT1Aq4wWmVanpQhq4TTfjZXB5AjFpx15iQMM' // minter is not the objkt minter
-                          )?token.metadata.minter:(tokenHook)?Object.keys(tokenHook.metadata?.royalties.shares)[0]: undefined} 
+                          minter = {creatorAddress}
                         />
                       </Box>
                     </>
