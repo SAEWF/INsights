@@ -10,6 +10,20 @@ export async function getLedgerBigMapCustom(
     return data;
 }
 
+
+export async function getLedgerBigMapCustomWithKey(
+  tzkt: TzKt,
+  address: string,
+  key: string
+): Promise<any> {
+  const path = 'ledger';
+  const params = {
+    'key.nat': key
+  };
+  const data = await tzkt.getContractBigMapKeys(address, path, params);
+  return data;
+}
+
 export async function getOwnedLedgerBigMapCustom(
   tzkt: TzKt,
   address: string,
@@ -30,7 +44,20 @@ export async function getTokenMetadataBigMapCustom(
     const path = 'token_metadata';
     const data = await tzkt.getContractBigMapKeys(address, path);
     return data;
-  }
+}
+
+export async function getTokenMetadataBigMapCustomWithKey(
+  tzkt: TzKt,
+  address: string,
+  key: string
+): Promise<D.TokenMetadataBigMap> {
+  const path = 'token_metadata';
+  const params = {
+    'key': key
+  };
+  const data = await tzkt.getContractBigMapKeys(address, path, params);
+  return data;
+}
 
 export async function getOwnedTokenMetadataBigMapCustom(
   tzkt: TzKt,
