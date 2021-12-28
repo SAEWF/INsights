@@ -54,7 +54,7 @@ export default function Catalog() {
     tokens = tokens.filter(x => !blackList.includes(x.metadata?.minter ?? ''));
 
     // for getting all tokens sale data , uncomment below line
-    // console.log('tokens', tokens);
+    // console.log('tokens', state.marketplace.tokens);
     // for getting all tokenData from marketplace , change a bit in the getMarketplaceNftsQuery dispatcher
 
     // PAGINATION
@@ -264,7 +264,8 @@ export default function Catalog() {
                 <>
                   {state.marketplace.tokens?.slice(start, end).map(tokenDetail => {
                     const token = tokenDetail.token;
-                    if(token && token.metadata?.minter!==undefined && !blackList.includes(token.metadata?.minter))
+                    if(token && token.metadata?.minter!==undefined && blackList.includes(token.metadata?.minter)) return <></>;
+                    else if(token)
                     return (
                       <Box display="grid" transition="250ms padding" padding={1} style={{transition: 'all .2s ease-in-out'}} _hover={{ transform: 'scale(1.05)' }} mb={7}>
                         <TokenCard

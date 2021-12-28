@@ -641,6 +641,7 @@ export const loadMarketplaceNft = async (
       try{
         const metadata = await getOwnedTokenMetadataBigMapCustom(system.tzkt, saleAddress, [tokenId.toString()]);
         tokenMetadata = metadata[0].value.token_info[""];
+        result.tokenMetadata = tokenMetadata;
         if(tokenMetadata === undefined)
           throw Error("Token metadata not found");
       }
