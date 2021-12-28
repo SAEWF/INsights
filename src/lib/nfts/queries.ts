@@ -358,14 +358,21 @@ export async function getMarketplaceNfts(
 ): Promise<MarketplaceNftLoadingData[]> {
   const tokenSales = await getFixedPriceSalesBigMap(system.tzkt, address);
   const activeSales = tokenSales.filter(v => v.active);
-  const addresses = _.uniq(
+  var addresses = _.uniq(
     activeSales.map(s => s.value.sale_data.sale_token.fa2_address)
   );
 
   const uniqueAddresses = Array.from(new Set(addresses));
-
+  // console.log("ADDRESSES",addresses);
   if (uniqueAddresses.length === 0) {
     return [];
+  }
+
+  // managing HEN - having higher number of tokens ( 1 lakh+ in this case )
+  // TODO : make the logic generic for all collections
+  const HENindex = addresses.indexOf("KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton");
+  if(HENindex>-1){
+    addresses.splice(HENindex,1);
   }
 
   const tokenBigMapRows1 = await getBigMapUpdates(
@@ -428,7 +435,7 @@ export async function getMarketplaceNfts(
 
   // console.log("salesToview", salesToView);
 
-  const salesWithTokenMetadata = salesToView
+    const salesWithTokenMetadata = salesToView
     .map(x => ({
       tokenSale: x,
       tokenItem: tokenBigMapRows.find(
@@ -454,7 +461,7 @@ export const loadMarketplaceNft = async (
   system: SystemWithToolkit | SystemWithWallet,
   tokenLoadData: MarketplaceNftLoadingData
 ): Promise<MarketplaceNftLoadingData> => {
-  const { token, loaded, tokenSale, tokenMetadata } = tokenLoadData;
+  var { token, loaded, tokenSale, tokenMetadata } = tokenLoadData;
   const result = { ...tokenLoadData };
 
   if (token || loaded) {
@@ -484,9 +491,17 @@ export const loadMarketplaceNft = async (
     };
 
     if (!tokenMetadata) {
-      result.error = "Couldn't retrieve tokenMetadata";
-      console.error("Couldn't retrieve tokenMetadata", { tokenSale });
-      return result;
+      try{
+        const metadata = await getOwnedTokenMetadataBigMapCustom(system.tzkt, saleAddress, [tokenId.toString()]);
+        tokenMetadata = metadata[0].value.token_info[""];
+        if(tokenMetadata === undefined)
+          throw Error("Token metadata not found");
+      }
+      catch(e){
+        result.error = "Couldn't retrieve tokenMetadata";
+        console.error("Couldn't retrieve tokenMetadata", { tokenSale });
+        return result;
+      }
     }
 
     const { metadata } = (await system.resolveMetadata(
