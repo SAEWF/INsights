@@ -39,9 +39,13 @@ export default function TokenCard(props: TokenCardProps) {
     docRef.get().then(function(doc) {
       if (doc.exists) {
         var data = doc.data()!;
-        setArtistImg(data.avatar);
-        setOwner(data.name);
-        // console.log("Document data:", data);
+        if(data && data.display){
+          setArtistImg(data.avatar);
+          setOwner(data.name);
+        }
+        else{
+          setOwner(own);
+        }
       } else {
         setOwner(own);
         // console.log("No such document!", own);

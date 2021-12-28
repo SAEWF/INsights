@@ -43,8 +43,13 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
     docRef.get().then(function(doc) {
       if (doc.exists) {
         var data = doc.data()!;
-        setArtistImg(data.avatar);
-        setOwner(data.name);
+        if(data && data.display){
+          setArtistImg(data.avatar);
+          setOwner(data.name);
+        }
+        else{
+          setOwner(own);
+        }
         // console.log("Document data:", data);
       } else {
         setOwner(own);
