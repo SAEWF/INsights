@@ -113,6 +113,31 @@ async function getFixedPriceSalesBigMap(
   return decoded.right;
 }
 
+async function getFixedPriceSalesBigMapWithKey(
+  tzkt: TzKt,
+  address: string,
+  collection: string,
+  token_id: string
+): Promise<D.FixedPriceSaleBigMap> {
+  const fixedPriceStorage = D.FixedPriceSaleStorage.decode(
+    await tzkt.getContractStorage(address)
+  );
+  if (isLeft(fixedPriceStorage)) {
+    throw Error('Failed to decode `getFixedPriceSales` bigMap ID');
+  }
+  const fixedPriceBigMapId = fixedPriceStorage.right.sales;
+  const params = {
+    'value.sale_data.sale_token.fa2_address': collection,
+    'value.sale_data.sale_token.token_id': token_id
+  }
+  const fixedPriceSales = await tzkt.getBigMapKeys(fixedPriceBigMapId, params);
+  const decoded = D.FixedPriceSaleBigMap.decode(fixedPriceSales);
+  if (isLeft(decoded)) {
+    throw Error('Failed to decode `getFixedPriceSales` response');
+  }
+  return decoded.right;
+}
+
 async function getBigMapUpdates<K extends t.Mixed, V extends t.Mixed>(
   tzkt: TzKt,
   params: Params,
@@ -283,7 +308,7 @@ export async function getContractNft(
   //  console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
   //  console.log("MKTADDRESS",mktAddress);
-  const tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
+  const tokenSales = await getFixedPriceSalesBigMapWithKey(system.tzkt, mktAddress, address, tokenId.toString());
   //  console.log("TOKENSALES",tokenSales);
   const activeSales = tokenSales.filter(sale => sale.active);
   //  console.log("ACTIVESALES",activeSales);
