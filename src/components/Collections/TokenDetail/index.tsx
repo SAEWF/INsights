@@ -437,7 +437,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
               <>
               <Flex key="creatorAddress" mt={[4, 8]}>
               <Text color="secColDarkTheme">Creator :</Text>
-                  <Text display="block" color="white" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                  <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                         {token.metadata.creators && token.metadata.creators[0]}
                   </Text> 
                 </Flex>

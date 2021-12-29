@@ -136,12 +136,12 @@ h1 span {
   padding: 8px 16px;
   border-bottom: 1px solid #ddd;
 }
-.card{
+/* .card{
   background-color: #000;
-}
+} */
 .card-header{
   padding: .75rem 0.4rem;
-  border-bottom: 1px solid #fff;
+  /* border-bottom: 1px solid #fff; */
   /* background-color: #121212;*/
 
 }
