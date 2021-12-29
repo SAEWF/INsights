@@ -41,14 +41,25 @@ export default function CollectionDisplay({
 
   if (address === null) {
     return (
+      <Flex w="100%" flex="1" flexDir="column" align="center">
       <Flex
-        alignItems="center"
-        justifyContent="center"
-        height="100%"
-        width="100%"
+        px={20}
+        py={10}
+        bg="gray.200"
+        textAlign="center"
+        align="center"
+        borderRadius="5px"
+        flexDir="column"
+        fontSize="xl"
+        color="gray.400"
+        mt={28}
       >
-        Select a collection to view your tokens .
+        <Wind />
+        <Text fontWeight="600" pt={5}>
+          Select a collection to view your tokens
+        </Text>
       </Flex>
+    </Flex>
     );
   }
 
