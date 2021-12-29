@@ -46,6 +46,23 @@ async function getLedgerBigMap(
   return decoded.right;
 }
 
+async function getOwnedLedgerBigMap(
+  tzkt: TzKt,
+  address: string,
+  walletID: string
+): Promise<D.LedgerBigMap> {
+  const path = 'assets.ledger';
+  const params = {
+    'value': walletID
+  }
+  const data = await tzkt.getContractBigMapKeys(address, path, params);
+  const decoded = D.LedgerBigMap.decode(data);
+  if (isLeft(decoded)) {
+    throw Error('Failed to decode `getLedger` response');
+  }
+  return decoded.right;
+}
+
 async function getLedgerBigMapWithKey(
   tzkt: TzKt,
   address: string,
@@ -75,6 +92,28 @@ async function getTokenMetadataBigMap(
   }
   return decoded.right;
 }
+
+// async function getOwnedTokenMetadataBigMap(
+//   tzkt: TzKt,
+//   address: string,
+//   keys: string[]
+// ): Promise<D.TokenMetadataBigMap> {
+//   const path = 'assets.token_metadata';
+//   const data = Promise.all(
+//     keys.map(async (key) => {
+//       const params = {
+//         'key': key
+//       }
+//       const data = await tzkt.getContractBigMapKeys(address, path, params);
+//       return data[0];
+//     })
+//   );
+//   const decoded = D.TokenMetadataBigMap.decode(data);
+//   if (isLeft(decoded)) {
+//     throw Error('Failed to decode `getTokenMetadata` response');
+//   }
+//   return decoded.right;
+// }
 
 
 async function getTokenMetadataBigMapWithKey(
@@ -106,6 +145,29 @@ async function getFixedPriceSalesBigMap(
   }
   const fixedPriceBigMapId = fixedPriceStorage.right.sales;
   const fixedPriceSales = await tzkt.getBigMapKeys(fixedPriceBigMapId);
+  const decoded = D.FixedPriceSaleBigMap.decode(fixedPriceSales);
+  if (isLeft(decoded)) {
+    throw Error('Failed to decode `getFixedPriceSales` response');
+  }
+  return decoded.right;
+}
+
+async function getFixedPriceSalesBigMapBySeller(
+  tzkt: TzKt,
+  address: string,
+  seller: string
+): Promise<D.FixedPriceSaleBigMap> {
+  const fixedPriceStorage = D.FixedPriceSaleStorage.decode(
+    await tzkt.getContractStorage(address)
+  );
+  if (isLeft(fixedPriceStorage)) {
+    throw Error('Failed to decode `getFixedPriceSales` bigMap ID');
+  }
+  const fixedPriceBigMapId = fixedPriceStorage.right.sales;
+  const params = {
+    'value.seller': seller
+  }
+  const fixedPriceSales = await tzkt.getBigMapKeys(fixedPriceBigMapId, params);
   const decoded = D.FixedPriceSaleBigMap.decode(fixedPriceSales);
   if (isLeft(decoded)) {
     throw Error('Failed to decode `getFixedPriceSales` response');
@@ -189,7 +251,12 @@ export async function getContractNfts(
   ownedOnly: boolean
 ): Promise<D.Nft[]> {
   //  console.log("ADDRESS",address, ownedOnly);
-  const ledgerA = await getLedgerBigMap(system.tzkt, address);
+  let ledgerA = [];
+  if(ownedOnly && system.status==='WalletConnected'){
+    ledgerA = await getOwnedLedgerBigMap(system.tzkt, address, system.tzPublicKey);
+  }else{
+    ledgerA = await getLedgerBigMap(system.tzkt, address);
+  }
   //  console.log("LEDGER",ledgerA);
   let ledgerB = [];
   if(ledgerA.length === 0){
@@ -202,8 +269,18 @@ export async function getContractNfts(
   }
 
   const ledger = [...ledgerA, ...ledgerB];
-//  console.log("LEDGER",ledger);
-  const tokensA = await getTokenMetadataBigMap(system.tzkt, address);
+  console.log("LEDGER",ledger);
+  let tokensA: D.TokenMetadataBigMap = [];
+  // TODO : optimising below API calls
+  // if(ownedOnly && system.status==='WalletConnected'){
+  //   var keys: string[] = [];
+  //   for(var i=0;i<ledger.length;i++){
+  //     keys.push(ledger[i].key);
+  //   }
+  //   tokensA = await getOwnedTokenMetadataBigMap(system.tzkt, address, keys);
+  // }else{
+    tokensA = await getTokenMetadataBigMap(system.tzkt, address);
+  // }
   let tokensB: D.TokenMetadataBigMap = [];
   if(tokensA.length === 0){
     if(ownedOnly && system.status==='WalletConnected'){
@@ -221,7 +298,12 @@ export async function getContractNfts(
   //  console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
   //  console.log("MKTADDRESS",mktAddress);
-  const tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
+  let tokenSales;
+  if(ownedOnly && system.status==='WalletConnected'){
+    tokenSales = await getFixedPriceSalesBigMapBySeller(system.tzkt, mktAddress, system.tzPublicKey);
+  }else{
+    tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
+  }
   //  console.log("TOKENSALES",tokenSales);
   const activeSales = tokenSales.filter(sale => sale.active);
   //  console.log("ACTIVESALES",activeSales);
