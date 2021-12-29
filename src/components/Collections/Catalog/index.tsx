@@ -40,10 +40,10 @@ export default function Catalog() {
     else if(globalCollection!== undefined && HEN===undefined ) {
       dispatch(getNftAssetContractQuery('KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'));
     }
-    if (collections.selectedCollection === null) {
-      dispatch(selectCollection(collections.globalCollection));
-      return;
-    }
+    // if (collections.selectedCollection === null) {
+    //   // dispatch(selectCollection(collections.globalCollection));
+    //   return;
+    // }
   }, [
     globalCollection,
     collections.selectedCollection,

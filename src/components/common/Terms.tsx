@@ -1,148 +1,279 @@
+import { Box, Heading } from '@chakra-ui/layout';
 import React from 'react';
 
 function Terms() {
     return (
-        <div>
-            <h1><strong>Terms and Conditions</strong></h1>
+        <Box padding = '100px'>
+            <Heading size = '3xl' ><strong>Terms and Conditions</strong></Heading>
+            <br/>
             <p><span style={{color: '#0000ff'}}><strong>Updated on 7<sup>th</sup> November 2021</strong></span></p>
-            <h5>We value your trust. In order to honour that trust, <strong>ByteBlock </strong>&nbsp;adheres to ethical standards in gathering, using, and safeguarding any information you provide. Block and Byte Technologies Private Limited (operating under the brand name <strong>ByteBlock </strong>), is a leading NFT company, incorporated in India. This privacy policy governs your use of the application <strong>ByteBlock </strong>&nbsp;&nbsp;https://ByteBlock .art/ ('Website') and the other associated applications, products, websites and services managed by the Company. Please read terms and condition carefully before using the Application, Website, our services and products. Your use of the Website, Application, or services in connection with the Application, Website or products ('Services'), or registrations with us through any modes or usage of any products shall signify your acceptance of this Policy and your agreement to be legally bound by the same. If you do not agree with the terms of this Policy, do not use the Website, platform our products or avail any of our Services.</h5>
+            <br/>
+            <h5>We value your trust. In order to honour that trust, <strong>ByteBlock </strong> adheres to ethical standards in gathering, using, and safeguarding any information you provide. Block and Byte Technologies Private Limited (operating under the brand name <strong>ByteBlock </strong>), is a leading NFT company, incorporated in India. This privacy policy governs your use of the application <strong>ByteBlock </strong> https://ByteBlock .art/ ('Website') and the other associated applications, products, websites and services managed by the Company. Please read terms and condition carefully before using the Application, Website, our services and products. Your use of the Website, Application, or services in connection with the Application, Website or products ('Services'), or registrations with us through any modes or usage of any products shall signify your acceptance of this Policy and your agreement to be legally bound by the same. If you do not agree with the terms of this Policy, do not use the Website, platform our products or avail any of our Services.</h5>
+            <br/>
             <h5>The ByteBlock &nbsp;Platform (&ldquo;ByteBlock &nbsp;NFT Platform&rdquo;) allows you to create, display, buy and sell non-fungible tokens (&ldquo;NFTs&rdquo;).</h5>
-            <h2><strong>Introduction</strong></h2>
+            <br/>
+            <Heading><strong>Introduction</strong></Heading>
+            <br/>
             <h5>By clicking the &ldquo;Register&rdquo; button, completing the account registration process and using the ByteBlock &nbsp;&nbsp;Platform, you confirm that you understand and agree to these terms and conditions, together with any documents that may be expressly referred to and are incorporated by reference (&ldquo;Terms&rdquo;).</h5>
+            <br/>
             <h5>These Terms constitute a legal agreement between you and ByteBlock &nbsp;&nbsp;and govern your access to and use of the ByteBlock &nbsp;&nbsp;Platform, including any content, functionality, and services offered on or through nft.</h5>
+            <br/>
             <h5>ByteBlock &nbsp;&nbsp;(the &ldquo;Site&rdquo;). ByteBlock &nbsp;&nbsp;reserves the right to change or modify these terms at any time and at our sole discretion. You agree and understand that by accessing or using the ByteBlock &nbsp;&nbsp;Platform and the Site following any change to these Terms, you are regarded as having agreed to the revised Terms.</h5>
-            <h2>Definitions</h2>
+            <br/>
+            <Heading>Definitions</Heading>
+            <br/>
             <h5>In these Terms:</h5>
+            <br/>
             <h5>&ldquo;Applicable Law&rdquo; means any law, rule, statute, subordinate legislation, regulation, by-law order, ordinance, protocol, code, guideline, treaty, policy, notice, direction or judicial, arbitral, administrative, ministerial or departmental judgment, award, decree, treaty, directive, or other requirement or guideline published or in force at any time which applies to or is otherwise intended to govern or regulate any person (including all parties to this Terms), property, transaction, activity, event or other matter, including any rule, order, judgment, directive or other requirement or guideline issued by any governmental or regulatory authority;</h5>
+            <br/>
             <h5>&ldquo;Sale Item&rdquo; means any one or more of the following without limitation:</h5>
-            <h5>Any art (including without limitation, designs, drawings, prints, images in any form or media, including without limitation videos and photographs);</h5>
-            <h5>Audio files;</h5>
-            <h5>Collectibles;</h5>
-            <h5>Memorabilia;</h5>
-            <h5>Game assets.</h5>
+            <br/>
+            <Box padding = '20px'>
+            <ul>
+            <li>Any art (including without limitation, designs, drawings, prints, images in any form or media, including without limitation videos and photographs);</li>
+            <br/>
+            <li>Audio files;</li>
+            <br/>
+            <li>Collectibles;</li>
+            <br/>
+            <li>Memorabilia;</li>
+            <br/>
+            <li>Game assets.</li>
+            </ul>
+            </Box>
+            <br/>
+
             <h5>"we/us/our" means ByteBlock &nbsp;; "you/your" means the user of the ByteBlock &nbsp;&nbsp;Platform and includes creators, collectors, buyers and anyone who has the legitimate possession of the NFT;</h5>
-            <h2>Eligibility</h2>
+            <br/>
+            <Heading>Eligibility</Heading>
+            <br/>
             <h5>ByteBlock &nbsp;&nbsp;has sole and absolute discretion to allow or disallow your access to the ByteBlock &nbsp;&nbsp;Platform.</h5>
+            <br/>
             <h5>By agreeing to these Terms, you represent and warrant that:</h5>
+            <br/>
             <h5>You are at least 18 years of age.</h5>
+            <br/>
             <h5>You have the full right, power, and authority to agree to these Terms.</h5>
+            <br/>
             <h5>You are not subject to any financial sanctions, embargoes or other restrictive measures imposed by the United Nations, European Union, any EU country, UK Treasury or US Office of Foreign Assets Control (OFAC), or any governmental authority in any jurisdiction in which the ByteBlock &nbsp;&nbsp;Platform is available.</h5>
+            <br/>
             <h5>You are not a citizen or resident of any of the following countries:</h5>
-            <h5>Belarus</h5>
-            <h5>Burma (Myanmar)</h5>
-            <h5>Central African Republic</h5>
-            <h5>Cote d&rsquo;Ivoire (Ivory Coast)</h5>
-            <h5>Cuba</h5>
-            <h5>Democratic Republic of the Congo</h5>
-            <h5>Iran</h5>
-            <h5>Iraq</h5>
-            <h5>Lebanon</h5>
-            <h5>Liberia (former Liberian Regime of Charles Taylor)</h5>
-            <h5>Libya</h5>
-            <h5>North Korea</h5>
-            <h5>Somalia</h5>
-            <h5>Sudan</h5>
-            <h5>Syria</h5>
-            <h5>Zimbabwe</h5>
+            <Box padding = '20px'>
+            <ul>
+            <li>Belarus</li>
+            <li>Burma (Myanmar)</li>
+            <li>Central African Republic</li>
+            <li>Cote d&rsquo;Ivoire (Ivory Coast)</li>
+            <li>Cuba</li>
+            <li>Democratic Republic of the Congo</li>
+            <li>Iran</li>
+            <li>Iraq</li>
+            <li>Lebanon</li>
+            <li>Liberia (former Liberian Regime of Charles Taylor)</li>
+            <li>Libya</li>
+            <li>North Korea</li>
+            <li>Somalia</li>
+            <li>Sudan</li>
+            <li>Syria</li>
+            <li>Zimbabwe</li>
+            </ul>
+            </Box>
+            <br/>
             <h5>You are not impersonating any other person,</h5>
+            <br/>
             <h5>You will not use the ByteBlock &nbsp;&nbsp;Platform if any Applicable Laws in your country prohibit you from doing so in accordance with these Terms.</h5>
+            <br/>
             <h5>You are compliant with all Applicable Laws to which you are subject.</h5>
+            <br/>
             <h5>You have read, understood and agreed to our Privacy Notice and Cookie Policy.</h5>
-            <h2>ByteBlock &nbsp;&nbsp;Platform Account</h2>
+            <br/>
+            <Heading>ByteBlock &nbsp;&nbsp;Platform Account</Heading>
+            <br/>
             <h5>You must create an account (&ldquo;Account&rdquo;) to use the ByteBlock &nbsp;&nbsp;Platform. To create an account, we will require you to provide certain information about yourself and we may, in our sole discretion, require you to provide further information and/or documents at any stage during your use of the ByteBlock &nbsp;&nbsp;Platform. We may, in our sole discretion, refuse, decline, suspend or disable your access or use of the ByteBlock &nbsp;&nbsp;Platform.</h5>
-            <h2>Changes to the ByteBlock &nbsp;&nbsp;Platform</h2>
+            <br/>
+            <Heading>Changes to the ByteBlock &nbsp;&nbsp;Platform</Heading>
             <h5>We may in our absolute and sole discretion change, update, amend, remove, or discontinue any part of the Site, the services and the Content at any time without prior notice to you.</h5>
-            <h2>Fees</h2>
+            <br/>
+            <Heading>Fees</Heading>
+            <br/>
             <h5>By buying and selling NFTs, including through the Auction process, on the ByteBlock &nbsp;&nbsp;Platform, you agree to pay all applicable fees as stipulated in the FAQ and on the checkout screen at the time of your purchase. You authorize ByteBlock &nbsp;&nbsp;to automatically deduct fees directly from payments to you and/ or add fees to your payments to ByteBlock &nbsp;&nbsp;where applicable</h5>
-            <h2>Your Use of the ByteBlock &nbsp;&nbsp;</h2>
+            <br/>
+            <Heading>Your Use of the ByteBlock &nbsp;&nbsp;</Heading>
+            <br/>
             <h3>Platform and Conduct</h3>
+            <br/>
             <h5>We hereby grant you a limited, non-exclusive, non-transferable, revocable license to access and use the Site and Content. Our grant of such license is subject to the following conditions. You undertake not to (and shall not, knowingly or otherwise, authorize, allow or assist any other party to):</h5>
+            <br/>
             <h5>Use the ByteBlock &nbsp;&nbsp;Platform, Site, or your Account to conduct electronic spamming or otherwise distribute any unsolicited or unauthorized advertising, promotional or marketing material, junk or chain messages</h5>
+            <br/>
             <h5>Use the ByteBlock &nbsp;&nbsp;Platform, Site, or your Account to perform unlawful activities that violates any Applicable Laws (including but not limited to money laundering, terrorism financing and/or fraudulent activities) or immoral activities.</h5>
+            <br/>
             <h5>Use the ByteBlock &nbsp;&nbsp;Platform, Site, or your Account to engage in any activity which operates to defraud ByteBlock &nbsp;, other users, or any other person, or to provide any false, inaccurate, or misleading information to ByteBlock &nbsp;.</h5>
+            <br/>
             <h5>Use the ByteBlock &nbsp;&nbsp;Platform, Site, or your Account to upload content that is pornographic in nature , hurt religious sentiments , constitutes hate speech, is immoral or illegal, contains or is infected with viruses, malicious codes, Trojan horses or any other harmful or deleterious program.</h5>
+            <br/>
             <h5>Modify or adapt the whole or any part of the ByteBlock &nbsp;&nbsp;Platform and Site or incorporate the Site into any other programme or application.</h5>
+            <br/>
             <h5>Disassemble, decompile, reverse-engineer or otherwise attempt to derive the source code, object code, underlying concepts, ideas and algorithms of the Site or any components thereof.</h5>
+            <br/>
             <h5>Use the ByteBlock &nbsp;&nbsp;Platform, Site, or your Account in any manner that would lead to infringement of our, our Affiliates&rsquo; or any third party&rsquo;s intellectual property rights, including without limitation any copyright, patent or trademark. You undertake not to take or attempt to take any action or claim ownership of any property that infringes or would infringe upon our intellectual property interests.</h5>
+            <br/>
             <h5>Use the ByteBlock &nbsp;&nbsp;Platform, Site, or your Account in a way that could damage, disable, impair or compromise the Site or the provision of the ByteBlock &nbsp;&nbsp;Platform or interfere with other users or affect the reputation of ByteBlock &nbsp;.</h5>
+            <br/>
             <h5>To take any action to gain or attempt to gain unauthorized access to the account or wallets of other users.</h5>
+            <br/>
             <h5>Take any action that imposes an unreasonable or disproportionately large burden or load on the ByteBlock &nbsp;&nbsp;infrastructure (including, but without limitation to our servers, networks, data centres and related or like equipment) and detrimentally interfere with, intercept or expropriate any system, data or information belonging to other users of the ByteBlock &nbsp;&nbsp;Platform.</h5>
+            <br/>
             <h5>Engage in any other activities deemed inappropriate by us or which is in contravention of these Terms or any Applicable Laws.</h5>
+            <br/>
             <h5>Provide false, inaccurate, incomplete or misleading information to ByteBlock &nbsp;&nbsp;or any of its Affiliates or third party services providers; and/or</h5>
+            <br/>
             <h5>Use the ByteBlock &nbsp;&nbsp;Platform, Site, or your Account to engage in any lottery, bidding fee auctions, contests, sweepstakes, or other games of chance.</h5>
-            <h2>User Content</h2>
+            <br/>
+            <Heading>User Content</Heading>
+            <br/>
             <h5>The ByteBlock &nbsp;Platform allows (i) users to create a profile where they can post information about themselves, display their NFTs, and sell NFTs they own (ii) artists or creators of NFTs (&ldquo;Users&rdquo;) to put their NFTs up for sale (which may be via auction (&ldquo;Auction&rdquo;) (together the&nbsp;&ldquo;Auction).</h5>
+            <br/>
             <h5>Any information you post on the Site as a User will be considered exclusive to ByteBlock &nbsp;&nbsp;till the time it remains listed and non-confidential. By providing any User Content on the Site, you grant us and our affiliates and our respective licensees, successors, and assigns the right to use, reproduce, modify, perform, display, distribute, retransmit, publish, broadcast, and otherwise disclose to third parties any such material for any purpose. You represent and warrant that (1) you own and control all rights in and to your User Content and have the right to grant such licenses to us and our affiliates and our respective licensees, successors, and assigns; and (2) all of your User Content do and will comply with these Terms.</h5>
+            <br/>
             <h5>You understand and agree that you are responsible for any User Content you submit or contribute, and you, and not ByteBlock &nbsp;, have full responsibility for such content, including its legality, reliability, accuracy, and appropriateness. We are not responsible or liable to any third party for the content, accuracy, or appropriateness of any User Content posted by you or any other user on the Site.</h5>
+            <br/>
             <h5>If you are a Creator, you hereby grant ByteBlock &nbsp;&nbsp;the right to use your name and image for marketing or promotional purposes and agree that we may use or modify images from the NFTs that you create for marketing or promotional purposes. You also agree that we can use your biography and other public information about you to promote the NFTs that you create.</h5>
+            <br/>
             <h5>If you are a Creator, you agree that you will not infringe on the intellectual property of others and will not coordinate pricing of any NFTs with other Creators.</h5>
+            <br/>
             <h5>We reserve the right, in our absolute sole discretion, to prohibit you from uploading any NFTs to the Site. We are not required to monitor any User Content, but we may in our sole discretion, remove any User Content at any time and for any reason without notice. ByteBlock &nbsp;&nbsp;may monitor the User Content to detect and prevent fraudulent activity or violation of these Terms.</h5>
-            <h2>Sale by Auction</h2>
+            <br/>
+            <Heading>Sale by Auction</Heading>
+            <br/>
             <h5>You may sell and purchase NFTs through the Auction process. Your participation in the Auction is subject to the rules available on the ByteBlock &nbsp;&nbsp;Platform FAQ.</h5>
+            <br/>
             <h5>You may only participate in the Auction by linking your digital wallet, which must be a type supported by ByteBlock, to your Account.</h5>
+            <br/>
             <h5>ByteBlock &nbsp;&nbsp;may pause, cancel, or discontinue your Auction transactions at its sole discretion without liability.</h5>
-            <h2>Our intellectual Property Rights</h2>
+            <br/>
+            <Heading>Our intellectual Property Rights</Heading>
+            <br/>
             <h5>Unless otherwise indicated by us, and except to the extent of the User Content, the Site, all content, and other materials contained therein, including, without limitation, the ByteBlock &nbsp;&nbsp;logo, and all designs, text graphics, pictures, information, data, software, and files relating to the ByteBlock &nbsp;&nbsp;Platform (the &ldquo;Content&rdquo;) are the proprietary property of ByteBlock &nbsp;&nbsp;or our affiliates, licensors, or users, as applicable.</h5>
+            <br/>
             <h5>The ByteBlock &nbsp;&nbsp;logo and any ByteBlock &nbsp;&nbsp;Platform product or service names, logos, or slogans that may appear on the Site or elsewhere are the proprietary property of ByteBlock &nbsp;&nbsp;and may not be copied, imitated or used, in whole or in part, without our prior written permission.</h5>
+            <br/>
             <h5>Unless otherwise stated, you may not use any Content without our express written permission.</h5>
+            <br/>
             <h5>We reserve the right to suspend or terminate any Account that has actually or allegedly infringed upon any person&rsquo;s intellectual property rights.</h5>
-            <h2>Your Ownership of the NFT</h2>
+            <br/>
+            <Heading>Your Ownership of the NFT</Heading>
+            <br/>
             <h5>Apart from the Content, all other copyrights, trademarks, product names, and logos on the Site relating to and including the NFTs and User Content, are the property of their respective owners and may not be copied, imitated, or used, in whole or in part, without the permission of the applicable intellectual property right owner.</h5>
+            <br/>
             <h5>When you buy an NFT on the ByteBlock &nbsp;&nbsp;Platform, you own the NFT and have the right to sell or give away the NFT. If the NFT is associated with a Sale Item, you will have a worldwide, perpetual, exclusive, transferable, licence to use, copy, and display the Sale Item for your NFT, for so long as you own the NFT, solely for the following purposes: (a) for your own personal, non-commercial use; (b) as part of the ByteBlock &nbsp;&nbsp;Platform that permits the purchase, sale and display of your NFT; (c) as part of a third party website or application that permits the inclusion, involvement, storage, or participation of your NFT.</h5>
+            <br/>
             <h5>Without limiting the foregoing, if you believe that third-party material hosted by the ByteBlock &nbsp;&nbsp;Platform infringes your copyright or trademark rights, please file a notice of infringement by contacting:&nbsp;<a href="mailto:connect@ByteBlock.io"><strong>connect@ByteBlock.io</strong></a>.</h5>
-            <h2>Data Protection / Privacy</h2>
+            <br/>
+            <Heading>Data Protection / Privacy</Heading>
+            <br/>
             <h5>By using the ByteBlock &nbsp;&nbsp;Platform, you confirm that you have read and understood our Privacy Notice and understand how we collect, use, disclose and share amongst ourselves your Personal Data and disclose such Personal Data to our authorised service providers and relevant third parties. We will only share your Personal Data in order to facilitate and administer your use of the ByteBlock &nbsp;&nbsp;Platform or otherwise if required by law. Such data controller will manage and protect your personal data in accordance with all applicable data protection laws. For full and comprehensive information about when and why we collect personal information about you, how we use it, the conditions under which we may disclose it and how we keep it secure, please refer to our Privacy Notice.</h5>
+            <br/>
             <h5>We reserve the right at any time to satisfy our internal requirement as to your Personal Data (for example, by requesting relevant original documents) including for the purposes of preventing fraud and/or anti-money laundering and counter-terrorist financing purposes.</h5>
-            <h2>Limitation of Services / Termination / Account Closure</h2>
+            <br/>
+            <Heading>Limitation of Services / Termination / Account Closure</Heading>
+            <br/>
             <h5>We reserve the right, without notice and in our sole discretion, to terminate or suspend your access to or use of the Site and any Content and/or close your Account, at any time for any reason but in particular, if we suspect in our sole discretion that (i) your Account is being used for illegal activity; (ii) you have concealed or provided false information; (iii) you have engaged in fraudulent activity; and/or (iv) you have engaged in activity in violation of these Terms.</h5>
+            <br/>
             <h5>If ByteBlock &nbsp;&nbsp;is holding funds in your Account and has no record of your use of the ByteBlock &nbsp;&nbsp;Platform for several years, we may be required, upon passage of applicable time periods, to report these funds as unclaimed property in accordance with the abandoned property and escheat laws. If this occurs, we will use reasonable efforts to give you written notice. If you fail to respond within seven business days or the period as required by Applicable Law, we may be required to deliver any such funds to the applicable jurisdiction as unclaimed property. We reserve the right to deduct a reasonable administrative fee from such unclaimed funds, as permitted by Applicable Law.</h5>
-            <h2>Risks</h2>
+            <br/>
+            <Heading>Risks</Heading>
+            <br/>
             <h5>You understand and agree that your access and use of the ByteBlock &nbsp;&nbsp;Platform is subject to certain risks including without limitation:</h5>
+            <br/>
             <h5>Price and liquidity of blockchain assets, including the NFTs, are extremely volatile and may be subject to fluctuations;</h5>
+            <br/>
             <h5>Fluctuations in the price of other digital assets could materially and adversely affect the NFTs;</h5>
+            <br/>
             <h5>Legislative and regulatory changes or actions may adversely affect the use, transfer, and value of the NFTs;</h5>
+            <br/>
             <h5>NFTs are not legal tender and are not backed by any government;</h5>
+            <br/>
             <h5>Transactions involving NFTs may be irreversible, and losses due to fraudulent or accidental transactions may not be recoverable;</h5>
+            <br/>
             <h5>The value of NFTs may be derived from the continued willingness of market participants to exchange fiat currency or digital assets for NFTs, and therefore the value of NFTs is subject to the potential for permanent or total loss of value should the market for NFTs disappear;</h5>
+            <br/>
             <h5>NFTs are subject to the risk of fraud, counterfeiting, cyber-attacks and other technological difficulties which may prevent access to or use of your NFTs.</h5>
+            <br/>
             <h5>You understand and agree that you are solely responsible for determining the nature, potential value, suitability and appropriateness of these risks for yourself. ByteBlock &nbsp;&nbsp;does not give any advice or recommendations regarding the NFTs. You understand and agree that you access and use the ByteBlock &nbsp;&nbsp;Platform at your own risk. You understand and agree that ByteBlock &nbsp;&nbsp;will not be responsible for any communication failures, disruptions, errors, or distortions you may experience when using the NFTs or the ByteBlock Platform.</h5>
-            <h2>Taxes</h2>
+            <br/>
+            <Heading>Taxes</Heading>
+            <br/>
             <h5>You agree that you are solely responsible for determining what, if any, taxes apply to your NFT transactions on the NFT ByteBlock &nbsp;&nbsp;Platform. Neither ByteBlock &nbsp;&nbsp;nor any other ByteBlock &nbsp;&nbsp;Party is responsible for determining the taxes that may apply to your NFT transactions.</h5>
-            <h2>Disclaimers</h2>
+            <br/>
+            <Heading>Disclaimers</Heading>
+            <br/>
             <h5>Users may engage in promotion of their respective User Content, including without limitation their Sale Item, through various communications channels such as their social media accounts. ByteBlock &nbsp;&nbsp;is not responsible for any such communications and/or promotional activities carried out by the Users and will not be liable to you in relation to any such communications and/or promotional activities.</h5>
+            <br/>
             <h5>You bear full responsibility for verifying the identity, legitimacy, and authenticity of assets you purchase on ByteBlock &nbsp;&nbsp;Platform. Notwithstanding indicators and messages that suggest verification, ByteBlock &nbsp;&nbsp;makes no claims about the identity, legitimacy, or authenticity of assets on the ByteBlock &nbsp;&nbsp;Platform.</h5>
+            <br/>
             <h5>Except as expressly provided to the contrary in writing by ByteBlock, the Site, content contained therein, and the NFTs listed therein are provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis without warranties or conditions of any kind, either express or implied. ByteBlock &nbsp;&nbsp;(and its suppliers) make no warranty that the Site will (1) meet your requirements; (2) be available on an uninterrupted, timely, secure, or error-free basis; or (3) be accurate, reliable, complete, legal, or safe.</h5>
+            <br/>
             <h5>ByteBlock &nbsp;&nbsp;will not be liable for any loss of any kind from any action taken or taken in reliance on material or information contained on the Site. ByteBlock &nbsp;&nbsp;does not represent or warrant that any content on the Site is accurate, complete, reliable, current or error-free.</h5>
+            <br/>
             <h5>While ByteBlock &nbsp;&nbsp;attempts to make your access to and use of the Site and content safe, ByteBlock &nbsp;&nbsp;does not represent or warrant that the Site, content, any NFTs listed on the Site or any other part of the Site or ByteBlock &nbsp;&nbsp;Platform are free of viruses or other harmful components. We cannot guarantee the security of any data that you disclose online. You acknowledge and accept the inherent security risks of providing information and dealing online over the Internet. We will not be responsible for any breach of security unless it is due to our gross negligence.</h5>
+            <br/>
             <h5>We will not be responsible or liable to you for any loss and take no responsibility for, and will not be liable to you for, any use of the NFTs including but not limited to, any losses, damages, or claims arising from: (1) user error such as if you forget your password(s), incorrect transactions, or mistyped addresses; (2) server failure or data loss; (3) corrupted wallet files; (4) loss of NFTs.</h5>
+            <br/>
             <h5>TO THE FULLEST EXTENT PROVIDED BY LAW, ByteBlock &nbsp;&nbsp;HEREBY DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, STATUTORY, OR OTHERWISE, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT AS TO THE SITE AND CONTENT CONTAINED THEREIN. THE FOREGOING DOES NOT AFFECT ANY WARRANTIES THAT CANNOT BE EXCLUDED OR LIMITED UNDER APPLICABLE LAW.</h5>
-            <h2>Limitation of Liability</h2>
+            <br/>
+            <Heading>Limitation of Liability</Heading>
+            <br/>
             <h5>TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT WILL ByteBlock &nbsp;&nbsp;BE LIABLE TO YOU OR ANY THIRD PARTY FOR ANY LOST PROFIT OR ANY INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL OR PUNITIVE DAMAGES ARISING FROM THESE TERMS, THE SITE, PRODUCTS OR THIRD PARTY SITES AND PRODUCTS, OR FOR ANY DAMAGES RELATED TO LOSS OF REVENUE, LOSS OF PROFITS, LOSS OF BUSINESS OR ANTICIPATED SAVINGS, LOSS OF USE, LOSS OF GOODWILL, OR LOSS OF DATA, AND WHETHER CAUSED BY TORT (INCLUDING NEGLIGENCE), BREACH OF CONTRACT, OR OTHERWISE, EVEN IF FORESEEABLE AND EVEN IF ByteBlock &nbsp;&nbsp;HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. ACCESS TO, AND USE OF THE SITE, PRODUCTS OR THIRD-PARTY SITES AND PRODUCTS ARE AT YOUR OWN DISCRETION AND RISK, AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA RESULTING THEREFROM. NOTWITHSTANDING ANYTHING TO THE CONTRARY CONTAINED HEREIN, IN NO EVENT SHALL THE MAXIMUM AGGREGATE LIABILITY OF ByteBlock &nbsp;&nbsp;ARISING OUT OF OR IN ANY WAY RELATED TO THESE TERMS, THE ACCESS AND USE OF THE SITE, CONTENT NFTS OR ANY PRODUCT OR SERVICES PURCHASES ON THE SITE EXCEED US$100. THE FOREGOING LIMITATIONS OF LIABILITY SHALL NOT APPLY TO LIABILITY OF ByteBlock &nbsp;&nbsp;FOR PERSONAL INJURY CAUSED BY ByteBlock &rsquo;S NEGLIGENCE OR ANY INJURY CAUSED BY ByteBlock &rsquo;S FRAUD OR FRAUDULENT MISREPRESENTATION.</h5>
-            <h2>Indemnification</h2>
+            <br/>
+            <Heading>Indemnification</Heading>
+            <br/>
             <h5>To the fullest extent permitted by Applicable Law, you agree to indemnify, defend and hold harmless ByteBlock &nbsp;&nbsp;and our past, present and future employees, officers, directors, contractors, consultants, equity holders, suppliers, vendors, service providers, parent companies, subsidiaries, affiliates, agents, representatives, predecessors, successors and assigns (individually and collectively the &ldquo;ByteBlock &nbsp;&nbsp;Parties&rdquo;), from and against all actual or alleged third party claims, damages, awards, judgments, losses, liabilities, obligations, penalties, interest, fees, expenses (including, without limitation, court costs, costs of settlement and costs of pursuing indemnification and insurance), of every kind and nature whatsoever, whether known or unknown, foreseen or unforeseen, matured or unmatured, or suspected or unsuspected, in law or equity, whether in tort, contract or otherwise (collectively, &ldquo;Claims&rdquo;), including, but not limited to, damages to property or personal injury, that are caused by, arise out of or are related to (a) your use or misuse of the Site, Content or NFTs, (b) your breach of these Terms, and (c) your breach or violation of the rights of a third party, including another user or third party service provider. You agree to promptly notify ByteBlock &nbsp;&nbsp;of any third-party Claims and cooperate with the ByteBlock &nbsp;&nbsp;Parties in defending such Claims. You further agree that the ByteBlock &nbsp;&nbsp;Parties shall have control of the defence or settlement of any third-party Claims.</h5>
+            <br/>
             <h5>THIS INDEMNITY IS IN ADDITION TO, AND NOT IN LIEU OF, ANY OTHER INDEMNITIES THAT MAY BE SET FORTH IN A WRITTEN AGREEMENT BETWEEN YOU AND ByteBlock.</h5>
-            <h2>Amendment and Variation</h2>
+            <br/>
+            <Heading>Amendment and Variation</Heading>
+            <br/>
             <h5>These Terms may from time to time be updated or amended. We will post any such updates on the Site. Such updated Terms as posted will take effect immediately unless otherwise indicated. You should regularly check the Site to inform yourself of any such changes. In addition, we may at any time change, add or remove any feature or functionality of the Site without prior notice. By continuing to use the ByteBlock &nbsp;&nbsp;Platform and/or the Site after any such changes have taken effect, you are indicating your acceptance of the updated or amended Terms as well as your acceptance of the updated Site. If you do not wish to be bound by any changes or amendments to these Terms then you should stop using the ByteBlock &nbsp;&nbsp;Platform and Site immediately.</h5>
-            <h2>Transfer, Assignment or Delegation</h2>
+            <br/>
+            <Heading>Transfer, Assignment or Delegation</Heading>
+            <br/>
             <h5>Unless otherwise stated herein, these Terms, and any rights and obligations and licences granted hereunder, are limited, revocable, non-exclusive and personal to you and therefore may not be transferred, assigned or delegated by you to any third-party without our written consent, but may be transferred, assigned or delegated by us without notice and restriction, including without limitation to any of the entities within the ByteBlock &nbsp;&nbsp;group, or to any successor in interest of any business associated with the ByteBlock &nbsp;&nbsp;Platform. Any attempted transfer or assignment in violation hereof shall be null and void.</h5>
-            <h2>Severability</h2>
+            <br/>
+            <Heading>Severability</Heading>
+            <br/>
             <h5>If any provision of these Terms shall be found by any court or administrative body of competent jurisdiction to be invalid or unenforceable, the invalidity or unenforceability of such provision shall not affect the other provisions of these Terms and all provisions not affected by such invalidity or unenforceability shall remain in full force and effect. Such provision will be changed and interpreted to accomplish the objectives of the provision to the greatest extent possible under any Applicable Laws.</h5>
-            <h2>Entire Agreement / Translation</h2>
+            <br/>
+            <Heading>Entire Agreement / Translation</Heading>
+            <br/>
             <h5>These Terms constitute the entire agreement between the parties regarding its subject matter and supersedes and invalidates all other prior representations, arrangements, understandings, and agreements relating to the same subject matter, (whether oral or in writing, express or implied). Each party acknowledges that in agreeing to these Terms it does not rely on any statement, representation, warranty, or understanding other than those expressly set out in these Terms.</h5>
+            <br/>
             <h5>These Terms are concluded in the English language and all communications including any notices or information being transmitted shall be in English. In the event that these Terms or any part of it is translated (for any proceedings, for your convenience or otherwise) into any other language, the English language text of these Terms shall prevail.</h5>
-            <h2>Waiver</h2>
+            <br/>
+            <Heading>Waiver</Heading>
+            <br/>
             <h5>These Terms shall not be waived in whole or in part except were agreed by the parties in writing.</h5>
+            <br/>
             <h5>The delay of enforcement or the non-enforcement of any of the terms of these Terms by any party shall not be construed as a waiver of any of the other rights of that party arising out of the breach or any subsequent breach of any of these Terms and no right, power or remedy conferred upon or reserved for any party in these Terms is exclusive of any other right, power or remedy available to that party and each such right, power or remedy shall be cumulative.</h5>
-            <h2>Notices and Communications</h2>
+            <br/>
+            <Heading>Notices and Communications</Heading>
+            <br/>
             <h5>By using the ByteBlock &nbsp;&nbsp;Platform, you agree that we may provide you with notices or other communications, including marketing, relating to your use of the ByteBlock &nbsp;&nbsp;Platform</h5>
+            <br/>
             <h5>electronically: (a) via email (in each case to the address that you provide), SMS message, or telephone call (in each case to the phone number that you provide), or (b) by posting to the Site. For notices made by email, the date of receipt will be deemed the date on which such notice is transmitted. You will always be given the option to unsubscribe from receiving any marketing material from us.</h5>
+            <br/>
             <h5>Notices to us should be sent electronically to&nbsp;<a href="mailto:connect@byteblock.io"><strong>connect@ByteBlock .io</strong></a></h5>
+            <br/>
             <h5>Third Party Rights</h5>
+            <br/>
             <h5>Other than the entities within the ByteBlock &nbsp;&nbsp;group, a person who is not a party to these Terms has no right to enforce any of these Terms.</h5>
+            <br/>
             <h5>Governing Law and Jurisdiction</h5>
+            <br/>
             <h5>These Terms are governed by and shall be construed in accordance with the laws of Singapore without regard to any choice or conflict of laws rules. Any dispute, controversy or claim, whether contractual or non-contractual, arising out of or in connection with these Terms, or the breach, termination or invalidity thereof, or any other issue which shall arise in virtue of these Terms, shall be referred to and finally settled by arbitration administered by the Singapore International Arbitration Centre ("SIAC") under the SIAC Administered Arbitration Rules in force when the Notice of Arbitration is submitted. The law of this arbitration clause shall be Singapore law. The seat of arbitration shall be in Singapore. The number of arbitrators shall be one. The arbitration proceedings shall be conducted in the English language.</h5>
+            <br/>
             <h5>&nbsp;</h5>
-        </div>
+        </Box>
     )
 }
 
