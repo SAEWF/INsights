@@ -40,7 +40,16 @@ export default function CollectionDisplay({
   }, [address, dispatch, ownedOnly]);
 
   if (address === null) {
-    return <></>;
+    return (
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        height="100%"
+        width="100%"
+      >
+        Select a collection to view your tokens .
+      </Flex>
+    );
   }
 
   const collection = collections.collections[address];
