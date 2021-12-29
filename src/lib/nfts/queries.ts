@@ -93,27 +93,28 @@ async function getTokenMetadataBigMap(
   return decoded.right;
 }
 
-// async function getOwnedTokenMetadataBigMap(
-//   tzkt: TzKt,
-//   address: string,
-//   keys: string[]
-// ): Promise<D.TokenMetadataBigMap> {
-//   const path = 'assets.token_metadata';
-//   const data = Promise.all(
-//     keys.map(async (key) => {
-//       const params = {
-//         'key': key
-//       }
-//       const data = await tzkt.getContractBigMapKeys(address, path, params);
-//       return data[0];
-//     })
-//   );
-//   const decoded = D.TokenMetadataBigMap.decode(data);
-//   if (isLeft(decoded)) {
-//     throw Error('Failed to decode `getTokenMetadata` response');
-//   }
-//   return decoded.right;
-// }
+async function getOwnedTokenMetadataBigMap(
+  tzkt: TzKt,
+  address: string,
+  keys: string[]
+): Promise<D.TokenMetadataBigMap> {
+  const path = 'token_metadata';
+  const data = await Promise.all(
+    keys.map(async (key) => {
+      const params = {
+        'key': key
+      }
+      const data = await tzkt.getContractBigMapKeys(address, path, params);
+      return data[0];
+    })
+  );
+  console.log("DATA",data);
+  const decoded = D.TokenMetadataBigMap.decode(data);
+  if (isLeft(decoded)) {
+    throw Error('Failed to decode `getTokenMetadata` response');
+  }
+  return decoded.right;
+}
 
 
 async function getTokenMetadataBigMapWithKey(
@@ -272,15 +273,20 @@ export async function getContractNfts(
   console.log("LEDGER",ledger);
   let tokensA: D.TokenMetadataBigMap = [];
   // TODO : optimising below API calls
-  // if(ownedOnly && system.status==='WalletConnected'){
-  //   var keys: string[] = [];
-  //   for(var i=0;i<ledger.length;i++){
-  //     keys.push(ledger[i].key);
-  //   }
-  //   tokensA = await getOwnedTokenMetadataBigMap(system.tzkt, address, keys);
-  // }else{
+  if(ownedOnly && system.status==='WalletConnected'){
+    var keys: string[] = [];
+    for(var i=0;i<ledger.length;i++){
+      if(typeof ledger[i].key === 'string'){
+        keys.push(ledger[i].key);
+      }
+      else{
+        keys.push(ledger[i].key.nat);
+      }
+    }
+    tokensA = await getOwnedTokenMetadataBigMap(system.tzkt, address, keys);
+  }else{
     tokensA = await getTokenMetadataBigMap(system.tzkt, address);
-  // }
+  }
   let tokensB: D.TokenMetadataBigMap = [];
   if(tokensA.length === 0){
     if(ownedOnly && system.status==='WalletConnected'){
@@ -311,7 +317,7 @@ export async function getContractNfts(
   // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
   // console.log("tokensSorted",tokensSorted);
-  return Promise.all(
+  return await Promise.all(
     tokensSorted.map(
       async (token): Promise<D.Nft> => {
         const { token_id: tokenId, token_info: tokenInfo } = token.value;
@@ -398,7 +404,7 @@ export async function getContractNft(
   // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
   // console.log("tokensSorted",tokensSorted);
-  return Promise.all(
+  return await Promise.all(
     tokensSorted.map(
       async (token): Promise<D.Nft> => {
         const { token_id: tokenId, token_info: tokenInfo } = token.value;
@@ -492,6 +498,11 @@ export async function getNftAssetContract(
   // HEN improvement for name
   if(decoded.right.name === "OBJKTs"){
     return { ...contract, metadata: {...decoded.right, name: "hicetnunc"} };
+  }
+
+  // minter name change
+  if(decoded.right.name === "Minter"){
+    return { ...contract, metadata: {...decoded.right, name: "ByteBlock"} };
   }
 
   //  console.log("DECODED returned", decoded.right);
