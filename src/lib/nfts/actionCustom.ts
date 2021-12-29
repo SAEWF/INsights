@@ -66,7 +66,7 @@ export async function getOwnedTokenMetadataBigMapCustom(
 ): Promise<any> {
   const path = 'token_metadata';
 
-  return Promise.all(
+  return await Promise.all(
     keys.map(async (key) => {
       const params = {
         'key': key
