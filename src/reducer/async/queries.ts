@@ -65,7 +65,7 @@ export const getContractNftQuery = createAsyncThunk<
     //  console.log("TOKENS", tokens);
     return { address, tokens };
   } catch (e) {
-    console.error(e);
+    // console.error(e);
     return rejectWithValue({
        kind: ErrorKind.GetContractNftsFailed,
        message: `unknown`
@@ -117,7 +117,7 @@ export const getAssetContractsQuery = createAsyncThunk<
     try {
       return await getNftAssetContracts(system, address);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       return rejectWithValue({
         kind: ErrorKind.GetNftAssetContractsFailed,
         message: "Failed to retrieve asset contracts"

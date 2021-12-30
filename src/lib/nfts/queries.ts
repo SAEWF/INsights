@@ -272,7 +272,7 @@ export async function getContractNfts(
   }
 
   const ledger = [...ledgerA, ...ledgerB];
-  console.log("LEDGER",ledger);
+  // console.log("LEDGER",ledger);
   let tokensA: D.TokenMetadataBigMap = [];
   // TODO : optimising below API calls
   if(ownedOnly && system.status==='WalletConnected' && ledger.length < 100){
