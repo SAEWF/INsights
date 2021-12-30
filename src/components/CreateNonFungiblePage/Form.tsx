@@ -152,7 +152,7 @@ export default function Form() {
           defaultValue={5} 
           value={royalty || '5'}
           min={5}
-          max={15}
+          max={25}
           onChange={(valueString) =>{
             dispatch(
               updateField({ name: 'royalty', value: valueString })
@@ -173,14 +173,14 @@ export default function Form() {
       {/* Editions */}
        <FormControl paddingBottom={6}>
         <FormLabel fontFamily="mono" display="flex">
-          Editions (Max 500)
+          Editions (Max 10k)
         </FormLabel>
         <NumberInput 
           placeholder="Input editions of your nft, 1-20"
           step={1} 
           defaultValue={1} 
           min={1}
-          max={500}
+          max={10000}
           onChange={(valueString) =>{
             setEdition(valueString)
             dispatch(updateMetadataRowValue({ key: 2, value: valueString }))

@@ -23,6 +23,7 @@ export default function Catalog() {
   const kraznik = collections.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'];
   const hash3points = collections.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'];
   const HEN = collections.collections['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'];
+  const kalamint = collections.collections['KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'];
   
   
 
@@ -40,6 +41,9 @@ export default function Catalog() {
     else if(globalCollection!== undefined && HEN===undefined ) {
       dispatch(getNftAssetContractQuery('KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'));
     }
+    else if(globalCollection!== undefined && kalamint===undefined ) {
+      dispatch(getNftAssetContractQuery('KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'));
+    }
     // if (collections.selectedCollection === null) {
     //   // dispatch(selectCollection(collections.globalCollection));
     //   return;
@@ -49,6 +53,7 @@ export default function Catalog() {
     collections.selectedCollection,
     collections.globalCollection,
     kraznik,
+    kalamint,
     hash3points,
     HEN,
     dispatch

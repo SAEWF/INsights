@@ -7,6 +7,10 @@ const collections = {
         {
             name: 'Hash Three Points',
             address: 'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'
+        },
+        {
+            name: 'Kalamint',
+            address: 'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'
         }
     ]
 }

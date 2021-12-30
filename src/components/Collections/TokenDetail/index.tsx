@@ -180,7 +180,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       for(var walletID in shares){
         royalty = shares[walletID];
       }
-
+//TODO do for kalamint
       if(tokenHook.metadata.creators[0]==="KraznikDAO")
         royaltyPercentage = 3;
       else if(tokenHook.metadata.creators[0]==="deconcept.tez")
