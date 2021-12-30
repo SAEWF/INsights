@@ -108,7 +108,6 @@ async function getOwnedTokenMetadataBigMap(
       return data[0];
     })
   );
-  console.log("DATA",data);
   const decoded = D.TokenMetadataBigMap.decode(data);
   if (isLeft(decoded)) {
     throw Error('Failed to decode `getTokenMetadata` response');
