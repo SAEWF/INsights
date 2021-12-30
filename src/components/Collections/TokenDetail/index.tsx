@@ -200,10 +200,24 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
         totalAmount = token.sale.price + royaltyAmount;
       }
     }
+    // hicetnunc
     else if(tokenHook.metadata.symbol && tokenHook.metadata.symbol==="OBJKT"){
       royaltyPercentage = 10;
       royaltyAmount = token.sale.price*0.1;
       creatorAddress = tokenHook.metadata.creators[0];
+      ownerAddress = tokenHook.sale.seller;
+      if(creatorAddress===ownerAddress){
+        totalAmount = token.sale.price;
+      }
+      else{
+        totalAmount = token.sale.price + royaltyAmount;
+      }
+    }
+    // kalamint
+    else if(tokenHook.metadata?.creatorRoyalty!==undefined){
+      royaltyPercentage = tokenHook.metadata?.creatorRoyalty;
+      royaltyAmount = token.sale.price*royaltyPercentage/100;
+      creatorAddress = tokenHook.metadata.creators[0]; 
       ownerAddress = tokenHook.sale.seller;
       if(creatorAddress===ownerAddress){
         totalAmount = token.sale.price;
@@ -245,6 +259,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
     else if(tokenHook.metadata?.symbol && tokenHook.metadata.symbol==="OBJKT"){
       royaltyPercentage = 10;
       creatorAddress = tokenHook.metadata.creators[0];
+    }
+    else if(tokenHook.metadata?.creatorRoyalty!==undefined){
+      royaltyPercentage = tokenHook.metadata?.creatorRoyalty;
     }
     else{
       creatorAddress = tokenHook.metadata.minter;
