@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import './style.css';
-import { Box, } from '@chakra-ui/react'; 
+import { Box, Text } from '@chakra-ui/react'; 
 import firebase from '../../lib/firebase/firebase';
 import { Container, Row, Col, Image, Card} from 'react-bootstrap';
-import {Flex, Heading, Spinner, Tabs, TabList, TabPanels, Tab, TabPanel 
+import {Button, Flex, Heading, Spinner, Tabs, TabList, TabPanels, Tab, TabPanel 
 } from '@chakra-ui/react'; //
 import { useSelector } from '../../reducer';
 import defaultBanner from '../common/assets/defaultBanner.jpg';
 import TokenCard from '../Marketplace/Catalog/TokenCard';
-
+import { FaEdit } from 'react-icons/fa';
+import { useColorModeValue, Divider } from '@chakra-ui/react';
 
 // getting artists from firestore
 function FetchArtistData(usernameFromUrl: string) {
@@ -124,8 +126,11 @@ const GetCollectedNfts = (userdata: TasksType[]) =>{
 export default function ArtistProfile(props: PropType) {
 
   // eslint-disable-next-line
-  const { system, marketplace: state } = useSelector(s => s);
-
+  const bg = useColorModeValue('gray.100', 'black');
+  const color = useColorModeValue('black', 'white');
+  const { system } = useSelector(s => s);
+  const [ , setLocation] = useLocation();
+  const [walletAddress , setWalletAddress] = useState('');
   var usernameFromUrl: string = props.username
   // var userData = useItems(usernameFromUrl);
   var userDataFromFireStore = FetchArtistData(usernameFromUrl);
@@ -133,13 +138,20 @@ export default function ArtistProfile(props: PropType) {
   const CreatedNFTs = GetNfts(userDataFromFireStore);
   const CollectedNFTs = GetCollectedNfts(userDataFromFireStore);
 
+  useEffect(() => {
+    if (system.status === 'WalletConnected') {
+      const wallet = system.tzPublicKey;
+      setWalletAddress(wallet);
+    }
+  }, [system.status, system.tzPublicKey]);
+
   if(userDataFromFireStore.length === 0){
     return(
       <Container className="main-container">
         <Flex flexDir="column" align="center" flex="1" pt={20}>
           <Spinner size="xl" mb={6} color="gray.300" />
           <Heading size="lg" textAlign="center" color="gray.500">
-            Loading...
+            No Artist Found
           </Heading>
         </Flex>
       </Container>
@@ -159,7 +171,11 @@ export default function ArtistProfile(props: PropType) {
                 :<Image alt="banner" className="user-profile-banner-img" src={defaultBanner}/>
                 }
                 </div>
-
+                {
+                  item.walletAddress=== walletAddress ? (
+                  <Button mt={2} onClick={()=>{setLocation('/editprofile')}}>Edit Profile <FaEdit style={{'marginLeft':'10px'}}/></Button>
+                  ) : (<></>)
+                }
                 <div className="user-profile-avatar-wrapper mx-auto">
                   <Image alt="Avatar" className="user-profile-img"  src={item.avatar} thumbnail  />       
                 </div>
@@ -176,30 +192,81 @@ export default function ArtistProfile(props: PropType) {
                   {/* sidebar */}
                   <Col sm={12} md={3}>
 
-                      <Card border="light" className="text-left p-2 mt-2 mb-4" >
-                        <Card.Header className="font-weight-bold"><i className="far fa-compass"></i> Wallet Address </Card.Header>
-                        <Card.Body>
-                          {/* <Card.Title>Light Card Title</Card.Title> */}
-                          <Card.Text>
-                            {item.walletAddress!=="" ?<>{item.walletAddress}</> :"No wallet address provided"}
-                          </Card.Text>
-                        </Card.Body>
-                      </Card>
+                  <Flex
+                    position="relative"
+                    flexDir="column"
+                    ratio={1}
 
-                      <Card border="light" className="text-left p-2 " >
+                    border="2px solid"
+                    borderColor={color}
+                    borderRadius="10px"
+                    overflow="hidden"
+                    boxShadow="none"
+                    transition="all linear 50ms"
+                    _hover={{
+                      cursor: 'pointer',
+                      boxShadow: '0px 0px 10px gray',
+                    }}
+                  >
+                    <Box bg={bg} color={color} borderColor={color} md={6}>
+                        {/* <Card border="light" className="text-left p-2 mt-2 mb-4" > */}
+                          <Box bg={bg} color={color}>
+                            <Card.Header className="font-weight-bold"><i className="far fa-compass"></i> Wallet Address </Card.Header>
+                          </Box>
+                          <Divider/>
+                          <Box bg={bg} color={color}>
+                            <Card.Body>
+                              {/* <Card.Title>Light Card Title</Card.Title> */}
+                              <Card.Text>
+                                <Text>{item.walletAddress!=="" ?<>{item.walletAddress}</> :"No wallet address provided"}</Text>
+                              </Card.Text>
+                            </Card.Body>
+                          </Box>
+                        {/* </Card> */}
+                      </Box>
+                  </Flex>
+                      
+                  
+                  <Flex
+                    position="relative"
+                    flexDir="column"
+                    ratio={1}
+                    border="2px solid"
+                    borderColor={color}
+                    borderRadius="10px"
+                    overflow="hidden"
+                    boxShadow="none"
+                    transition="all linear 50ms"
+                    _hover={{
+                      cursor: 'pointer',
+                      boxShadow: '0px 0px 10px gray',
+                    }}
+
+                    mt={6}
+                  >
+                    <Box bg={bg} color={color}>
+                      {/* <Card border="light" className="text-left p-2 " > */}
+                      <Box bg={bg} color={color}>
                         <Card.Header className="font-weight-bold"><i className="fas fa-link"></i> Social Media</Card.Header>
-                        <Card.Body>
+                      </Box>
+                      <Divider borderColor={color}/>
+                      <Box bg={bg} color={color} borderColor={color} >
+                        <Card.Body className='text-center'>
 
-                        <ul className="social-icons mt-2">
-                            {(item.twt) !==""? <li><a className="twitter" href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
-                            {(item.fb) !==undefined && (item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
-                            {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}
-                            {(item.yt) !==""? <li><a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube " ></i></a></li>:""}
-                            {(item.linktr) !=="" && item.linktr!==undefined? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
-                            {(item.lt) !=="" && item.lt!==undefined? <li><a className="" href={item.lt} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
+                          <ul className="social-icons mt-2 mx-auto">
+                              {(item.twt) !==""? <li><a className="twitter" href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
+                              {(item.fb) !==undefined && (item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
+                              {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}
+                              {(item.yt) !==""? <li><a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube " ></i></a></li>:""}
+                              {(item.linktr) !=="" && item.linktr!==undefined? <li><a className="" href={item.linktr} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
+                              {(item.lt) !=="" && item.lt!==undefined? <li><a className="" href={item.lt} target="_blank" rel="noopener noreferrer"><img className="fab fa-youtube p-1" src="https://img.icons8.com/color/452/linktree.png" alt=""></img></a></li>:""}
                           </ul>
                         </Card.Body>
-                      </Card>
+                      </Box>
+                      {/* </Card> */}
+                      
+                    </Box>
+                  </Flex>
                   </Col>
                   {/* sidebar */}
 

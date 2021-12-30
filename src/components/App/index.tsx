@@ -18,6 +18,7 @@ import AlertBar from '../common/AlertBar';
 import ArtistList from '../Artist/ArtistList';
 import ArtistProfile from '../Artist/ArtistProfile';
 import Registration from '../common/Registration';
+import EditProfile from '../common/EditProfile';
 import Terms from '../common/Terms';
 
 export default function App() {
@@ -96,6 +97,9 @@ export default function App() {
           </Route>
           <Route path="/artists">
             <ArtistList />
+          </Route>
+          <Route path="/editprofile">
+            <EditProfile />
           </Route>
           <Route path="/legal/tnc">
             <Terms />
