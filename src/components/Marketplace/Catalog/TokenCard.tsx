@@ -140,7 +140,7 @@ export default function TokenCard(props: TokenCardProps) {
       royaltyPercentage = 10;
       creatorAddress = props.metadata.creators[0];
     }
-    else{
+    else if(props.metadata){
       creatorAddress = props.metadata.minter;
       royalty = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyArray = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
