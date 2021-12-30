@@ -7,7 +7,7 @@ import {
   getWalletAssetContractsQuery,
   getNftAssetContractQuery
 } from '../../../reducer/async/queries';
-import { selectCollection } from '../../../reducer/slices/collections';
+// import { selectCollection } from '../../../reducer/slices/collections';
 import { connectWallet } from '../../../reducer/async/wallet';
 import logo from '../../common/assets/splash-logo.svg';
 import { MinterButton } from '../../common';

@@ -32,6 +32,7 @@ export default function Notifications() {
 
   useEffect(() => {
     for (let notification of notifications) {
+      if(notification.description === 'unknown') return;
       dispatch(deliverNotification(notification.requestId));
       toast({
         title: notification.title,

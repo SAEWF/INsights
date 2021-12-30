@@ -28,7 +28,7 @@ export const getNftAssetContractQuery = createAsyncThunk<
   } catch (e) {
     return rejectWithValue({
       kind: ErrorKind.GetNftAssetContractFailed,
-      message: `Failed to retrieve asset contract: ${address}`
+      message: 'unknown'
     });
   }
 });
@@ -38,7 +38,7 @@ export const getContractNftsQuery = createAsyncThunk<
   { address: string, ownedOnly: boolean},
   Opts
 >('query/getContractNfts', async (args, { getState, rejectWithValue }) => {
-  const { system, collections } = getState();
+  const { system } = getState();
   const { address, ownedOnly } = args;
   try {
     const tokens = await getContractNfts(system, address, ownedOnly);
@@ -48,9 +48,7 @@ export const getContractNftsQuery = createAsyncThunk<
     // console.error(e);
     return rejectWithValue({
        kind: ErrorKind.GetContractNftsFailed,
-       message: `Retrying NFTs: ${
-         collections.collections[address]?.metadata?.name ?? address
-       }`
+       message: `unknown`
     });
   }
 });
@@ -60,19 +58,17 @@ export const getContractNftQuery = createAsyncThunk<
   { address: string, tokenID: number },
   Opts
 >('query/getContractNft', async (args, { getState, rejectWithValue }) => {
-  const { system, collections } = getState();
+  const { system } = getState();
   const { address, tokenID } = args;
   try {
     const tokens = await getContractNft(system, address, tokenID);
     //  console.log("TOKENS", tokens);
     return { address, tokens };
   } catch (e) {
-    // console.error(e);
+    console.error(e);
     return rejectWithValue({
        kind: ErrorKind.GetContractNftsFailed,
-       message: `Retrying NFTs: ${
-         collections.collections[address]?.metadata?.name ?? address
-       }`
+       message: `unknown`
     });
   }
 });
