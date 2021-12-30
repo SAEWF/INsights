@@ -106,6 +106,18 @@ export default function TokenCard(props: TokenCardProps) {
         totalAmount = props.sale.price + royaltyAmount;
       }
     }
+    else if(props.metadata?.creatorRoyalty!==undefined){
+      creatorAddress = props.metadata.creators[0];
+      royaltyPercentage = props.metadata?.creatorRoyalty;
+      royaltyAmount = props.sale.price*royaltyPercentage;
+      ownerAddress = props.sale.seller;
+      if(creatorAddress===ownerAddress){
+        totalAmount = props.sale.price;
+      }
+      else{
+        totalAmount = props.sale.price + royaltyAmount;
+      }
+    }
     else{
       royalty = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyArray = props.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
@@ -139,6 +151,10 @@ export default function TokenCard(props: TokenCardProps) {
     else if(props.metadata?.symbol && props.metadata.symbol==="OBJKT"){
       royaltyPercentage = 10;
       creatorAddress = props.metadata.creators[0];
+    }
+    else if(props.metadata?.creatorRoyalty!==undefined){
+      creatorAddress = props.metadata.creators[0];
+      royaltyPercentage = props.metadata?.creatorRoyalty;
     }
     else if(props.metadata){
       creatorAddress = props.metadata.minter;
