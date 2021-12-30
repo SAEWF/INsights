@@ -263,6 +263,8 @@ export async function getContractNfts(
   if(ledgerA.length === 0){
     if(ownedOnly && system.status==='WalletConnected'){
       ledgerB = await getOwnedLedgerBigMapCustom(system.tzkt, address, system.tzPublicKey);
+      const mktLedger = await getOwnedLedgerBigMap(system.tzkt, address, system.config.contracts.marketplace.fixedPrice.tez);
+      ledgerB.push(...mktLedger);
     }
     else{
       ledgerB = await getLedgerBigMapCustom(system.tzkt, address);
@@ -273,7 +275,7 @@ export async function getContractNfts(
   console.log("LEDGER",ledger);
   let tokensA: D.TokenMetadataBigMap = [];
   // TODO : optimising below API calls
-  if(ownedOnly && system.status==='WalletConnected'){
+  if(ownedOnly && system.status==='WalletConnected' && ledger.length < 100){
     var keys: string[] = [];
     for(var i=0;i<ledger.length;i++){
       if(typeof ledger[i].key === 'string'){
