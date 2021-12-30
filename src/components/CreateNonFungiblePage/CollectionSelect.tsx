@@ -34,6 +34,7 @@ export default function CollectionSelect() {
   //   console.log('collections is empty');
   // }
 
+  const secondaryCollections = ['Kraznik', 'hash3points', 'hicetnunc'];
   return (
     <>
       <CreateBaseCollection />
@@ -71,7 +72,10 @@ export default function CollectionSelect() {
             >
               {(Object.entries(collections).length !== 0) ?
 
-                Object.keys(collections).map(address => (
+                Object.keys(collections).map(address => {
+                  // block secondary sales and objkt collections from being selected to mint tokens
+                  if(!secondaryCollections.includes(collections[address].metadata.name) && collections[address].creator.address!=='KT1Aq4wWmVanpQhq4TTfjZXB5AjFpx15iQMM')
+                  return(
                   <MenuItemOption
                     key={address}
                     value={address}
@@ -79,7 +83,10 @@ export default function CollectionSelect() {
                     onClick={() => dispatch(selectCollection(address))}
                   >
                     {collections[address].metadata.name}
-                  </MenuItemOption>))
+                  </MenuItemOption>
+                  )
+                  else return <></>
+                })
                 :
                 <MenuItemOption disabled>
                   <Spinner animation="border" size="sm" className="mr-2" /> Wait while we fetch your collection(s)

@@ -108,7 +108,10 @@ async function getOwnedTokenMetadataBigMap(
       return data[0];
     })
   );
+<<<<<<< HEAD
   //console.log("DATA",data);
+=======
+>>>>>>> 744138e2e5d0c79ea5810e9e6c95dc5321b331a8
   const decoded = D.TokenMetadataBigMap.decode(data);
   if (isLeft(decoded)) {
     throw Error('Failed to decode `getTokenMetadata` response');
@@ -263,6 +266,8 @@ export async function getContractNfts(
   if(ledgerA.length === 0){
     if(ownedOnly && system.status==='WalletConnected'){
       ledgerB = await getOwnedLedgerBigMapCustom(system.tzkt, address, system.tzPublicKey);
+      const mktLedger = await getOwnedLedgerBigMap(system.tzkt, address, system.config.contracts.marketplace.fixedPrice.tez);
+      ledgerB.push(...mktLedger);
     }
     else{
       ledgerB = await getLedgerBigMapCustom(system.tzkt, address);
@@ -270,10 +275,14 @@ export async function getContractNfts(
   }
 
   const ledger = [...ledgerA, ...ledgerB];
+<<<<<<< HEAD
   //console.log("LEDGER",ledger);
+=======
+  // console.log("LEDGER",ledger);
+>>>>>>> 744138e2e5d0c79ea5810e9e6c95dc5321b331a8
   let tokensA: D.TokenMetadataBigMap = [];
   // TODO : optimising below API calls
-  if(ownedOnly && system.status==='WalletConnected'){
+  if(ownedOnly && system.status==='WalletConnected' && ledger.length < 100){
     var keys: string[] = [];
     for(var i=0;i<ledger.length;i++){
       if(typeof ledger[i].key === 'string'){
