@@ -240,14 +240,19 @@ function NavItems() {
                   height="100%"
                 >
                   <Flex flexDir="column">
-                    { isRegistered!=='' ? (
-                        <MobileHeaderLink to={`/artistprofile/${isRegistered}`} onClick={onClose}>
-                          My profile
+                    {
+                      system.status === 'WalletConnected' ? (
+                      isRegistered!=='' ? (
+                          <MobileHeaderLink to={`/artistprofile/${isRegistered}`} onClick={onClose}>
+                            My profile
+                          </MobileHeaderLink>
+                        ) :      
+                        <MobileHeaderLink to="/register" onClick={onClose}>
+                          Register
                         </MobileHeaderLink>
-                      ) :      
-                      <MobileHeaderLink to="/register" onClick={onClose}>
-                        Register
-                      </MobileHeaderLink>
+                        ) : (
+                          <></>
+                      )
                     }
 
                     <MobileHeaderLink to="/artists" onClick={onClose}>
@@ -309,6 +314,7 @@ function NavItems() {
           <Text ml={2} >Marketplace</Text>
         </DesktopHeaderLink> */}
         {
+          system.status === 'WalletConnected' ? (
           isRegistered==='' ? (
             <DesktopHeaderLink to="/register">
               <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>Register</Text>
@@ -317,6 +323,8 @@ function NavItems() {
             <DesktopHeaderLink to={`/artistprofile/${isRegistered}`}>
               <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>My profile</Text>
             </DesktopHeaderLink>
+          )) : (
+            <></>
           )
         }
 
