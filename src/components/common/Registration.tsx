@@ -8,9 +8,11 @@ import {Checkbox, Flex, Input, Box, Textarea, InputGroup, InputLeftAddon,
   // InputRightElement, 
 Button, Link} from '@chakra-ui/react';
 import uploadImage from './uploadImage';
+import { useLocation } from 'wouter';
 
 function RegistrationPage(props: any) {
     const { system } = useSelector(s => s);
+    const [,setLocation] = useLocation();
     const [formData, setFormData] = useState({"ig":"","lt":"","yt":"","display":true});
     const [country, setCountry] = useState('');
     const [name, setName] = useState('');
@@ -112,7 +114,7 @@ function RegistrationPage(props: any) {
             document.querySelector('.registrationError')!.innerHTML = "Server Error Occured . Please try again .";
             return;
           }
-          var data = {...formData,"avatar":url};
+          var data = {...formData,"avatar":url, "walletAddress":walletID};
 
           await setFormData(data);
           // console.log("FINAL",data);
@@ -365,6 +367,9 @@ function RegistrationPage(props: any) {
           </div>
           <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'cyan', fontSize: '30px', marginTop: '15%'}}>
             You have been registered .
+          </div>
+          <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'cyan', fontSize: '30px', marginTop: '15%'}}>
+            <Button mt={2} onClick={()=>{setLocation(`/artistprofile/${name.replaceAll(' ','')}`)}}> My profile </Button>
           </div>
           </Container>
           </Flex>
