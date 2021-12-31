@@ -185,7 +185,7 @@ export default function TokenCard(props: TokenCardProps) {
       {/* {console.log(props)} */}
       {/* {console.log(props.metadata?.attributes)} */}
 
-      <Box bg={bg} color={color}><Card.Header>Featured</Card.Header></Box>
+      {/* <Box bg={bg} color={color}><Card.Header>Featured</Card.Header></Box> */}
       <AspectRatio ratio={3 / 3.5}       
         onClick={() =>
         openInNewTab(`/collection/${props.address}/token/${props.id}`)
