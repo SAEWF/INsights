@@ -40,12 +40,12 @@ function RegistrationPage(props: any) {
         querySnapshot.forEach((doc) => {
           // console.log(doc.id, " => ", doc.data());
           let data = doc.data();
-          let walletAddress = data.walletAddress;
+          let walletAddress = doc.id;
           if(walletAddress===undefined) return;
           // console.log(data);
           //username = username.replaceAll(" ","");
           if(walletAddress===system.tzPublicKey && doc.data().display!==undefined && doc.data().display){
-            temp.push({id: doc.id, ...data});
+            temp.push({ ...data});
           }
         });
 
@@ -105,6 +105,9 @@ function RegistrationPage(props: any) {
 
             setSuccess(true);
             setUsername(data1.name.replaceAll(" ",""));
+          }
+          else{
+            console.log("Display not allowed.");
           }
 
         }
@@ -225,151 +228,183 @@ function RegistrationPage(props: any) {
     }
 
     if(success)
-    return(
-      <>
-        <Flex
-          w="100vw"
-          h="100%"
-          px={10}
-          pt={6}
-          overflowY="scroll"
-          justify="start"
-          flexDir="row"
-        >
-        <Container>
-        <div className="one mt-4 mb-3">
-            <h1>Edit Profile</h1>
-        </div>
-        <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'cyan', fontSize: '30px', marginTop: '15%'}}>
-          You profile has been updated successfully. 
-        </div>
-        <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'cyan', fontSize: '30px', marginTop: '15%'}}>
-          <Button mt={2} onClick={()=>{setLocation(`/artistprofile/${username}`)}}> My profile </Button>
-        </div>
-        </Container>
-        </Flex>
-      </>
-    );
-    else
-    return (
-      <>
+    {
+      return(
+        <>
           <Flex
-        w="100vw"
-        h="100%"
-        px={10}
-        pt={6}
-        overflowY="scroll"
-        justify="start"
-        flexDir="row"
-      >
-    <Container >
-    <Box p={6} maxWidth="100%" borderWidth={3} borderRadius={10} boxShadow="lg">
+            w="100vw"
+            h="100%"
+            px={10}
+            pt={6}
+            overflowY="scroll"
+            justify="start"
+            flexDir="row"
+          >
+          <Container>
           <div className="one mt-4 mb-3">
-            <h1>Edit Profile</h1>
+              <h1>Edit Profile</h1>
           </div>
-          <div className="registrationError" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'red'}}></div>
-          <div className="successMessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green'}}></div>
-          <br />
-          <Form id="myform" onSubmit={handleSignup} onChange={handleChange}>
-            
-            {/* NAME */}
-            <div className="row align-items-center justify-content-center">
-            <FormGroup className="col-md-8 col-12" >
-                <Input value={name} isInvalid errorBorderColor="cyan.300" 
-                  
-                  variant="filled" 
-                  name="name" id="name" 
-                  placeholder="Full Name *" 
-                  isRequired 
-                  style={{margin: 'auto'}} 
-                />
-            </FormGroup>
-            </div>
-
-            {/* EMAIL */}
-            <div className="row align-items-center justify-content-center">
-            <FormGroup className="col-md-8 col-12">
-                <Input value={email} isInvalid type="email" errorBorderColor="cyan.300" 
-                  name="email" id="email"  
-                  variant="filled" 
-                  placeholder="Email " 
-                  // isRequired 
-                  style={{margin: 'auto'}} 
-                />
-            </FormGroup>
-            </div>
-
-              {/* DESCRIPTION */}
-            <div className="row align-items-center justify-content-center">
-            <FormGroup className="col-md-8 col-12">
-                <Textarea value={desc} 
-                  errorBorderColor="cyan.300" 
-                  name="description" id="desc" 
-                  isInvalid isRequired
-                  placeholder="Description [ Max Length : 500 ]" 
-                  style={{margin: 'auto'}} 
-                  variant="filled"
-                />
-                <div className="desccheck col-md-7 col-12" style={{margin: 'auto 0 0 auto', color: 'red'}}>
+          <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'cyan', fontSize: '30px', marginTop: '15%'}}>
+            You profile has been updated successfully. 
+          </div>
+          <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'cyan', fontSize: '30px', marginTop: '15%'}}>
+            <Button mt={2} onClick={()=>{setLocation(`/artistprofile/${username}`)}}> My profile </Button>
+          </div>
+          </Container>
+          </Flex>
+        </>
+      );
+    }
+    else
+    {
+      
+      if(tasks.length > 0){
+          return (
+            <>
+                <Flex
+              w="100vw"
+              h="100%"
+              px={10}
+              pt={6}
+              overflowY="scroll"
+              justify="start"
+              flexDir="row"
+            >
+          <Container >
+          <Box p={6} maxWidth="100%" borderWidth={3} borderRadius={10} boxShadow="lg">
+                <div className="one mt-4 mb-3">
+                  <h1>Edit Profile</h1>
                 </div>
-            </FormGroup>
-            </div>
-
-             {/* Social Links */}
-             <div className="row">
-            <div className="col-lg-2 col-0"></div>
-            <FormGroup className="col-lg-4 col-md-6 col-12">
-                <Input value={twt} isInvalid type="text" errorBorderColor="cyan.300" name="twt" id="twitter" variant="filled" placeholder="Twitter Handle *" isRequired style={{margin: 'auto'}} />
-                <div className="twtcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <FormGroup className="col-lg-4 col-md-6 col-12">
-                <Input value={instagram} isInvalid type="url" errorBorderColor="cyan.300" name="ig" id="instagram" variant="filled" placeholder="Instagram Link" style={{margin: 'auto'}} />
-                <div className="igcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            </div>
-            <div className="row">
-            <div className="col-lg-2 col-0"></div>
-            <FormGroup className="col-lg-4 col-md-6 col-12">
-                <Input value={utube} isInvalid type="url" errorBorderColor="cyan.300" name="yt" id="youtube" variant="filled" placeholder="Youtube Channel" style={{margin: 'auto'}} />
-                <div className="utubecheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <FormGroup className="col-lg-4 col-md-6 col-12">
-                <Input value={linktr} isInvalid type="url" errorBorderColor="cyan.300" name="lt" id="linktree"  variant="filled" placeholder="Linktree" style={{margin: 'auto'}} />
-                <div className="ltcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            </div>
-
-
-            {/* AVATAR AND COUNTRY */}
-            <div className="row align-items-center justify-content-center">
-            <FormGroup className="col-md-4 col-12" >
-              <InputGroup style={{margin: 'auto', border: 'cyan'}} >
-                <InputLeftAddon children="Profile Picture" />
-                <Input 
-                  style={{margin: 'auto',paddingTop: '3px'}} 
-                  accept="image/*" 
-                  type="file" 
-                  name="avatar" id="name" 
-                  // isRequired
-                />
-              </InputGroup>
-              <div className="avatarcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            
-            </div>
-          
-            {/* SUBMIT BUTTON */}
-            <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
-              <Button disabled={disable} isLoading={loading} loadingText="Submitting" variant="solid" colorScheme="teal" size="lg" type="submit" className="c-button-up">
-                Update Profile
-              </Button>
-            </div>
-          </Form>
-          </Box>
-        </Container>
-        </Flex>
-      </>
-    );
+                <div className="registrationError" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'red'}}></div>
+                <div className="successMessage" style={{display: 'flex',alignItems: 'center',justifyContent: 'center', color: 'green'}}></div>
+                <br />
+                <Form id="myform" onSubmit={handleSignup} onChange={handleChange}>
+                  
+                  {/* NAME */}
+                  <div className="row align-items-center justify-content-center">
+                  <FormGroup className="col-md-8 col-12" >
+                      <Input value={name} isInvalid errorBorderColor="cyan.300" 
+                        
+                        variant="filled" 
+                        name="name" id="name" 
+                        placeholder="Full Name *" 
+                        isRequired 
+                        style={{margin: 'auto'}} 
+                      />
+                  </FormGroup>
+                  </div>
+      
+                  {/* EMAIL */}
+                  <div className="row align-items-center justify-content-center">
+                  <FormGroup className="col-md-8 col-12">
+                      <Input value={email} isInvalid type="email" errorBorderColor="cyan.300" 
+                        name="email" id="email"  
+                        variant="filled" 
+                        placeholder="Email " 
+                        // isRequired 
+                        style={{margin: 'auto'}} 
+                      />
+                  </FormGroup>
+                  </div>
+      
+                    {/* DESCRIPTION */}
+                  <div className="row align-items-center justify-content-center">
+                  <FormGroup className="col-md-8 col-12">
+                      <Textarea value={desc} 
+                        errorBorderColor="cyan.300" 
+                        name="description" id="desc" 
+                        isInvalid isRequired
+                        placeholder="Description [ Max Length : 500 ]" 
+                        style={{margin: 'auto'}} 
+                        variant="filled"
+                      />
+                      <div className="desccheck col-md-7 col-12" style={{margin: 'auto 0 0 auto', color: 'red'}}>
+                      </div>
+                  </FormGroup>
+                  </div>
+      
+                   {/* Social Links */}
+                   <div className="row">
+                  <div className="col-lg-2 col-0"></div>
+                  <FormGroup className="col-lg-4 col-md-6 col-12">
+                      <Input value={twt} isInvalid type="text" errorBorderColor="cyan.300" name="twt" id="twitter" variant="filled" placeholder="Twitter Handle *" isRequired style={{margin: 'auto'}} />
+                      <div className="twtcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+                  </FormGroup>
+                  <FormGroup className="col-lg-4 col-md-6 col-12">
+                      <Input value={instagram} isInvalid type="url" errorBorderColor="cyan.300" name="ig" id="instagram" variant="filled" placeholder="Instagram Link" style={{margin: 'auto'}} />
+                      <div className="igcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+                  </FormGroup>
+                  </div>
+                  <div className="row">
+                  <div className="col-lg-2 col-0"></div>
+                  <FormGroup className="col-lg-4 col-md-6 col-12">
+                      <Input value={utube} isInvalid type="url" errorBorderColor="cyan.300" name="yt" id="youtube" variant="filled" placeholder="Youtube Channel" style={{margin: 'auto'}} />
+                      <div className="utubecheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+                  </FormGroup>
+                  <FormGroup className="col-lg-4 col-md-6 col-12">
+                      <Input value={linktr} isInvalid type="url" errorBorderColor="cyan.300" name="lt" id="linktree"  variant="filled" placeholder="Linktree" style={{margin: 'auto'}} />
+                      <div className="ltcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+                  </FormGroup>
+                  </div>
+      
+      
+                  {/* AVATAR AND COUNTRY */}
+                  <div className="row align-items-center justify-content-center">
+                  <FormGroup className="col-md-4 col-12" >
+                    <InputGroup style={{margin: 'auto', border: 'cyan'}} >
+                      <InputLeftAddon children="Profile Picture" />
+                      <Input 
+                        style={{margin: 'auto',paddingTop: '3px'}} 
+                        accept="image/*" 
+                        type="file" 
+                        name="avatar" id="name" 
+                        // isRequired
+                      />
+                    </InputGroup>
+                    <div className="avatarcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
+                  </FormGroup>
+                  
+                  </div>
+                
+                  {/* SUBMIT BUTTON */}
+                  <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
+                    <Button disabled={disable} isLoading={loading} loadingText="Submitting" variant="solid" colorScheme="teal" size="lg" type="submit" className="c-button-up">
+                      Update
+                    </Button>
+                  </div>
+                </Form>
+                </Box>
+              </Container>
+              </Flex>
+            </>
+        );
+      }
+      else{
+        return (
+          <>
+             <Flex
+              w="100vw"
+              h="100%"
+              px={10}
+              pt={6}
+              overflowY="scroll"
+              justify="start"
+              flexDir="row"
+            >
+            <Container >
+            <Box p={6} maxWidth="100%" borderWidth={3} borderRadius={10} boxShadow="lg">
+                  <div className="one mt-4 mb-3">
+                    <h1>Please register yourself</h1>
+                  </div>
+                  
+                  
+            </Box>
+            </Container>
+              </Flex>
+          </>
+        );
+      }
+    }
 }
 
 interface TasksType {
