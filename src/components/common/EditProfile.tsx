@@ -45,7 +45,7 @@ function RegistrationPage(props: any) {
           // console.log(data);
           //username = username.replaceAll(" ","");
           if(walletAddress===system.tzPublicKey && doc.data().display!==undefined && doc.data().display){
-            temp.push({ ...data});
+            temp.push({ 'id': doc.id, ...data});
           }
         });
 
@@ -56,7 +56,7 @@ function RegistrationPage(props: any) {
         setName(temp[0].name);
         setDesc(temp[0].description);
         setTwt(temp[0].twt);
-        setWalletID(temp[0].walletAddress);
+        setWalletID(temp[0].id);
         setEmail(temp[0].email);
         setUtube(temp[0].yt);
         setInstagram(temp[0].ig);
