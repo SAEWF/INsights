@@ -25,9 +25,7 @@ function RegistrationPage(props: any) {
     const [instagram, setInstagram] = useState('');
     const [linktr, setlinkTree] = useState('');
     const [success, setSuccess] = useState(false);
-    // const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
-    // const [objkt, setObjkt] = useState('');
     const [tasks, setTasks] = useState<TasksType[]>([]);
 
 
@@ -72,21 +70,20 @@ function RegistrationPage(props: any) {
     const RegisterUser = async () => {
       document.querySelector('.registrationError')!.innerHTML = "";
       document.querySelector('.successMessage')!.innerHTML = "";
-      // document.querySelector('.passcheck')!.innerHTML = "";
-      // document.querySelector('.passcheck2')!.innerHTML = "";
       document.querySelector('.twtcheck')!.innerHTML = "";
-      // document.querySelector('.walletcheck')!.innerHTML = "";
       document.querySelector('.utubecheck')!.innerHTML = "";
       document.querySelector('.igcheck')!.innerHTML = "";
       document.querySelector('.ltcheck')!.innerHTML = "";
-      // document.querySelector('.countryCheck')!.innerHTML = "";
 
       const db = firebase.firestore();
       var url="";
       const docRef = db.collection('artists').doc(walletID);
       await docRef.get().then(async (doc)=>{
+        console.log("doc exists = ",doc.exists);
         if(doc.exists){
-          if(doc.data()!.display !== undefined){
+          let data:any = doc.data();
+          console.log("doc.data() = ",data.display);
+          if(data.display !== undefined){
             if(file){
               url = await uploadImage(file);
             }
@@ -109,95 +106,21 @@ function RegistrationPage(props: any) {
             setSuccess(true);
             setUsername(data1.name.replaceAll(" ",""));
           }
-          // else 
-          // {
-          //   let data1 = {...formData,"avatar":url}
-          //   docRef.update({...tasks[0], ...data1});
-          // }
+
         }
-        // else{
-        //   if(file){
-        //     url = await uploadImage(file);
-        //   }
-            
-        //   if( (url===undefined || url==="") && file){
-        //     document.querySelector('.registrationError')!.innerHTML = "Error in uploading image . Please try again .";
-        //     return;
-        //   }
-        //   var ahead = true;
-
-        //   // await firebase.auth().createUserWithEmailAndPassword(email, password)
-        //   // .then((userCredential) => {
-        //   //   // Signed in 
-        //   //   var user = userCredential.user;
-        //   //   user?.updateProfile({
-        //   //     displayName: name,
-        //   //     //photoUrl linked as wallet ID to retrieve rest of details
-        //   //     photoURL: walletID
-        //   //   }).then(() => {
-        //   //     // User profile updated
-        //   //   }).catch((error) => {
-        //   //     console.error(error);
-        //   //   });
-        //   // })
-        //   // .catch((error) => {
-        //   //   var errorCode = error.code;
-        //   //   var errorMessage = error.message;
-        //   //   console.error(errorMessage);
-        //   //   if (errorCode === 'auth/email-already-in-use') {
-        //   //     ahead = false;
-        //   //     document.querySelector('.registrationError')!.innerHTML = "Email already in use.";
-        //   //     return;
-        //   //   }
-        //   // });
-
-        //   if(!ahead || url===undefined || url===""){
-        //     document.querySelector('.registrationError')!.innerHTML = "Server Error Occured . Please try again .";
-        //     return;
-        //   }
-        //   var data = {...formData,"avatar":url};
-
-        //   await setFormData(data);
-        //   // console.log("FINAL",data);
-        //   await docRef.set(data).then(() => {
-        //     setSuccess(true);
-        //     // console.log("Document successfully written!");
-        //   })
-        //   .catch((error)=>{
-        //       document.querySelector('.registrationError')!.innerHTML = "An Error occured . Please try again .";
-        //       // console.log("ERROR OCCURED !!");
-        //   })
-        // }
+     
       });
     }
         
 
-    // const isValid = (walletID: string) =>{
-    //   if( walletID[0]!=='t' || walletID[1]!=='z' || walletID[2]<'0' || walletID[2]>'9' )
-    //   return false;
-    //   else return true;
-    // }
 
     const handleChange = (e: any) =>{
        
         if(e.target.name==="twt"){
           setTwt(e.target.value);
-          // if(!e.target.value.match(/^https:\/\/twitter.com\//)){
-          //   document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
-          // }
-          // else{
-          //   document.querySelector('.twtcheck')!.innerHTML = "";
-          // }
+
         }
-        // else if(e.target.name==="country"){
-        //   setCountry(e.target.value);
-        //   if(e.target.value===""){
-        //     document.querySelector('.countryCheck')!.innerHTML = "Please select a country";
-        //   }
-        //   else{
-        //     document.querySelector('.countryCheck')!.innerHTML = "";
-        //   }
-        // }
+
         if(e.target.name==="lt"){
           setlinkTree(e.target.value);
           if(!e.target.value.match(/^https:\/\/linktr\.ee\//)){
@@ -270,80 +193,18 @@ function RegistrationPage(props: any) {
           // console.log(e.target.files[0]);
           return;
         }
-        // if(e.target.name==='password'){
-        //   setPassword(e.target.value);
-
-        //   // password validations
-        //   if(e.target.value.length<6){
-        //     document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
-        //   }
-        //   else if(!e.target.value.match(/[a-z]/i)){
-        //     document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
-        //   }
-        //   else if(!e.target.value.match(/[A-Z]/i)){
-        //     document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one uppercase letter.";
-        //   }
-        //   else if(!e.target.value.match(/[0-9]/i)){
-        //     document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one number.";
-        //   }
-        //   else if(!e.target.value.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/i)){
-        //     document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one special character.";
-        //   }
-        //   else{
-        //     document.querySelector('.passcheck')!.innerHTML = "";
-        //   }
-
-        //   if(e.target.value===cpassword){
-        //     document.querySelector('.passcheck2')!.innerHTML = "";
-        //   }
-
-        //   return;
-        // }
+     
         if(e.target.name==='terms'){
           setDisable(!disable);
           return;
         }
-        // if(e.target.name==='cpassword'){
-        //   setCpassword(e.target.value);
-        //   if(e.target.value!==password){
-        //     document.querySelector('.passcheck2')!.innerHTML = "Passwords do not match.";
-        //     return;
-        //   }
-        //   else{
-        //     document.querySelector('.passcheck2')!.innerHTML = "";
-        //     return;
-        //   }
-        // }
-
         setFormData({...formData, [e.target.name] : e.target.value});
-        // console.log(formData);
+
     }
 
     const handleSignup = async (event: any) =>{
         event.preventDefault();
-        // console.log("SIGNUP", password, cpassword);
-        // if(event.target.password.value.length <= 6){
-        //   document.querySelector('.passcheck')!.innerHTML = "Password should be atleast 6 characters long.";
-        // }
-        // else if(!event.target.password.value.match(/[a-z]/i)){
-        //   document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one lowercase letter.";
-        // }
-        // else if(!event.target.password.value.match(/[A-Z]/i)){
-        //   document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one uppercase letter.";
-        // }
-        // else if(!event.target.password.value.match(/[0-9]/i)){
-        //   document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one number.";
-        // }
-        // else if(!event.target.password.value.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/i)){
-        //   document.querySelector('.passcheck')!.innerHTML = "Password should contain atleast one special character.";
-        // }
-        // if(country===""){
-        //     document.querySelector('.countryCheck')!.innerHTML = "Please Select Country";
-        // }
-        // else if(!twt.match(/^https:\/\/twitter.com\//)){
-        //     document.querySelector('.twtcheck')!.innerHTML = "Please enter valid Twitter Handle";
-        // }
-        // else 
+        
         if(!utube.match(/^https:\/\/www.youtube.com\/channel\// ) && utube!==""){
           document.querySelector('.utubecheck')!.innerHTML = "Please enter valid Youtube Channel";
         }
@@ -353,12 +214,7 @@ function RegistrationPage(props: any) {
         else if(!linktr.match(/^https:\/\/linktr\.ee\// ) && linktr!==""){
           document.querySelector('.ltcheck')!.innerHTML = "Please enter valid Linktr Handle";
         }
-        // else if(!isValid(walletID)){
-        //     document.querySelector('.walletcheck')!.innerHTML = "Please enter valid Wallet Address";
-        // }
-        // else if(event.target.password.value !== event.target.cpassword.value){
-        //   document.querySelector('.passcheck2')!.innerHTML = "Both passwords dont match . Try again !";
-        // }
+        
         else{
           setLoading(true); 
           setDisable(true);
@@ -443,74 +299,6 @@ function RegistrationPage(props: any) {
             </FormGroup>
             </div>
 
-            {/* PASSWORD FORM */}
-            {/* <div className="row align-items-center justify-content-center">
-            <FormGroup className="col-lg-4 col-md-8 col-12" >
-                <InputGroup size="md" >
-                <Input
-                  
-                  name="password" id="password"
-                  value={password}
-                  type={show ? "text" : "password"}
-                  placeholder="Enter password"
-                  isInvalid
-                  isRequired
-                  errorBorderColor="cyan.300"
-                  variant="filled"
-                />
-                <InputRightElement>
-                  <Button size="sm" onClick={handlePassState}>
-                    {show ? "Hide" : "Show"}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              <div className="passcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            <FormGroup className="col-lg-4 col-md-8 col-12">
-                <Input value={cpassword} 
-                  isInvalid 
-                  type="password" 
-                  errorBorderColor="cyan.300" 
-                  name="cpassword" id="cpassword" 
-                  variant="filled" 
-                  placeholder="Confirm Password" 
-                  isRequired
-                />
-                <div className="passcheck2" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            </div> */}
-
-            {/* WALLET ID */}
-            {/* <div className="row align-items-center justify-content-center">
-            <FormGroup className="col-md-8 col-12">
-                <Input value={walletID} 
-                  isInvalid type="text" 
-                  errorBorderColor="cyan.300" 
-                  variant="filled" 
-                  name="walletAddress" id="walletAddress" 
-                  placeholder="Tezos Wallet Address * ( eg., tz1...... )" 
-                  isRequired style={{margin: 'auto'}} 
-                />
-                <div className="walletcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            </div> */}
-
-            {/* {objkt} */}
-            {/* <div className="row align-items-center justify-content-center">
-            <FormGroup className="col-md-8 col-12">
-                <Input value={objkt} 
-                  isInvalid type="text" 
-                  errorBorderColor="cyan.300" 
-                  variant="filled" 
-                  name="objktCollection" id="objkt" 
-                  placeholder="Objkt Collection Address ( eg., KT1...... )" 
-                  style={{margin: 'auto',justifyContent: 'center'}} 
-                  onChange={(event)=>{setObjkt(event.target.value)}}
-                />
-                <div className="walletcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup>
-            </div> */}
-
               {/* DESCRIPTION */}
             <div className="row align-items-center justify-content-center">
             <FormGroup className="col-md-8 col-12">
@@ -567,22 +355,10 @@ function RegistrationPage(props: any) {
               </InputGroup>
               <div className="avatarcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
             </FormGroup>
-            {/* <FormGroup className="col-md-4 col-12" >
-                <div className="countries" style={{color: 'black', margin: 'auto', height: '35px'}}>
-                  <CountryDropdown name="country" value={country} onChange={selectCountry} />
-                </div>
-                <div className="countryCheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
-            </FormGroup> */}
+            
             </div>
           
             {/* SUBMIT BUTTON */}
-            {/* <FormGroup className="row" style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
-                <Checkbox colorScheme="green" name="terms" >
-                I agree to the 
-                <Link href="/legal/tnc"> Terms of Service of ByteBlock </Link>  
-                </Checkbox>
-            </FormGroup> */}
-            
             <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
               <Button disabled={disable} isLoading={loading} loadingText="Submitting" variant="solid" colorScheme="teal" size="lg" type="submit" className="c-button-up">
                 Update Profile
