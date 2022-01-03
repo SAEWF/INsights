@@ -321,7 +321,7 @@ export async function getContractNfts(
   // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
   // //console.log("tokensSorted",tokensSorted);
-  return await Promise.all(
+  const result =  await Promise.all(
     tokensSorted.map(
       async (token): Promise<D.Nft> => {
         const { token_id: tokenId, token_info: tokenInfo } = token.value;
@@ -374,6 +374,8 @@ export async function getContractNfts(
       }
     )
   );
+
+  return result;
 }
 
 export async function getContractNft(
