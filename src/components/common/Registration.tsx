@@ -50,8 +50,7 @@ function RegistrationPage(props: any) {
 
       const db = firebase.firestore();
       var url="";
-      if(walletID===null){
-        console.error("Please report to admin !");
+      if(!walletID){
         document.querySelector('.walletcheck')!.innerHTML = "Please connect your wallet";
         return;
       }
@@ -75,7 +74,7 @@ function RegistrationPage(props: any) {
             setSuccess(true);
           }
           else 
-          document.querySelector('.registrationError')!.innerHTML = "You have already registered .";
+          document.querySelector('.registrationError')!.innerHTML = "Wallet ID already exists .";
         }
         else{
           url = await uploadImage(file);

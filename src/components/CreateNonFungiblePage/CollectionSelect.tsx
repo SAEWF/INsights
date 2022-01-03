@@ -34,7 +34,7 @@ export default function CollectionSelect() {
   //   console.log('collections is empty');
   // }
 
-  const secondaryCollections = ['Kraznik', 'hash3points', 'Hicetnunc', 'Kalamint', 'Geckos Skratz'];
+  const secondaryCollections = ['Kraznik', 'hash3points', 'hicetnunc'];
   return (
     <>
       <CreateBaseCollection />

@@ -18,7 +18,6 @@ export default function Sidebar() {
   const hash3points = state.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'];
   const HEN = state.collections['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'];
   const kalamint = state.collections['KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'];
-  const geckos = state.collections['KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'];
   const dispatch = useDispatch();
   const [objktState, setObjktState] = React.useState([]);
 
@@ -144,16 +143,6 @@ export default function Sidebar() {
             selected={'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse' === state.selectedCollection}
             onSelect={address => dispatch(selectCollection(address))}
             {...state.collections['KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse']}
-          />
-          : null
-        }
-        {
-          geckos ?
-          <CollectionTab
-            key={'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'}
-            selected={'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP' === state.selectedCollection}
-            onSelect={address => dispatch(selectCollection(address))}
-            {...state.collections['KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP']}
           />
           : null
         }

@@ -11,11 +11,7 @@ const collections = {
         {
             name: 'Kalamint',
             address: 'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'
-        },
-        {
-            name: 'Geckos Skratz',
-            address: 'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'
-        },
+        }
     ]
 }
 
