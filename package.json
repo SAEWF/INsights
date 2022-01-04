@@ -47,7 +47,6 @@
     "react-redux": "7.2.2",
     "react-use-pagination": "2.0.1",
     "shelljs": "0.8.4",
-    "styled-components": "5.3.3",
     "ts-deepmerge": "1.0.8",
     "typescript": "4.1.3",
     "uuid": "8.3.2",

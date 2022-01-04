@@ -42,7 +42,24 @@ export default function CollectionTab({
                     bg: selected ? 'brand.blue' : 'gray.200'
                 }}
             >
-                <Text>{metadata?.name ? metadata.name[0] : '?'}</Text>
+                {
+                    metadata.name==="Kraznik" ?
+                    <img src={require('../../common/assets/Kraznik.jpg')} alt="Kraznik" width="100%" height="100%" />
+                    :
+                    metadata.name==="Hicetnunc" ?
+                    <img src={require('../../common/assets/HEN.jpg')} alt="Hen" width="100%" height="100%" />
+                    :
+                    metadata.name==="Kalamint" ?
+                    <img src={require('../../common/assets/kalamint.jpg')} alt="Kalamint" width="100%" height="100%" />
+                    :
+                    metadata.name==="hash3points" ?
+                    <img src={require('../../common/assets/hash3.png')} alt="hash3points" width="100%" height="100%" />
+                    :
+                    metadata.name==="ByteBlock" ?
+                    <img src={require('../../common/assets/logo_bb.png')} alt="ByteBlock" width="100%" height="100%" />
+                    :
+                    <Text>{metadata?.name ? metadata.name[0] : '?'}</Text>
+                }
             </Flex>
             <Text pl={4} fontWeight={selected ? '600' : '600'}>
                 {metadata?.name || address}
