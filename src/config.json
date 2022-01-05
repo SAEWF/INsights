@@ -11,7 +11,7 @@
 	"admin": {
 		"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
 	},
-	"ipfsApi": "https://minter-api.tqhosted.com",
+	"ipfsApi": "https://api.pinata.cloud",
 	"ipfsGateway": "https://tqtezos.mypinata.cloud",
 	"contractOpts": {
 		"marketplace": {
