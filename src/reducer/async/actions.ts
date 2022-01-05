@@ -273,13 +273,13 @@ export const mintTokenAction = createAsyncThunk<
     let ipfsMetadata: NftMetadata = {};
     try {
       if (/^image\/.*/.test(file.type)) {
-        const imageResponse = await uploadIPFSImageWithThumbnail(
+        const imageResponse = await uploadIPFSFile(
           system.config.ipfsApi,
           file
         );
-        ipfsMetadata.artifactUri = imageResponse.data.ipfsUri;
-        ipfsMetadata.displayUri = imageResponse.data.ipfsUri;
-        ipfsMetadata.thumbnailUri = imageResponse.data.thumbnail.ipfsUri;
+        ipfsMetadata.artifactUri = 'ipfs://' + imageResponse.data.IpfsHash;
+        ipfsMetadata.displayUri = 'ipfs://' + imageResponse.data.IpfsHash;
+        // ipfsMetadata.thumbnailUri = imageResponse.data.thumbnail.IpfsHash;
         ipfsMetadata.formats = [
           {
             fileSize: imageResponse.headers['content-length'],
@@ -306,13 +306,13 @@ export const mintTokenAction = createAsyncThunk<
           });
         }
         const fileResponse = await uploadIPFSFile(system.config.ipfsApi, file);
-        const imageResponse = await uploadIPFSImageWithThumbnail(
+        const imageResponse = await uploadIPFSFile(
           system.config.ipfsApi,
           displayFile
         );
-        ipfsMetadata.artifactUri = fileResponse.data.ipfsUri;
-        ipfsMetadata.displayUri = imageResponse.data.ipfsUri;
-        ipfsMetadata.thumbnailUri = imageResponse.data.thumbnail.ipfsUri;
+        ipfsMetadata.artifactUri ='ipfs://' + fileResponse.data.IpfsHash;
+        ipfsMetadata.displayUri = 'ipfs://' +imageResponse.data.IpfsHash;
+        // ipfsMetadata.thumbnailUri = 'ipfs://' +imageResponse.data.thumbnail.IpfsHash;
         ipfsMetadata.formats = [
           {
             fileSize: fileResponse.headers['content-length'],
@@ -321,7 +321,7 @@ export const mintTokenAction = createAsyncThunk<
         ];
       } else {
         const fileResponse = await uploadIPFSFile(system.config.ipfsApi, file);
-        ipfsMetadata.artifactUri = fileResponse.data.ipfsUri;
+        ipfsMetadata.artifactUri = 'ipfs://' +fileResponse.data.IpfsHash;
         ipfsMetadata.formats = [
           {
             fileSize: fileResponse.data.size,

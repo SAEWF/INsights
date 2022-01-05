@@ -24,7 +24,7 @@ export async function createFaucetContract(
     interfaces: ['TZIP-012', 'TZIP-016', 'TZIP-020'],
     tokenCategory: 'collectibles'
   });
-  metadataMap.set('', toHexString(resp.data.ipfsUri));
+  metadataMap.set('', toHexString(resp.data.IpfsHash));
   return await system.toolkit.wallet
     .originate({
       code: Fa2MultiNftFaucetCode.code,
@@ -52,7 +52,7 @@ export async function createAssetContract(
     tokenCategory: 'collectibles',
     ...metadata
   });
-  metadataMap.set('', toHexString(resp.data.ipfsUri));
+  metadataMap.set('', toHexString('ipfs://'+resp.data.IpfsHash));
   return await system.toolkit.wallet
     .originate({
       code: Fa2MultiNftAssetCode.code,
@@ -90,7 +90,7 @@ export async function mintToken(
     booleanAmount: true
   });
   
-  token_info.set('', toHexString(resp.data.ipfsUri));
+  token_info.set('', toHexString('ipfs://'+resp.data.IpfsHash));
   // const token_metadata = storage.metadata;
   // console.log("METADATA",token_metadata);
   // console.log("TOKEN_INFO", token_info);
@@ -144,7 +144,7 @@ export async function mintTokens(
       decimals: 0,
       booleanAmount: true
     });
-    token_info.set('', toHexString(resp.data.ipfsUri));
+    token_info.set('', toHexString('ipfs://'+resp.data.IpfsHash));
     mints.push({
       owner: system.tzPublicKey,
       token_metadata: {
