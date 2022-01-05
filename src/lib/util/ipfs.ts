@@ -4,6 +4,7 @@ export interface IpfsContent {
   cid: string;
   size: number;
   ipfsUri: string;
+  IpfsHash: string;
   url: string;
   publicGatewayUrl: string;
 }
@@ -13,38 +14,53 @@ export interface IpfsResponse extends IpfsContent {
 }
 
 export async function uploadIPFSJSON(api: string, data: any) {
-  return axios.post<IpfsResponse>(`${api}/ipfs-json-upload`, data);
+  const params = {
+    headers: {
+      pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+      pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET 
+    }
+  };
+  return axios.post<any>(`${api}/pinning/pinJSONToIPFS`, data, params);
 }
 
 export async function uploadIPFSFile(api: string, file: File) {
-  const formData = new FormData();
+  var formData: any = new FormData();
   formData.append('file', file);
-   const headers = { 
-          'maxContentLength': 'Infinity',
-          'maxBodyLength': 'Infinity',
-          headers: {
-          "Content-Type": 'multipart/form-data',
-            "path": "somename"
-        }
-      };
-  return axios.post<IpfsResponse>(`${api}/ipfs-file-upload`, formData,{ headers })
+  const headers = { 
+    maxBodyLength: Infinity,
+    headers: {
+      'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+      pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+      pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET 
+    }
+  };
+  return axios.post<any>(`${api}/pinning/pinFileToIPFS`, formData, headers);
 }
 
 export async function uploadIPFSImageWithThumbnail(api: string, file: File) {
   const formData = new FormData();
-  formData.append('file', file);
-  const headers = { 
+  var contents = await file.text();
+  formData.append('file', contents);
+  const headers = {
     'maxContentLength': -1,
     'maxBodyLength': 'Infinity',
     headers: {
-    "Content-Type": 'multipart/form-data',
-      "path": "somename"
-      }
-    };
+      "Content-Type": 'multipart/form-data',
+      pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+      pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET 
+    }
+  };
   return axios.post<IpfsResponse>(
-    `${api}/ipfs-image-with-thumbnail-upload`,
+    `${api}/pinning/pinFileToIPFS`,
     formData,{ headers }
-  );
+  ).then((resp)=>{
+    console.log("RESPONSE", resp);
+    return resp;
+  })
+  .catch((err)=>{
+    console.log("ERRR",err);
+    return err;
+  })
 }
 
 // URI Utils
