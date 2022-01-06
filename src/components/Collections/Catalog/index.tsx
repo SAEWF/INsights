@@ -25,7 +25,7 @@ export default function Catalog() {
   const HEN = collections.collections['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'];
   const kalamint = collections.collections['KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'];
   const geckos = collections.collections['KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'];
-  
+  const tzf = collections.collections['KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'];
 
   useEffect(() => {
     if (!globalCollection) {
@@ -47,6 +47,9 @@ export default function Catalog() {
     else if(globalCollection!== undefined && geckos===undefined ) {
       dispatch(getNftAssetContractQuery('KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'));
     }
+    else if(globalCollection!== undefined && tzf===undefined ) {
+      dispatch(getNftAssetContractQuery('KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'));
+    }
     // if (collections.selectedCollection === null) {
     //   // dispatch(selectCollection(collections.globalCollection));
     //   return;
@@ -60,6 +63,7 @@ export default function Catalog() {
     hash3points,
     HEN,
     geckos,
+    tzf,
     dispatch
   ]);
 
