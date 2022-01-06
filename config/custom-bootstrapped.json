@@ -12,7 +12,7 @@
 		"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
 	},
 	"ipfsApi": "https://api.pinata.cloud",
-	"ipfsGateway": "https://tqtezos.mypinata.cloud",
+	"ipfsGateway": "https://byteblock.mypinata.cloud",
 	"contractOpts": {
 		"marketplace": {
 			"adminOnly": false,
