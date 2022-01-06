@@ -297,7 +297,8 @@ export const Nft = t.intersection([
 //// Contract Metadata
 
 export const AssetContractMetadata = t.type({
-  name: t.string
+  name: t.string,
+  description: t.string
 });
 
 export type AssetContract = t.TypeOf<typeof AssetContract>;

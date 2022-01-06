@@ -10,11 +10,10 @@ import {
 
 import Banner from './Banner';
 import TokenCard from './TokenCard';
-import FeaturedToken from './FeaturedToken';
 import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
-import { Col, Pagination, Row } from 'react-bootstrap'
+import { Pagination, Row } from 'react-bootstrap'
 import { useLocation } from 'wouter';
 import collections from '../../../lib/collections/data.js';
 

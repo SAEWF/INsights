@@ -19,6 +19,7 @@ export default function Sidebar() {
   const HEN = state.collections['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'];
   const kalamint = state.collections['KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'];
   const geckos = state.collections['KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'];
+  const tzf = state.collections['KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'];
   const dispatch = useDispatch();
   const [objktState, setObjktState] = React.useState([]);
 
@@ -154,6 +155,16 @@ export default function Sidebar() {
             selected={'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP' === state.selectedCollection}
             onSelect={address => dispatch(selectCollection(address))}
             {...state.collections['KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP']}
+          />
+          : null
+        }
+        {
+          tzf ?
+          <CollectionTab
+            key={'KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'}
+            selected={'KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc' === state.selectedCollection}
+            onSelect={address => dispatch(selectCollection(address))}
+            {...state.collections['KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc']}
           />
           : null
         }

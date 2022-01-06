@@ -12,6 +12,10 @@ const collections = {
             name: 'Geckos Skratz',
             address: 'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'
         },
+        {
+            name: 'TezFingers',
+            address: 'KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'
+        }
     ]
 }
 

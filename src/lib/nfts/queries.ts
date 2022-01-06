@@ -480,7 +480,7 @@ export async function getNftAssetContract(
   if (!metaUri) {
     const kalahash = metaBigMap.find(v => v.key === '')?.hash;
     if (kalahash === "expru5X1yxJG6ezR2uHMotwMLNmSzQyh5t1vUnhjx4cS6Pv9qE1Sdo") {
-      return { ...contract, metadata: {name: "Kalamint"} };
+      return { ...contract, metadata: {name: "Kalamint", description: ''} };
     }
     else
     {
@@ -491,12 +491,19 @@ export async function getNftAssetContract(
   //console.log("String Name ", fromHexString(metaUri));
   // Kraznik exception to be removed later 
   if(fromHexString(metaUri)==="https://example.com"){
-    return { ...contract, metadata: {name: "Kraznik"} };
+    if(address === "KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr")
+      return { ...contract, metadata: {name: "Kraznik", description: ''} };
+
+    else if(address==="KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc")
+      return { ...contract, metadata: {name: "TezFingers", description:"We have come up with a handful of expressive ways to convey peace, spread love, and show brotherhood by giving humanity the most astounding bird." } };
+
+    else
+      throw Error(`Could not extract metadata URI from ${address} storage`);
   }
 
   //console.log("String Name ", fromHexString(metaUri));
   if(fromHexString(metaUri)==="tezos-storage:metadata"){
-    return { ...contract, metadata: {name: "hash3points"} };
+    return { ...contract, metadata: {name: "hash3points", description: ''} };
   }
 
   // other contracts
@@ -510,6 +517,7 @@ export async function getNftAssetContract(
     throw Error('Metadata validation failed');
   }
 
+  console.log("DECODED", decoded.right);
   // HEN improvement for name
   if(decoded.right.name === "OBJKTs"){
     return { ...contract, metadata: {...decoded.right, name: "Hicetnunc"} };

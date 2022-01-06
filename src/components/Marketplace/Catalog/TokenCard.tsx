@@ -182,10 +182,25 @@ export default function TokenCard(props: TokenCardProps) {
         boxShadow: '0px 0px 10px gray',
       }}
     >
-      {/* {console.log(props)} */}
-      {/* {console.log(props.metadata?.attributes)} */}
-
-      {/* <Box bg={bg} color={color}><Card.Header>Featured</Card.Header></Box> */}
+      {
+        props.metadata?.symbol && props.metadata.symbol==="OBJKTCOM" ?
+        <Box bg={bg} color={color}><Card.Header>Objkt.com</Card.Header></Box>
+        :
+        null
+      }
+      {
+        props.metadata.creators && props.metadata.creators[0]==="KraznikDAO" ?
+        <Box bg={bg} color={color}><Card.Header>KraznikDAO</Card.Header></Box>
+        :
+        null
+      }
+      {
+        props.metadata.creators && props.metadata.creators[0]==="@Portferio and @NFT_Head" ?
+        <Box bg={bg} color={color}><Card.Header>TezFingers</Card.Header></Box>
+        :
+        null
+      }
+      
       <AspectRatio ratio={3 / 3.5}       
         onClick={() =>
         openInNewTab(`/collection/${props.address}/token/${props.id}`)

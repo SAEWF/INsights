@@ -192,7 +192,8 @@ export default function CollectionDisplay({
                 </Link>
               </Flex>
             </Flex>
-            <MinterButton
+            {collection.metadata.description }
+            {/* <MinterButton
               display={{ base: 'none', md: 'flex' }}
               variant="primaryActionInverted"
               onClick={() => {
@@ -205,7 +206,7 @@ export default function CollectionDisplay({
                 base: 4,
                 md: 0
               }}
-            ></MinterButton>
+            ></MinterButton> */}
           </Flex>
         </Flex>
       </Flex>
