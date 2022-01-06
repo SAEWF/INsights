@@ -19,7 +19,7 @@ import { getContractNftsQuery, getWalletAssetContractsQuery } from './queries';
 import { validateCreateNftForm } from '../validators/createNft';
 import {
   uploadIPFSFile,
-  uploadIPFSImageWithThumbnail
+  // uploadIPFSImageWithThumbnail
 } from '../../lib/util/ipfs';
 import { SelectedFile } from '../slices/createNft';
 import { connectWallet } from './wallet';
