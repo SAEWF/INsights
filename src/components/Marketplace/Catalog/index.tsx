@@ -8,12 +8,13 @@ import {
   refreshMarketplaceNftsQuery
 } from '../../../reducer/async/queries'; //
 
+import Banner from './Banner';
 import TokenCard from './TokenCard';
 import FeaturedToken from './FeaturedToken';
 import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
-import { Pagination } from 'react-bootstrap';
+import { Col, Pagination, Row } from 'react-bootstrap'
 import { useLocation } from 'wouter';
 import collections from '../../../lib/collections/data.js';
 
@@ -22,8 +23,8 @@ export default function Catalog() {
   const { system, marketplace: state } = useSelector(s => s);
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
-  const [start, setStart] = useState(1);
-  const [end, setEnd] = useState(17);
+  const [start, setStart] = useState(0);
+  const [end, setEnd] = useState(16);
   const [reverse, setReverse] = useState(1);
   const [, setLocation] = useLocation();
   const bg = useColorModeValue('gray.100', 'black');
@@ -64,9 +65,9 @@ export default function Catalog() {
       items.push(
         <Pagination.Item key={number} active={number === active} onClick={()=>{
           setActive(number);
-          setStart((number-1)*16 + 1);
-          setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*16)+1);
-          // console.log('start', (number-1)*16 + 1, 'end', end);
+          setStart((number-1)*16);
+          setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*16));
+          // console.log('start', start, 'end', end);
           loadMore(number);
         }}>
           {number}
@@ -76,8 +77,8 @@ export default function Catalog() {
 
     const handleFirst = () =>{
       setActive(1);
-      setStart(1);
-      setEnd(17);
+      setStart(0);
+      setEnd(16);
       loadMore(1);
     }
     const handlePrev = () =>{
@@ -184,6 +185,11 @@ export default function Catalog() {
         justify="start"
         flexDir="column"
       >
+        <Row>
+        <Box className="text-center banner" width='100%' height='400px' ><Banner/> </Box>
+        </Row>
+        
+        <Row>
         <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' }}>
           <Select
             bg="#00ffbe"
@@ -213,13 +219,14 @@ export default function Catalog() {
             }
           </Select>
         </div>
+        </Row>
 
         {/* FeaturedToken  */}
-        {state.marketplace.loaded && tokens.length > 0 ? (
+        {/* {state.marketplace.loaded && tokens.length > 0 ? (
           // <Flex width="calc(100vw - 5rem)" justifyContent="center" alignItems="center">
           <FeaturedToken config={system.config} {...tokens[0]} />
           // </Flex>
-        ) : null}
+        ) : null} */}
         {/* FeaturedToken end */}
 
         <Flex

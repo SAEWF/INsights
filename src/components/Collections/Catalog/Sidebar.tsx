@@ -32,7 +32,7 @@ export default function Sidebar() {
             setObjktState([]);
           }
           else{
-            const objkt = doc.data()!.collections.filter((c: any) => c.name === 'objkt' && c.address!=='');
+            const objkt = doc.data()!.collections.filter((c: any) => c && c.name === 'objkt' && c.address!=='');
             setObjktState(objkt);
             for(let i=0; i<objkt.length; i++) {
               dispatch(getNftAssetContractQuery(objkt[i].address));

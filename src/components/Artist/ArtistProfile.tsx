@@ -172,7 +172,7 @@ export default function ArtistProfile(props: PropType) {
                 }
                 </div>
                 {
-                  item.walletAddress=== walletAddress ? (
+                  item.id=== walletAddress ? (
                   <Button mt={2} onClick={()=>{setLocation('/editprofile')}}>Edit Profile <FaEdit style={{'marginLeft':'10px'}}/></Button>
                   ) : (<></>)
                 }
