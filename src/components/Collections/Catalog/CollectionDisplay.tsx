@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -12,11 +12,15 @@ import { MinterButton } from '../../common';
 import { ChevronLeft, ExternalLink, Wind } from 'react-feather';
 import { useDispatch, useSelector } from '../../../reducer';
 import {
-  getContractNftsQuery,
-  getNftAssetContractQuery
+  // getContractNftsQuery,
+  getCollectionNftsQuery,
+  getNftAssetContractQuery,
+  loadMoreCollectionNftsQuery
 } from '../../../reducer/async/queries';
+import { Pagination } from 'react-bootstrap'
 import CollectionsDropdown from './CollectionsDropdown';
 import TokenCard from '../../common/TokenCard';
+import {useColorModeValue } from '@chakra-ui/react';
 
 interface CollectionDisplayProps {
   address: string | null;
@@ -27,17 +31,28 @@ export default function CollectionDisplay({
   address,
   ownedOnly = true
 }: CollectionDisplayProps) {
+  const CardsPerPage = 12;
   const collections = useSelector(s => s.collections);
   const { config, tzPublicKey, wallet } = useSelector(s => s.system);
   const dispatch = useDispatch();
+  const [active, setActive] = useState(1);
+  const [start, setStart] = useState(0);
+  const [end, setEnd] = useState(CardsPerPage);
+  const bg = useColorModeValue('gray.100', 'black');
 
   useEffect(() => {
     if (address !== null) {
+      console.log('getCollectionNftsQuery', address);
       dispatch(getNftAssetContractQuery(address)).then(() =>
-        dispatch(getContractNftsQuery({ address, ownedOnly }))
+        dispatch(getCollectionNftsQuery({ address: address }))
       );
     }
   }, [address, dispatch, ownedOnly]);
+
+  const loadMore = (pageNumber: number, collectionAddress: string) => {
+    console.log('loadMoreCollectionNftsQuery', pageNumber, collectionAddress);
+    dispatch(loadMoreCollectionNftsQuery({page:pageNumber, address: collectionAddress}));
+  };
 
   if (address === null) {
     return (
@@ -90,6 +105,97 @@ export default function CollectionDisplay({
           owner === tzPublicKey || sale?.seller === tzPublicKey
       )
     : collection.tokens;
+
+      // PAGINATION
+  let items = [];
+  const numberOfPages = Math.ceil((tokens.length-1) / CardsPerPage);
+  for (let number = 1; number <= numberOfPages; number++) {
+    items.push(
+      <Pagination.Item key={number} active={number === active} onClick={()=>{
+        setActive(number);
+        setStart((number-1)*CardsPerPage);
+        setEnd(Math.min(tokens?.length ?? 0, number*CardsPerPage));
+        // console.log('start', start, 'end', end);
+        loadMore(number, address);
+      }}>
+        {number}
+      </Pagination.Item>
+    );
+  }
+
+  const handleFirst = () =>{
+    setActive(1);
+    setStart(0);
+    setEnd(CardsPerPage);
+    loadMore(1, address);
+  }
+  const handlePrev = () =>{
+    if(active > 1){
+      setActive(active-1);
+      setStart(start-CardsPerPage);
+      setEnd(end-CardsPerPage);
+      loadMore(active-1, address);
+    }
+  }
+  const handleNext = () =>{
+    if(active < numberOfPages){
+      setActive(active+1);
+      setStart(start+CardsPerPage);
+      setEnd(end+CardsPerPage);
+      loadMore(active+1, address);
+    }
+  }
+  const handleLast = () =>{
+    setActive(numberOfPages);
+    setStart((numberOfPages-1)*CardsPerPage + 1);
+    setEnd(tokens?.length ?? 0);
+    loadMore(numberOfPages, address);
+  }
+
+  const PaginationWithEllipses = (
+    <Box bg={bg}>
+    <Pagination size="lg" id="paginate">
+      <Pagination.First onClick ={handleFirst} />
+      <Pagination.Prev onClick={handlePrev} />
+      {items.slice(0, 1)}
+      <Pagination.Ellipsis />
+      {
+          (active===1) ?
+          items.slice(active, active+3)
+            :
+          <></>
+      }
+      {
+          (active===numberOfPages) ?
+          items.slice(active-3, active)
+            :
+          <></>
+      }
+      {
+          (active===2) ?
+          items.slice((active-1), (active+2))
+            :
+          <></>
+      }
+      {
+          (active===numberOfPages-1) ?
+          items.slice((active-3), (active))
+            :
+          <></>
+      }
+      {
+        (active!==1 && active!==2 && active!==numberOfPages-1 && active!==numberOfPages) ?
+          items.slice((active-2), (active+1))
+          :
+          <></>  
+      }
+      <Pagination.Ellipsis />
+      {items.slice(items.length-1, items.length)}
+      <Pagination.Next onClick={handleNext}/>
+      <Pagination.Last onClick={handleLast}/>
+    </Pagination>
+    </Box>
+  )
 
   if (tokens.length === 0) {
     return (
@@ -193,25 +299,11 @@ export default function CollectionDisplay({
               </Flex>
             </Flex>
             {collection.metadata.description }
-            {/* <MinterButton
-              display={{ base: 'none', md: 'flex' }}
-              variant="primaryActionInverted"
-              onClick={() => {
-                const selectedCollection = collections.selectedCollection;
-                if (selectedCollection !== null) {
-                  dispatch(getContractNftsQuery({ address: selectedCollection, ownedOnly }));
-                }
-              }}
-              mt={{
-                base: 4,
-                md: 0
-              }}
-            ></MinterButton> */}
           </Flex>
         </Flex>
       </Flex>
       <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} gap={8} px={{ base: 6, md: 10 }} pb={8}>
-        {tokens.map(token => {
+        {tokens.slice(start, end).map(token => {
           return (
             <TokenCard
               key={address + token.id}
@@ -222,6 +314,12 @@ export default function CollectionDisplay({
           );
         })}
       </SimpleGrid>
+      {
+        (tokens?.length ?? 0) < CardsPerPage ? 
+          null
+          :
+          PaginationWithEllipses
+      }
     </Flex>
   );
 }

@@ -11,6 +11,7 @@ import {
 } from '../async/actions';
 import {
   getContractNftsQuery,
+  getCollectionNftsQuery,
   getContractNftQuery,
   getNftAssetContractQuery,
   getWalletAssetContractsQuery
@@ -38,6 +39,7 @@ export interface StatusState {
   buyToken: Status;
   getContractNfts: Status;
   getContractNft: Status;
+  getCollectionNfts: Status;
   getNftAssetContract: Status;
   getWalletAssetContracts: Status;
 }
@@ -57,6 +59,7 @@ const initialState: StatusState = {
   buyToken: defaultStatus,
   getContractNfts: defaultStatus,
   getContractNft: defaultStatus,
+  getCollectionNfts: defaultStatus,
   getNftAssetContract: defaultStatus,
   getWalletAssetContracts: defaultStatus
 };
@@ -90,6 +93,7 @@ const slice = createSlice({
       methodMap('cancelTokenSale', cancelTokenSaleAction),
       methodMap('buyToken', buyTokenAction),
       methodMap('getContractNfts', getContractNftsQuery),
+      methodMap('getCollectionNfts', getCollectionNftsQuery),
       methodMap('getContractNft', getContractNftQuery),
       methodMap('getNftAssetContract', getNftAssetContractQuery),
       methodMap('getWalletAssetContracts', getWalletAssetContractsQuery)

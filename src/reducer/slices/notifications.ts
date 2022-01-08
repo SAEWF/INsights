@@ -17,10 +17,12 @@ import { connectWallet, disconnectWallet } from '../async/wallet';
 import {
   getContractNftsQuery,
   getContractNftQuery,
+  getCollectionNftsQuery,
   getNftAssetContractQuery,
   getWalletAssetContractsQuery
 } from '../async/queries';
 import { ErrorKind } from '../async/errors';
+// import { getCollectionNfts } from '../../lib/nfts/queries';
 
 export interface Notification {
   requestId: string;
@@ -68,6 +70,7 @@ const slice = createSlice({
       cancelTokenSaleAction,
       buyTokenAction,
       getContractNftsQuery,
+      getCollectionNftsQuery,
       getContractNftQuery,
       getNftAssetContractQuery,
       getWalletAssetContractsQuery,

@@ -6,7 +6,10 @@ export async function getLedgerBigMapCustom(
     address: string
   ): Promise<any> {
     const path = 'ledger';
-    const data = await tzkt.getContractBigMapKeys(address, path);
+    const params = {
+      'sort.desc': 'id'
+    };
+    const data = await tzkt.getContractBigMapKeys(address, path, params);
     return data;
 }
 
@@ -42,7 +45,10 @@ export async function getTokenMetadataBigMapCustom(
     address: string
   ): Promise<D.TokenMetadataBigMap> {
     const path = 'token_metadata';
-    const data = await tzkt.getContractBigMapKeys(address, path);
+    const params = {
+      'sort.desc': 'id'
+    };
+    const data = await tzkt.getContractBigMapKeys(address, path, params);
     return data;
 }
 

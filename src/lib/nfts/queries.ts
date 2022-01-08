@@ -9,7 +9,13 @@ import { compact } from 'fp-ts/lib/Array';
 import { getRight } from 'fp-ts/lib/Option';
 import * as D from './decoders';
 
-import { getLedgerBigMapCustom, getTokenMetadataBigMapCustom, getOwnedLedgerBigMapCustom, getOwnedTokenMetadataBigMapCustom, getLedgerBigMapCustomWithKey, getTokenMetadataBigMapCustomWithKey } from './actionCustom';
+import { getLedgerBigMapCustom, 
+  getTokenMetadataBigMapCustom, 
+  getOwnedLedgerBigMapCustom, 
+  getOwnedTokenMetadataBigMapCustom, 
+  getLedgerBigMapCustomWithKey, 
+  getTokenMetadataBigMapCustomWithKey,
+ } from './actionCustom';
 
 function fromHexString(input: string) {
   if (/^([A-Fa-f0-9]{2})*$/.test(input)) {
@@ -38,7 +44,10 @@ async function getLedgerBigMap(
   address: string
 ): Promise<D.LedgerBigMap> {
   const path = 'assets.ledger';
-  const data = await tzkt.getContractBigMapKeys(address, path);
+  const params = {
+    'sort.desc': 'id'
+  };
+  const data = await tzkt.getContractBigMapKeys(address, path, params);
   const decoded = D.LedgerBigMap.decode(data);
   if (isLeft(decoded)) {
     throw Error('Failed to decode `getLedger` response');
@@ -85,7 +94,10 @@ async function getTokenMetadataBigMap(
   address: string
 ): Promise<D.TokenMetadataBigMap> {
   const path = 'assets.token_metadata';
-  const data = await tzkt.getContractBigMapKeys(address, path);
+  const params = {
+    'sort.desc': 'id'
+  }
+  const data = await tzkt.getContractBigMapKeys(address, path, params);
   const decoded = D.TokenMetadataBigMap.decode(data);
   if (isLeft(decoded)) {
     throw Error('Failed to decode `getTokenMetadata` response');
@@ -328,9 +340,11 @@ export async function getContractNfts(
         // //console.log("TOKEN_ID ", tokenId, tokenInfo);
         // TODO: Write decoder function for data retrieval
         const decodedInfo = _.mapValues(tokenInfo, fromHexString) as any;
+
+        // optimise this call for pagination 
         const resolvedInfo = await system.resolveMetadata(
           decodedInfo[''],
-          address
+          address 
         );
 
         const metadata = { ...decodedInfo, ...resolvedInfo.metadata };
@@ -364,17 +378,103 @@ export async function getContractNfts(
           id: parseInt(tokenId, 10),
           owner: owner,
           title: metadata.name,
-          description: metadata.description,
-          artifactUri: metadata.artifactUri,
+          description: metadata.description, 
+          artifactUri: metadata.artifactUri, // default can be put 
           metadata: metadata,
           sale
         };
-        // //console.log("res",res);
         return res;
       }
     )
   );
 
+  return result;
+}
+
+export async function getCollectionNfts(
+  system: SystemWithToolkit | SystemWithWallet,
+  address: string
+): Promise<D.Nft[]> {
+  //  //console.log("ADDRESS",address, ownedOnly);
+  let ledgerA = [];
+  ledgerA = await getLedgerBigMap(system.tzkt, address);
+  //  console.log("LEDGER",ledgerA);
+  let ledgerB = [];
+  if(ledgerA.length === 0){
+      ledgerB = await getLedgerBigMapCustom(system.tzkt, address);
+  }
+  const ledger = [...ledgerA, ...ledgerB];
+
+  console.log("LEDGER",ledger);
+  let tokensA: D.TokenMetadataBigMap = [];
+  // TODO : optimising below API calls
+  tokensA = await getTokenMetadataBigMap(system.tzkt, address);
+  
+  let tokensB: D.TokenMetadataBigMap = [];
+  if(tokensA.length === 0){
+    tokensB = await getTokenMetadataBigMapCustom(system.tzkt, address);
+  }
+  const tokens = [...tokensA, ...tokensB];
+   console.log("TOKENS",tokens);
+  const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
+  //  //console.log("MKTADDRESS",mktAddress);
+  let tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
+  //  //console.log("TOKENSALES",tokenSales);
+  const activeSales = tokenSales.filter(sale => sale.active);
+  //  //console.log("ACTIVESALES",activeSales);
+
+  // Sort by token id - descending
+  const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
+  // //console.log("tokensSorted",tokensSorted);
+  const result =  await Promise.all(
+    tokensSorted.map(
+      async (token): Promise<D.Nft> => {
+        const { token_id: tokenId, token_info: tokenInfo } = token.value;
+
+        const decodedInfo = _.mapValues(tokenInfo, fromHexString) as any;
+        
+        const metadata = { ...decodedInfo}
+
+        // //console.log("metadata", metadata);
+        const saleData = activeSales.find(
+          v =>
+            v.value.sale_data.sale_token.fa2_address === address &&
+            v.value.sale_data.sale_token.token_id === tokenId
+        );
+        // //console.log("sale", saleData);
+        const sale = saleData && {
+          id: saleData.id,
+          seller: saleData.value.seller,
+          price: Number.parseInt(saleData.value.sale_data.price, 10) / 1000000,
+          mutez: Number.parseInt(saleData.value.sale_data.price, 10),
+          saleToken: {
+            address: saleData.value.sale_data.sale_token.fa2_address,
+            tokenId: Number.parseInt(saleData.value.sale_data.sale_token.token_id)
+          },
+          saleId: saleData.value.isLegacy ? 0 : Number.parseInt(saleData.key),
+          type: saleData.value.isLegacy ? 'fixedPriceLegacy' : 'fixedPrice'
+        };
+
+        // //console.log("sale done",ledger.slice(1,10));
+        var owner = ledger.find(e => e.key === tokenId)?.value!;
+        if(owner === undefined){
+          owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
+        }
+        // //console.log("owner ",tokenId, owner);
+
+        const res =  {
+          id: parseInt(tokenId, 10),
+          owner: owner,
+          title: '',//metadata.name,
+          description: '',//metadata.description, 
+          artifactUri: '',//metadata.artifactUri, // default can be put 
+          metadata: metadata,
+          sale
+        };
+        return res;
+      }
+    )
+  );
   return result;
 }
 
@@ -789,5 +889,49 @@ export const loadMarketplaceNft = async (
     result.error = "Couldn't load token";
     console.error("Couldn't load token", { tokenSale, err });
     return result;
+  }
+};
+
+export const loadCollectionNft = async (
+  system: SystemWithToolkit | SystemWithWallet,
+  tokenLoadData:D.Nft,
+  address: string
+): Promise<D.Nft> => {
+  var { id, owner ,title, description,  metadata, sale } = tokenLoadData;
+
+  console.log("loadCollectionNft", { tokenLoadData, address });
+  if (title!=='' && description!=='') {
+    return tokenLoadData;
+  }
+
+  let Loadedmetadata;
+
+  try {
+    if(metadata===undefined || metadata['']===undefined){
+      return tokenLoadData;
+    }
+    else{
+      Loadedmetadata = (await system.resolveMetadata(
+        metadata[''],
+        address
+      )) as any;
+
+      console.log("Loadedmetadata", Loadedmetadata);
+    }
+
+    const result = {
+      address: address,
+      id: id,
+      title: Loadedmetadata.metadata.name || '',
+      owner: owner,
+      description: Loadedmetadata.metadata.description || '',
+      artifactUri: Loadedmetadata.metadata.artifactUri || '',
+      metadata: Loadedmetadata.metadata,
+      sale: sale
+    };
+
+    return result;
+  } catch (err) {
+    return tokenLoadData;
   }
 };
