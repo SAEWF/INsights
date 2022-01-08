@@ -3,6 +3,7 @@ import { Flex, Image } from '@chakra-ui/react';
 import { FiHelpCircle } from 'react-icons/fi';
 import { IpfsGatewayConfig, ipfsUriToGatewayUrl } from '../../lib/util/ipfs';
 import { Token } from '../../reducer/slices/collections';
+import loading from './assets/loading-36.gif';
 
 interface TokenMediaProps extends Token {
   config: IpfsGatewayConfig;
@@ -48,6 +49,20 @@ export function TokenMedia(props: TokenMediaProps) {
       });
     })();
   }, [src]);
+
+  if(props.artifactUri===''){
+    return(
+      <Image
+        src={loading}
+        flex="1"
+        maxWidth={props.maxW}
+        maxHeight={props.maxH}
+        style={{ objectFit: props.objectFit ?? 'cover', maxWidth: props.maxW, maxHeight: props.maxH ?? '50vh', cursor: props.cursor }}
+        onClick={props.onClick as MouseEventHandler<HTMLImageElement>}
+        onError={() => setErrored(true)}
+      />
+    );
+  }
 
   if (errored) {
     return <MediaNotFound />;

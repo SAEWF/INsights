@@ -3,16 +3,19 @@ import { State } from '../index';
 import {
   getNftAssetContract,
   getContractNfts,
+  getCollectionNfts,
   getMarketplaceNfts,
   getWalletNftAssetContracts,
   MarketplaceNftLoadingData,
   loadMarketplaceNft,
+  loadCollectionNft,
   getNftAssetContracts,
   getContractNft
 } from '../../lib/nfts/queries';
 
 import { Nft, AssetContract } from '../../lib/nfts/decoders';
 import { ErrorKind, RejectValue } from './errors';
+
 
 type Opts = { state: State; rejectValue: RejectValue };
 
@@ -52,6 +55,37 @@ export const getContractNftsQuery = createAsyncThunk<
     });
   }
 });
+
+export const getCollectionNftsQuery = createAsyncThunk<
+  { address: string; tokens: Nft[] },
+  { address: string },
+  Opts
+>('query/getCollectionNfts', async (args, { getState, rejectWithValue }) => {
+  const { system } = getState();
+  const { address } = args;
+  try {
+    let tokens;
+    tokens = await getCollectionNfts(system, address);
+
+     // 12 cards pere page in collection
+    const iStart = 0, iEnd = 12;
+
+    const tokensAfter = await Promise.all(
+      tokens.map(async (x, i) =>
+        i >= iStart && i < iEnd ? await loadCollectionNft(system, x, address) : x
+      )
+    );
+
+    return { address, tokens: tokensAfter };
+  } catch (e) {
+    // console.error(e);
+    return rejectWithValue({
+       kind: ErrorKind.GetContractNftsFailed,
+       message: `unknown`
+    });
+  }
+});
+
 
 export const getContractNftQuery = createAsyncThunk<
   { address: string; tokens: Nft[] },
@@ -141,7 +175,7 @@ export const getMarketplaceNftsQuery = createAsyncThunk<
 
       // console.log(tokens);
       // Load 17 initially (1-feature + at least 2 rows)
-      for (const i in tokens.slice(0, 17)) {
+      for (const i in tokens.slice(0, 16)) {
         tokens[i] = await loadMarketplaceNft(system, tokens[i]);
       }
 
@@ -187,7 +221,7 @@ export const loadMoreMarketplaceNftsQuery = createAsyncThunk<
       const tokens = marketplace.marketplace.tokens ?? [];
 
       // Load 16 more (at least 2 rows)
-      const iStart = (args.page-1)*16 + 1;
+      const iStart = (args.page-1)*16;
       const iEnd = iStart + 16;
 
       // Need to rebuild the array
@@ -206,3 +240,37 @@ export const loadMoreMarketplaceNftsQuery = createAsyncThunk<
     }
   }
 );
+
+export const loadMoreCollectionNftsQuery = createAsyncThunk<
+  { address: string; tokens: Nft[] },
+  {page: number, address: string},
+  Opts
+>('query/loadMoreCollectionNftsQuery',
+  async (args, { getState, rejectWithValue }) => {
+    const { system, collections } = getState();
+    const { page, address } = args;
+    try {
+      const collection = collections.collections[address];
+      const tokens = collection.tokens ?? [];
+
+      // Load 12 more for next page
+      const iStart = (page-1)*12 ;
+      const iEnd = iStart + 12;
+
+      // Need to rebuild the array
+      const tokensAfter = await Promise.all(
+        tokens.map(async (x, i) =>
+          i >= iStart && i < iEnd ? await loadCollectionNft(system, x, address) : x
+        )
+      );
+      console.log(tokensAfter);
+      return { address: address, tokens: tokensAfter };
+    } catch (e) {
+      return rejectWithValue({
+        kind: ErrorKind.GetContractNftsFailed,
+        message: `Failed to load collection nfts`
+      });
+    }
+  }
+);
+

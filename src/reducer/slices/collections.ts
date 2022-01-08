@@ -3,8 +3,10 @@ import {
   getAssetContractsQuery,
   getContractNftsQuery,
   getContractNftQuery,
+  getCollectionNftsQuery,
   getNftAssetContractQuery,
-  getWalletAssetContractsQuery
+  getWalletAssetContractsQuery,
+  loadMoreCollectionNftsQuery
 } from '../async/queries';
 import { Nft, AssetContract } from '../../lib/nfts/decoders';
 import config from '../../config.json';
@@ -41,6 +43,7 @@ export const initialState: CollectionsState = {
 type PopulateCollection = Reducer<{ address: string; tokens: Token[] }>;
 
 const populateCollectionR: PopulateCollection = (state, { payload }) => {
+  // TODO : handling single nft loading
   if (state.collections[payload.address]) {
     state.collections[payload.address].tokens = payload.tokens;
     state.collections[payload.address].loaded = true;
@@ -83,7 +86,9 @@ const slice = createSlice({
   extraReducers: ({ addCase }) => {
     addCase(getContractNftsQuery.fulfilled, populateCollectionR);
     addCase(getContractNftQuery.fulfilled, populateCollectionR);
+    addCase(getCollectionNftsQuery.fulfilled, populateCollectionR);
     addCase(getNftAssetContractQuery.fulfilled, updateCollectionR);
+    addCase(loadMoreCollectionNftsQuery.fulfilled, populateCollectionR);
     addCase(getWalletAssetContractsQuery.fulfilled, updateCollectionsR);
     addCase(getAssetContractsQuery.fulfilled, updateCollectionsR);
   }
