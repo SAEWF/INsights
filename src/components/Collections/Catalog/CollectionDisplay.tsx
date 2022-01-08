@@ -42,7 +42,6 @@ export default function CollectionDisplay({
 
   useEffect(() => {
     if (address !== null) {
-      console.log('getCollectionNftsQuery', address);
       dispatch(getNftAssetContractQuery(address)).then(() =>
         dispatch(getCollectionNftsQuery({ address: address }))
       );

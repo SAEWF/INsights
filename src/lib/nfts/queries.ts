@@ -405,7 +405,7 @@ export async function getCollectionNfts(
   }
   const ledger = [...ledgerA, ...ledgerB];
 
-  console.log("LEDGER",ledger);
+  // console.log("LEDGER",ledger);
   let tokensA: D.TokenMetadataBigMap = [];
   // TODO : optimising below API calls
   tokensA = await getTokenMetadataBigMap(system.tzkt, address);
@@ -415,7 +415,7 @@ export async function getCollectionNfts(
     tokensB = await getTokenMetadataBigMapCustom(system.tzkt, address);
   }
   const tokens = [...tokensA, ...tokensB];
-   console.log("TOKENS",tokens);
+  //  console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
   //  //console.log("MKTADDRESS",mktAddress);
   let tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
@@ -899,7 +899,7 @@ export const loadCollectionNft = async (
 ): Promise<D.Nft> => {
   var { id, owner ,title, description,  metadata, sale } = tokenLoadData;
 
-  console.log("loadCollectionNft", { tokenLoadData, address });
+  // console.log("loadCollectionNft", { tokenLoadData, address });
   if (title!=='' && description!=='') {
     return tokenLoadData;
   }
@@ -915,8 +915,6 @@ export const loadCollectionNft = async (
         metadata[''],
         address
       )) as any;
-
-      console.log("Loadedmetadata", Loadedmetadata);
     }
 
     const result = {
