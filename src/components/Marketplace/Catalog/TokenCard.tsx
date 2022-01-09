@@ -23,7 +23,7 @@ export default function TokenCard(props: TokenCardProps) {
   const [owner, setOwner] = React.useState('');
   const [artistImg, setArtistImg] = React.useState(user_icon);
   const dispatch = useDispatch();
-  // console.log("Props => ", props);
+  //console.log("Props => ", props);
   React.useEffect(() => {
     var own : any;
     if(props.sale!==undefined && props.sale!==null) {
@@ -195,8 +195,11 @@ export default function TokenCard(props: TokenCardProps) {
         props.metadata.creators && props.metadata.creators[0]==="deconcept.tez" ?
         <Box bg={bg} color={color}><Card.Header>Hash Three Points</Card.Header></Box>
         :
-        props.metadata.creatorRoyalty!==undefined ?
+        props.address==="KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton" ?
         <Box bg={bg} color={color}><Card.Header>Hic et Nunc</Card.Header></Box>
+        :
+        props.address==="KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse" ?
+        <Box bg={bg} color={color}><Card.Header>Kalamint</Card.Header></Box>
         :
         <Box bg={bg} color={color}><Card.Header>ByteBlock</Card.Header></Box>
       }
