@@ -1,0 +1,84 @@
+.footer {
+    width: 100%;
+    padding: 100px 0 30px;
+    font-size: 13px;
+    line-height: 20px;
+    background-color: black;
+    color: darkgray;
+}
+.row{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.socialMedia {
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    padding-left: 10%;
+}
+
+.icon{
+    box-sizing: 2;
+}
+
+.followUs {
+    font-size: x-large;
+    line-height:  2;
+    font-weight: 600;
+}
+
+.social-icons {
+    flex : 2;
+    display: flex;
+}
+
+.websiteLinks {
+    display: flex;
+    flex-direction: column;
+    size: 0ex;
+}
+
+.copyright{
+    text-align: center;
+}
+
+.line{
+    width: 90%;
+    border:0;
+    border-bottom: 1px solid darkgray;
+    margin: 20px auto;
+}
+
+.link{
+    justify-self: end;
+    line-height:  1.4;
+    font-weight: 400;
+    font-size: x-large;
+    text-decoration: none;
+}
+
+.link:hover{
+    text-decoration: solid;
+    color: dimgrey;
+}
+
+
+a:hover
+{
+  /* color:#3366cc;  */ /* blue hover */
+  text-decoration:solid;
+  color: dimgrey;
+}
+
+Text{
+    size: 10;
+}
+
+
+
+
+
