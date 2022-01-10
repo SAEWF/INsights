@@ -4,7 +4,7 @@
     font-size: 13px;
     line-height: 20px;
     background-color: black;
-    color: darkgray;
+    color: white;
 }
 .row{
     width: 100%;
@@ -28,7 +28,7 @@
 .followUs {
     font-size: x-large;
     line-height:  2;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 .social-icons {
@@ -49,29 +49,23 @@
 .line{
     width: 90%;
     border:0;
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid white;
     margin: 20px auto;
 }
 
 .link{
     justify-self: end;
     line-height:  1.4;
-    font-weight: 400;
+    font-weight: 600;
     font-size: x-large;
     text-decoration: none;
 }
 
 .link:hover{
-    text-decoration: solid;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: x-large;
     color: dimgrey;
-}
-
-
-a:hover
-{
-  /* color:#3366cc;  */ /* blue hover */
-  text-decoration:solid;
-  color: dimgrey;
 }
 
 Text{
