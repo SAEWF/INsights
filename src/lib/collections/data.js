@@ -15,6 +15,10 @@ const collections = {
         {
             name: 'TezFingers',
             address: 'KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'
+        },
+        {
+            name: 'Rarible',
+            address: 'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'
         }
     ]
 }
