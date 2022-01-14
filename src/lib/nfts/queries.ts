@@ -570,9 +570,9 @@ export async function getNftAssetContract(
   address: string
 ): Promise<D.AssetContract> {
   const contract = await getContract(system.tzkt, address, {}, t.unknown);
-    //console.log("CONTRACT", contract);
+    console.log("CONTRACT", contract);
   const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
-    //console.log("METABIGMAP", metaBigMap);
+    console.log("METABIGMAP", metaBigMap);
 
   //Special treatment for kalamint
   const metaUri = metaBigMap.find(v => v.key === '')?.value;
@@ -588,7 +588,9 @@ export async function getNftAssetContract(
     }
   }
 
-  //console.log("String Name ", fromHexString(metaUri));
+  console.log("String Name ", fromHexString(metaUri));
+  if(address === "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS")
+  return { ...contract, metadata: {name: "Rarible", description: ''} };
   // Kraznik exception to be removed later 
   if(fromHexString(metaUri)==="https://example.com"){
     if(address === "KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr")
@@ -601,7 +603,7 @@ export async function getNftAssetContract(
       throw Error(`Could not extract metadata URI from ${address} storage`);
   }
 
-  //console.log("String Name ", fromHexString(metaUri));
+  console.log("String Name ", fromHexString(metaUri));
   if(fromHexString(metaUri)==="tezos-storage:metadata"){
     return { ...contract, metadata: {name: "hash3points", description: ''} };
   }
