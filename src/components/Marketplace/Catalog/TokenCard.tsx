@@ -183,16 +183,16 @@ export default function TokenCard(props: TokenCardProps) {
       }}
     >
       {
-        props.metadata?.symbol && props.metadata.symbol==="OBJKTCOM" ?
+        props.metadata && props.metadata?.symbol && props.metadata.symbol==="OBJKTCOM" ?
         <Box bg={bg} color={color}><Card.Header>Objkt.com</Card.Header></Box>
         :
-        props.metadata.creators && props.metadata.creators[0]==="KraznikDAO" ?
+        props.metadata && props.metadata.creators && props.metadata.creators[0]==="KraznikDAO" ?
         <Box bg={bg} color={color}><Card.Header>KraznikDAO</Card.Header></Box>
         :
-        props.metadata.creators && props.metadata.creators[0]==="@Portferio and @NFT_Head" ?
+        props.metadata && props.metadata.creators && props.metadata.creators[0]==="@Portferio and @NFT_Head" ?
         <Box bg={bg} color={color}><Card.Header>TezFingers</Card.Header></Box>
         :
-        props.metadata.creators && props.metadata.creators[0]==="deconcept.tez" ?
+        props.metadata && props.metadata.creators && props.metadata.creators[0]==="deconcept.tez" ?
         <Box bg={bg} color={color}><Card.Header>Hash Three Points</Card.Header></Box>
         :
         props.address==="KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton" ?
