@@ -13,7 +13,8 @@ import TokenCard from './TokenCard';
 import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
-import { Pagination, Row } from 'react-bootstrap'
+import { Pagination } from 'react-bootstrap'
+import Footer from '../../common/Footer';
 
 
 export default function Catalog() {
@@ -164,6 +165,7 @@ export default function Catalog() {
 
     return (
     <>
+    <div>
       <Flex
         w="100vw"
         h="100%"
@@ -173,12 +175,10 @@ export default function Catalog() {
         justify="start"
         flexDir="column"
       >
-        <Row>
-        <Box className="text-center banner" width='100%' height='400px' ><Banner/> </Box>
-        </Row>
+  
+        <div className="text-center banner" ><Banner/> </div>
         
-        <Row>
-        <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' }}>
+        <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' , justifySelf: 'end'}}>
           <Select
             bg="#00ffbe"
             borderColor="#00ffbe"
@@ -191,7 +191,6 @@ export default function Catalog() {
             <option style={{color:'white', backgroundColor: 'black'}} key="4" value={4}>Price : High to Low</option>
           </Select>
         </div>
-        </Row>
 
         {/* FeaturedToken  */}
         {/* {state.marketplace.loaded && tokens.length > 0 ? (
@@ -200,7 +199,7 @@ export default function Catalog() {
           // </Flex>
         ) : null} */}
         {/* FeaturedToken end */}
-
+        <div>
         <Flex
           flex="1"
           w="100%"
@@ -274,7 +273,12 @@ export default function Catalog() {
             </>
           )}
         </Flex>
+        </div>
       </Flex>
+      </div>
+      <div>
+        <Footer/>
+      </div>
     </>
   );
 }

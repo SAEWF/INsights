@@ -9,16 +9,20 @@ const collections = {
             address: 'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'
         },
         {
-            name: 'Kalamint',
-            address: 'KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'
-        },
-        {
             name: 'Geckos Skratz',
             address: 'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'
         },
         {
             name: 'TezFingers',
             address: 'KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'
+        },
+        {
+            name: 'Rarible',
+            address: 'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'
+        },
+        {
+            name: 'Froggos',
+            address: 'KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD'
         }
     ]
 }

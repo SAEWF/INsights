@@ -13,7 +13,6 @@ import { reconnectWallet } from '../../reducer/async/wallet';
 import Creator from '../Creator';
 // import { getMarketplaceNftsQuery } from '../../reducer/async/queries';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Footer from '../common/Footer';
 import AlertBar from '../common/AlertBar';
 import ArtistList from '../Artist/ArtistList';
 import ArtistProfile from '../Artist/ArtistProfile';
@@ -59,7 +58,6 @@ export default function App() {
           <Route path="/">
             <>
               <MarketplaceCatalog />
-              <Footer />
             </>
           </Route>
           <Route path="/create">

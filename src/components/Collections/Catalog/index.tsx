@@ -42,6 +42,8 @@ export default function Catalog() {
   const kalamint = collections.collections['KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'];
   const geckos = collections.collections['KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'];
   const tzf = collections.collections['KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'];
+  const rari = collections.collections['KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'];
+  const frog = collections.collections['KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD'];
 
   useEffect(() => {
     if (!globalCollection) {
@@ -50,6 +52,9 @@ export default function Catalog() {
     }
     else if(globalCollection!== undefined && kraznik===undefined ) {
       dispatch(getNftAssetContractQuery('KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'));
+    }
+    else if(globalCollection!== undefined && frog===undefined ) {
+      dispatch(getNftAssetContractQuery('KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD'));
     }
     else if(globalCollection!== undefined && hash3points===undefined ) {
       dispatch(getNftAssetContractQuery('KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'));
@@ -66,6 +71,9 @@ export default function Catalog() {
     else if(globalCollection!== undefined && tzf===undefined ) {
       dispatch(getNftAssetContractQuery('KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'));
     }
+    else if(globalCollection!== undefined && rari===undefined ) {
+      dispatch(getNftAssetContractQuery('KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'));
+    }
     // if (collections.selectedCollection === null) {
     //   // dispatch(selectCollection(collections.globalCollection));
     //   return;
@@ -80,6 +88,8 @@ export default function Catalog() {
     HEN,
     geckos,
     tzf,
+    rari,
+    frog,
     dispatch
   ]);
 

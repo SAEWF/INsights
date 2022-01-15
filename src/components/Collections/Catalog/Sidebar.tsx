@@ -20,6 +20,8 @@ export default function Sidebar() {
   const kalamint = state.collections['KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'];
   const geckos = state.collections['KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'];
   const tzf = state.collections['KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc'];
+  const rari = state.collections['KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'];
+  const frog = state.collections['KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD'];
   const dispatch = useDispatch();
   const [objktState, setObjktState] = React.useState([]);
 
@@ -115,6 +117,26 @@ export default function Sidebar() {
             selected={'KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr' === state.selectedCollection}
             onSelect={address => dispatch(selectCollection(address))}
             {...state.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr']}
+          />
+          : null
+        }
+        {
+          frog ? 
+          <CollectionTab
+            key={'KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD'}
+            selected={'KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD' === state.selectedCollection}
+            onSelect={address => dispatch(selectCollection(address))}
+            {...state.collections['KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD']}
+          />
+          : null
+        }
+        {
+          rari ? 
+          <CollectionTab
+            key={'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'}
+            selected={'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS' === state.selectedCollection}
+            onSelect={address => dispatch(selectCollection(address))}
+            {...state.collections['KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS']}
           />
           : null
         }
