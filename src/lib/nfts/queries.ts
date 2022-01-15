@@ -9,7 +9,8 @@ import { compact } from 'fp-ts/lib/Array';
 import { getRight } from 'fp-ts/lib/Option';
 import * as D from './decoders';
 
-import { getLedgerBigMapCustom, 
+import { 
+  getLedgerBigMapCustom, 
   getTokenMetadataBigMapCustom, 
   getOwnedLedgerBigMapCustom, 
   getOwnedTokenMetadataBigMapCustom, 
@@ -48,9 +49,11 @@ async function getLedgerBigMap(
     'sort.desc': 'id'
   };
   const data = await tzkt.getContractBigMapKeys(address, path, params);
+  // console.log("DATA",data);
   const decoded = D.LedgerBigMap.decode(data);
   if (isLeft(decoded)) {
-    throw Error('Failed to decode `getLedger` response');
+    // throw Error('Failed to decode `getLedger` response');
+    return data;
   }
   return decoded.right;
 }
@@ -270,7 +273,7 @@ export async function getContractNfts(
   }else{
     ledgerA = await getLedgerBigMap(system.tzkt, address);
   }
-  //  //console.log("LEDGER",ledgerA);
+  //  console.log("LEDGER",ledgerA);
   let ledgerB = [];
   if(ledgerA.length === 0){
     if(ownedOnly && system.status==='WalletConnected'){
@@ -317,7 +320,7 @@ export async function getContractNfts(
     }
   }
   const tokens = [...tokensA, ...tokensB];
-  //  //console.log("TOKENS",tokens);
+  //  console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
   //  //console.log("MKTADDRESS",mktAddress);
   let tokenSales;
@@ -395,7 +398,7 @@ export async function getCollectionNfts(
   system: SystemWithToolkit | SystemWithWallet,
   address: string
 ): Promise<D.Nft[]> {
-  //  //console.log("ADDRESS",address, ownedOnly);
+  //  console.log("ADDRESS",address);
   let ledgerA = [];
   ledgerA = await getLedgerBigMap(system.tzkt, address);
   //  console.log("LEDGER",ledgerA);
@@ -590,11 +593,11 @@ export async function getNftAssetContract(
 
   console.log("String Name ", fromHexString(metaUri));
   console.log("address ", address);
-  if(address === "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS")
-  return { ...contract, metadata: {name: "Rarible", description: ''} };
-
   if(address === "KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD")
   return { ...contract, metadata: {name: "Froggos", description: ''} };
+
+  if(address === "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS")
+  return { ...contract, metadata: {name: "Rarible", description: ''} };
 
   // Kraznik exception to be removed later 
   if(fromHexString(metaUri)==="https://example.com"){
@@ -635,7 +638,7 @@ export async function getNftAssetContract(
     return { ...contract, metadata: {...decoded.right, name: "ByteBlock"} };
   }
 
-    //console.log("DECODED returned", decoded.right);
+    //console.log("DECODED contract returned", decoded.right);
   return { ...contract, metadata: decoded.right };
 }
 

@@ -17,7 +17,7 @@ import {
   getNftAssetContractQuery,
   loadMoreCollectionNftsQuery
 } from '../../../reducer/async/queries';
-import {  Pagination } from 'react-bootstrap'
+import { Pagination } from 'react-bootstrap'
 import CollectionsDropdown from './CollectionsDropdown';
 import TokenCard from '../../common/TokenCard';
 import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
@@ -47,7 +47,6 @@ export default function CollectionDisplay({
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(CardsPerPage);
   const bg = useColorModeValue('gray.100', 'black');
-  console.log(DropdownProp);
 
   useEffect(() => {
     if (address !== null) {
@@ -65,7 +64,7 @@ export default function CollectionDisplay({
     return (
       <>
       <Flex w="100%" flex="1" flexDir="column" align="center">
-      <DropdownProp />
+      {DropdownProp && <DropdownProp />}
       <Flex
         px={20}
         py={10}
@@ -216,7 +215,7 @@ export default function CollectionDisplay({
     return (
       <>
       <Flex w="100%" flex="1" flexDir="column" align="center">
-        <DropdownProp />
+        {DropdownProp && <DropdownProp />}
         <Flex
           px={20}
           py={10}
@@ -253,7 +252,7 @@ export default function CollectionDisplay({
       // overflowY="scroll"
       justify="start"
     >
-      <DropdownProp />
+      {DropdownProp && <DropdownProp />}
       <Flex flexDir="row" style={{display: 'contents'}}>
       {
         metadata && metadata.length>0 ?
@@ -331,9 +330,9 @@ export default function CollectionDisplay({
               </button>
               &nbsp;
               <ul className="social-icons mt-2 mx-auto">
-                {metadata &&(metadata[0].twt) !==""? <a className="twitter" href={metadata[0].twt} target="_blank" id="twt" rel="noopener noreferrer" style={{color:'red'}}><i className="fab fa-twitter" ></i></a>:""}
-                {metadata &&(metadata[0].discord) !==undefined && (metadata[0].discord) !==""? <a className="facebook" href={metadata[0].fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-discord "></i></a>:""}
-                {metadata &&(metadata[0].website) !==""? <a className="" href={metadata[0].website} target="_blank" rel="noopener noreferrer"><img src={link} alt="link" /></a>:""}
+                {metadata && metadata.length>0 && metadata[0].twt && (metadata[0].twt) !==""? <a className="twitter" href={metadata[0].twt} target="_blank" id="twt" rel="noopener noreferrer" style={{color:'red'}}><i className="fab fa-twitter" ></i></a>:""}
+                {metadata && metadata.length>0 && metadata[0].discord && (metadata[0].discord) !==undefined && (metadata[0].discord) !==""? <a className="facebook" href={metadata[0].fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-discord "></i></a>:""}
+                {metadata && metadata.length>0 && metadata[0].website && (metadata[0].website) !==""? <a className="" href={metadata[0].website} target="_blank" rel="noopener noreferrer"><img src={link} alt="link" /></a>:""}
               </ul>
             </div>
           </Flex>
