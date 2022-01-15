@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {Form, FormGroup, Container} from 'react-bootstrap';
 import { CountryDropdown } from 'react-country-region-selector';
 import firebase from '../../lib/firebase/firebase'
@@ -18,7 +18,7 @@ function RegistrationPage(props: any) {
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
     const [twt, setTwt] = useState('');
-    const [walletID,] = useState(system.tzPublicKey);
+    const [walletID, setWalletID] = useState(system.tzPublicKey);
     const [email, setEmail] = useState('');
     // const [password, setPassword] = useState('');
     // const [cpassword, setCpassword] = useState('');
@@ -29,6 +29,13 @@ function RegistrationPage(props: any) {
     const [linktr, setlinkTree] = useState('');
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+      if(system.status==='WalletConnected'){
+        setWalletID(system.tzPublicKey);
+      }
+    }, [system]);
+
 
     const selectCountry = (val: any) => {
       setCountry(val);

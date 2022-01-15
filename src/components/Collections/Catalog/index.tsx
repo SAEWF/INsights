@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Heading, Text, Link, Image } from '@chakra-ui/react';
 import Sidebar from './Sidebar';
 import CollectionDisplay from './CollectionDisplay';
@@ -11,11 +11,27 @@ import {
 import { connectWallet } from '../../../reducer/async/wallet';
 import logo from '../../common/assets/splash-logo.svg';
 import { MinterButton } from '../../common';
+import CollectionSelect from '../../Explore/CollectionSelect';
+import firebase from '../../../lib/firebase/firebase';
+import { selectCollection } from '../../../reducer/slices/collections';
 
 export default function Catalog() {
   const system = useSelector(s => s.system);
   const collections = useSelector(s => s.collections);
   const dispatch = useDispatch();
+  const [collection, setCollection] = useState('');
+  const [collectionSet, setCollections] = useState([]);
+
+  useEffect(() => {
+    const db = firebase.firestore();
+    db.collection('collections').onSnapshot((snapshot: any) => {
+      const newCollections = snapshot.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setCollections(newCollections);
+    });
+  }, []);
 
   const globalCollection =
     collections.collections[collections.globalCollection];
@@ -127,6 +143,18 @@ export default function Catalog() {
     );
   }
 
+  const handleSelect = (e: string) => {
+    dispatch(selectCollection(e));
+  };
+
+  const Dropdown = () => {
+    return (
+      <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between', padding: '10px' }}>
+        <CollectionSelect collections={collectionSet} setCollection={setCollection} collection={collection} onSelect={handleSelect} />
+      </div>
+    );
+  };
+
   return (
     <Flex
       flex="1"
@@ -149,7 +177,7 @@ export default function Catalog() {
       >
         <Sidebar />
       </Flex>
-      <CollectionDisplay address={selectedCollection} />
+      <CollectionDisplay address={selectedCollection} DropdownProp={Dropdown} />
     </Flex>
   );
 }

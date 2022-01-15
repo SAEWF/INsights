@@ -20,6 +20,8 @@ import ArtistProfile from '../Artist/ArtistProfile';
 import Registration from '../common/Registration';
 import EditProfile from '../common/EditProfile';
 import Terms from '../common/Terms';
+import Explore from '../Explore/index';
+import AddCollection from '../common/addCollection'
 
 export default function App() {
   const dispatch = useDispatch();
@@ -65,6 +67,11 @@ export default function App() {
               <CreateNonFungiblePage />
             </>
           </Route>
+          <Route path="/explore">
+            <>
+              <Explore />
+            </>
+          </Route>
           <Route path="/collections">
             <>
               <CollectionsCatalog />
@@ -75,6 +82,11 @@ export default function App() {
               <Registration />
             </>
           </Route>
+          <Route path="/addCollection">
+            <>
+              <AddCollection />
+            </>
+          </Route>
           <Route path="/marketplace">
             <MarketplaceCatalog />
           </Route>
@@ -83,7 +95,7 @@ export default function App() {
           </Route>
           <Route path="/collection/:contractAddress">
             {({ contractAddress }) => (
-              <CollectionDisplay address={contractAddress} ownedOnly={false} />
+              <CollectionDisplay address={contractAddress} ownedOnly={false} DropdownProp={null} />
             )}
           </Route>
           <Route path="/collection/:contractAddress/token/:tokenId">

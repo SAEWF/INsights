@@ -254,7 +254,9 @@ function NavItems() {
                           <></>
                       )
                     }
-
+                    <MobileHeaderLink to="/explore" onClick={onClose}>
+                      Explore
+                    </MobileHeaderLink>
                     <MobileHeaderLink to="/artists" onClick={onClose}>
                       Artists
                     </MobileHeaderLink>
@@ -313,6 +315,11 @@ function NavItems() {
           </Box>
           <Text ml={2} >Marketplace</Text>
         </DesktopHeaderLink> */}
+
+          <DesktopHeaderLink to={`/explore`}>
+              <Text><i className="fas fa-star mr-2" style={{ color: "#00FFBE" }}></i>Explore</Text>
+          </DesktopHeaderLink>
+
         {
           system.status === 'WalletConnected' ? (
           isRegistered==='' ? (
@@ -329,7 +336,7 @@ function NavItems() {
         }
 
         <DesktopHeaderLink to="/artists">
-          <Text><i className="fas fa-user mr-2" style={{ color: "#00FFBE" }}></i>Artists</Text>
+          <Text><i className="fas fa-users mr-2" style={{ color: "#00FFBE" }}></i>Artists</Text>
         </DesktopHeaderLink>
         {system.status === 'WalletConnected' ? (
           <>

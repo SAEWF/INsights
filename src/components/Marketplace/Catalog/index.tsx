@@ -14,8 +14,6 @@ import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
 import { Pagination, Row } from 'react-bootstrap'
-import { useLocation } from 'wouter';
-import collections from '../../../lib/collections/data.js';
 
 
 export default function Catalog() {
@@ -25,7 +23,7 @@ export default function Catalog() {
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(16);
   const [reverse, setReverse] = useState(1);
-  const [, setLocation] = useLocation();
+  // const [, setLocation] = useLocation();
   const bg = useColorModeValue('gray.100', 'black');
 
   // blackList for wallet address 
@@ -164,15 +162,6 @@ export default function Catalog() {
       setReverse(e.target.value);
     }
 
-    const HandleChangeCollection = (e: any) =>{
-      if(e.target.value==='marketplace') {
-        setLocation('/');
-      }
-      else{
-        setLocation('/collection/' + e.target.value);
-      }
-    }
-
     return (
     <>
       <Flex
@@ -200,22 +189,6 @@ export default function Catalog() {
             <option style={{color:'white', backgroundColor: 'black'}} color="white" key="2" value={2}>Oldest</option>
             <option style={{color:'white', backgroundColor: 'black'}} key="3" value={3}>Price : Low to High</option>
             <option style={{color:'white', backgroundColor: 'black'}} key="4" value={4}>Price : High to Low</option>
-          </Select>
-          &nbsp;
-          <Select
-            bg="#00ffbe"
-            borderColor="#00ffbe"
-            color="black"
-            onChange={HandleChangeCollection}
-          >
-            <option style={{color:'white', backgroundColor: 'black', borderColor: 'cyan'}} key="1" value="marketplace" defaultChecked={true}>Collections</option>
-            {
-              collections.data.map((collection: any) => {
-                return(
-                  <option style={{color:'white', backgroundColor: 'black'}} key={collection.id} value={collection.address}>{collection.name}</option>
-                );
-              })
-            }
           </Select>
         </div>
         </Row>

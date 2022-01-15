@@ -632,6 +632,32 @@ export async function getNftAssetContract(
   return { ...contract, metadata: decoded.right };
 }
 
+export async function verifyContract(
+  system: SystemWithToolkit | SystemWithWallet,
+  address: string,
+  owner: string,
+): Promise<boolean> {
+
+  try{
+    if(address==="") throw new Error("Address is empty");
+    const contractInfo: any = await getNftAssetContract(system, address);
+
+    if(contractInfo.creator.alias === "objkt.com Minting Factory"){
+      if(!contractInfo.metadata.authors.includes(owner))
+        throw new Error("Invalid objkt collection");
+      return true;
+    }
+
+    if(contractInfo.creator.address!==owner) throw new Error("Please verify details again !");
+    
+    return true;
+  }
+  catch(e){
+    console.log("ERROR",e);
+    return false;
+  }
+}
+
 export async function getWalletNftAssetContracts(
   system: SystemWithWallet
 ): Promise<D.AssetContract[]> {
