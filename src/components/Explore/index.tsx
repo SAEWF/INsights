@@ -20,7 +20,7 @@ export default function Explore(){
     useEffect(() => {
       const db = firebase.firestore();
       db.collection('collections').onSnapshot((snapshot: any) => {
-        const newCollections = snapshot.docs.map((doc: any) => ({
+        const newCollections = snapshot.docs.filter((doc: any) => doc.data().display).map((doc: any) => ({
           id: doc.id,
           ...doc.data()
         }));
