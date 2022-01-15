@@ -30,11 +30,11 @@ function RegistrationPage(props: any) {
     const [loading, setLoading] = useState(false);
     const [discord, setDiscord] = useState('');
 
-    useEffect(() => {
-      if(system.status==='WalletConnected'){
-        setWalletID(system.tzPublicKey);
-      }
-    }, [system]);
+    // useEffect(() => {
+    //   if(system.status==='WalletConnected'){
+    //     setWalletID(system.tzPublicKey);
+    //   }
+    // }, [system]);
 
     const RegisterUser = async () => {
       document.querySelector('.registrationError')!.innerHTML = "";
