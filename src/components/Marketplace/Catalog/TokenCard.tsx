@@ -62,7 +62,7 @@ export default function TokenCard(props: TokenCardProps) {
   }
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(`byteblock.art/collection/${props.address}/token/${props.id}`);
+    navigator.clipboard.writeText(`https://byteblock.art/collection/${props.address}/token/${props.id}`);
     dispatch(notifyFulfilled('1', 'Link copied to clipboard'));
   }
 
@@ -230,7 +230,7 @@ export default function TokenCard(props: TokenCardProps) {
       </Flex> */}
       <Card.Body className="ml-2"       
         onClick={() =>
-        openInNewTab(`byteblock.art/collection/${props.address}/token/${props.id}`)
+        openInNewTab(`https://byteblock.art/collection/${props.address}/token/${props.id}`)
       }>
         <Card.Title className="ml-1" >{props.title}</Card.Title>
         {/* <Card.Text>
@@ -260,7 +260,7 @@ export default function TokenCard(props: TokenCardProps) {
         <Card.Footer className="text-white" style={{ display: 'flex' }}>
           <Flex        
             onClick={() =>
-            openInNewTab(`byteblock.art/collection/${props.address}/token/${props.id}`)
+            openInNewTab(`https://byteblock.art/collection/${props.address}/token/${props.id}`)
           }>
           <p className="text-muted d-inline mr-2">Price:</p>
           <p className="d-inline"> <Text color={color}>{totalAmount>0?totalAmount.toFixed(2):'Not on sale'} ꜩ</Text>

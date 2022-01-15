@@ -162,7 +162,7 @@ export default function CollectionDisplay({
   }
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(`byteblock.art/collection/${address}/`);
+    navigator.clipboard.writeText(`https://byteblock.art/collection/${address}/`);
     dispatch(notifyFulfilled('1', 'Link copied to clipboard'));
   }
 
