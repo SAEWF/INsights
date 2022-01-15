@@ -1,20 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState } from 'react';
 import {Form, FormGroup, Container} from 'react-bootstrap';
 
 import firebase from '../../lib/firebase/firebase'
 import './styles/style.css';
 import { Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, Button} from '@chakra-ui/react';
-import { verifyContract } from '../../lib/nfts/queries';
+// import { verifyContract } from '../../lib/nfts/queries';
 import uploadImage from './uploadImage';
 import { useLocation } from 'wouter';
 // import { MinterButton } from '.';
-import {  useSelector } from '../../reducer';
+// import {  useSelector } from '../../reducer';
 // import { FaWallet } from 'react-icons/fa';
 // import { connectWallet, disconnectWallet } from '../../reducer/async/wallet';
 
 
 function RegistrationPage(props: any) {
-    const { system } = useSelector(s => s);
+    // const { system } = useSelector(s => s);
     const [ , setLocation] = useLocation();
     // const dispatch = useDispatch();
     const [formData, setFormData] = useState({"display":false});
@@ -57,11 +57,11 @@ function RegistrationPage(props: any) {
                     document.querySelector('.registrationError')!.innerHTML = "Please connect your wallet as contract creator .";
                     return;
                 }
-                const check = await verifyContract(system, contract, walletID);
-                if(!check){
-                    document.querySelector('.registrationError')!.innerHTML = "An error occured . Kindly Verify details or connect with us ! ";
-                    return;
-                }
+                // const check = await verifyContract(system, contract, walletID);
+                // if(!check){
+                //     document.querySelector('.registrationError')!.innerHTML = "An error occured . Kindly Verify details or connect with us ! ";
+                //     return;
+                // }
                 if(file!==null){
                     url = await uploadImage(file);
                 }
