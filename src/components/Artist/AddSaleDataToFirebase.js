@@ -7,7 +7,7 @@ const UpdateDetails = async (token,collection, walletAddress, token_id, salePric
     // testing
     // console.log(buyerWallAdd);
     // console.log(sellerWallAdd);
-    console.log("ENTERING" ,address);
+    // console.log("ENTERING" ,address);
 
     const db = firebase.firestore();
     // getting the ID of NFT token to be transacted
