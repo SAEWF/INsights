@@ -61,7 +61,7 @@ export default function FeaturedToken(props: FeaturedTokenProps) {
   }, [props]);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(`byteblock.art/collection/${props.address}/token/${props.id}`);
+    navigator.clipboard.writeText(`https://byteblock.art/collection/${props.address}/token/${props.id}`);
     dispatch(notifyFulfilled('1', 'Link copied to clipboard'));
   }
   
