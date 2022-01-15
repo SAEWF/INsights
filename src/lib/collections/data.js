@@ -19,6 +19,10 @@ const collections = {
         {
             name: 'Rarible',
             address: 'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'
+        },
+        {
+            name: 'Froggos',
+            address: 'KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD'
         }
     ]
 }

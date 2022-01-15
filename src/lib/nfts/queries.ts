@@ -589,8 +589,13 @@ export async function getNftAssetContract(
   }
 
   console.log("String Name ", fromHexString(metaUri));
+  console.log("address ", address);
   if(address === "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS")
   return { ...contract, metadata: {name: "Rarible", description: ''} };
+
+  if(address === "KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD")
+  return { ...contract, metadata: {name: "Froggos", description: ''} };
+
   // Kraznik exception to be removed later 
   if(fromHexString(metaUri)==="https://example.com"){
     if(address === "KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr")
