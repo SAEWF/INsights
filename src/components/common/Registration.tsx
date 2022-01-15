@@ -518,7 +518,7 @@ function RegistrationPage(props: any) {
               </div>
 
                 {/* Social Links */}
-                <div className="row">
+              <div className="row">
               <div className="col-lg-2 col-0"></div>
               <FormGroup className="col-lg-4 col-md-6 col-12">
                   <Input value={twt} isInvalid type="text" errorBorderColor="cyan.300" name="twt" id="twitter" variant="filled" placeholder="Twitter Handle *" isRequired style={{margin: 'auto'}} />
@@ -528,6 +528,7 @@ function RegistrationPage(props: any) {
                   <Input value={instagram} isInvalid type="url" errorBorderColor="cyan.300" name="ig" id="instagram" variant="filled" placeholder="Instagram Link" style={{margin: 'auto'}} />
                   <div className="igcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
               </FormGroup>
+              <div className="col-lg-2 col-0"></div>
               </div>
               <div className="row">
               <div className="col-lg-2 col-0"></div>
@@ -539,6 +540,7 @@ function RegistrationPage(props: any) {
                   <Input value={linktr} isInvalid type="url" errorBorderColor="cyan.300" name="lt" id="linktree"  variant="filled" placeholder="Linktree" style={{margin: 'auto'}} />
                   <div className="ltcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
               </FormGroup>
+              <div className="col-lg-2 col-0"></div>
               </div>
 
 

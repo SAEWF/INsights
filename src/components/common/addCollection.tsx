@@ -21,7 +21,7 @@ function RegistrationPage(props: any) {
     const [name, setName] = useState('');
     const [contract, setContract] = useState('');
     const [desc, setDesc] = useState('');
-    const [walletID, setWalletID] = useState(system.tzPublicKey);
+    const [walletID, setWalletID] = useState('');
     const [twt, setTwt] = useState('');
     const [disable, setDisable] = useState(false);
     const [file, setFile] = useState(null);
@@ -72,7 +72,7 @@ function RegistrationPage(props: any) {
                     website: website,
                     contract: contract,
                     owner: walletID,
-                    display: true,
+                    display: false,
                     image: url,
                     discord: discord
                 });
@@ -251,7 +251,7 @@ function RegistrationPage(props: any) {
                       <div className="twtcheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
                   </FormGroup>
                   <FormGroup className="col-lg-4 col-md-6 col-12">
-                    <Input value={walletID ?? 'Contract Owner address * ( eg., tz1...... )'} 
+                    <Input value={walletID} 
                         isInvalid type="text" 
                         errorBorderColor="cyan.300" 
                         variant="filled"
@@ -262,7 +262,7 @@ function RegistrationPage(props: any) {
                     />
                     <div className="walletcheck col-md-7 col-12" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
                  </FormGroup>
-
+                 <div className="col-lg-2 col-0"></div>
                   </div>
                   <div className="row">
                   <div className="col-lg-2 col-0"></div>
@@ -274,6 +274,7 @@ function RegistrationPage(props: any) {
                       <Input value={discord} isInvalid type="url" errorBorderColor="cyan.300" name="discord" id="discord" variant="filled" placeholder="Discord" style={{margin: 'auto'}} />
                       <div className="utubecheck" style={{margin: 'auto 0 auto auto', color: 'red'}}></div>
                   </FormGroup>
+                  <div className="col-lg-2 col-0"></div>
                   </div>
       
       
