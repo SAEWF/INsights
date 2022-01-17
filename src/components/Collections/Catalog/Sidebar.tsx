@@ -74,18 +74,7 @@ export default function Sidebar() {
           {...state.collections[state.globalCollection]}
         />
       ) : null}
-      {/* {
-        collections.secondary.map((collection:any) => {
-          return (
-            <CollectionTab
-              key={collection.address}
-              selected={collection.address === state.selectedCollection}
-              onSelect={address => dispatch(selectCollection(collection.address))}
-              {...collection}
-            />
-          );
-        })
-      } */}
+
       <Heading
         fontFamily="mono"
         px={4}
@@ -110,26 +99,7 @@ export default function Sidebar() {
             {...state.collections[address]}
           />
         ))}
-        {
-          kraznik ? 
-          <CollectionTab
-            key={'KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr'}
-            selected={'KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr' === state.selectedCollection}
-            onSelect={address => dispatch(selectCollection(address))}
-            {...state.collections['KT1C1pT3cXyRqD22wHdgmtJjffFG4zKKhxhr']}
-          />
-          : null
-        }
-        {
-          frog ? 
-          <CollectionTab
-            key={'KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD'}
-            selected={'KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD' === state.selectedCollection}
-            onSelect={address => dispatch(selectCollection(address))}
-            {...state.collections['KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD']}
-          />
-          : null
-        }
+
         {
           rari ? 
           <CollectionTab
@@ -137,16 +107,6 @@ export default function Sidebar() {
             selected={'KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS' === state.selectedCollection}
             onSelect={address => dispatch(selectCollection(address))}
             {...state.collections['KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS']}
-          />
-          : null
-        }
-        {
-          hash3points ? 
-          <CollectionTab
-            key={'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg'}
-            selected={'KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg' === state.selectedCollection}
-            onSelect={address => dispatch(selectCollection(address))}
-            {...state.collections['KT1Fxz4V3LaUcVFpvF8pAAx8G3Z4H7p7hhDg']}
           />
           : null
         }
@@ -170,7 +130,7 @@ export default function Sidebar() {
           />
           : null
         }
-        {
+        {/* {
           geckos ?
           <CollectionTab
             key={'KT1AWUzFdNwZn7YprZitR6Q6eUuVmfUG1HMP'}
@@ -189,7 +149,7 @@ export default function Sidebar() {
             {...state.collections['KT1FnaopRwaUX9kNptcJgWvor2abqVd7iHCc']}
           />
           : null
-        }
+        } */}
         {
           objktState.length>0 ?
           objktState.map((collection:any) => {
