@@ -301,25 +301,6 @@ export default function CollectionDisplay({
               <Flex justify="space-between" width="100%">
                 <Heading size="lg">{collection.metadata.name || ''}</Heading>
               </Flex>
-              <Flex align="center">
-                <Text 
-                  fontFamily="mono" 
-                  color="brand.lightGray"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  overflowWrap="normal"
-                >
-                  {collection.address}
-                </Text>
-                <Link
-                  href={`${config.bcd.gui}/${config.network}/${collection.address}`}
-                  color="brand.darkGray"
-                  isExternal
-                  ml={2}
-                >
-                  <ExternalLink size={16} />
-                </Link>
-              </Flex>
             </Flex>
             <div style={{marginLeft: 'auto', marginRight: '0', display: 'flex'}}>
               <button 
@@ -331,7 +312,7 @@ export default function CollectionDisplay({
               &nbsp;
               <ul className="social-icons mt-2 mx-auto">
                 {metadata && metadata.length>0 && metadata[0].twt && (metadata[0].twt) !==""? <a className="twitter" href={metadata[0].twt} target="_blank" id="twt" rel="noopener noreferrer" style={{color:'red'}}><i className="fab fa-twitter" ></i></a>:""}
-                {metadata && metadata.length>0 && metadata[0].discord && (metadata[0].discord) !==undefined && (metadata[0].discord) !==""? <a className="facebook" href={metadata[0].fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-discord "></i></a>:""}
+                {metadata && metadata.length>0 && metadata[0].discord && (metadata[0].discord) !==undefined && (metadata[0].discord) !==""? <a className="facebook" href={metadata[0].discord} target="_blank" rel="noopener noreferrer"><i className="fab fa-discord "></i></a>:""}
                 {metadata && metadata.length>0 && metadata[0].website && (metadata[0].website) !==""? <a className="" href={metadata[0].website} target="_blank" rel="noopener noreferrer"><img src={link} alt="link" /></a>:""}
               </ul>
             </div>
