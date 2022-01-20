@@ -16,6 +16,7 @@ import {
   getOwnedTokenMetadataBigMapCustom, 
   getLedgerBigMapCustomWithKey, 
   getTokenMetadataBigMapCustomWithKey,
+  getContractFromFirebase
  } from './actionCustom';
 
 function fromHexString(input: string) {
@@ -420,15 +421,15 @@ export async function getCollectionNfts(
   const tokens = [...tokensA, ...tokensB];
   //  console.log("TOKENS",tokens);
   const mktAddress = system.config.contracts.marketplace.fixedPrice.tez;
-  //  //console.log("MKTADDRESS",mktAddress);
+  //  // console.log("MKTADDRESS",mktAddress);
   let tokenSales = await getFixedPriceSalesBigMap(system.tzkt, mktAddress);
-  //  //console.log("TOKENSALES",tokenSales);
+  //  // console.log("TOKENSALES",tokenSales);
   const activeSales = tokenSales.filter(sale => sale.active);
-  //  //console.log("ACTIVESALES",activeSales);
+  //  // console.log("ACTIVESALES",activeSales);
 
-  // Sort by token id - descending
+  //  // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
-  // //console.log("tokensSorted",tokensSorted);
+  //  // console.log("tokensSorted",tokensSorted);
   const result =  await Promise.all(
     tokensSorted.map(
       async (token): Promise<D.Nft> => {
@@ -573,12 +574,25 @@ export async function getNftAssetContract(
   address: string
 ): Promise<D.AssetContract> {
   const contract = await getContract(system.tzkt, address, {}, t.unknown);
-    console.log("CONTRACT", contract);
-  const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
-    console.log("METABIGMAP", metaBigMap);
+  const collection = await getContractFromFirebase(address);
+  if(collection !== null){
+    const result =  {...contract, metadata: {name: collection.name, description: collection.description}};
+    return result;
+  }
 
-  //Special treatment for kalamint
-  const metaUri = metaBigMap.find(v => v.key === '')?.value;
+  const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
+    // console.log("METABIGMAP", metaBigMap);
+
+  let metaUri; 
+  if(metaBigMap.length > 1){
+    metaUri = metaBigMap.find(v => v.key === 'content')?.value;
+    if(metaUri === undefined) throw new Error('No content in metadata');
+    const metadata = JSON.parse(fromHexString(metaUri));
+    console.log("METADATA", {name: metadata.name ?? '', description: ''} );
+    return { ...contract, metadata: {name: metadata.name ?? '', description: ''} };
+  }else{
+    metaUri = metaBigMap.find(v => v.key === '')?.value;
+  }
   //console.log("METAURI", metaUri);
   if (!metaUri) {
     const kalahash = metaBigMap.find(v => v.key === '')?.hash;
@@ -591,13 +605,13 @@ export async function getNftAssetContract(
     }
   }
 
-  console.log("String Name ", fromHexString(metaUri));
-  console.log("address ", address);
-  if(address === "KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD")
-  return { ...contract, metadata: {name: "Froggos", description: ''} };
+  // console.log("String Name ", fromHexString(metaUri));
+  // console.log("address ", address);
+  // if(address === "KT1QqTVamPvqEHMCKkzvYN8mxsxCCYjQKsdD")
+  // return { ...contract, metadata: {name: "Froggos", description: ''} };
 
-  if(address === "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS")
-  return { ...contract, metadata: {name: "Rarible", description: ''} };
+  // if(address === "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS")
+  // return { ...contract, metadata: {name: "Rarible", description: ''} };
 
   // Kraznik exception to be removed later 
   if(fromHexString(metaUri)==="https://example.com"){
@@ -611,7 +625,7 @@ export async function getNftAssetContract(
       throw Error(`Could not extract metadata URI from ${address} storage`);
   }
 
-  console.log("String Name ", fromHexString(metaUri));
+  // console.log("String Name ", fromHexString(metaUri));
   if(fromHexString(metaUri)==="tezos-storage:metadata"){
     return { ...contract, metadata: {name: "hash3points", description: ''} };
   }

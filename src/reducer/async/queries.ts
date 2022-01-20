@@ -27,7 +27,8 @@ export const getNftAssetContractQuery = createAsyncThunk<
   const { getState, rejectWithValue } = api;
   const { system } = getState();
   try {
-    return await getNftAssetContract(system, address);
+    const res =  await getNftAssetContract(system, address);
+    return res;
   } catch (e) {
     return rejectWithValue({
       kind: ErrorKind.GetNftAssetContractFailed,
@@ -257,13 +258,13 @@ export const loadMoreCollectionNftsQuery = createAsyncThunk<
       const iStart = (page-1)*12 ;
       const iEnd = iStart + 12;
 
-      // Need to rebuild the array
+      // Need to retokensAfterbuild the array
       const tokensAfter = await Promise.all(
         tokens.map(async (x, i) =>
           i >= iStart && i < iEnd ? await loadCollectionNft(system, x, address) : x
         )
       );
-      console.log(tokensAfter);
+      // console.log("TOKENS AFTER", tokensAfter);
       return { address: address, tokens: tokensAfter };
     } catch (e) {
       return rejectWithValue({

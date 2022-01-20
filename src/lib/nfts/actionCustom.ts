@@ -1,5 +1,6 @@
 import { TzKt } from '../service/tzkt';
 import * as D from './decoders';
+import firebase from '../firebase/firebase';
 
 export async function getLedgerBigMapCustom(
     tzkt: TzKt,
@@ -81,4 +82,15 @@ export async function getOwnedTokenMetadataBigMapCustom(
       return data[0];
     })
   );
+}
+
+export async function getContractFromFirebase(
+  address: string
+): Promise<any> {
+  const db = firebase.firestore();
+  const doc = await db.collection('collections').doc(address).get();
+  if(!doc.exists) {
+    return null;
+  }
+  return doc.data();
 }
