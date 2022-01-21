@@ -3,13 +3,12 @@ import {
   Box,
   Flex,
   Heading,
-  Link,
   SimpleGrid,
   Spinner,
   Text
 } from '@chakra-ui/react';
 import { MinterButton } from '../../common';
-import { ChevronLeft, ExternalLink, Wind } from 'react-feather';
+import { ChevronLeft, Wind } from 'react-feather';
 import { useDispatch, useSelector } from '../../../reducer';
 import {
   // getContractNftsQuery,

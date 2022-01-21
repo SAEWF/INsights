@@ -2,12 +2,8 @@ import React from "react";
 import './styles/footer.css'
 // import { Container, Row, Col } from 'react-bootstrap';
 import mediumLogo from './assets/medium-white.png';
-import { Box, HStack, VStack, Spacer, Text, useColorModeValue } from '@chakra-ui/react';
-import { Row } from "react-bootstrap";
 
 const Footer = () => {
-  const bg = useColorModeValue('gray.100', 'black');
-  const color = useColorModeValue('black', 'white');
 
   return (
     <div className="footer">
