@@ -4,17 +4,14 @@ import {Form, FormGroup, Container} from 'react-bootstrap';
 import firebase from '../../lib/firebase/firebase'
 import './styles/style.css';
 import { Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, Button} from '@chakra-ui/react';
-import { verifyContract } from '../../lib/nfts/queries';
 import uploadImage from './uploadImage';
 import { useLocation } from 'wouter';
 // import { MinterButton } from '.';
-import {  useSelector } from '../../reducer';
 // import { FaWallet } from 'react-icons/fa';
 // import { connectWallet, disconnectWallet } from '../../reducer/async/wallet';
 
 
 function RegistrationPage(props: any) {
-    const { system } = useSelector(s => s);
     const [ , setLocation] = useLocation();
     // const dispatch = useDispatch();
     const [formData, setFormData] = useState({"display":false});
@@ -35,6 +32,25 @@ function RegistrationPage(props: any) {
     //     setWalletID(system.tzPublicKey);
     //   }
     // }, [system]);
+
+    const isValid = (contract: string) =>{
+      if(contract.length<3){
+        return false;
+      }
+      if(contract[0]!=='K' || contract[1]!=='T' || contract[2]!=='1'){
+        return false;
+      }
+      return true;
+    }
+
+    const entryPointPresent = async (contract: string) =>{
+      const res = await fetch(`https://api.tzkt.io/v1/contracts/${contract}/entrypoints/update_operators`);
+      if(res.status===200){
+        return true;
+      }
+      return false;
+    }
+
 
     const RegisterUser = async () => {
       document.querySelector('.registrationError')!.innerHTML = "";
@@ -57,25 +73,13 @@ function RegistrationPage(props: any) {
                     document.querySelector('.registrationError')!.innerHTML = "Please connect your wallet as contract creator .";
                     return;
                 }
-                const check = await verifyContract(system, contract, walletID);
+                const check = await entryPointPresent(contract);
+                if(!isValid(contract) || !check){
+                    document.querySelector('.registrationError')!.innerHTML = "Please enter a valid contract address .";
+                    return;
+                }
                 if(file!==null){
                     url = await uploadImage(file);
-                }
-                if(!check){
-                  document.querySelector('.registrationError')!.innerHTML = "An error occured . Kindly Verify details or connect with us ! ";
-                  docRef.set({
-                      name: name,
-                      description: desc,
-                      twt: twt,
-                      website: website,
-                      contract: contract,
-                      owner: walletID,
-                      display: false,
-                      image: url,
-                      discord: discord
-                  });
-                  setDisable(false);
-                  return;
                 }
                 docRef.set({
                     name: name,
