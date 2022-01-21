@@ -36,6 +36,16 @@ function RegistrationPage(props: any) {
     //   }
     // }, [system]);
 
+    const isValid = (contract: string) =>{
+      if(contract.length<3){
+        return false;
+      }
+      if(contract[0]!=='K' || contract[1]!=='T' || contract[2]!=='1'){
+        return false;
+      }
+      return true;
+    }
+
     const RegisterUser = async () => {
       document.querySelector('.registrationError')!.innerHTML = "";
       document.querySelector('.successMessage')!.innerHTML = "";
@@ -57,25 +67,12 @@ function RegistrationPage(props: any) {
                     document.querySelector('.registrationError')!.innerHTML = "Please connect your wallet as contract creator .";
                     return;
                 }
-                const check = await verifyContract(system, contract, walletID);
+                if(!isValid(contract)){
+                    document.querySelector('.registrationError')!.innerHTML = "Please enter a valid contract address .";
+                    return;
+                }
                 if(file!==null){
                     url = await uploadImage(file);
-                }
-                if(!check){
-                  document.querySelector('.registrationError')!.innerHTML = "An error occured . Kindly Verify details or connect with us ! ";
-                  docRef.set({
-                      name: name,
-                      description: desc,
-                      twt: twt,
-                      website: website,
-                      contract: contract,
-                      owner: walletID,
-                      display: false,
-                      image: url,
-                      discord: discord
-                  });
-                  setDisable(false);
-                  return;
                 }
                 docRef.set({
                     name: name,
