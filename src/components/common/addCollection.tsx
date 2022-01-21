@@ -6,6 +6,7 @@ import './styles/style.css';
 import { Flex, Input, Box, Textarea, InputGroup, InputLeftAddon, Button} from '@chakra-ui/react';
 import uploadImage from './uploadImage';
 import { useLocation } from 'wouter';
+import config from '../../config.json';
 // import { MinterButton } from '.';
 // import { FaWallet } from 'react-icons/fa';
 // import { connectWallet, disconnectWallet } from '../../reducer/async/wallet';
@@ -44,7 +45,7 @@ function RegistrationPage(props: any) {
     }
 
     const entryPointPresent = async (contract: string) =>{
-      const res = await fetch(`https://api.tzkt.io/v1/contracts/${contract}/entrypoints/update_operators`);
+      const res = await fetch(`${config.tzkt.api}/v1/contracts/${contract}/entrypoints/update_operators`);
       if(res.status===200){
         return true;
       }
@@ -75,7 +76,7 @@ function RegistrationPage(props: any) {
                 }
                 const check = await entryPointPresent(contract);
                 if(!isValid(contract) || !check){
-                    document.querySelector('.registrationError')!.innerHTML = "Please enter a valid contract address .";
+                    document.querySelector('.registrationError')!.innerHTML = "Please enter a valid contract address or contact us 😊";
                     return;
                 }
                 if(file!==null){
@@ -88,7 +89,7 @@ function RegistrationPage(props: any) {
                     website: website,
                     contract: contract,
                     owner: walletID,
-                    display: false,
+                    display: true,
                     image: url,
                     discord: discord
                 });
