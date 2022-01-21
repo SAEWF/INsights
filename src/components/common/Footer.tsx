@@ -34,7 +34,7 @@ const Footer = () => {
       <hr className = "line" />
 
       <div className="copyright">
-        <p>© 2021 Copyright : ByteBlock</p>
+        <p>© 2022 Copyright : ByteBlock</p>
       </div>
     </div>
   );
