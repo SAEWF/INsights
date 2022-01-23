@@ -16,7 +16,8 @@ export default function Sidebar() {
 
   const HEN = state.collections['KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton'];
   const kalamint = state.collections['KT1EpGgjQs73QfFJs9z7m1Mxm5MTnpC2tqse'];
-  const rari = state.collections['KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'];  const dispatch = useDispatch();
+  const rari = state.collections['KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS'];  
+  const dispatch = useDispatch();
   const [objktState, setObjktState] = React.useState([]);
 
   useEffect(() => {
