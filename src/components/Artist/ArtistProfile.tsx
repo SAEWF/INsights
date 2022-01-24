@@ -145,6 +145,19 @@ export default function ArtistProfile(props: PropType) {
     }
   }, [system.status, system.tzPublicKey]);
 
+  const getTwitterLink = (twitter: string) => {
+    if(twitter === undefined || twitter === ''){
+      return '';
+    }
+    if(twitter.includes('https://twitter.com/')){
+      return twitter;
+    }
+    if(twitter.includes('@')){
+      return 'https://twitter.com/'+twitter.replace('@','');
+    }
+    return 'https://twitter.com/'+twitter;
+  }
+
   if(userDataFromFireStore.length === 0){
     return(
       <Container className="main-container">
@@ -254,7 +267,7 @@ export default function ArtistProfile(props: PropType) {
                         <Card.Body className='text-center'>
 
                           <ul className="social-icons mt-2 mx-auto">
-                              {(item.twt) !==""? <li><a className="twitter" href={item.twt} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
+                              {(item.twt) !==""? <li><a className="twitter" href={getTwitterLink(item.twt)} target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter " ></i></a></li>:""}
                               {(item.fb) !==undefined && (item.fb) !==""? <li><a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a></li>:""}
                               {(item.ig) !==""? <li><a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a></li>:""}
                               {(item.yt) !==""? <li><a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube " ></i></a></li>:""}

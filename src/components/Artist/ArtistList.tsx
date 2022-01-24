@@ -35,6 +35,19 @@ export default function ArtistList() {
   const artists = GetArtists();
   const [, setLocation] = useLocation();
 
+  const getTwitterLink = (twitter: string) => {
+    if(twitter === undefined || twitter === ''){
+      return '';
+    }
+    if(twitter.includes('https://twitter.com/')){
+      return twitter;
+    }
+    if(twitter.includes('@')){
+      return 'https://twitter.com/'+twitter.replace('@','');
+    }
+    return 'https://twitter.com/'+twitter;
+  }
+
   return (
     <Flex
         w="100vw"
@@ -74,7 +87,7 @@ export default function ArtistList() {
                     onClick={
                       () => setLocation(`/artists`)
                   }>
-                    {(item.twt) !==""? <a className="twitter" href={item.twt} target="_blank" id="twt" rel="noopener noreferrer" style={{color:'red'}}><i className="fab fa-twitter " ></i></a>:""}
+                    {(item.twt) !==""? <a className="twitter" href={getTwitterLink(item.twt)} target="_blank" id="twt" rel="noopener noreferrer" style={{color:'red'}}><i className="fab fa-twitter " ></i></a>:""}
                     {(item.fb) !==undefined && (item.fb) !==""? <a className="facebook" href={item.fb} target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook "></i></a>:""}
                     {(item.ig) !==""? <a className="" href={item.ig} target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram "  id="insta-color"></i></a>:""}
                     {(item.yt) !==""? <a className="youtube" href={item.yt} target="_blank" rel="noopener noreferrer" id="yt"><i className="fab fa-youtube " ></i></a>:""}
