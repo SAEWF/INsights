@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from '../../../reducer';
 import {
   // getContractNftsQuery,
   getCollectionNftsQuery,
+  getContractNftsQuery,
   getNftAssetContractQuery,
   loadMoreCollectionNftsQuery
 } from '../../../reducer/async/queries';
@@ -47,11 +48,15 @@ export default function CollectionDisplay({
   const [end, setEnd] = useState(CardsPerPage);
   const bg = useColorModeValue('gray.100', 'black');
 
+  // console.log('CollectionDisplay', address, ownedOnly, metadata);
   useEffect(() => {
     if (address !== null) {
-      dispatch(getNftAssetContractQuery(address)).then(() =>
-        dispatch(getCollectionNftsQuery({ address: address }))
-      );
+      dispatch(getNftAssetContractQuery(address)).then(() =>{
+        if(ownedOnly)
+          dispatch(getContractNftsQuery({ address: address, ownedOnly: ownedOnly }))
+        else
+          dispatch(getCollectionNftsQuery({ address: address }))
+      });
     }
   }, [address, dispatch, ownedOnly]);
 
@@ -114,7 +119,7 @@ export default function CollectionDisplay({
       )
     : collection.tokens;
 
-      // PAGINATION
+  // PAGINATION
   let items = [];
   const numberOfPages = Math.ceil((tokens.length-1) / CardsPerPage);
   for (let number = 1; number <= numberOfPages; number++) {
