@@ -21,7 +21,6 @@ export default function Sidebar() {
   const [objktState, setObjktState] = React.useState([]);
 
   useEffect(() => {
-    // console.log('Sidebar useEffect');
     if(tzPublicKey && objktState.length === 0) {
       var db = firebase.firestore();
       db.collection("artists").doc(tzPublicKey).onSnapshot(function(doc) {
@@ -42,8 +41,7 @@ export default function Sidebar() {
         }
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tzPublicKey, objktState]);
+  }, [tzPublicKey, dispatch, objktState.length]);
  
   
 
