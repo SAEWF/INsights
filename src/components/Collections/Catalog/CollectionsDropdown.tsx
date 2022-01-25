@@ -16,6 +16,7 @@ import { ChevronDown } from 'react-feather';
 
 export default function CollectionsDropdown() {
   const state = useSelector(s => s.collections);
+  const global = state.collections[state.globalCollection];
   const dispatch = useDispatch();
 
   return (
@@ -44,16 +45,19 @@ export default function CollectionsDropdown() {
             <Text ml={4} my={2} fontWeight="600">
               Featured
             </Text>
-            <MenuItemOption
-              key={state.globalCollection}
-              selected={state.globalCollection === state.selectedCollection}
-              value={state.globalCollection}
-              onSelect={() =>
-                dispatch(selectCollection(state.globalCollection))
-              }
-            >
-              {state.collections[state.globalCollection].metadata.name}
-            </MenuItemOption>
+            {
+              global && global!==undefined &&
+              <MenuItemOption
+                key={state.globalCollection}
+                selected={state.globalCollection === state.selectedCollection}
+                value={state.globalCollection}
+                onSelect={() =>
+                  dispatch(selectCollection(state.globalCollection))
+                }
+              >
+                {state.collections[state.globalCollection].metadata.name}
+              </MenuItemOption>
+            }
             <Text ml={4} my={2} fontWeight="600">
               ByteBlock Collections
             </Text>
