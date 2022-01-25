@@ -575,17 +575,16 @@ export async function getNftAssetContract(
 ): Promise<D.AssetContract> {
   const contract = await getContract(system.tzkt, address, {}, t.unknown);
   const collection = await getContractFromFirebase(address);
-  if(collection !== null){
+  if(collection){
     const result =  {...contract, metadata: {name: collection.name, description: collection.description}};
     return result;
   }
 
   const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
-    // console.log("METABIGMAP", metaBigMap);
 
   let metaUri; 
   if(metaBigMap.length > 1){
-    metaUri = metaBigMap.find(v => v.key === 'content')?.value;
+    metaUri = metaBigMap.find(v => v.key !== '')?.value;
     if(metaUri === undefined) throw new Error('No content in metadata');
     const metadata = JSON.parse(fromHexString(metaUri));
     console.log("METADATA", {name: metadata.name ?? '', description: ''} );
