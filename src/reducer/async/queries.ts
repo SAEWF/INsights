@@ -67,7 +67,7 @@ export const getCollectionNftsQuery = createAsyncThunk<
   try {
     let tokens;
     tokens = await getCollectionNfts(system, address);
-
+    tokens = tokens.filter(t => t.metadata.name!=='Seed');
      // 12 cards pere page in collection
     const iStart = 0, iEnd = 12;
 

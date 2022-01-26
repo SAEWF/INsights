@@ -429,7 +429,7 @@ export async function getCollectionNfts(
 
   //  // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
-  //  // console.log("tokensSorted",tokensSorted);
+  //  console.log("tokensSorted",tokensSorted);
   const result =  await Promise.all(
     tokensSorted.map(
       async (token): Promise<D.Nft> => {
@@ -465,7 +465,9 @@ export async function getCollectionNfts(
           owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
         }
         // //console.log("owner ",tokenId, owner);
-
+        // if(metadata.name && metadata.name==='Seed'){
+        //   return;
+        // }
         const res =  {
           id: parseInt(tokenId, 10),
           owner: owner,
@@ -547,7 +549,8 @@ export async function getContractNft(
           type: saleData.value.isLegacy ? 'fixedPriceLegacy' : 'fixedPrice'
         };
         // //console.log("sale done",ledger.slice(1,10));
-        var owner = ledger.find(e => e.key === tokenId)?.value!;
+
+        var owner = ledger.reverse().find(e => e.key === tokenId)?.value!;
         if(owner === undefined){
           owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
         }
@@ -954,10 +957,20 @@ export const loadCollectionNft = async (
   }
 
   let Loadedmetadata;
-
+  // console.log("loadCollectionNft", { tokenLoadData, address });
   try {
+    // console.log(metadata['']);
     if(metadata===undefined || metadata['']===undefined){
-      return tokenLoadData;
+      return {
+        address: address,
+        id: id,
+        title: tokenLoadData.metadata.name || '',
+        owner: owner,
+        description: tokenLoadData.metadata.description || '',
+        artifactUri: tokenLoadData.metadata.thumbnailUri || '',
+        metadata: tokenLoadData.metadata,
+        sale: sale
+      };
     }
     else{
       Loadedmetadata = (await system.resolveMetadata(
@@ -965,6 +978,8 @@ export const loadCollectionNft = async (
         address
       )) as any;
     }
+
+    console.log("Loadedmetadata", Loadedmetadata);
 
     const result = {
       address: address,
