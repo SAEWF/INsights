@@ -24,20 +24,14 @@ import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
 import {useColorModeValue } from '@chakra-ui/react';
 import './style.css';
 import link from './link-solid.svg';
-// import firebase from '../../../lib/firebase/firebase'
+import firebase from '../../../lib/firebase/firebase'
 
 interface CollectionDisplayProps {
-  address: string | null;
-  ownedOnly?: boolean;
-  metadata?: any[];
-  DropdownProp: any
+  name: string
 }
 
 export default function CollectionDisplay({
-  address,
-  ownedOnly = true,
-  metadata = [],
-  DropdownProp
+  name
 }: CollectionDisplayProps) {
   const CardsPerPage = 12;
   const state = useSelector(s => s);
@@ -47,11 +41,25 @@ export default function CollectionDisplay({
   const [active, setActive] = useState(1);
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(CardsPerPage);
+  const [metadata, setMetadata] = useState<any[]>([]);
   const bg = useColorModeValue('gray.100', 'black');
+  const ownedOnly = false;
+  const [address , setAddress] = useState('')
 
   // console.log('CollectionDisplay', address, ownedOnly, metadata);
   useEffect(() => {
-    if (address !== null) {
+    const db = firebase.firestore();
+    const docRef = db.collection('collections').where('name', '==', name.replaceAll('_', ' '));
+    docRef.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            setAddress(doc.id);
+            const data = doc.data();
+            const metadataCopy = metadata;
+            metadataCopy.push(data);
+            setMetadata(metadataCopy);
+        });
+    });
+    if (address !== '') {
       dispatch(getNftAssetContractQuery(address)).then(() =>{
         if(ownedOnly)
           dispatch(getContractNftsQuery({ address: address, ownedOnly: ownedOnly }))
@@ -59,7 +67,7 @@ export default function CollectionDisplay({
           dispatch(getCollectionNftsQuery({ address: address }))
       });
     }
-  }, [address, dispatch, ownedOnly, metadata]);
+  }, [address, dispatch, ownedOnly, name, metadata]);
 
   const loadMore = (pageNumber: number, collectionAddress: string) => {
     dispatch(loadMoreCollectionNftsQuery({page:pageNumber, address: collectionAddress}));
@@ -69,7 +77,6 @@ export default function CollectionDisplay({
     return (
       <>
       <Flex w="100%" flex="1" flexDir="column" align="center">
-      {DropdownProp && <DropdownProp />}
       <Flex
         px={20}
         py={10}
@@ -167,10 +174,7 @@ export default function CollectionDisplay({
   }
 
   const copyToClipboard = () => {
-    if(metadata && metadata.length > 0){
-      navigator.clipboard.writeText(`https://byteblock.art/explore/${metadata[0].name.replaceAll(' ', '_')}`);
-    }
-    else navigator.clipboard.writeText(`https://byteblock.art/collection/${address}/`);
+    navigator.clipboard.writeText(`https://byteblock.art/explore/${name}/`);
     dispatch(notifyFulfilled('1', 'Link copied to clipboard'));
   }
 
@@ -223,7 +227,6 @@ export default function CollectionDisplay({
     return (
       <>
       <Flex w="100%" flex="1" flexDir="column" align="center">
-        {DropdownProp && <DropdownProp />}
         <Flex
           px={20}
           py={10}
@@ -260,8 +263,7 @@ export default function CollectionDisplay({
       // overflowY="scroll"
       justify="start"
     >
-      {DropdownProp && <DropdownProp />}
-      <Flex flexDir="row" >
+      <Flex flexDir="row">
       {
         metadata && metadata.length>0 ?
         null
