@@ -21,6 +21,7 @@ import EditProfile from '../common/EditProfile';
 import Terms from '../common/Terms';
 import Explore from '../Explore/index';
 import AddCollection from '../common/addCollection'
+import CollectionByName from '../Collections/Catalog/CollectionByName';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -69,6 +70,9 @@ export default function App() {
             <>
               <Explore />
             </>
+          </Route>
+          <Route path="/explore/:collectionName">
+            {({ collectionName }) => <CollectionByName name={collectionName} />}
           </Route>
           <Route path="/collections">
             <>
