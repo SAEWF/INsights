@@ -75,7 +75,8 @@ interface TokenDetailProps {
 
 const getIPFSlink = (hash: string) =>{
     const cid = hash.replace(':','');
-    return `https://tqtezos.mypinata.cloud/${cid}`;
+    const fcid = cid.replace('//', '/');
+    return `https://tqtezos.mypinata.cloud/${fcid}`;
 }
 
 function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
