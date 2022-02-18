@@ -9,6 +9,7 @@ import {
   Menu,
   MenuButton,
   MenuList,
+  MenuItem,
   useDisclosure,
   Drawer,
   DrawerOverlay,
@@ -30,6 +31,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Icon, IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { FaSun, FaMoon, FaWallet } from 'react-icons/fa';
 import firebase from '../../../src/lib/firebase/firebase';
+import BasicUsage from '../Wert/Modal';
 
 
 
@@ -364,6 +366,7 @@ function NavItems() {
           borderColor="brand.darkGray"
         >
           <WalletDisplay />
+          
           <IconButton 
             icon = { colorMode==='light' ? <FaSun/> : <FaMoon/>} 
             aria-label='toggle dark mode'
@@ -372,6 +375,18 @@ function NavItems() {
             borderRadius='5'
             onClick={toggleColorMode}
           />
+
+            <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label='Options'
+              icon={<HamburgerIcon />}
+               variant='outline'
+             />
+            <MenuList >
+              <BasicUsage/>  
+            </MenuList>
+            </Menu>
         </Flex>
       </Flex>
     </>
