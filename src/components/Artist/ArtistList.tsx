@@ -58,7 +58,8 @@ export default function ArtistList() {
         justify="start"
         flexDir="row"
       >
-    <Container>
+    {/* <Container> */}
+    <div>
     
 <div className="one mt-4 mb-3">
   <h1>Our Artists</h1>
@@ -101,7 +102,8 @@ export default function ArtistList() {
         }
 
       </Row >
-    </Container >
+      </div>
+    {/* </Container > */}
     </Flex>
   );
 
