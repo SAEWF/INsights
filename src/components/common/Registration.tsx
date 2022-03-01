@@ -395,7 +395,7 @@ function RegistrationPage(props: any) {
           justify="start"
           flexDir="row"
         >
-      <Container >
+      <div style={{margin: 'auto'}}>
       <Box p={6} maxWidth="100%" borderWidth={3} borderRadius={10} boxShadow="lg">
             <div className="one mt-4 mb-3">
               <h1>Artist Registration</h1>
@@ -582,7 +582,7 @@ function RegistrationPage(props: any) {
               </div>
             </Form>
             </Box>
-          </Container>
+          </div>
           </Flex>
         </>
       );
