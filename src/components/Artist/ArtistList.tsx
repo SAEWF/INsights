@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, } from 'react-bootstrap';
+import { Row, Col, } from 'react-bootstrap';
 import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { useLocation } from 'wouter';
