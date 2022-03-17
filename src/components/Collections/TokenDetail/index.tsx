@@ -38,6 +38,8 @@ import { TokenMedia } from '../../common/TokenMedia';
 // import tz from '../../common/assets/tezos-sym-white.svg'
 import { Maximize2 } from 'react-feather';
 import firebase from '../../../lib/firebase/firebase'
+import { ConfigureTokenButton } from '../../common/modals/ConfigureAuction';
+import { BidTokenButton } from '../../common/modals/BidToken'
 
 function NotFound() {
   return (
@@ -94,6 +96,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
   useEffect(() => {
     if (collectionUndefined) {
+      console.log(collection);
       dispatch(getNftAssetContractQuery(contractAddress));
     }
     else{
@@ -544,7 +547,13 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     <SellTokenButton token={token} contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
                   </Box>
                   <Box marginRight={2}>
-                  <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />
+                    <ConfigureTokenButton token={token} contract={contractAddress} tokenId={tokenId} />
+                  </Box>
+                  <Box marginRight={2}>
+                    <BidTokenButton auctionId={1} />
+                  </Box>
+                  <Box marginRight={2}>
+                    <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />
                   </Box>
                   </>
                 ) : (

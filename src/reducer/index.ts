@@ -10,10 +10,12 @@ import systemSlice from './slices/system';
 import statusSlice from './slices/status';
 import notificationsSlice from './slices/notifications';
 import marketplaceSlice from './slices/marketplace';
+import auctionSlice from './slices/auction';
 
 export const reducer = combineReducers({
   collections: collectionsSlice.reducer,
   marketplace: marketplaceSlice.reducer,
+  auction: auctionSlice.reducer,
   createNft: createNftSlice.reducer,
   createNftCsvImport: createNftCsvImportSlice.reducer,
   system: systemSlice.reducer,

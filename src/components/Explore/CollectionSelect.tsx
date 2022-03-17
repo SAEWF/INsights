@@ -1,12 +1,15 @@
 import React from 'react'
 import { Select } from '@chakra-ui/react';
+import { useLocation } from 'wouter';
 
 export default function CollectionSelect(props: any) {
+    const [,setLocation] = useLocation();
     const HandleChangeCollection = (e: any) =>{
         props.setCollection(e.target.value);
         if(props.onSelect){
           props.onSelect(e.target.value);
         }
+        setLocation(`/explore/${e.target.value}`);
     }
 
     return (
@@ -21,7 +24,7 @@ export default function CollectionSelect(props: any) {
             {
               props.collections.map((collectionK: any) => {
                 return(
-                  <option selected={collectionK.id===props.collection} style={{color:'white', backgroundColor: 'black'}} key={collectionK.id} value={collectionK.id}>{collectionK.name}</option>
+                  <option selected={collectionK.id===props.collection} style={{color:'white', backgroundColor: 'black'}} key={collectionK.id} value={collectionK.name.replaceAll(' ','_')}>{collectionK.name}</option>
                 );
               })
             }

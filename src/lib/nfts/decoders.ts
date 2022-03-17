@@ -278,6 +278,20 @@ export const NftSale = t.type({
   saleId: t.number
 });
 
+export type NftAuction = t.TypeOf<typeof NftSale>;
+export const NftAuction = t.type({
+  id: t.number,
+  current_bid: t.number,
+  end_time: t.string,
+  highest_bidder: t.string,
+  last_bid_time: t.string,
+  min_raise: t.number,
+  min_raise_percent: t.number,
+  round_time: t.string,
+  seller: t.string,
+  start_time: t.string
+});
+
 export type Nft = t.TypeOf<typeof Nft>;
 export const Nft = t.intersection([
   t.type({
@@ -290,6 +304,7 @@ export const Nft = t.intersection([
   }),
   t.partial({
     sale: NftSale,
+    auction: NftAuction,
     address: t.string
   })
 ]);

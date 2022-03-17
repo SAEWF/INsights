@@ -9,7 +9,7 @@ import { compact } from 'fp-ts/lib/Array';
 import { getRight } from 'fp-ts/lib/Option';
 import * as D from './decoders';
 
-import { 
+import {
   getLedgerBigMapCustom, 
   getTokenMetadataBigMapCustom, 
   getOwnedLedgerBigMapCustom, 
@@ -217,7 +217,7 @@ async function getFixedPriceSalesBigMapWithKey(
   return decoded.right;
 }
 
-async function getBigMapUpdates<K extends t.Mixed, V extends t.Mixed>(
+export async function getBigMapUpdates<K extends t.Mixed, V extends t.Mixed>(
   tzkt: TzKt,
   params: Params,
   content: { key: K; value: V }
@@ -489,7 +489,7 @@ export async function getContractNft(
   address: string,
   tokenId: number
 ): Promise<D.Nft[]> {
-  //  //console.log("ADDRESS",address, ownedOnly);
+   console.log("ADDRESS",address);
   const ledgerA = await getLedgerBigMapWithKey(system.tzkt, address, tokenId.toString());
   //  //console.log("LEDGER",ledgerA);
   let ledgerB = [];
@@ -498,7 +498,7 @@ export async function getContractNft(
   }
 
   const ledger = [...ledgerA, ...ledgerB];
-  // //console.log("LEDGER",ledger);
+  console.log("LEDGER",ledger);
   const tokensA = await getTokenMetadataBigMapWithKey(system.tzkt, address, tokenId.toString());
   let tokensB: D.TokenMetadataBigMap = [];
   if(tokensA.length === 0){
@@ -577,6 +577,9 @@ export async function getNftAssetContract(
   address: string
 ): Promise<D.AssetContract> {
   const contract = await getContract(system.tzkt, address, {}, t.unknown);
+  // console.log("C./ONTRACT",contract);
+  if(address === "KT1J6GPgWkgUuubLgRn6EHLL8mjGVarN3JTW")
+  return { ...contract, metadata: {name: "BBHANG", description: ''} };
   const collection = await getContractFromFirebase(address);
   if(collection){
     const result =  {...contract, metadata: {name: collection.name, description: collection.description}};
@@ -584,7 +587,7 @@ export async function getNftAssetContract(
   }
 
   const metaBigMap = await getAssetMetadataBigMap(system.tzkt, address);
-
+  
   let metaUri; 
   if(metaBigMap.length > 1){
     metaUri = metaBigMap.find(v => v.key !== '')?.value;

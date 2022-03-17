@@ -21,6 +21,7 @@ import EditProfile from '../common/EditProfile';
 import Terms from '../common/Terms';
 import Explore from '../Explore/index';
 import AddCollection from '../common/addCollection'
+import Auction from '../Auction/Catalog/index';
 import CollectionByName from '../Collections/Catalog/CollectionByName';
 
 export default function App() {
@@ -87,6 +88,11 @@ export default function App() {
           <Route path="/addCollection">
             <>
               <AddCollection />
+            </>
+          </Route>
+          <Route path="/auction">
+            <>
+              <Auction />
             </>
           </Route>
           <Route path="/marketplace">
