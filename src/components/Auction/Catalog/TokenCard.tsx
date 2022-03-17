@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import firebase from '../../../lib/firebase/firebase';
 import { useColorModeValue, Image, Text} from '@chakra-ui/react';
 import user_icon from '../assets/user_icon.png';
-import Timer from './Timer'
+// import Timer from './Timer'
 
 interface TokenCardProps extends Token {
   config: IpfsGatewayConfig;
@@ -208,7 +208,7 @@ export default function TokenCard(props: any) {
         :
         <Box bg={bg} color={color}><Card.Header>ByteBlock</Card.Header></Box>
       }
-      <Timer expiryTimestamp = {time} />
+      {/* <Timer expiryTimestamp = {time} /> */}
       
       <AspectRatio ratio={3 / 3.5}       
         onClick={() =>
