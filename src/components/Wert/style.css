@@ -1,0 +1,33 @@
+.container {
+    max-width: 650px;
+    min-height: 580px;
+    background-color: '#40517a';
+    color: '#40517a';
+  }
+
+.errorWidget {
+    max-width: 650px;
+    min-height: 400px;
+    background-color: '#40517a';
+    color: 'red';
+    text-align: center;
+    position: relative;
+}
+
+.wertDisclaimer {
+    font-size: x-small;
+    font-style: italic;
+    text-align: right;
+}
+
+.leftLink {
+    color:blue;
+    font-style: oblique;
+    text-align: left;
+}
+
+.rightLink {
+    color:blue;
+    font-style: oblique;
+    text-align: right;
+}
