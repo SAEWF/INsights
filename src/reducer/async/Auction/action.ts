@@ -45,7 +45,7 @@ export const configureTokenAction = createAsyncThunk<
     } catch(e){
         return rejectWithValue({
             kind: ErrorKind.AuctionConfigureFailed,
-            message: e.message  
+            message: 'Failed '  
         });
     }
 });
@@ -78,7 +78,7 @@ export const bidTokenAction = createAsyncThunk<
     } catch(e){
         return rejectWithValue({
             kind: ErrorKind.BidTokenFailed,
-            message: e.message  
+            message: 'Failed '  
         });
     }
 });
@@ -111,7 +111,7 @@ export const resolveTokenAction = createAsyncThunk<
     } catch(e){
         return rejectWithValue({
             kind: ErrorKind.ResolveTokenFailed,
-            message: e.message  
+            message: 'Failed '  
         });
     }
 });
@@ -144,7 +144,7 @@ export const cancelTokenAction = createAsyncThunk<
     } catch(e){
         return rejectWithValue({
             kind: ErrorKind.CancelTokenSaleFailed,
-            message: e.message  
+            message: 'Failed '  
         });
     }
 });

@@ -1,40 +1,22 @@
 {
-	"network": "mainnet",
-	"rpc": "https://rpc.tzbeta.net",
+	"network": "hangzhounet",
+	"rpc": "https://hangzhounet.api.tez.ie",
 	"bcd": {
 		"api": "https://api.better-call.dev",
 		"gui": "https://better-call.dev"
 	},
 	"tzkt": {
-		"api": "https://api.mainnet.tzkt.io"
-	},
-	"admin": {
-		"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
-	},
-	"ipfsApi": "https://api.pinata.cloud",
-	"ipfsGateway": "https://tqtezos.mypinata.cloud",
-	"contractOpts": {
-		"marketplace": {
-			"adminOnly": false,
-			"fee": {
-				"percent": 4,
-				"address": "tz1LBaMbycZsTQcHRFGQ1u1CtVqXDSwhjbQG"
-			}
-		}
+		"api": "https://api.hangzhou2net.tzkt.io"
 	},
 	"contracts": {
-		"nftFaucet": "KT1MxGrhSmLPe4W842AutygvuoxUejLJDuWq",
+		"nftFaucet": "KT1J6GPgWkgUuubLgRn6EHLL8mjGVarN3JTW",
 		"marketplace": {
 			"fixedPrice": {
-				"tez": "KT1NNpYRX8bAL5JTbGWtWRrSqG2iWdUdiXF5"
+				"tez": "KT1F7ao5Rc5m3knb4itWfd7SdPNPnn4LgQuQ"
 			}
-		}
+		},
+		"auction": "KT1LWwLzyxy3BvkEqNr2Lfe5xvk7geyNnZQt"
 	},
-	"ByteBlockEnglishAuction": {
-		"EnglishAuction": "KT1KhB9feNM8k62drsHLmNH73C278hn3F9hJ",
-		"AuctionFee": {
-			"percent": 4,
-			"address": "tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP"
-		}
-	}
+	"ipfsApi": "https://minter-api.tqhosted.com",
+	"ipfsGateway": "https://tqtezos.mypinata.cloud"
 }
