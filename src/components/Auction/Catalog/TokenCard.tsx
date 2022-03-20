@@ -168,6 +168,8 @@ export default function TokenCard(props: any) {
 
   totalAmount = props.auction.current_bid/1000000.0;
   const time = new Date(props.auction.end_time);
+  console.log("time - ", time);
+  console.log("time2 - ", props.auction.end_time);
 
   return (
     <Flex
