@@ -32,7 +32,10 @@ import { TokenMedia } from '../../common/TokenMedia';
 import { Maximize2 } from 'react-feather';
 import firebase from '../../../lib/firebase/firebase'
 import { ConfigureTokenButton } from '../../common/modals/ConfigureAuction';
-import { BidTokenButton } from '../../common/modals/BidToken'
+import { BidTokenButton } from '../../common/modals/BidToken';
+import { ResolveTokenAuctionButton } from '../../common/modals/ResolveToken';
+import cancelTokenAuctionButton from '../../common/modals/CancelTokenAuction'
+
 
 function NotFound() {
   return (
