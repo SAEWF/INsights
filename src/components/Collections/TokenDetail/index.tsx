@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  // Accordion,
-  // AccordionButton,
-  // AccordionIcon,
-  // AccordionItem,
-  // AccordionPanel,
   Link,
   Box,
   Button,
@@ -34,12 +29,13 @@ import {
   getNftAssetContractQuery
 } from '../../../reducer/async/queries';
 import { TokenMedia } from '../../common/TokenMedia';
-// import lk from '../../common/assets/link-icon.svg'
-// import tz from '../../common/assets/tezos-sym-white.svg'
 import { Maximize2 } from 'react-feather';
 import firebase from '../../../lib/firebase/firebase'
 import { ConfigureTokenButton } from '../../common/modals/ConfigureAuction';
-import { BidTokenButton } from '../../common/modals/BidToken'
+import { BidTokenButton } from '../../common/modals/BidToken';
+import { ResolveTokenAuctionButton } from '../../common/modals/ResolveToken';
+import cancelTokenAuctionButton from '../../common/modals/CancelTokenAuction'
+
 
 function NotFound() {
   return (
@@ -107,7 +103,11 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       var walletAddress ;
       if(tokenHook.sale!==null && tokenHook.sale!==undefined){
         walletAddress = tokenHook.sale.seller;
-      }else{
+      }
+      else if(tokenHook.auction){
+        walletAddress = tokenHook.auction.seller;
+      }
+      else{
         walletAddress = tokenHook.owner;
       }
       const hook = firebase.firestore().collection('artists').doc(walletAddress);
@@ -177,6 +177,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
   let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any, creatorAddress, ownerAddress;
   
+  // auction vars
+  let end_time ;
+  
   if(token.sale && tokenHook){
     if(tokenHook.metadata.royalties!==undefined){
       const shares = tokenHook.metadata.royalties.shares;
@@ -184,7 +187,6 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       for(var walletID in shares){
         royalty = shares[walletID];
       }
-//TODO do for kalamint
       if(tokenHook.metadata.creators[0]==="KraznikDAO")
         royaltyPercentage = 3;
       else if(tokenHook.metadata.creators[0]==="deconcept.tez")
@@ -273,6 +275,11 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       royaltyArray = tokenHook.metadata!.attributes?.filter((it: any) => it.name==='Royalty');
       royaltyPercentage = (royaltyArray!==undefined && royaltyArray!.length > 0) ? parseInt(royaltyArray[0].value) : 10;
     }
+  }
+
+  if(token.auction && tokenHook){
+    ownerAddress = token.auction.seller;
+    end_time = token.auction.end_time;
   }
 
   return (
@@ -423,7 +430,13 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 <Flex key="ownerAddress" mt={[4, 8]}>
                 <Text color="secColDarkTheme">Owner :</Text>
                 <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
-                    {(token.sale!==undefined)?token.sale.seller:token.owner}
+                    {
+                      (token.sale!==undefined)?token.sale.seller
+                      :
+                      (token.auction!==undefined)?token.auction.seller
+                      :
+                      token.owner
+                    }
                 </Text> 
                 </Flex>
               </>
@@ -541,11 +554,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                       </Box>
                     </>
                   )
-                ) : isOwner ? (
+                ) :
+                token.auction ? (
                   <>
-                  <Box marginRight={2}>
-                    <SellTokenButton token={token} contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
-                  </Box>
                   <Box marginRight={2}>
                     <ConfigureTokenButton token={token} contract={contractAddress} tokenId={tokenId} />
                   </Box>
