@@ -562,6 +562,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     <Box marginRight={2}>
                       <BidTokenButton auctionId={token.auction.id} />
                     </Box>
+                    <Box marginRight={2}>
+                      <ResolveTokenAuctionButton id={token.auction.id} />
+                    </Box>
                   </>
                   ) : (
                     <>

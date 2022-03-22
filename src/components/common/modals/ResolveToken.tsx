@@ -14,8 +14,6 @@ import { resolveTokenAction } from '../../../reducer/async/Auction/action';
 import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 
 interface ResolveTokenAuctionModalProps extends BaseModalProps {
-  contract: string;
-  tokenId: number;
   id: number;
 }
 
@@ -62,8 +60,6 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
 }
 
 interface ResolveTokenAuctionButtonProps extends BaseModalButtonProps {
-  contract: string;
-  tokenId: number;
   id: number
 }
 
