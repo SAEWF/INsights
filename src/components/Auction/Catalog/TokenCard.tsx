@@ -5,6 +5,7 @@ import { AspectRatio, Box, Flex } from '@chakra-ui/react';
 import { TokenMedia } from '../../common/TokenMedia';
 // import tz from '../../common/assets/tezos-sym-white.svg'
 import { Card } from 'react-bootstrap';
+import Countdown from 'react-countdown';
 import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
 import { useDispatch } from 'react-redux';
 import firebase from '../../../lib/firebase/firebase';
@@ -26,6 +27,8 @@ export default function TokenCard(props: any) {
   const timer = useState('00:00:00');
   const dispatch = useDispatch();
   //console.log("Props => ", props);
+
+  
   React.useEffect(() => {
     var own : any;
     if(props.sale!==undefined && props.sale!==null) {
@@ -168,8 +171,10 @@ export default function TokenCard(props: any) {
 
   totalAmount = props.auction.current_bid/1000000.0;
   const time = new Date(props.auction.end_time);
-  console.log("time - ", time);
-  console.log("time2 - ", props.auction.end_time);
+  // const time = new Date(props.auction.end_time).getTime();
+  //  console.log("time - ", time);
+  //  console.log("time epochs - ", time.getTime());
+  //  console.log("time2 - ", props.auction.end_time);
 
   return (
     <Flex
@@ -189,7 +194,7 @@ export default function TokenCard(props: any) {
         boxShadow: '0px 0px 10px gray',
       }}
     >
-      {
+      {/* {
         props.metadata && props.metadata?.symbol && props.metadata.symbol==="OBJKTCOM" ?
         <Box bg={bg} color={color}><Card.Header>Objkt.com</Card.Header></Box>
         :
@@ -209,8 +214,9 @@ export default function TokenCard(props: any) {
         <Box bg={bg} color={color}><Card.Header>Kalamint</Card.Header></Box>
         :
         <Box bg={bg} color={color}><Card.Header>ByteBlock</Card.Header></Box>
-      }
-      <Timer expiryTimestamp = {time} />
+      } */}
+      <Box bg={bg} color={color}><Card.Header>Ends in: <Timer expiryTimestamp = {time} /></Card.Header></Box>
+      
       
       <AspectRatio ratio={3 / 3.5}       
         onClick={() =>
