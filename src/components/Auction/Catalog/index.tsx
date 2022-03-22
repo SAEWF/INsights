@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue } from '@chakra-ui/react'; //
+import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Center } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
 // import {
@@ -18,7 +18,7 @@ import Footer from '../../common/Footer';
 import { getAuctionNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
 
 
-export default function Catalog() {
+export default function Catalog(props:any) {
   const { system, auction: state } = useSelector(s => s);
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
@@ -176,8 +176,10 @@ export default function Catalog() {
         justify="start"
         flexDir="column"
       >
-  
-        <div className="text-center banner" ><Banner/> </div>
+        {
+          (props.hideBanner===undefined) && (!props.hideBanner) ? (<div className="text-center banner" ><Banner/> </div>) : <></>
+        }
+        {/* <div className="text-center banner" ><Banner/> </div> */}
         
         <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' , justifySelf: 'end'}}>
           <Select
@@ -278,7 +280,8 @@ export default function Catalog() {
       </Flex>
       </div>
       <div>
-        <Footer/>
+        { (props.hideFooter === undefined) && (!props.hideFooter) ? (<Footer/>) : <></>}
+        {/* <Footer/> */}
       </div>
     </>
   );
