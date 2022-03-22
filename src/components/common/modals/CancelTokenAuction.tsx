@@ -13,13 +13,11 @@ import { useDispatch, useSelector } from '../../../reducer';
 import { cancelTokenAction } from '../../../reducer/async/Auction/action';
 import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 
-interface ResolveTokenAuctionModalProps extends BaseModalProps {
-  contract: string;
-  tokenId: number;
+interface CancelTokenAuctionModalProps extends BaseModalProps {
   id: number;
 }
 
-export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
+export function CancelTokenAuctionModal(props: CancelTokenAuctionModalProps) {
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
   return (
@@ -36,7 +34,7 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
       }
       initialRef={initialRef}
       pendingMessage="Cancelling token auction !"
-      completeMessage="Token auction resolved !"
+      completeMessage="Token auction Canceld !"
       body={onSubmit => (
         <>
           <ModalHeader>Are you sure?</ModalHeader>
@@ -61,13 +59,11 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
   );
 }
 
-interface ResolveTokenAuctionButtonProps extends BaseModalButtonProps {
-  contract: string;
-  tokenId: number;
+interface CancelTokenAuctionButtonProps extends BaseModalButtonProps {
   id: number
 }
 
-export default function ResolveTokenAuctionButton(props: ResolveTokenAuctionButtonProps) {
+export function CancelTokenAuctionButton(props: CancelTokenAuctionButtonProps) {
   const disclosure = useDisclosure();
   const { status } = useSelector(s => s.status.cancelTokenAuction)
   
@@ -77,7 +73,7 @@ export default function ResolveTokenAuctionButton(props: ResolveTokenAuctionButt
         Cancel Auction
       </MinterButton>
 
-      <ResolveTokenAuctionModal
+      <CancelTokenAuctionModal
         {...props}
         disclosure={disclosure}
         sync={props.sync}

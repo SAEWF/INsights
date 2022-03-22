@@ -34,7 +34,7 @@ import firebase from '../../../lib/firebase/firebase'
 import { ConfigureTokenButton } from '../../common/modals/ConfigureAuction';
 import { BidTokenButton } from '../../common/modals/BidToken';
 import { ResolveTokenAuctionButton } from '../../common/modals/ResolveToken';
-import cancelTokenAuctionButton from '../../common/modals/CancelTokenAuction'
+import { CancelTokenAuctionButton } from '../../common/modals/CancelTokenAuction'
 
 
 function NotFound() {
@@ -169,7 +169,8 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   const isOwner =
     system.tzPublicKey &&
     (system.tzPublicKey === token.owner ||
-      system.tzPublicKey === token.sale?.seller);
+      system.tzPublicKey === token.sale?.seller ||
+        system.tzPublicKey === token.auction?.seller);
   // for viewing the token in console , turn it on
   // console.log("OWNER + ", owner);
   // console.log("TOKEN =", token);
@@ -523,7 +524,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
             {/* Accordion can also be used to show information */}
             <Flex display={['flex']} justifyContent="space-between" alignItems="center" width="100%" flexDir={['column', 'row']} flexWrap="wrap" marginTop={2}>
               <Flex justifyContent={["flex-start"]} alignItems="center" width="100%" marginTop={4}>
-              {token.sale ? (
+              { token.sale ? (
                   isOwner ? (
                     <>
                       <Text color="brand.black" fontSize="xl" fontWeight="700" marginRight={8}>
@@ -556,12 +557,24 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   )
                 ) :
                 token.auction ? (
+                  !isOwner ? (
+                  <>
+                    <Box marginRight={2}>
+                      <BidTokenButton auctionId={token.auction.id} />
+                    </Box>
+                  </>
+                  ) : (
+                    <>
+                      <CancelTokenAuctionButton id={token.auction.id} />
+                    </>
+                )) : 
+                isOwner ? (
                   <>
                   <Box marginRight={2}>
-                    <ConfigureTokenButton token={token} contract={contractAddress} tokenId={tokenId} />
-                  </Box>
+-                   <SellTokenButton token={token} contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
+-                 </Box>
                   <Box marginRight={2}>
-                    <BidTokenButton auctionId={1} />
+                    <ConfigureTokenButton token={token} contract={contractAddress} tokenId={tokenId} />
                   </Box>
                   <Box marginRight={2}>
                     <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />
