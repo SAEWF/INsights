@@ -38,6 +38,7 @@
     "npm": "7.18.1",
     "react": "16.13.1",
     "react-bootstrap": "1.6.0",
+    "react-countdown": "2.3.2",
     "react-country-region-selector": "3.3.0",
     "react-dom": "16.13.1",
     "react-dropzone": "11.2.4",
