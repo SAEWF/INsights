@@ -16,7 +16,8 @@ export default function MyTimer(expiryTimestamp: any ) {
     } = useTimer({ expiryTimestamp, onExpire: () => console.warn('onExpire called') });
   
     const renderer = ({ h, m, s, completed } : any) => {
-      let end_time = new Date(expiryTimestamp.expiryTimestamp).getTime();
+      const time = expiryTimestamp.expiryTimestamp;
+      let end_time = Math.ceil(new Date(expiryTimestamp.expiryTimestamp).getTime() / 1000);
       let seconds_ = end_time - Math.floor(Date.now()/1000);
       
       if(seconds_ <= 0){

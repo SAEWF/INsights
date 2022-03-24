@@ -180,7 +180,7 @@ export default function Catalog(props:any) {
           (props.hideBanner===undefined) && (!props.hideBanner) ? (<div className="text-center banner" ><Banner/> </div>) : <></>
         }
         {/* <div className="text-center banner" ><Banner/> </div> */}
-        
+        <Center><Heading>Trending Auction</Heading></Center>
         <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' , justifySelf: 'end'}}>
           <Select
             bg="#00ffbe"
