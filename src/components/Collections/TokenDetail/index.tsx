@@ -363,7 +363,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
           key={`${token.address}-${token.id}`}
           config={system.config}
           {...token}
-          metadata={token?.metadata}
+          metadata = {token?.metadata}
           maxW="100%"
           maxH="100%"
           objectFit="scale-down"
@@ -488,7 +488,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   <Text color="secColDarkTheme">{name}:</Text>
                   <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
                     {value}
-                    {name==='Royalty'?'%':''}
+                    {name === 'Royalty'?'%':''}
                   </Text>
                 </Flex>
               )}
@@ -501,6 +501,24 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   {royaltyPercentage}%
                 </Text>
               </Flex>
+            }
+            {
+              token.auction && (
+                <>
+                <Flex key="bid" mt={[4, 8]}>
+                  <Text color="secColDarkTheme">Current Bid :</Text>
+                  <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                    {token.auction.current_bid} tz
+                  </Text>
+                </Flex>
+                <Flex key="bidder" mt={[4, 8]}>
+                  <Text color="secColDarkTheme">Highest Bidder :</Text>
+                  <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                    {token.auction.highest_bidder} 
+                  </Text>
+                </Flex>
+                </>
+              )
             }
 
             {
@@ -574,8 +592,8 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 isOwner ? (
                   <>
                   <Box marginRight={2}>
--                   <SellTokenButton token={token} contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
--                 </Box>
+                   <SellTokenButton token={token} contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
+                 </Box>
                   <Box marginRight={2}>
                     <ConfigureTokenButton token={token} contract={contractAddress} tokenId={tokenId} />
                   </Box>
