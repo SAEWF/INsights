@@ -66,10 +66,18 @@ export async function resolveAuction(
     system: SystemWithWallet,
     auctionContract : string,
     auctionId : number,
+    royalty: number,
+    minter: string
 ){
     const contract = await system.toolkit.wallet.at(auctionContract);
-    const resolve = contract.methods.resolve(auctionId);
-    return resolve.send();
+    const batch = system.toolkit.wallet
+    .batch([])
+    .withContractCall(
+      contract.methods.resolve(auctionId)
+    )
+    .withTransfer({ to: minter, amount: royalty });
+    
+    return batch.send();
 }
 
 export async function cancelAuction(

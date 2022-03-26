@@ -28,7 +28,8 @@
 			"fixedPrice": {
 				"tez": "KT1NNpYRX8bAL5JTbGWtWRrSqG2iWdUdiXF5"
 			}
-		}
+		},
+		"auction": "KT1QX2BKn9tDk2XAQAGzRemcWjF3q5yNPH8Y"
 	},
 	"ByteBlockEnglishAuction": {
 		"EnglishAuction": "KT1KhB9feNM8k62drsHLmNH73C278hn3F9hJ",

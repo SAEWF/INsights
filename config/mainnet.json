@@ -14,7 +14,8 @@
       "fixedPrice": {
         "tez": "KT1E8Qzgx3C5AAE4iGuXvqSQjdd21LK2aXAk"
       }
-    }
+    },
+    "auction": "KT1QX2BKn9tDk2XAQAGzRemcWjF3q5yNPH8Y"
   },
   "ipfsApi": "https://minter-api.tqhosted.com",
   "ipfsGateway": "https://tqtezos.mypinata.cloud"

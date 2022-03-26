@@ -281,6 +281,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   if(token.auction && tokenHook){
     ownerAddress = token.auction.seller;
     end_time = token.auction.end_time;
+    royalty = royaltyPercentage*token.auction.current_bid;
   }
 
   return (
@@ -581,7 +582,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                       <BidTokenButton auctionId={token.auction.id} />
                     </Box>
                     <Box marginRight={2}>
-                      <ResolveTokenAuctionButton id={token.auction.id} />
+                      <ResolveTokenAuctionButton id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} />
                     </Box>
                   </>
                   ) : (

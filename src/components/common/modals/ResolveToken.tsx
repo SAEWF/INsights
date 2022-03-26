@@ -15,6 +15,8 @@ import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 
 interface ResolveTokenAuctionModalProps extends BaseModalProps {
   id: number;
+  royalty: number,
+  minter: string
 }
 
 export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
@@ -28,7 +30,9 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
       dispatchThunk={() =>
         dispatch(
           resolveTokenAction({
-              auctionId: props.id
+              auctionId: props.id,
+              royalty: props.royalty,
+              minter: props.minter
           })
         )
       }
@@ -60,7 +64,9 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
 }
 
 interface ResolveTokenAuctionButtonProps extends BaseModalButtonProps {
-  id: number
+  id: number,
+  royalty: number,
+  minter: string
 }
 
 export function ResolveTokenAuctionButton(props: ResolveTokenAuctionButtonProps) {
@@ -78,6 +84,7 @@ export function ResolveTokenAuctionButton(props: ResolveTokenAuctionButtonProps)
         disclosure={disclosure}
         sync={props.sync}
       />
+      
     </>
   );
 }

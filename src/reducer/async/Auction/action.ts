@@ -25,7 +25,7 @@ export const configureTokenAction = createAsyncThunk<
     const { openingPrice, minRaisePercent, minRaise, asset } = args;
     const { system } = getState();
     console.log("asset",asset);
-    const auctionContract = "KT1LWwLzyxy3BvkEqNr2Lfe5xvk7geyNnZQt";
+    const auctionContract = "KT1QX2BKn9tDk2XAQAGzRemcWjF3q5yNPH8Y";
     if (system.status !== 'WalletConnected') {
         return rejectWithValue({
           kind: ErrorKind.WalletNotConnected,
@@ -58,7 +58,7 @@ export const bidTokenAction = createAsyncThunk<
     const { getState, rejectWithValue, dispatch, requestId } = api;
     const { auctionId, bidPrice } = args;
     const { system } = getState();
-    const auctionContract = "KT1LWwLzyxy3BvkEqNr2Lfe5xvk7geyNnZQt";
+    const auctionContract = "KT1QX2BKn9tDk2XAQAGzRemcWjF3q5yNPH8Y";
     if (system.status !== 'WalletConnected') {
         return rejectWithValue({
           kind: ErrorKind.WalletNotConnected,
@@ -84,14 +84,16 @@ export const bidTokenAction = createAsyncThunk<
 });
 
 export const resolveTokenAction = createAsyncThunk<
-    {auctionId: number;},
-    {auctionId: number;},
+    {auctionId: number; royalty: number; minter: string},
+    {auctionId: number; royalty: number; minter: string},
     Options
 >('action/resolveToken', async (args, api) => {
     const { getState, rejectWithValue, dispatch, requestId } = api;
-    const { auctionId } = args;
+    const { auctionId, royalty, minter } = args;
     const { system } = getState();
-    const auctionContract = "KT1LWwLzyxy3BvkEqNr2Lfe5xvk7geyNnZQt";
+
+    // TODO : take from config file 
+    const auctionContract = "KT1QX2BKn9tDk2XAQAGzRemcWjF3q5yNPH8Y";
     if (system.status !== 'WalletConnected') {
         return rejectWithValue({
           kind: ErrorKind.WalletNotConnected,
@@ -99,7 +101,7 @@ export const resolveTokenAction = createAsyncThunk<
         });
     }
     try{
-        const op = await resolveAuction(system, auctionContract, auctionId);
+        const op = await resolveAuction(system, auctionContract, auctionId, royalty, minter);
 
         dispatch(notifyPending(requestId, 'Resolving Auction ...'));
         await op.confirmation(2);
@@ -124,7 +126,7 @@ export const cancelTokenAction = createAsyncThunk<
     const { getState, rejectWithValue, dispatch, requestId } = api;
     const { auctionId } = args;
     const { system } = getState();
-    const auctionContract = "KT1LWwLzyxy3BvkEqNr2Lfe5xvk7geyNnZQt";
+    const auctionContract = "KT1QX2BKn9tDk2XAQAGzRemcWjF3q5yNPH8Y";
     if (system.status !== 'WalletConnected') {
         return rejectWithValue({
           kind: ErrorKind.WalletNotConnected,
