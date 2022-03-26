@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Stack, Skeleton } from '@chakra-ui/react'; //
+import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Stack, Skeleton, Center } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
@@ -188,7 +188,7 @@ export default function Catalog() {
         <Stack>
 					<Skeleton height='20px' my={2}/>
 				</Stack>
-        
+        <Center><Heading>NFTs on sale</Heading></Center>
         <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' , justifySelf: 'end'}}>
           <Select
             bg="#00ffbe"

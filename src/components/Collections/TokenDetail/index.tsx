@@ -35,6 +35,7 @@ import { ConfigureTokenButton } from '../../common/modals/ConfigureAuction';
 import { BidTokenButton } from '../../common/modals/BidToken';
 import { ResolveTokenAuctionButton } from '../../common/modals/ResolveToken';
 import { CancelTokenAuctionButton } from '../../common/modals/CancelTokenAuction'
+import Timer from '../../Auction/Catalog/Timer';
 
 
 function NotFound() {
@@ -518,6 +519,12 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     {token.auction.highest_bidder} 
                   </Text>
                 </Flex>
+                <Flex key="bid" mt={[4, 8]}>
+                  <Text color="secColDarkTheme">Ends in :</Text>
+                  <Text display="block" fontWeight="bold" ml={[1]} whiteSpace="nowrap" overflow="hidden" textOverflow="wrap">
+                    <Timer expiryTimestamp = {new Date(token.auction.end_time)} />
+                  </Text>
+                </Flex>
                 </>
               )
             }
@@ -581,9 +588,11 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     <Box marginRight={2}>
                       <BidTokenButton auctionId={token.auction.id} />
                     </Box>
-                    <Box marginRight={2}>
-                      <ResolveTokenAuctionButton id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} />
-                    </Box>
+                    { (Date.now() > (new Date(token.auction.end_time).getTime()))  ? (
+                      <Box marginRight={2}>
+                        <ResolveTokenAuctionButton id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} />
+                      </Box> ) : <></>
+                    }
                   </>
                   ) : (
                     <>
