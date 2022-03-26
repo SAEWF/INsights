@@ -32,6 +32,7 @@ export interface Config {
         tez: string;
       };
     };
+    auction: string;
   };
   ipfsApi: string;
   ipfsGateway: string;

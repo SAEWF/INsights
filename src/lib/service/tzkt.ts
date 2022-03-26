@@ -53,7 +53,9 @@ export async function getContractBigMapKeys(
   const uri = `${
     config.tzkt.api
   }/v1/contracts/${address}/bigmaps/${name}/keys?${mkQueryParams(params)}`;
+  console.log(uri);
   const response = await axios.get(uri);
+  console.log(response)
   return response.data;
 }
 

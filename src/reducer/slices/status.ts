@@ -10,6 +10,12 @@ import {
   addObjktCollectionAction
 } from '../async/actions';
 import {
+  configureTokenAction,
+  bidTokenAction,
+  resolveTokenAction,
+  cancelTokenAction
+} from '../async/Auction/action';
+import {
   getContractNftsQuery,
   getCollectionNftsQuery,
   getContractNftQuery,
@@ -42,6 +48,10 @@ export interface StatusState {
   getCollectionNfts: Status;
   getNftAssetContract: Status;
   getWalletAssetContracts: Status;
+  configureToken: Status;
+  bidToken: Status;
+  resolveToken: Status;
+  cancelTokenAuction: Status;
 }
 
 export type Method = keyof StatusState;
@@ -61,7 +71,11 @@ const initialState: StatusState = {
   getContractNft: defaultStatus,
   getCollectionNfts: defaultStatus,
   getNftAssetContract: defaultStatus,
-  getWalletAssetContracts: defaultStatus
+  getWalletAssetContracts: defaultStatus,
+  configureToken: defaultStatus,
+  bidToken: defaultStatus,
+  resolveToken: defaultStatus,
+  cancelTokenAuction: defaultStatus
 };
 
 type SetStatusAction = PayloadAction<{ method: Method; status: StatusKey }>;
@@ -96,7 +110,11 @@ const slice = createSlice({
       methodMap('getCollectionNfts', getCollectionNftsQuery),
       methodMap('getContractNft', getContractNftQuery),
       methodMap('getNftAssetContract', getNftAssetContractQuery),
-      methodMap('getWalletAssetContracts', getWalletAssetContractsQuery)
+      methodMap('getWalletAssetContracts', getWalletAssetContractsQuery),
+      methodMap('configureToken', configureTokenAction),
+      methodMap('bidToken', bidTokenAction),
+      methodMap('resolveToken', resolveTokenAction),
+      methodMap('cancelTokenAuction', cancelTokenAction)
     ].forEach(({ method, action }) => {
       addCase(action.pending, state => {
         state[method].status = 'in_transit';

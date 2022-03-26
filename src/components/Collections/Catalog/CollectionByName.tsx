@@ -25,6 +25,10 @@ import {useColorModeValue } from '@chakra-ui/react';
 import './style.css';
 import link from './link-solid.svg';
 import firebase from '../../../lib/firebase/firebase'
+import { Row } from 'react-bootstrap';
+import { Button } from '@chakra-ui/react';
+import CollectionSelect from '../../Explore/CollectionSelect';
+import { useLocation } from 'wouter';
 
 interface CollectionDisplayProps {
   name: string
@@ -36,6 +40,7 @@ export default function CollectionDisplay({
   const CardsPerPage = 12;
   const state = useSelector(s => s);
   const collections = state.collections;
+  const [allCollections, setAllCollections] = useState([]);
   const { config, tzPublicKey, wallet } = state.system;
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
@@ -45,6 +50,7 @@ export default function CollectionDisplay({
   const bg = useColorModeValue('gray.100', 'black');
   const ownedOnly = false;
   const [address , setAddress] = useState('')
+  const [,setLocation] = useLocation();
 
   // console.log('CollectionDisplay', address, ownedOnly, metadata);
   useEffect(() => {
@@ -67,6 +73,14 @@ export default function CollectionDisplay({
           dispatch(getCollectionNftsQuery({ address: address }))
       });
     }
+
+    db.collection('collections').orderBy("name","asc").onSnapshot((snapshot: any) => {
+      const newCollections = snapshot.docs.filter((doc: any) => doc.data().display).map((doc: any) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setAllCollections(newCollections);
+    });
   }, [address, dispatch, ownedOnly, name, metadata]);
 
   const loadMore = (pageNumber: number, collectionAddress: string) => {
@@ -251,6 +265,10 @@ export default function CollectionDisplay({
     );
   }
 
+  const HandleClick = () =>{
+    setLocation(`/addCollection`);
+  }
+
   return (
     <Flex
       flexDir="column"
@@ -263,6 +281,14 @@ export default function CollectionDisplay({
       // overflowY="scroll"
       justify="start"
     >
+        <Row>
+          <div style={{padding: '10px'}}>
+              <Button onClick={HandleClick}>Add Collection</Button>
+          </div>
+          <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between', padding: '10px' }}>
+            <CollectionSelect collections={allCollections} setCollection={setAddress} collection={collection} />
+          </div>
+        </Row>
       <Flex flexDir="row">
       {
         metadata && metadata.length>0 ?

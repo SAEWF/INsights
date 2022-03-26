@@ -97,7 +97,7 @@ export const getContractNftQuery = createAsyncThunk<
   const { address, tokenID } = args;
   try {
     const tokens = await getContractNft(system, address, tokenID);
-    //  console.log("TOKENS", tokens);
+     console.log("TOKENS", tokens);
     return { address, tokens };
   } catch (e) {
     // console.error(e);

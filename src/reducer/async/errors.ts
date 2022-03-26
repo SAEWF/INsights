@@ -16,7 +16,10 @@ export enum ErrorKind {
   IPFSUploadFailed,
   WalletAlreadyConnected,
   WalletPermissionRequestDenied,
-  AddObjktCollectionFailed
+  AddObjktCollectionFailed,
+  AuctionConfigureFailed,
+  BidTokenFailed,
+  ResolveTokenFailed
 }
 
 export interface RejectValue {

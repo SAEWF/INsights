@@ -1,20 +1,21 @@
 {
-	"network": "florencenet",
-	"rpc": "https://api.tez.ie/rpc/florencenet",
+	"network": "hangzhounet",
+	"rpc": "https://hangzhounet.api.tez.ie",
 	"bcd": {
 		"api": "https://api.better-call.dev",
 		"gui": "https://better-call.dev"
 	},
 	"tzkt": {
-		"api": "https://api.florencenet.tzkt.io"
+		"api": "https://api.hangzhou2net.tzkt.io"
 	},
 	"contracts": {
-		"nftFaucet": "KT1DzPX2SHnviWURFUfD5NQ9FcHQVmYFuPYu",
+		"nftFaucet": "KT1J6GPgWkgUuubLgRn6EHLL8mjGVarN3JTW",
 		"marketplace": {
 			"fixedPrice": {
-				"tez": "KT1X9YgJbwhGgPcJqtvcyn6ceGeUZ7DwPsDm"
+				"tez": "KT1F7ao5Rc5m3knb4itWfd7SdPNPnn4LgQuQ"
 			}
-		}
+		},
+		"auction": "KT1LWwLzyxy3BvkEqNr2Lfe5xvk7geyNnZQt"
 	},
 	"ipfsApi": "https://minter-api.tqhosted.com",
 	"ipfsGateway": "https://tqtezos.mypinata.cloud"

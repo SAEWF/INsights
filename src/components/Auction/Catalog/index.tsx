@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Stack, Skeleton, Center } from '@chakra-ui/react'; //
+import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Center } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
-import {
-  getMarketplaceNftsQuery,
-  loadMoreMarketplaceNftsQuery,
-  refreshMarketplaceNftsQuery
-} from '../../../reducer/async/queries'; //
+// import {
+//   getauctionNftsQuery,
+//   loadMoreauctionNftsQuery,
+//   refreshauctionNftsQuery
+// } from '../../../reducer/async/queries'; //
 
 import Banner from './Banner';
 import TokenCard from './TokenCard';
 import '../index.css'
 // import { VisibilityTrigger } from '../../common/VisibilityTrigger';
-// import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
+// import StaticauctionDisplay from './StaticauctionDisplay'
 import { Pagination } from 'react-bootstrap'
 import Footer from '../../common/Footer';
-import AuctionCatalog from '../../Auction/Catalog';
+import { getAuctionNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
 
-export default function Catalog() {
-  const { system, marketplace: state } = useSelector(s => s);
+
+export default function Catalog(props:any) {
+  const { system, auction: state } = useSelector(s => s);
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const [start, setStart] = useState(0);
@@ -36,25 +37,25 @@ export default function Catalog() {
       'tz1WiopX436BPwi4maDbbBDuzYgdtTTuKDAK'];
       
     useEffect(() => {
-        dispatch(refreshMarketplaceNftsQuery());
-        dispatch(getMarketplaceNftsQuery({address: state.marketplace.address, reverse: reverse}));
-    }, [state.marketplace.address, dispatch, reverse]);
+        dispatch(refreshAuctionNftsQuery());
+        dispatch(getAuctionNftsQuery({address: state.auction.address, reverse: reverse}));
+    }, [state.auction.address, dispatch, reverse]);
 
     const loadMore = (pageNumber: number) => {
-      dispatch(loadMoreMarketplaceNftsQuery({page:pageNumber}));
+      dispatch(loadMoreAuctionNftsQuery({page:pageNumber}));
     };
 
     useEffect(() => {
-      loadMoreMarketplaceNftsQuery({page: active});
+      loadMoreAuctionNftsQuery({page: active});
     }, [active]);
 
-    // console.log('marketplace tokens', state.marketplace.tokens);
-    let tokens = state.marketplace.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
+    // console.log('auction tokens', state.auction.tokens);
+    let tokens = state.auction.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
     tokens = tokens.filter(x => !blackList.includes(x.metadata?.minter ?? ''));
 
     // for getting all tokens sale data , uncomment below line
-    // console.log('tokens', state.marketplace.tokens);
-    // for getting all tokenData from marketplace , change a bit in the getMarketplaceNftsQuery dispatcher
+    // console.log('tokens', state.auction.tokens);
+    // for getting all tokenData from auction , change a bit in the getauctionNftsQuery dispatcher
 
     // PAGINATION
     let items = [];
@@ -64,7 +65,7 @@ export default function Catalog() {
         <Pagination.Item key={number} active={number === active} onClick={()=>{
           setActive(number);
           setStart((number-1)*16);
-          setEnd(Math.min(state.marketplace.tokens?.length ?? 0, number*16));
+          setEnd(Math.min(state.auction.tokens?.length ?? 0, number*16));
           // console.log('start', start, 'end', end);
           loadMore(number);
         }}>
@@ -98,7 +99,7 @@ export default function Catalog() {
     const handleLast = () =>{
       setActive(numberOfPages);
       setStart((numberOfPages-1)*16 + 1);
-      setEnd(state.marketplace.tokens?.length ?? 0);
+      setEnd(state.auction.tokens?.length ?? 0);
       loadMore(numberOfPages);
     }
 
@@ -165,7 +166,6 @@ export default function Catalog() {
 
     return (
     <>
-    
     <div>
       <Flex
         w="100vw"
@@ -176,19 +176,11 @@ export default function Catalog() {
         justify="start"
         flexDir="column"
       >
-  
-        <div className="text-center banner" ><Banner/> </div>
-
-        <Stack>
-					<Skeleton height='20px' my={2}/>
-				</Stack>
-
-        <AuctionCatalog hideFooter={true} hideBanner={true} />
-
-        <Stack>
-					<Skeleton height='20px' my={2}/>
-				</Stack>
-        <Center><Heading>NFTs on sale</Heading></Center>
+        {
+          (props.hideBanner===undefined) && (!props.hideBanner) ? (<div className="text-center banner" ><Banner/> </div>) : <></>
+        }
+        {/* <div className="text-center banner" ><Banner/> </div> */}
+        <Center><Heading>Trending Auction</Heading></Center>
         <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' , justifySelf: 'end'}}>
           <Select
             bg="#00ffbe"
@@ -204,7 +196,7 @@ export default function Catalog() {
         </div>
 
         {/* FeaturedToken  */}
-        {/* {state.marketplace.loaded && tokens.length > 0 ? (
+        {/* {state.auction.loaded && tokens.length > 0 ? (
           // <Flex width="calc(100vw - 5rem)" justifyContent="center" alignItems="center">
           <FeaturedToken config={system.config} {...tokens[0]} />
           // </Flex>
@@ -216,7 +208,7 @@ export default function Catalog() {
           w="100%"
           flexDir="column"
         >
-          {!state.marketplace.loaded ? (
+          {!state.auction.loaded ? (
             <Flex flexDir="column" align="center" flex="1" pt={20}>
               <Spinner size="xl" mb={6} color="gray.300" />
               <Heading size="lg" textAlign="center" color="gray.500">
@@ -239,7 +231,7 @@ export default function Catalog() {
               >
                 <Wind />
                 <Text fontWeight="600" pt={5}>
-                  No tokens to display in this marketplace
+                  No tokens to display in this auction
                 </Text>
               </Flex>
             </Flex>
@@ -251,7 +243,7 @@ export default function Catalog() {
                 pb={8}
               >
                 <>
-                  {state.marketplace.tokens?.slice(start, end).map(tokenDetail => {
+                  {state.auction.tokens?.slice(start, end).map(tokenDetail => {
                     const token = tokenDetail.token;
                     if(token && token.metadata?.minter!==undefined && blackList.includes(token.metadata?.minter)) return <></>;
                     else if(token)
@@ -267,16 +259,16 @@ export default function Catalog() {
                     else return <></>;
                   })}
                   {/* <VisibilityTrigger
-                    key={state.marketplace.tokens?.length + ':' + tokens.length}
+                    key={state.auction.tokens?.length + ':' + tokens.length}
                     onVisible={()=>loadMore(active)}
                     allowedDistanceToViewport={600}
                   /> */}
                 </>
-                {/* <StaticMarketplaceDisplay /> */}
+                {/* <StaticauctionDisplay /> */}
 
               </SimpleGrid>
               {
-                (state.marketplace.tokens?.length ?? 0) < 16 ? 
+                (state.auction.tokens?.length ?? 0) < 16 ? 
                   paginationBasic
                   :
                   PaginationWithEllipses
@@ -288,7 +280,8 @@ export default function Catalog() {
       </Flex>
       </div>
       <div>
-        <Footer/>
+        { (props.hideFooter === undefined) && (!props.hideFooter) ? (<Footer/>) : <></>}
+        {/* <Footer/> */}
       </div>
     </>
   );
