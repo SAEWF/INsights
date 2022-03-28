@@ -25,7 +25,7 @@ export default function MyTimer(expiryTimestamp: any ) {
         //   setToggle(false);
         //   tokenDetails.refresh();
         // }
-        return <p>Refreshing...</p>
+        return <span>Open to resolve</span>
       }
         
       let hours_ = Math.floor(seconds_/3600);
