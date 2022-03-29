@@ -28,7 +28,7 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
 
-  const salePrice = Math.floor(Number(price) * 1000000);
+  const salePrice = Number(price);
   const validPrice = !Number.isNaN(price) && salePrice > 0;
 
   const handleChange = (e: any) => {
