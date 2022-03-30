@@ -2,8 +2,7 @@ import { Buffer } from 'buffer';
 import * as t from 'io-ts';
 import { SystemWithToolkit, SystemWithWallet } from '../../system';
 import * as D from '../decoders';
-import { TzKt, Params } from '../../service/tzkt';
-import { isLeft } from 'fp-ts/lib/Either';
+import { TzKt } from '../../service/tzkt';
 import _ from 'lodash';
 import {getBigMapUpdates} from '../queries';
 import { getOwnedTokenMetadataBigMapCustom } from '../actionCustom';
@@ -19,7 +18,7 @@ export type AuctionNftLoadingData = {
 export async function getAuctionNfts(
     system: SystemWithToolkit | SystemWithWallet,
     address: string,
-    reverse: number
+    // reverse: number
   ): Promise<AuctionNftLoadingData[]> {
     // console.log("entered getAuctionNfts");
     const tokenAuction = await getAuctionsBigMapData(system.tzkt, address);

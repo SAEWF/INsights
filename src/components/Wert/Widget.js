@@ -20,14 +20,14 @@ function Widget() {
      
       return(
         <div>
-            <iframe src = { iframeSrc } allow = {'camera *; microphone *'} className = "container"></iframe>
+            <iframe src = { iframeSrc } title="wert" allow = {'camera *; microphone *'} className = "container"></iframe>
             <Row>
                 <Col className = 'leftLink'> 
-                <a target="_blank" href = "https://support.wert.io/en/" > Wert Support ↗ </a>
+                <a target="_blank" rel="noopener noreferrer"  href = "https://support.wert.io/en/" > Wert Support ↗ </a>
                 </Col>
 
                 <Col className = 'rightLink' > 
-                <a target="_blank" href = "https://widget.wert.io/terms-and-conditions" > Terms & Conditions ↗ </a>
+                <a target="_blank" rel="noopener noreferrer"  href = "https://widget.wert.io/terms-and-conditions" > Terms & Conditions ↗ </a>
                 </Col>
               </Row>
               <p className = 'wertDisclaimer' > Using this feature means that you have the accepted Terms & Conditions of Wert</p>

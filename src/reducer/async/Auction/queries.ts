@@ -1,23 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { State } from '../../index';
-import {
-  getNftAssetContract,
-  getContractNfts,
-  getCollectionNfts,
-  getMarketplaceNfts,
-  getWalletNftAssetContracts,
-  MarketplaceNftLoadingData,
-  loadMarketplaceNft,
-  loadCollectionNft,
-  getNftAssetContracts,
-  getContractNft
-} from '../../../lib/nfts/queries';
 
 import {
   getAuctionNfts, loadAuctionNft,
 } from '../../../lib/nfts/Auction/queries';
 
-import { Nft, AssetContract } from '../../../lib/nfts/decoders';
 import { ErrorKind, RejectValue } from '../errors';
 import { AuctionNftLoadingData } from '../../../lib/nfts/Auction/queries';
 
@@ -58,7 +45,9 @@ export const loadMoreAuctionNftsQuery = createAsyncThunk<
 
 export const getAuctionNftsQuery = createAsyncThunk<
   { tokens: AuctionNftLoadingData[] },
-  {address:  string, reverse: number},
+  {address:  string
+    //  , reverse: number
+  },
   Opts
 >(
   'query/getAuctionNfts',
@@ -68,7 +57,9 @@ export const getAuctionNftsQuery = createAsyncThunk<
     try {
       let tokens;
       console.log(args);
-      tokens = await getAuctionNfts(system, args.address, args.reverse);
+      tokens = await getAuctionNfts(system, args.address
+        //, args.reverse
+        );
 
       // console.log(tokens);
       // Load 17 initially (1-feature + at least 2 rows)

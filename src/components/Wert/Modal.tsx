@@ -1,15 +1,9 @@
 import { useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
 import {
-    Button,
     Modal,
     ModalOverlay,
     ModalContent,
     MenuItem,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
   } from '@chakra-ui/react'
 import React from 'react';
 import Widget from './Widget';

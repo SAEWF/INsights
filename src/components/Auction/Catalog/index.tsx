@@ -35,10 +35,14 @@ export default function Catalog(props:any) {
       'tz1VSZaQdqQwWcqdLiJnQwPJkushYVq51PSX',
       'tz1hcWL5pwX65X1kfNTEL3uuAbkXDpUoURRH',
       'tz1WiopX436BPwi4maDbbBDuzYgdtTTuKDAK'];
+
+      // TODO : blacklist removal ....
       
     useEffect(() => {
         dispatch(refreshAuctionNftsQuery());
-        dispatch(getAuctionNftsQuery({address: state.auction.address, reverse: reverse}));
+        dispatch(getAuctionNftsQuery({address: state.auction.address
+          //, reverse: reverse
+        }));
     }, [state.auction.address, dispatch, reverse]);
 
     const loadMore = (pageNumber: number) => {
@@ -102,18 +106,6 @@ export default function Catalog(props:any) {
       setEnd(state.auction.tokens?.length ?? 0);
       loadMore(numberOfPages);
     }
-
-    const paginationBasic = (
-      <Box bg={bg}>
-        <Pagination>
-          <Pagination.First onClick ={()=>setActive(1)} />
-          <Pagination.Prev onClick={()=>{if(active>1) setActive(active-1)}} />
-            {items}
-          <Pagination.Next onClick={()=>{if(active<numberOfPages) setActive(active+1)}}/>
-          <Pagination.Last onClick={()=>{setActive(numberOfPages)}}/>
-      </Pagination>
-      </Box>
-    )
 
     const PaginationWithEllipses = (
       <Box bg={bg}>
@@ -269,7 +261,7 @@ export default function Catalog(props:any) {
               </SimpleGrid>
               {
                 (state.auction.tokens?.length ?? 0) < 16 ? 
-                  paginationBasic
+                  <></>
                   :
                   PaginationWithEllipses
               }

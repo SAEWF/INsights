@@ -179,9 +179,6 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
   let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any, creatorAddress, ownerAddress;
   
-  // auction vars
-  let end_time ;
-  
   if(token.sale && tokenHook){
     if(tokenHook.metadata.royalties!==undefined){
       const shares = tokenHook.metadata.royalties.shares;
@@ -281,7 +278,6 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
   if(token.auction && tokenHook){
     ownerAddress = token.auction.seller;
-    end_time = token.auction.end_time;
     royalty = royaltyPercentage*token.auction.current_bid;
   }
 
