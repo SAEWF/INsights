@@ -85,12 +85,12 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   const collection = state.collections[contractAddress];
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [tokenHook, setTokenHook] = useState<any>(null);
-
+  const [refreshState, setRefreshState] = useState<any>(1);
   const [owner, setOwner] = useState<any[]>([]);
   const [creator, setCreator] = useState<any[]>([]);
 
   const collectionUndefined = collection === undefined;
-
+  const refresh = () => { setRefreshState(1-refreshState); console.log('Refreshing...'); };
   useEffect(() => {
     if (collectionUndefined) {
       console.log(collection);
@@ -142,7 +142,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
       })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contractAddress, collectionUndefined, dispatch, tokenHook]);
+  }, [contractAddress, collectionUndefined, dispatch, tokenHook, refreshState]);
 
   if (!collection?.tokens) {
     return(
@@ -596,7 +596,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   </>
                   ) : (
                     <>
-                      <CancelTokenAuctionButton id={token.auction.id} />
+                      <CancelTokenAuctionButton refresh={refresh} id={token.auction.id} />
                     </>
                 )) : 
                 isOwner ? (
@@ -605,7 +605,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                    <SellTokenButton token={token} contract={contractAddress} tokenId={tokenId} royaltyPercent = {royaltyPercentage ?? 0} />
                  </Box>
                   <Box marginRight={2}>
-                    <ConfigureTokenButton token={token} contract={contractAddress} tokenId={tokenId} />
+                    <ConfigureTokenButton refresh={refresh} token={token} contract={contractAddress} tokenId={tokenId} />
                   </Box>
                   <Box marginRight={2}>
                     <BurnTokenButton contractAddress={contractAddress} tokenId={tokenId} />
