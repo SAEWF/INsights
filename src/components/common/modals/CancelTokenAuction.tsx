@@ -14,6 +14,7 @@ import { cancelTokenAction } from '../../../reducer/async/Auction/action';
 import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 
 interface CancelTokenAuctionModalProps extends BaseModalProps {
+  refresh: () => void;
   id: number;
 }
 
@@ -32,6 +33,7 @@ export function CancelTokenAuctionModal(props: CancelTokenAuctionModalProps) {
           })
         )
       }
+      onComplete={() => { props.refresh(); }}
       initialRef={initialRef}
       pendingMessage="Cancelling token auction !"
       completeMessage="Token auction Canceld !"
@@ -60,7 +62,8 @@ export function CancelTokenAuctionModal(props: CancelTokenAuctionModalProps) {
 }
 
 interface CancelTokenAuctionButtonProps extends BaseModalButtonProps {
-  id: number
+  refresh: () => void;
+  id: number;
 }
 
 export function CancelTokenAuctionButton(props: CancelTokenAuctionButtonProps) {

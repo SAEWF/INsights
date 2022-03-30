@@ -2,17 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Center } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
-// import {
-//   getauctionNftsQuery,
-//   loadMoreauctionNftsQuery,
-//   refreshauctionNftsQuery
-// } from '../../../reducer/async/queries'; //
-
 import Banner from './Banner';
 import TokenCard from './TokenCard';
 import '../index.css'
-// import { VisibilityTrigger } from '../../common/VisibilityTrigger';
-// import StaticauctionDisplay from './StaticauctionDisplay'
 import { Pagination } from 'react-bootstrap'
 import Footer from '../../common/Footer';
 import { getAuctionNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
@@ -35,10 +27,14 @@ export default function Catalog(props:any) {
       'tz1VSZaQdqQwWcqdLiJnQwPJkushYVq51PSX',
       'tz1hcWL5pwX65X1kfNTEL3uuAbkXDpUoURRH',
       'tz1WiopX436BPwi4maDbbBDuzYgdtTTuKDAK'];
+
+      // TODO : blacklist removal ....
       
     useEffect(() => {
         dispatch(refreshAuctionNftsQuery());
-        dispatch(getAuctionNftsQuery({address: state.auction.address, reverse: reverse}));
+        dispatch(getAuctionNftsQuery({address: state.auction.address
+          //, reverse: reverse
+        }));
     }, [state.auction.address, dispatch, reverse]);
 
     const loadMore = (pageNumber: number) => {
@@ -66,7 +62,6 @@ export default function Catalog(props:any) {
           setActive(number);
           setStart((number-1)*16);
           setEnd(Math.min(state.auction.tokens?.length ?? 0, number*16));
-          // console.log('start', start, 'end', end);
           loadMore(number);
         }}>
           {number}
@@ -102,18 +97,6 @@ export default function Catalog(props:any) {
       setEnd(state.auction.tokens?.length ?? 0);
       loadMore(numberOfPages);
     }
-
-    const paginationBasic = (
-      <Box bg={bg}>
-        <Pagination>
-          <Pagination.First onClick ={()=>setActive(1)} />
-          <Pagination.Prev onClick={()=>{if(active>1) setActive(active-1)}} />
-            {items}
-          <Pagination.Next onClick={()=>{if(active<numberOfPages) setActive(active+1)}}/>
-          <Pagination.Last onClick={()=>{setActive(numberOfPages)}}/>
-      </Pagination>
-      </Box>
-    )
 
     const PaginationWithEllipses = (
       <Box bg={bg}>
@@ -179,7 +162,6 @@ export default function Catalog(props:any) {
         {
           (props.hideBanner===undefined) && (!props.hideBanner) ? (<div className="text-center banner" ><Banner/> </div>) : <></>
         }
-        {/* <div className="text-center banner" ><Banner/> </div> */}
         <Center><Heading>Trending Auction</Heading></Center>
         <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' , justifySelf: 'end'}}>
           <Select
@@ -194,14 +176,6 @@ export default function Catalog(props:any) {
             <option style={{color:'white', backgroundColor: 'black'}} key="4" value={4}>Price : High to Low</option>
           </Select>
         </div>
-
-        {/* FeaturedToken  */}
-        {/* {state.auction.loaded && tokens.length > 0 ? (
-          // <Flex width="calc(100vw - 5rem)" justifyContent="center" alignItems="center">
-          <FeaturedToken config={system.config} {...tokens[0]} />
-          // </Flex>
-        ) : null} */}
-        {/* FeaturedToken end */}
         <div>
         <Flex
           flex="1"
@@ -258,18 +232,12 @@ export default function Catalog(props:any) {
                     );
                     else return <></>;
                   })}
-                  {/* <VisibilityTrigger
-                    key={state.auction.tokens?.length + ':' + tokens.length}
-                    onVisible={()=>loadMore(active)}
-                    allowedDistanceToViewport={600}
-                  /> */}
                 </>
-                {/* <StaticauctionDisplay /> */}
 
               </SimpleGrid>
               {
                 (state.auction.tokens?.length ?? 0) < 16 ? 
-                  paginationBasic
+                  <></>
                   :
                   PaginationWithEllipses
               }

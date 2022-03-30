@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { Token } from '../../../reducer/slices/collections';
-import { IpfsGatewayConfig } from '../../../lib/util/ipfs';
+import React from 'react';
 import { AspectRatio, Box, Flex } from '@chakra-ui/react';
 import { TokenMedia } from '../../common/TokenMedia';
 // import tz from '../../common/assets/tezos-sym-white.svg'
 import { Card } from 'react-bootstrap';
-import Countdown from 'react-countdown';
+// import Countdown from 'react-countdown';
 import { notifyFulfilled } from '../../../reducer/slices/notificationsActions';
 import { useDispatch } from 'react-redux';
 import firebase from '../../../lib/firebase/firebase';
@@ -13,18 +11,11 @@ import { useColorModeValue, Image, Text} from '@chakra-ui/react';
 import user_icon from '../assets/user_icon.png';
 import Timer from './Timer'
 
-interface TokenCardProps extends Token {
-  config: IpfsGatewayConfig;
-  metadata: any;
-}
-
-
 export default function TokenCard(props: any) {
   const bg = useColorModeValue('gray.100', 'black');
   const color = useColorModeValue('black', 'white');
   const [owner, setOwner] = React.useState('');
   const [artistImg, setArtistImg] = React.useState(user_icon);
-  const timer = useState('00:00:00');
   const dispatch = useDispatch();
   //console.log("Props => ", props);
 
