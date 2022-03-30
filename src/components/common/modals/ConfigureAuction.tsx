@@ -20,6 +20,7 @@ import tz from '../assets/tezos-sym-white.svg'
 import { Nft } from '../../../lib/nfts/decoders';
 
 interface ConfigureTokenModalProps extends BaseModalProps {
+  refresh: () => void;
   token: Nft;
   contract: string;
   tokenId: number;
@@ -66,7 +67,7 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
           })
         )
       }
-      onComplete={() => setPrice('')}
+      onComplete={() => { setPrice(''); props.refresh(); }}
       initialRef={initialRef}
       pendingMessage="Listing token for auction ..."
       completeMessage="Token listed for auction !!"
@@ -112,6 +113,7 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
 }
 
 interface ConfigureTokenButtonProps extends BaseModalButtonProps {
+  refresh: () => void;
   token: Nft;
   contract: string;
   tokenId: number;
