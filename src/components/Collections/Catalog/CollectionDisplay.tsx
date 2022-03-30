@@ -52,6 +52,7 @@ export default function CollectionDisplay({
   // console.log('CollectionDisplay', address, ownedOnly, metadata);
   useEffect(() => {
     if (address !== null) {
+      // console.log("called from colection display", address, ownedOnly, metadata)
       dispatch(getNftAssetContractQuery(address)).then(() =>{
         if(ownedOnly)
           dispatch(getContractNftsQuery({ address: address, ownedOnly: ownedOnly }))
@@ -59,7 +60,8 @@ export default function CollectionDisplay({
           dispatch(getCollectionNftsQuery({ address: address }))
       });
     }
-  }, [address, dispatch, ownedOnly, metadata]);
+    // eslint-disable-next-line
+  }, [address]);
 
   const loadMore = (pageNumber: number, collectionAddress: string) => {
     dispatch(loadMoreCollectionNftsQuery({page:pageNumber, address: collectionAddress}));
