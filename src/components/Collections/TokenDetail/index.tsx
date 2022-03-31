@@ -591,6 +591,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     }
                   </>
                   ) : (
+                    
                     <>
                       <CancelTokenAuctionButton refresh={refresh} id={token.auction.id} />
                       { (Date.now() > (new Date(token.auction.end_time).getTime()))  ? (

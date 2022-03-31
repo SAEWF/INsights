@@ -33,7 +33,7 @@ export default function Catalog(props:any) {
     useEffect(() => {
         dispatch(refreshAuctionNftsQuery());
         dispatch(getAuctionNftsQuery({address: state.auction.address
-          //, reverse: reverse
+          , reverse: reverse
         }));
     }, [state.auction.address, dispatch, reverse]);
 
