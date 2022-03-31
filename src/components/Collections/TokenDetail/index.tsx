@@ -174,7 +174,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
         system.tzPublicKey === token.auction?.seller);
   // for viewing the token in console , turn it on
   // console.log("OWNER + ", owner);
-  // console.log("TOKEN =", token);
+  console.log("TOKEN =", token);
 
 
   let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any, creatorAddress, ownerAddress;
