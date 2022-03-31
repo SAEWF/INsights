@@ -18,7 +18,7 @@ export type AuctionNftLoadingData = {
 export async function getAuctionNfts(
     system: SystemWithToolkit | SystemWithWallet,
     address: string,
-    // reverse: number
+    reverse: number
   ): Promise<AuctionNftLoadingData[]> {
     // console.log("entered getAuctionNfts");
     const tokenAuction = await getAuctionsBigMapData(system.tzkt, address);
@@ -82,25 +82,24 @@ export async function getAuctionNfts(
   
     // Sort descending (newest first)
     let salesToView = [...activeAuctions];
-  
     // rev = 1 means newest first
-    // if(Number(reverse) === 1)
-    //   salesToView = [...activeSales].reverse();
-    // // rev = 2 means oldest first
-    // else if(Number(reverse) === 2)
-    //   salesToView = [...activeSales];
-    // // rev = 3 means low to high price
-    // else if(Number(reverse) === 3){
-    //   salesToView = [...activeSales].sort((a,b)=>{
-    //     return Number(a.value.sale_data.price) - Number(b.value.sale_data.price);
-    //   })
-    // }
-    // // rev = 4 means high to low price
-    // else{
-    //   salesToView = [...activeSales].sort((a,b)=>{
-    //     return - Number(a.value.sale_data.price) + Number(b.value.sale_data.price);
-    //   })
-    // }
+    if(Number(reverse) === 1)
+      salesToView = [...activeAuctions].reverse();
+    // rev = 2 means oldest first
+    else if(Number(reverse) === 2)
+      salesToView = [...activeAuctions];
+    // rev = 3 means low to high price
+    else if(Number(reverse) === 3){
+      salesToView = [...activeAuctions].sort((a,b)=>{
+        return Number(a.value.current_bid) - Number(b.value.current_bid);
+      })
+    }
+    // rev = 4 means high to low price
+    else{
+      salesToView = [...activeAuctions].sort((a,b)=>{
+        return - Number(a.value.current_bid) + Number(b.value.current_bid);
+      })
+    }
   
     // //console.log("salesToview", salesToView);
   

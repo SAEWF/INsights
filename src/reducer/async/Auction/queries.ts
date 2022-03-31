@@ -46,7 +46,7 @@ export const loadMoreAuctionNftsQuery = createAsyncThunk<
 export const getAuctionNftsQuery = createAsyncThunk<
   { tokens: AuctionNftLoadingData[] },
   {address:  string
-    //  , reverse: number
+     , reverse: number
   },
   Opts
 >(
@@ -58,7 +58,7 @@ export const getAuctionNftsQuery = createAsyncThunk<
       let tokens;
       console.log(args);
       tokens = await getAuctionNfts(system, args.address
-        //, args.reverse
+        , args.reverse
         );
 
       // console.log(tokens);
