@@ -44,7 +44,7 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
           <ModalHeader>Are you sure?</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>Are you sure you want to resolve the auction?</Text>
+            <Text>Are you sure you want to resolve the auction with royalty inclusive ?</Text>
           </ModalBody>
           <ModalFooter>
             <Button variant="primaryAction" mr={3} onClick={() => onSubmit()}>
