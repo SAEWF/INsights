@@ -385,6 +385,9 @@ function NavItems() {
             <MenuList >
               <BasicUsage/>  
             </MenuList>
+            {/* <MenuList >
+              Resolve Tokens  
+            </MenuList> */}
             </Menu>
         </Flex>
       </Flex>
