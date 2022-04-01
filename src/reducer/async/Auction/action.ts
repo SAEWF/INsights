@@ -84,12 +84,12 @@ export const bidTokenAction = createAsyncThunk<
 });
 
 export const resolveTokenAction = createAsyncThunk<
-    {auctionId: number; royalty: number; minter: string},
-    {auctionId: number; royalty: number; minter: string},
+    {auctionId: number; royalty: number; minter: string, sold: Boolean},
+    {auctionId: number; royalty: number; minter: string, sold: Boolean},
     Options
 >('action/resolveToken', async (args, api) => {
     const { getState, rejectWithValue, dispatch, requestId } = api;
-    const { auctionId, royalty, minter } = args;
+    const { auctionId, royalty, minter, sold } = args;
     const { system } = getState();
 
     // TODO : take from config file 
@@ -101,7 +101,7 @@ export const resolveTokenAction = createAsyncThunk<
         });
     }
     try{
-        const op = await resolveAuction(system, auctionContract, auctionId, royalty, minter);
+        const op = await resolveAuction(system, auctionContract, auctionId, royalty, minter, sold);
 
         dispatch(notifyPending(requestId, 'Resolving Auction ...'));
         await op.confirmation(2);
