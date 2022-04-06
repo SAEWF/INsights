@@ -68,7 +68,8 @@ export async function resolveAuction(
     auctionContract : string,
     auctionId : number,
     royalty: number,
-    minter: string
+    minter: string,
+    sold: Boolean
 ){
     const contract = await system.toolkit.wallet.at(auctionContract);
     const batch = system.toolkit.wallet
@@ -76,8 +77,11 @@ export async function resolveAuction(
     .withContractCall(
       contract.methods.resolve(auctionId)
     )
-    .withTransfer({ to: minter, amount: royalty });
-    
+
+    if(sold){
+      batch.withTransfer({ to: minter, amount: royalty });
+    }
+
     return batch.send();
 }
 

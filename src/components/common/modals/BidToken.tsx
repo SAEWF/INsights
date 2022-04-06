@@ -17,9 +17,11 @@ import { useDispatch, useSelector } from '../../../reducer';
 import { bidTokenAction } from '../../../reducer/async/Auction/action';
 import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 import tz from '../assets/tezos-sym-white.svg'
+import { Nft } from '../../../lib/nfts/decoders';
 
 interface ConfigureTokenModalProps extends BaseModalProps {
-  auctionId: number
+  auctionId: number,
+  token: Nft
 }
 
 export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
@@ -44,6 +46,7 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
       dispatchThunk={() =>
         dispatch(
           bidTokenAction({
+            token: props.token,
             auctionId: props.auctionId,
             bidPrice: salePrice
           })
@@ -96,6 +99,7 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
 
 interface BidTokenButtonProps extends BaseModalButtonProps {
   auctionId: number;
+  token: Nft
 }
 
 export function BidTokenButton(props: BidTokenButtonProps) {

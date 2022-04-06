@@ -16,7 +16,8 @@ import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
 interface ResolveTokenAuctionModalProps extends BaseModalProps {
   id: number;
   royalty: number,
-  minter: string
+  minter: string,
+  sold: Boolean
 }
 
 export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
@@ -32,7 +33,8 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
           resolveTokenAction({
               auctionId: props.id,
               royalty: props.royalty,
-              minter: props.minter
+              minter: props.minter,
+              sold: props.sold
           })
         )
       }
@@ -44,7 +46,7 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
           <ModalHeader>Are you sure?</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>Are you sure you want to resolve the auction?</Text>
+            <Text>Are you sure you want to resolve the auction with royalty inclusive ?</Text>
           </ModalBody>
           <ModalFooter>
             <Button variant="primaryAction" mr={3} onClick={() => onSubmit()}>
@@ -66,7 +68,8 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
 interface ResolveTokenAuctionButtonProps extends BaseModalButtonProps {
   id: number,
   royalty: number,
-  minter: string
+  minter: string,
+  sold : Boolean
 }
 
 export function ResolveTokenAuctionButton(props: ResolveTokenAuctionButtonProps) {

@@ -5,9 +5,12 @@ import { useSelector, useDispatch } from '../../../reducer';
 import Banner from './Banner';
 import TokenCard from './TokenCard';
 import '../index.css'
+// import logo from '../../common/assets/splash-logo.svg';
 import { Pagination } from 'react-bootstrap'
 import Footer from '../../common/Footer';
 import { getAuctionNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
+import { connectWallet  } from '../../../reducer/async/wallet';
+import { MinterButton } from '../../common';
 
 
 export default function Catalog(props:any) {
@@ -45,9 +48,53 @@ export default function Catalog(props:any) {
       loadMoreAuctionNftsQuery({page: active});
     }, [active]);
 
+    if (system.walletReconnectAttempted && system.status !== 'WalletConnected') {
+      return (
+        <Flex
+          align="center"
+          justifyContent="space-between"
+          w="100%"
+          flex="1"
+          flexDir="column"
+          bg="brand.background"
+        >
+          <Flex flexDir="column" align="center" maxW="600px" pt={20}>
+            
+            <Heading color="white" size="xl" pb={8}>
+              Create NFTs on Tezos
+            </Heading>
+            <Flex minW="400px" justify="center" pb={20}>
+              <MinterButton
+                variant="secondaryActionLined"
+                onClick={e => {
+                  e.preventDefault();
+                  dispatch(connectWallet());
+                }}
+              >
+                Connect your wallet
+              </MinterButton>
+            </Flex>
+          </Flex>
+          <Flex
+            width="100%"
+            bg="brand.darkGray"
+            color="brand.lightGray"
+            fontFamily="mono"
+            paddingX={10}
+            paddingY={4}
+            justifyContent="space-between"
+          >
+            
+          </Flex>
+        </Flex>
+      );
+    }
+
     // console.log('auction tokens', state.auction.tokens);
     let tokens = state.auction.tokens?.filter(x => x.token).map(x => x.token!) ?? [];
     tokens = tokens.filter(x => !blackList.includes(x.metadata?.minter ?? ''));
+
+    console.log("All tokens - ", tokens);
 
     // for getting all tokens sale data , uncomment below line
     // console.log('tokens', state.auction.tokens);
@@ -162,7 +209,7 @@ export default function Catalog(props:any) {
         {
           (props.hideBanner===undefined) && (!props.hideBanner) ? (<div className="text-center banner" ><Banner/> </div>) : <></>
         }
-        <Center><Heading>Trending Auction</Heading></Center>
+        <Center><Heading>Auction to be resolved</Heading></Center>
         <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' , justifySelf: 'end'}}>
           <Select
             bg="#00ffbe"
@@ -220,16 +267,29 @@ export default function Catalog(props:any) {
                   {state.auction.tokens?.slice(start, end).map(tokenDetail => {
                     const token = tokenDetail.token;
                     if(token && token.metadata?.minter!==undefined && blackList.includes(token.metadata?.minter)) return <></>;
-                    else if(token)
-                    return (
-                      <Box display="grid" transition="250ms padding" padding={1} style={{transition: 'all .2s ease-in-out'}} _hover={{ transform: 'scale(1.05)' }} mb={7}>
-                        <TokenCard
-                          key={`${token.address}-${token.id}`}
-                          config={system.config}
-                          {...token}
-                        />
-                      </Box>
-                    );
+                    else if(token){
+                      console.log("token == ", token);
+                      let highestBidder = token.auction?.highest_bidder;
+                      let seller = token.auction?.seller;
+                      let end_time:any = token.auction?.end_time;
+                      let isOver = (Date.now() > (new Date(end_time).getTime()));
+                      let current_user = system.tzPublicKey;
+
+                      console.log("current user = ", current_user);
+
+                      if( isOver && ( (current_user === highestBidder) || (current_user === seller) ))
+                      return (
+                        <Box display="grid" transition="250ms padding" padding={1} style={{transition: 'all .2s ease-in-out'}} _hover={{ transform: 'scale(1.05)' }} mb={7}>
+                          <TokenCard
+                            key={`${token.address}-${token.id}`}
+                            config={system.config}
+                            {...token}
+                          />
+                        </Box>
+                      );
+                      else return <></>;
+                    }
+                    
                     else return <></>;
                   })}
                 </>
