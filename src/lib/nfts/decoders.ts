@@ -2,7 +2,6 @@
 import * as t from 'io-ts';
 import * as e from 'fp-ts/Either';
 import merge from "ts-deepmerge";
-import { boolean } from 'joi';
 
 //// Contracts
 

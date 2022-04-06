@@ -12,12 +12,14 @@ import { MinterButton } from '../../common';
 import { useDispatch, useSelector } from '../../../reducer';
 import { resolveTokenAction } from '../../../reducer/async/Auction/action';
 import FormModal, { BaseModalProps, BaseModalButtonProps } from './FormModal';
+import { Nft } from '../../../lib/nfts/decoders';
 
 interface ResolveTokenAuctionModalProps extends BaseModalProps {
   id: number;
   royalty: number,
   minter: string,
-  sold: Boolean
+  sold: Boolean,
+  token: Nft
 }
 
 export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
@@ -31,6 +33,7 @@ export function ResolveTokenAuctionModal(props: ResolveTokenAuctionModalProps) {
       dispatchThunk={() =>
         dispatch(
           resolveTokenAction({
+              token: props.token,
               auctionId: props.id,
               royalty: props.royalty,
               minter: props.minter,
@@ -69,7 +72,8 @@ interface ResolveTokenAuctionButtonProps extends BaseModalButtonProps {
   id: number,
   royalty: number,
   minter: string,
-  sold : Boolean
+  sold : Boolean,
+  token: Nft
 }
 
 export function ResolveTokenAuctionButton(props: ResolveTokenAuctionButtonProps) {
