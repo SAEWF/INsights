@@ -586,7 +586,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     </Box>
                     { (Date.now() > (new Date(token.auction.end_time).getTime()))  ? (
                       <Box marginRight={2}>
-                        <ResolveTokenAuctionButton id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} sold={token.owner!==token.auction.highest_bidder} />
+                        <ResolveTokenAuctionButton token={token} id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} sold={token.owner!==token.auction.highest_bidder} />
                       </Box> ) : <></>
                     }
                   </>
@@ -595,7 +595,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                     <>
                       { (Date.now() > (new Date(token.auction.end_time).getTime()))  ? (
                         <Box marginRight={2}>
-                          <ResolveTokenAuctionButton id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} sold={token.owner!==token.auction.highest_bidder} />
+                          <ResolveTokenAuctionButton token={token} id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} sold={token.owner!==token.auction.highest_bidder} />
                         </Box> ) : (
                         <Box marginRight={2}>
                           <CancelTokenAuctionButton refresh={refresh} id={token.auction.id} />
