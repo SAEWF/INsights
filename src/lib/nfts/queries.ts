@@ -382,6 +382,7 @@ export async function getContractNfts(
           price: Number.parseInt(saleData.value.sale_data.price, 10) / 1000000,
           mutez: Number.parseInt(saleData.value.sale_data.price, 10),
           saleToken: {
+            auction : false,
             address: saleData.value.sale_data.sale_token.fa2_address,
             tokenId: Number.parseInt(saleData.value.sale_data.sale_token.token_id)
           },
@@ -469,6 +470,7 @@ export async function getCollectionNfts(
           price: Number.parseInt(saleData.value.sale_data.price, 10) / 1000000,
           mutez: Number.parseInt(saleData.value.sale_data.price, 10),
           saleToken: {
+            auction: false,
             address: saleData.value.sale_data.sale_token.fa2_address,
             tokenId: Number.parseInt(saleData.value.sale_data.sale_token.token_id)
           },
@@ -565,6 +567,7 @@ export async function getContractNft(
           price: Number.parseInt(saleData.value.sale_data.price, 10) / 1000000,
           mutez: Number.parseInt(saleData.value.sale_data.price, 10),
           saleToken: {
+            auction: false,
             address: saleData.value.sale_data.sale_token.fa2_address,
             tokenId: Number.parseInt(saleData.value.sale_data.sale_token.token_id)
           },
@@ -950,6 +953,7 @@ export const loadMarketplaceNft = async (
       price: mutez / 1000000,
       mutez: mutez,
       saleToken: {
+        auction: false,
         address: tokenSale.value.sale_data.sale_token.fa2_address,
         tokenId: Number.parseInt(tokenSale.value.sale_data.sale_token.token_id)
       },
