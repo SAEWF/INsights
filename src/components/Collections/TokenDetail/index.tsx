@@ -174,7 +174,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
         system.tzPublicKey === token.auction?.seller);
   // for viewing the token in console , turn it on
   // console.log("OWNER + ", owner);
-  console.log("TOKEN =", token);
+  // console.log("TOKEN =", token);
 
 
   let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any, creatorAddress, ownerAddress;
@@ -582,7 +582,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   !isOwner ? (
                   <>
                     <Box marginRight={2}>
-                      <BidTokenButton auctionId={token.auction.id} />
+                      <BidTokenButton auctionId={token.auction.id} token={token} />
                     </Box>
                     { (Date.now() > (new Date(token.auction.end_time).getTime()))  ? (
                       <Box marginRight={2}>
@@ -593,11 +593,14 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                   ) : (
                     
                     <>
-                      <CancelTokenAuctionButton refresh={refresh} id={token.auction.id} />
                       { (Date.now() > (new Date(token.auction.end_time).getTime()))  ? (
                         <Box marginRight={2}>
                           <ResolveTokenAuctionButton id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} sold={token.owner!==token.auction.highest_bidder} />
-                        </Box> ) : <></>
+                        </Box> ) : (
+                        <Box marginRight={2}>
+                          <CancelTokenAuctionButton refresh={refresh} id={token.auction.id} />
+                        </Box>
+                        )
                       }
                     </>
                 )) : 

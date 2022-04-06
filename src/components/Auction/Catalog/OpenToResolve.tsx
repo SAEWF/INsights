@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Center, Image, Link } from '@chakra-ui/react'; //
+import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Center } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
 import Banner from './Banner';
 import TokenCard from './TokenCard';
 import '../index.css'
-import logo from '../../common/assets/splash-logo.svg';
+// import logo from '../../common/assets/splash-logo.svg';
 import { Pagination } from 'react-bootstrap'
 import Footer from '../../common/Footer';
 import { getAuctionNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
