@@ -278,7 +278,7 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
 
   if(token.auction && tokenHook){
     ownerAddress = token.auction.seller;
-    royalty = royaltyPercentage*token.auction.current_bid;
+    royalty = ((royaltyPercentage*token.auction.current_bid)/100.0).toFixed(6);
   }
 
   return (
@@ -581,18 +581,29 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
                 token.auction ? (
                   !isOwner ? (
                   <>
-                    <Box marginRight={2}>
-                      <BidTokenButton auctionId={token.auction.id} />
-                    </Box>
                     { (Date.now() > (new Date(token.auction.end_time).getTime()))  ? (
                       <Box marginRight={2}>
-                        <ResolveTokenAuctionButton id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} />
-                      </Box> ) : <></>
+                        <ResolveTokenAuctionButton token={token} id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} sold={token.owner!==token.auction.highest_bidder} />
+                      </Box> ) : 
+                      <>
+                        <Box marginRight={2}>
+                          <BidTokenButton auctionId={token.auction.id} token={token} />
+                        </Box>
+                      </>
                     }
                   </>
                   ) : (
+                    
                     <>
-                      <CancelTokenAuctionButton refresh={refresh} id={token.auction.id} />
+                      { (Date.now() > (new Date(token.auction.end_time).getTime()))  ? (
+                        <Box marginRight={2}>
+                          <ResolveTokenAuctionButton token={token} id={token.auction.id} royalty = {royalty} minter = {token.metadata.minter ?? 'tz1iX91ZRN4KvFh3XrxGicr11ieeh5x3KDxP'} sold={token.owner!==token.auction.highest_bidder} />
+                        </Box> ) : (
+                        <Box marginRight={2}>
+                          <CancelTokenAuctionButton refresh={refresh} id={token.auction.id} />
+                        </Box>
+                        )
+                      }
                     </>
                 )) : 
                 isOwner ? (

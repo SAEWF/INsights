@@ -69,6 +69,9 @@ export default function TokenCard(props: TokenCardProps) {
 
   let royalty: any, royaltyArray , royaltyAmount, royaltyPercentage, totalAmount: any, creatorAddress, ownerAddress;;
   
+  if(props.sale?.saleToken?.auction!==undefined && props.sale?.saleToken?.auction){
+    totalAmount = props.sale.price ;
+  }
   if(props.sale){
     if(props.metadata.royalties!==undefined){
       const shares = props.metadata.royalties.shares;
@@ -213,32 +216,14 @@ export default function TokenCard(props: TokenCardProps) {
           {/* <Image src='https://tqtezos.mypinata.cloud/ipfs/QmYM5pi7D1DpJkABV6aHpw4rQz4Te4doUxdN7wcbLMeAUW' thumbnail /> */}
         </Box>
       </AspectRatio>
-      {/* <Flex
-        width="100%"
-        px={4}
-        py={4}
-        bg="white"
-        borderTop="1px solid"
-        borderColor="brand.lightBlue"
-        flexDir="row"
-        justifyContent="space-between"
-      >
-        <Flex display="block" fontSize="md" width="70%" alignItems="center" height="100%" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">{props.title}</Flex>
-        <Flex fontSize="md" fontWeight="600" width="30%" justifyContent="flex-end" alignItems="center">
-          {props.sale?.price} <img src={tz} alt="" width={10} height="auto" style={{ display: 'inline-block' }} />
-        </Flex>
-      </Flex> */}
+
       <Card.Body className="ml-2"       
         onClick={() =>
         openInNewTab(`https://byteblock.art/collection/${props.address}/token/${props.id}`)
       }>
         <Card.Title className="ml-1" >{props.title}</Card.Title>
-        {/* <Card.Text>
-                This is a wider card with supporting text below as a natural lead-in to
-                additional content. This content is a little bit longer.
-            </Card.Text> */}
+
         <Box>
-          {/* <Image borderRadius={"100%"} src={artistImg} alt="artist" width={10} height={10} />  */}
           { owner==='' ?
              (<Flex><i className="fas fa-user mr-2" style={{
               display: "inline-block",
@@ -262,7 +247,7 @@ export default function TokenCard(props: TokenCardProps) {
             onClick={() =>
             openInNewTab(`https://byteblock.art/collection/${props.address}/token/${props.id}`)
           }>
-          <p className="text-muted d-inline mr-2">Price:</p>
+          <p className="text-muted d-inline mr-2">{props.sale?.saleToken?.auction!==undefined && props.sale?.saleToken?.auction ? <>Bid </>:  <>Price</>} :</p>
           <p className="d-inline"> <Text color={color}>{totalAmount>0?totalAmount.toFixed(2):'Not on sale'} ꜩ</Text>
             
           </p>

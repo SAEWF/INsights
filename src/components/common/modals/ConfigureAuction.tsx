@@ -49,6 +49,7 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
       dispatchThunk={() =>
         dispatch(
           configureTokenAction({
+            token: props.token,
             openingPrice: salePrice,
             // to do : set minRaise percent
             minRaisePercent: minRaisePercent,
