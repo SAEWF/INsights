@@ -116,7 +116,9 @@ export default function App() {
             )}
           </Route>
           <Route path="/artists">
-            <ArtistList />
+            <>
+              <ArtistList />
+            </>
           </Route>
           <Route path="/editprofile">
             <EditProfile />
