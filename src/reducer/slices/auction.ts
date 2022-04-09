@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 import {
-  getAuctionNftsQuery,
+  getAuctionLiveNftsQuery,
+  getAuctionDeadNftsQuery,
   loadMoreAuctionNftsQuery,
   refreshAuctionNftsQuery
 } from '../async/Auction/queries';
@@ -61,7 +62,8 @@ const slice = createSlice({
     refreshAuction: refreshAuctionR
   },
   extraReducers: ({ addCase }) => {
-    addCase(getAuctionNftsQuery.fulfilled, populateAuctionR);
+    addCase(getAuctionLiveNftsQuery.fulfilled, populateAuctionR);
+    addCase(getAuctionDeadNftsQuery.fulfilled, populateAuctionR );
     addCase(loadMoreAuctionNftsQuery.fulfilled, populateAuctionR);
     addCase(refreshAuctionNftsQuery.fulfilled, refreshAuctionR);
   }

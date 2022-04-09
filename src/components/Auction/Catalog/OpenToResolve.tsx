@@ -8,7 +8,7 @@ import '../index.css'
 // import logo from '../../common/assets/splash-logo.svg';
 import { Pagination } from 'react-bootstrap'
 import Footer from '../../common/Footer';
-import { getAuctionNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
+import { getAuctionDeadNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
 import { connectWallet  } from '../../../reducer/async/wallet';
 import { MinterButton } from '../../common';
 
@@ -35,7 +35,7 @@ export default function Catalog(props:any) {
       
     useEffect(() => {
         dispatch(refreshAuctionNftsQuery());
-        dispatch(getAuctionNftsQuery({address: state.auction.address
+        dispatch(getAuctionDeadNftsQuery({address: state.auction.address
           , reverse: reverse
         }));
     }, [state.auction.address, dispatch, reverse]);

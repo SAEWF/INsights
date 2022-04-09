@@ -7,7 +7,7 @@ import TokenCard from './TokenCard';
 import '../index.css'
 import { Pagination } from 'react-bootstrap'
 import Footer from '../../common/Footer';
-import { getAuctionNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
+import { getAuctionLiveNftsQuery, loadMoreAuctionNftsQuery, refreshAuctionNftsQuery } from '../../../reducer/async/Auction/queries';
 
 
 export default function Catalog(props:any) {
@@ -32,7 +32,7 @@ export default function Catalog(props:any) {
       
     useEffect(() => {
         dispatch(refreshAuctionNftsQuery());
-        dispatch(getAuctionNftsQuery({address: state.auction.address
+        dispatch(getAuctionLiveNftsQuery({address: state.auction.address
           , reverse: reverse
         }));
     }, [state.auction.address, dispatch, reverse]);
