@@ -90,8 +90,9 @@ function TokenDetail({ contractAddress, tokenId }: TokenDetailProps) {
   const [creator, setCreator] = useState<any[]>([]);
 
   const collectionUndefined = collection === undefined;
-  const refresh = () => { setRefreshState(1-refreshState); console.log('Refreshing...'); };
+  const refresh = () => { setRefreshState(1-refreshState); console.log('Refreshing...'); window.location.reload(); };
   useEffect(() => {
+    console.log("Token Detail useEffect")
     if (collectionUndefined) {
       console.log(collection);
       dispatch(getNftAssetContractQuery(contractAddress));

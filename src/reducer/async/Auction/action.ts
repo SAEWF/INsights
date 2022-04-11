@@ -38,8 +38,9 @@ export const configureTokenAction = createAsyncThunk<
         const op = await configureAuction(system, auctionContract, openingPrice, minRaise, minRaisePercent, asset);
 
         dispatch(notifyPending(requestId, 'Configuring Auction ...'));
-        await AddAuctionDataToFirebase(token, asset[0].fa2_address, system.wallet, asset[0].fa2_batch[0].token_id, openingPrice, asset[0].fa2_address);
-        await op.confirmation(2);
+        // await AddAuctionDataToFirebase(token, asset[0].fa2_address, system.wallet, asset[0].fa2_batch[0].token_id, openingPrice, asset[0].fa2_address);
+        // await op.confirmation();
+        try{ await op.confirmation(2); }catch{ try{ await op.confirmation(); }catch{try{ await op.confirmation(); }catch{ } }}
         
 
         dispatch(notifyFulfilled(requestId, 'Auction configured ...'));
@@ -47,10 +48,12 @@ export const configureTokenAction = createAsyncThunk<
 
         return args;
     } catch(e){
-        return rejectWithValue({
-            kind: ErrorKind.AuctionConfigureFailed,
-            message: 'Failed '  
-        });
+        console.log("Create Auction - ", e);
+        // return rejectWithValue({
+        //     kind: ErrorKind.AuctionConfigureFailed,
+        //     message: 'Failed '  
+        // });
+        return args;
     }
 });
 
@@ -73,8 +76,12 @@ export const bidTokenAction = createAsyncThunk<
         const op = await bidAuction(system, auctionContract, auctionId, bidPrice);
 
         dispatch(notifyPending(requestId, 'Bidding ...'));
-        await AddAuctionDataToFirebase(token, token.address, system.wallet, token.id, bidPrice, token.address);
-        await op.confirmation(2);
+        // await AddAuctionDataToFirebase(token, token.address, system.wallet, token.id, bidPrice, token.address);
+        try{ await op.confirmation();}catch(e)
+        {
+            try{await op.confirmation();}catch{}
+            console.log("Bidding auction error - ", e);
+        }
 
         dispatch(notifyFulfilled(requestId, 'Bid placed ...'));
         // get all auctions using dispatch here
@@ -110,7 +117,12 @@ export const resolveTokenAction = createAsyncThunk<
         await UpdateSoldnCollectedTokenInFB(system.tzPublicKey, token.owner ,token.id, token.address, token);
 
         dispatch(notifyPending(requestId, 'Resolving Auction ...'));
-        await op.confirmation(2);
+        
+        try{ await op.confirmation(2); }catch(e)
+        {
+            try{ await op.confirmation(); }catch{try{ await op.confirmation(); }catch{ }}
+            console.log("Creating auction error - ", e);
+        }
 
         dispatch(notifyFulfilled(requestId, 'Auction resolved ...'));
         // get all auctions using dispatch here
@@ -143,13 +155,19 @@ export const cancelTokenAction = createAsyncThunk<
         const op = await cancelAuction(system, auctionContract, auctionId);
 
         dispatch(notifyPending(requestId, 'Cancelling Auction ...'));
-        await op.confirmation(2);
+        try{ await op.confirmation(2); }catch(e)
+        {
+            try{ await op.confirmation(); }catch{try{ await op.confirmation(); }catch{ } }
+            console.log("Cancelling auction error - ", e);
+        }
+        
 
         dispatch(notifyFulfilled(requestId, 'Auction cancelled ...'));
         // get all auctions using dispatch here
 
         return args;
     } catch(e){
+        console.log("Cancel Auction - ", e);
         return rejectWithValue({
             kind: ErrorKind.CancelTokenSaleFailed,
             message: 'Failed '  

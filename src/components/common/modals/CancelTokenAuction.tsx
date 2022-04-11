@@ -33,7 +33,8 @@ export function CancelTokenAuctionModal(props: CancelTokenAuctionModalProps) {
           })
         )
       }
-      onComplete={() => { props.refresh(); }}
+      onComplete={() => {  console.log("Before refresh cancel comp"); props.refresh(); console.log("After refresh cancel comp"); }}
+      onReject={() => {  console.log("Before refresh cancel r"); props.refresh(); console.log("After refresh cancel r"); }}
       initialRef={initialRef}
       pendingMessage="Cancelling token auction !"
       completeMessage="Token auction Canceld !"
