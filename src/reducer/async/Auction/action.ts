@@ -76,7 +76,7 @@ export const bidTokenAction = createAsyncThunk<
         const op = await bidAuction(system, auctionContract, auctionId, bidPrice);
 
         dispatch(notifyPending(requestId, 'Bidding ...'));
-        // await AddAuctionDataToFirebase(token, token.address, system.wallet, token.id, bidPrice, token.address);
+        await AddAuctionDataToFirebase(token, token.address, system.wallet, token.id, bidPrice, token.address);
         try{ await op.confirmation();}catch(e)
         {
             try{await op.confirmation();}catch{}
