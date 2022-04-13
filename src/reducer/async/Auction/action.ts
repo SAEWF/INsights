@@ -25,6 +25,7 @@ export const configureTokenAction = createAsyncThunk<
     Options
 >('action/configureToken', async (args, api) => {
     const { getState, rejectWithValue, dispatch, requestId } = api;
+    // eslint-disable-next-line
     const { token, openingPrice, minRaisePercent, minRaise, asset } = args;
     const { system } = getState();
     const auctionContract = "KT1QX2BKn9tDk2XAQAGzRemcWjF3q5yNPH8Y";

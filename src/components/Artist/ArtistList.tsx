@@ -3,7 +3,7 @@ import { Row, Col, } from 'react-bootstrap';
 import './style.css';
 import firebase from '../../lib/firebase/firebase';
 import { useLocation } from 'wouter';
-import {Flex, Input, Container, Box} from '@chakra-ui/react';
+import {Input, Box} from '@chakra-ui/react';
 
 // getting artlist from firestore
 const GetArtists = async () =>{
@@ -64,7 +64,7 @@ export default function ArtistList() {
       console.log(temp);
       setArtists([...temp]);
     }
-
+  // eslint-disable-next-line
   }, [searchQuery]);
   const getTwitterLink = (twitter: string) => {
     if(twitter === undefined || twitter === ''){
@@ -151,7 +151,3 @@ export default function ArtistList() {
   );
 
 }
-
-interface Task {
-  [index: string]: string
-};
