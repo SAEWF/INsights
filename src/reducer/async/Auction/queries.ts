@@ -43,7 +43,8 @@ export const loadMoreAuctionNftsQuery = createAsyncThunk<
   }
 );
 
-export const getAuctionNftsQuery = createAsyncThunk<
+
+export const getAuctionLiveNftsQuery = createAsyncThunk<
   { tokens: AuctionNftLoadingData[] },
   {address:  string
      , reverse: number
@@ -60,8 +61,46 @@ export const getAuctionNftsQuery = createAsyncThunk<
       tokens = await getAuctionNfts(system, args.address
         , args.reverse
         );
+        console.log("AUCTION :",tokens);
+      tokens = tokens.filter(token => Date.now() < (new Date(token.tokenAuction!.value!.end_time).getTime()));
 
-      // console.log(tokens);
+      console.log("AUCTION :",tokens);
+      // Load 17 initially (1-feature + at least 2 rows)
+      for (const i in tokens.slice(0, 16)) {
+        tokens[i] = await loadAuctionNft(system, tokens[i]);
+      }
+      console.log(tokens);
+      return { tokens };
+    } catch (e) {
+      return rejectWithValue({
+        kind: ErrorKind.GetMarketplaceNftsFailed,
+        message: `Failed to retrieve auctions nfts from: ${args.address}`
+      });
+    }
+  }
+);
+
+export const getAuctionDeadNftsQuery = createAsyncThunk<
+  { tokens: AuctionNftLoadingData[] },
+  {address:  string
+     , reverse: number
+  },
+  Opts
+>(
+  'query/getAuctionDeadNfts',
+  async (args, { getState, rejectWithValue }) => {
+    const { system } = getState();
+    console.log("entered");
+    try {
+      let tokens;
+      console.log(args);
+      tokens = await getAuctionNfts(system, args.address
+        , args.reverse
+        );
+
+      tokens = tokens.filter(token => Date.now() >= (new Date(token.tokenAuction!.value!.end_time).getTime()));
+
+      console.log("AUCTION :",tokens);
       // Load 17 initially (1-feature + at least 2 rows)
       for (const i in tokens.slice(0, 16)) {
         tokens[i] = await loadAuctionNft(system, tokens[i]);
