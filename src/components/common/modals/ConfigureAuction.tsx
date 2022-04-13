@@ -68,7 +68,8 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
           })
         )
       }
-      onComplete={() => { setPrice(''); props.refresh(); }}
+      onComplete={() => { setPrice(''); console.log("Before refresh"); props.refresh(); console.log("After refresh"); }}
+      onReject={() => {  console.log("Before refresh r"); props.refresh(); console.log("After refresh r"); }}
       initialRef={initialRef}
       pendingMessage="Listing token for auction ..."
       completeMessage="Token listed for auction !!"

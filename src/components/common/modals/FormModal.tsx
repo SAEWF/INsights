@@ -115,6 +115,7 @@ interface FormModalProps {
   dispatchOnOpen?: boolean;
   initialRef?: React.MutableRefObject<null>;
   onComplete?: () => void;
+  onReject?: () => void;
   afterClose?: () => void;
   pendingMessage?: React.ReactNode;
   pendingAsyncMessage?: React.ReactNode;
@@ -122,7 +123,7 @@ interface FormModalProps {
 }
 
 export default function FormModal(props: FormModalProps) {
-  const { sync = false, dispatchOnOpen = false, onComplete, method } = props;
+  const { sync = false, dispatchOnOpen = false, onComplete, method, onReject = () => {} } = props;
   const { isOpen, onOpen, onClose } = props.disclosure;
   const [requestId, setRequestId] = useState<string | null>(null);
   const status = useSelector(s => s.status[props.method]);
@@ -142,6 +143,9 @@ export default function FormModal(props: FormModalProps) {
     if (requestStatus === 'fulfilled') {
       dispatch(setStatus({ method, status: sync ? 'complete' : 'ready' }));
       onComplete?.call(null);
+    }
+    else if(requestStatus === 'rejected') {
+      onReject?.call(null);
     }
   };
 
