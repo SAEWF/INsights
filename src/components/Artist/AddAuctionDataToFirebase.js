@@ -46,6 +46,7 @@ const UpdateDetails = async (token, collection, walletAddress, token_id, salePri
         "metadata": metadata,
         "sale": sale,
         "date": new Date().toISOString(),
+        "history": []
       };
 
       await db.collection('nfts').doc(walletAddress).collection('Creations').doc(docName)
@@ -85,11 +86,19 @@ const UpdateDetails = async (token, collection, walletAddress, token_id, salePri
       return;
     }
 
+    let history = nft.history;
+
+    if(history===undefined){
+      history = [];
+    }
+    const updatedHistory = history.push({"bid": salePrice, "bidder": walletAddress, "time": Date.toISOString()});
+
     // Updating token from seller database
     var collectionName = creation?'Creations': 'Collections';
     await db.collection('nfts').doc(walletAddress).collection(collectionName).doc(docID)
     .update({
       "sale": sale,
+      "history": updatedHistory
     })
     .then(function() {
       console.log("Document successfully Updated!");
