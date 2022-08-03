@@ -297,7 +297,7 @@ export default function ArtistProfile(props: PropType) {
                     {
                       (CreatedNFTs.length>0)
                       ? <>
-                      <Container>
+                      <div>
                           <Row xs={1} md={2} lg={3} xl={3}>
                             {
                               CreatedNFTs.map((token)=>{
@@ -315,7 +315,7 @@ export default function ArtistProfile(props: PropType) {
                               })
                             }
                           </Row>
-                        </Container>
+                        </div>
                       </>
                       :
                       <h2>No Created NFT to display by this artist</h2>
@@ -325,7 +325,7 @@ export default function ArtistProfile(props: PropType) {
                     <TabPanel>
                     {(CollectedNFTs.length>0)
                     ? <>
-                        <Container>
+                        <div>
                           <Row xs={1} md={2} lg={3} xl={3}>
                             {
                               CollectedNFTs.map((token)=>{
@@ -343,7 +343,7 @@ export default function ArtistProfile(props: PropType) {
                               })
                             }
                           </Row>
-                        </Container>
+                        </div>
                       </>
                     :<h2>No Collected NFT to display by this artist</h2>}
                     </TabPanel>

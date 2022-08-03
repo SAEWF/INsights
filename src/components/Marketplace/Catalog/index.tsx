@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue } from '@chakra-ui/react'; //
+import { Text, Flex, Heading, Spinner, SimpleGrid, Box, Select, useColorModeValue, Stack, Skeleton, Center } from '@chakra-ui/react'; //
 import { Wind } from 'react-feather';
 import { useSelector, useDispatch } from '../../../reducer';
 import {
@@ -15,7 +15,7 @@ import '../index.css'
 // import StaticMarketplaceDisplay from './StaticMarketplaceDisplay'
 import { Pagination } from 'react-bootstrap'
 import Footer from '../../common/Footer';
-
+import AuctionCatalog from '../../Auction/Catalog';
 
 export default function Catalog() {
   const { system, marketplace: state } = useSelector(s => s);
@@ -165,6 +165,7 @@ export default function Catalog() {
 
     return (
     <>
+    
     <div>
       <Flex
         w="100vw"
@@ -177,7 +178,17 @@ export default function Catalog() {
       >
   
         <div className="text-center banner" ><Banner/> </div>
-        
+
+        <Stack>
+					<Skeleton height='20px' my={2}/>
+				</Stack>
+
+        <AuctionCatalog hideFooter={true} hideBanner={true} />
+
+        <Stack>
+					<Skeleton height='20px' my={2}/>
+				</Stack>
+        <Center><Heading>NFTs on sale</Heading></Center>
         <div className="sortSelect" style={{ marginRight: '0px', marginLeft: 'auto', display: 'flex',justifyContent: 'space-between' , justifySelf: 'end'}}>
           <Select
             bg="#00ffbe"

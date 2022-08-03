@@ -110,10 +110,10 @@ export const createAssetContractAction = createAsyncThunk<
       // TODO: Poll for contract availability on indexer
       dispatch(getWalletAssetContractsQuery());
       return { name, address };
-    } catch (e) {
+    } catch (e: any) {
       return rejectWithValue({
         kind: ErrorKind.CreateAssetContractFailed,
-        message: 'Collection creation failed'
+        message: e.message
       });
     }
   }

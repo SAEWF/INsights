@@ -10,6 +10,7 @@ export async function configureAuction(
 ) {
     const contractA = await system.toolkit.wallet.at(auctionContract);
     const contractT = await system.toolkit.wallet.at(asset[0].fa2_address);
+    const token_id = Number(asset[0].fa2_batch[0].token_id);
     
     // starting in 1 minute after processing
     const start_time_ = new Date();
@@ -29,7 +30,7 @@ export async function configureAuction(
           add_operator: {
             owner: system.tzPublicKey,
             operator: auctionContract,
-            token_id: 1
+            token_id: token_id
           }
         }
       ])
@@ -66,10 +67,22 @@ export async function resolveAuction(
     system: SystemWithWallet,
     auctionContract : string,
     auctionId : number,
+    royalty: number,
+    minter: string,
+    sold: Boolean
 ){
     const contract = await system.toolkit.wallet.at(auctionContract);
-    const resolve = contract.methods.resolve(auctionId);
-    return resolve.send();
+    const batch = system.toolkit.wallet
+    .batch([])
+    .withContractCall(
+      contract.methods.resolve(auctionId)
+    )
+
+    if(sold){
+      batch.withTransfer({ to: minter, amount: royalty });
+    }
+
+    return batch.send();
 }
 
 export async function cancelAuction(

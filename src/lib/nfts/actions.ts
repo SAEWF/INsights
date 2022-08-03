@@ -8,6 +8,8 @@ import UploadNftToFireStore from '../../components/Marketplace/Catalog/UploadNft
 import { SystemWithWallet } from '../system';
 import { uploadIPFSJSON } from '../util/ipfs';
 import { NftMetadata } from './decoders';
+import kalamint from './kalamint.json';
+import store from './storage.json'
 
 function toHexString(input: string) {
   return Buffer.from(input).toString('hex');
@@ -41,7 +43,7 @@ export async function createFaucetContract(
     .send();
 }
 
-export async function createAssetContract(
+export async function create(
   system: SystemWithWallet,
   metadata: Record<string, string>
 ) {
@@ -70,6 +72,28 @@ export async function createAssetContract(
         },
         metadata: metadataMap
       }
+    })
+    .send();
+}
+
+
+export async function createAssetContract(
+  system: SystemWithWallet,
+  metadata: Record<string, string>
+) {
+  const metadataMap = new MichelsonMap<string, string>();
+  const resp = await uploadIPFSJSON(system.config.ipfsApi, {
+    description: 'ByteBlock assets contract.',
+    interfaces: ['TZIP-012', 'TZIP-016', 'TZIP-020'],
+    tokenCategory: 'collectibles',
+    ...metadata
+  });
+  metadataMap.set('', toHexString('ipfs://'+resp.data.IpfsHash));
+  console.log("kalamint loaded : ", kalamint);
+  return await system.toolkit.wallet
+    .originate({
+      code: kalamint,
+      init: store
     })
     .send();
 }

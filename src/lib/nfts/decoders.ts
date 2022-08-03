@@ -273,7 +273,8 @@ export const NftSale = t.type({
   type: t.string,
   saleToken: t.type({
     address: t.string,
-    tokenId: t.number
+    tokenId: t.number,
+    auction: t.boolean
   }),
   saleId: t.number
 });

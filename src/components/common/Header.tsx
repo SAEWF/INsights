@@ -9,14 +9,14 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  MenuItem,
   useDisclosure,
   Drawer,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   DrawerBody,
-  Heading
+  Heading,
+  MenuItem
 } from '@chakra-ui/react';
 import { Menu as HamburgerIcon } from 'react-feather'; //Plus
 // import { RiStore2Line } from 'react-icons/ri';
@@ -188,7 +188,7 @@ function NavItems() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
   const { colorMode, toggleColorMode } = useColorMode();
-
+	const color = useColorModeValue("black", "white");
   const [isRegistered , setIsRegistered] = useState('');
 
   useEffect(() => {
@@ -385,7 +385,13 @@ function NavItems() {
              />
             <MenuList >
               <BasicUsage/>  
+              <MenuItem>
+                <Text color={color} onClick={()=>{setLocation(`/toresolve`)}} >Resolve Auction</Text>
+              </MenuItem>
             </MenuList>
+            {/* <MenuList >
+              Resolve Tokens  
+            </MenuList> */}
             </Menu>
         </Flex>
       </Flex>

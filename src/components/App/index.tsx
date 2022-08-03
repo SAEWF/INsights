@@ -22,6 +22,7 @@ import Terms from '../common/Terms';
 import Explore from '../Explore/index';
 import AddCollection from '../common/addCollection'
 import Auction from '../Auction/Catalog/index';
+import OpenToResolve from '../Auction/Catalog/OpenToResolve';
 import CollectionByName from '../Collections/Catalog/CollectionByName';
 
 export default function App() {
@@ -95,6 +96,9 @@ export default function App() {
               <Auction />
             </>
           </Route>
+          <Route path="/toresolve">
+            <OpenToResolve/>
+          </Route>
           <Route path="/marketplace">
             <MarketplaceCatalog />
           </Route>
@@ -116,7 +120,9 @@ export default function App() {
             )}
           </Route>
           <Route path="/artists">
-            <ArtistList />
+            <>
+              <ArtistList />
+            </>
           </Route>
           <Route path="/editprofile">
             <EditProfile />

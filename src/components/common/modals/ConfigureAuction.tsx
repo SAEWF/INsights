@@ -20,6 +20,7 @@ import tz from '../assets/tezos-sym-white.svg'
 import { Nft } from '../../../lib/nfts/decoders';
 
 interface ConfigureTokenModalProps extends BaseModalProps {
+  refresh: () => void;
   token: Nft;
   contract: string;
   tokenId: number;
@@ -48,6 +49,7 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
       dispatchThunk={() =>
         dispatch(
           configureTokenAction({
+            token: props.token,
             openingPrice: salePrice,
             // to do : set minRaise percent
             minRaisePercent: minRaisePercent,
@@ -66,7 +68,8 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
           })
         )
       }
-      onComplete={() => setPrice('')}
+      onComplete={() => { setPrice(''); console.log("Before refresh"); props.refresh(); console.log("After refresh"); }}
+      onReject={() => {  console.log("Before refresh r"); props.refresh(); console.log("After refresh r"); }}
       initialRef={initialRef}
       pendingMessage="Listing token for auction ..."
       completeMessage="Token listed for auction !!"
@@ -112,6 +115,7 @@ export function ConfigureTokenModal(props: ConfigureTokenModalProps) {
 }
 
 interface ConfigureTokenButtonProps extends BaseModalButtonProps {
+  refresh: () => void;
   token: Nft;
   contract: string;
   tokenId: number;

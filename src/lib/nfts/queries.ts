@@ -217,6 +217,23 @@ async function getFixedPriceSalesBigMapWithKey(
   return decoded.right;
 }
 
+async function getAuctionsBigMapWithKey(
+  tzkt: TzKt,
+  address: string,
+  collection: string,
+  token_id: string
+): Promise<any> {
+  const auctionStorage = 'auctions';
+
+  const params = {
+    'value.asset.[0].fa2_address': collection,
+    'value.asset.[0].fa2_batch.[0].token_id': token_id
+  }
+  const auctionData = await tzkt.getContractBigMapKeys(address, auctionStorage, params);
+
+  return auctionData;
+}
+
 export async function getBigMapUpdates<K extends t.Mixed, V extends t.Mixed>(
   tzkt: TzKt,
   params: Params,
@@ -365,6 +382,7 @@ export async function getContractNfts(
           price: Number.parseInt(saleData.value.sale_data.price, 10) / 1000000,
           mutez: Number.parseInt(saleData.value.sale_data.price, 10),
           saleToken: {
+            auction : false,
             address: saleData.value.sale_data.sale_token.fa2_address,
             tokenId: Number.parseInt(saleData.value.sale_data.sale_token.token_id)
           },
@@ -452,6 +470,7 @@ export async function getCollectionNfts(
           price: Number.parseInt(saleData.value.sale_data.price, 10) / 1000000,
           mutez: Number.parseInt(saleData.value.sale_data.price, 10),
           saleToken: {
+            auction: false,
             address: saleData.value.sale_data.sale_token.fa2_address,
             tokenId: Number.parseInt(saleData.value.sale_data.sale_token.token_id)
           },
@@ -513,6 +532,12 @@ export async function getContractNft(
   const activeSales = tokenSales.filter(sale => sale.active);
   //  //console.log("ACTIVESALES",activeSales);
 
+  // getting auction data
+  const auctionAddress = system.config.contracts.auction;
+  const tokenAuction = await getAuctionsBigMapWithKey(system.tzkt, auctionAddress, address, tokenId.toString());
+
+  const activeAuctions = tokenAuction.filter((auction: any) => auction.active);
+
   // Sort by token id - descending
   const tokensSorted = [...tokens].sort((a,b)=>- (Number.parseInt(a.value.token_id, 10) - Number.parseInt(b.value.token_id, 10)));
   // //console.log("tokensSorted",tokensSorted);
@@ -542,6 +567,7 @@ export async function getContractNft(
           price: Number.parseInt(saleData.value.sale_data.price, 10) / 1000000,
           mutez: Number.parseInt(saleData.value.sale_data.price, 10),
           saleToken: {
+            auction: false,
             address: saleData.value.sale_data.sale_token.fa2_address,
             tokenId: Number.parseInt(saleData.value.sale_data.sale_token.token_id)
           },
@@ -550,9 +576,34 @@ export async function getContractNft(
         };
         // //console.log("sale done",ledger.slice(1,10));
 
-        var owner = ledger.reverse().find(e => e.key === tokenId)?.value!;
+        // auction data 
+        const auctionData = activeAuctions.find(
+          (v: any) =>
+            v.value.asset[0].fa2_address === address &&
+            v.value.asset[0].fa2_batch[0].token_id === tokenId
+        );
+
+        const auction = auctionData && {
+          id: auctionData.key,
+          asset: auctionData.value.asset,
+          seller: auctionData.value.seller,
+          end_time: auctionData.value.end_time,
+          min_raise: auctionData.value.min_raise,
+          round_time: auctionData.value.round_time,
+          start_time: auctionData.value.start_time,
+          current_bid: Number.parseInt(auctionData.value.current_bid,10) / 1000000,
+          mutez: Number.parseInt(auctionData.value.current_bid,10),
+          extend_time: auctionData.value.extend_time,
+          last_bid_time: auctionData.value.last_bid_time,
+          highest_bidder: auctionData.value.highest_bidder,
+          min_raise_percent: auctionData.value.min_raise_percent
+        }
+        // {"extend_time":"1","last_bid_time":"2022-03-04T12:55:07Z","highest_bidder":"tz1LX3NtS3ijqDfpc8YXai7smHQc2LkC2o91","min_raise_percent":"1"},"firstLevel":617027,"lastLevel":617047,"updates":2}
+
+
+        var owner = ledger.reverse().find(e => e.key === tokenId && e.value!==auctionAddress)?.value!;
         if(owner === undefined){
-          owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1')?.key.address;
+          owner = ledger.find((e:any) => e.key.nat === tokenId.toString() && e.value==='1' && e.value)?.key.address;
         }
         // //console.log("owner ",tokenId, owner);
 
@@ -563,9 +614,10 @@ export async function getContractNft(
           description: metadata.description,
           artifactUri: metadata.artifactUri,
           metadata: metadata,
-          sale
+          sale: sale,
+          auction: auction
         };
-        // //console.log("res",res);
+        console.log("res",res);
         return res;
       }
     )
@@ -901,6 +953,7 @@ export const loadMarketplaceNft = async (
       price: mutez / 1000000,
       mutez: mutez,
       saleToken: {
+        auction: false,
         address: tokenSale.value.sale_data.sale_token.fa2_address,
         tokenId: Number.parseInt(tokenSale.value.sale_data.sale_token.token_id)
       },

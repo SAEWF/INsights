@@ -19,7 +19,7 @@ function Index() {
 
   const bidding = () => {
     console.log("bid call");
-    let op = configureAuction(system , "KT1LWwLzyxy3BvkEqNr2Lfe5xvk7geyNnZQt", 100000, 1, 1, asset);
+    let op = configureAuction(system , "KT1QX2BKn9tDk2XAQAGzRemcWjF3q5yNPH8Y", 100000, 1, 1, asset);
     console.log(op);
   };
 
